@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="80" class="mb-3">
+        <h1 class="display-4 fw-bold">Welcome to Rat PDF</h1>
+        <p class="lead text-muted">Convert, merge, and manage your PDF files quickly and easily — all online and free to start!</p>
+        <a class="btn btn-primary btn-lg mt-3" asp-controller="PDF" asp-action="ConvertImages">
+            <i class="bi bi-file-earmark-pdf-fill me-2"></i> Convert Images to PDF
+        </a>
+    </div>
+
+    <!-- Services Section -->
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <i class="bi bi-file-earmark-arrow-up-fill display-3 text-primary mb-3"></i>
+                    <h5 class="card-title fw-bold">Image to PDF</h5>
+                    <p class="card-text text-muted">Convert JPG, PNG, BMP, and GIF images into high-quality PDF files quickly and easily.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <i class="bi bi-files display-3 text-primary mb-3"></i>
+                    <h5 class="card-title fw-bold">Merge PDFs</h5>
+                    <p class="card-text text-muted">Combine multiple PDF documents into a single file in just a few clicks.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <i class="bi bi-scissors display-3 text-primary mb-3"></i>
+                    <h5 class="card-title fw-bold">Split PDFs</h5>
+                    <p class="card-text text-muted">Split large PDFs into smaller files or extract specific pages with ease.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Choose Us Section -->
+    <div class="mt-5 text-center">
+        <h2 class="fw-bold mb-3">Why Choose Rat PDF?</h2>
+        <p class="text-muted mb-4">Fast, reliable, and completely browser-based. No installations, no external dependencies — just upload your files and get results instantly.</p>
+        <a class="btn btn-outline-primary btn-lg" asp-controller="PDF" asp-action="ConvertImages">
+            Try It Now
+        </a>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@model Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature
+@{
+    ViewData["Title"] = "Error";
+    var exceptionDetails = Model?.Error.Message ?? "An unexpected error occurred.";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h1 {
+            color: #c00;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Oops! Something went wrong.</h1>
+    <p>@exceptionDetails</p>
+    <p>Request path: @Model?.Path</p>
+</body>
+</html>

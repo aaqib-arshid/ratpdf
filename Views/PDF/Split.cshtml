@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Split PDF online free";
+    ViewData["Description"] = "Split PDF online for free. Fast and secure PDF split tool.";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+
+            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
+            <h2 class="fw-bold mb-3">Split PDF</h2>
+            <p class="text-muted mb-4">Upload a PDF and extract specific pages into a new PDF file.</p>
+
+            <!-- Validation Errors -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start" role="alert">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="Split" method="post" enctype="multipart/form-data" id="splitForm">
+                <!-- Drag & Drop -->
+                <div class="mb-3">
+                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
+                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
+                        <p class="mb-0 text-muted">Drag & drop PDF here or click to select</p>
+                        <input type="file" name="file" class="form-control form-control-lg d-none" id="fileInput" accept="application/pdf">
+                    </div>
+                </div>
+
+                <!-- Page Range Inputs -->
+                <div class="row mb-3 g-2">
+                    <div class="col">
+                        <input type="number" class="form-control" name="startPage" placeholder="Start Page" min="1" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" class="form-control" name="endPage" placeholder="End Page" min="1" required>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-scissors me-2"></i> Split PDF
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "Split PDF Pages Online",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "url": "https://ratpdf.com/PDF/Split",
+  "description": "Split your PDF files into separate pages or extract selected pages easily online for free.",
+  "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-primary', 'bg-light');
+            fileInput.files = e.dataTransfer.files;
+        });
+    </script>
+}

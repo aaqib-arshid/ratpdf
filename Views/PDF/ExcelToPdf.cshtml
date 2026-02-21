@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Convert Excel to PDF free online";
+    ViewData["Description"] = "Convert Excel to PDF online for free. Fast and secure xls, xlsx, csv to PDF converter.";
+}
+
+<div class="container py-5 d-flex justify-content-center">
+    <div class="card shadow-lg p-5" style="max-width: 500px; width: 100%;">
+        <div class="card-body text-center">
+            <h2 class="fw-bold mb-3">Convert Excel to PDF</h2>
+            <p class="text-muted mb-4">
+                Upload an Excel file (.xlsx) and convert it into a PDF document.
+            </p>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="ExcelToPdf" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" class="form-control mb-3"
+                       accept=".xlsx,.xls">
+                <button type="submit" class="btn btn-primary w-100">
+                    Convert to PDF
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "Excel to PDF Converter",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web",
+          "url": "https://ratpdf.com/PDF/ExcelToPdf",
+          "description": "Convert Excel spreadsheets to PDF online quickly, safely, and for free.",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+    </script>
+}

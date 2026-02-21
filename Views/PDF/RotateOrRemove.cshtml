@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Rotate Or Remove Pages Of PDF Online Free";
+    ViewData["Description"] = "Rotate or Remove Pages by index inside PDF online for free. Fast and secure PDF editor.";
+}
+
+<div class="container py-5 d-flex justify-content-center">
+    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%;">
+        <div class="card-body text-center">
+            <h2 class="fw-bold mb-3">Rotate/Remove</h2>
+            <p class="text-muted mb-4">Upload a PDF and perform edits: add text, add image, rotate, or remove pages.</p>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="RotatePage" method="post" enctype="multipart/form-data" class="mb-3">
+                <input type="file" name="file" class="form-control mb-2">
+                <input type="number" name="pageNumber" class="form-control mb-2" placeholder="Page number (0-indexed)">
+                <input type="number" name="degree" class="form-control mb-2" placeholder="Degree (90, 180, 270)">
+                <button type="submit" class="btn btn-primary w-100">Rotate Page</button>
+            </form>
+
+            <form asp-action="RemovePage" method="post" enctype="multipart/form-data" class="mb-3">
+                <input type="file" name="file" class="form-control mb-2">
+                <input type="number" name="pageNumber" class="form-control mb-2" placeholder="Page number (0-indexed)">
+                <button type="submit" class="btn btn-danger w-100">Remove Page</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "Rotate or Remove PDF Pages",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web",
+          "url": "https://ratpdf.com/PDF/RotateOrRemove",
+          "description": "Rotate or remove pages from your PDF documents online for free.",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+    </script>
+}

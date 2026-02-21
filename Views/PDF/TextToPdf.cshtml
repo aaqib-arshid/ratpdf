@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Convert Text to PDF online free";
+    ViewData["Description"] = "Convert TEXT to PDF online for free. Fast and secure TEXT to PDF converter.";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 700px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+
+            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
+            <h2 class="fw-bold mb-3">Text to PDF</h2>
+            <p class="text-muted mb-4">Upload a text file or type your content below to convert it into a PDF.</p>
+
+            <!-- Validation Errors -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start" role="alert">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="TextToPdf" method="post" enctype="multipart/form-data" id="textForm">
+                <!-- Drag & Drop File Upload -->
+                <div class="mb-3">
+                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
+                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
+                        <p class="mb-0 text-muted">Drag & drop a text file here or click to select</p>
+                        <input type="file" name="file" class="form-control form-control-lg d-none" id="fileInput" accept=".txt">
+                    </div>
+                </div>
+
+                <!-- File Preview -->
+                <div id="filePreview" class="text-muted mb-3"></div>
+
+                <!-- Or Typed Text -->
+                <textarea name="typedText" class="form-control mb-3" rows="8" placeholder="Or type your text here..."></textarea>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-file-earmark-text-fill me-2"></i> Convert to PDF
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "Text to PDF Converter",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "url": "https://ratpdf.com/PDF/TextToPdf",
+  "description": "Convert plain text files to PDF online for free. Easy and secure text to PDF conversion.",
+  "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+
+        function updatePreview() {
+            if (fileInput.files.length === 0) {
+                filePreview.textContent = '';
+                return;
+            }
+            filePreview.textContent = 'Selected file: ' + fileInput.files[0].name;
+        }
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-primary', 'bg-light');
+            fileInput.files = e.dataTransfer.files;
+            updatePreview();
+        });
+
+        fileInput.addEventListener('change', updatePreview);
+    </script>
+}

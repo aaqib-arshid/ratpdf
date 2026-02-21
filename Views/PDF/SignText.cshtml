@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Sign PDF with your Name online free";
+    ViewData["Description"] = "Sign PDF online for free. Fast and secure PDF Signing tool.";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
+            <h2 class="fw-bold mb-3">Sign PDF with Your Name</h2>
+            <p class="text-muted mb-4">Upload a PDF and enter your name to sign it in italic.</p>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start" role="alert">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="SignText" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input type="file" name="file" class="form-control form-control-lg" accept="application/pdf">
+                </div>
+
+                <div class="mb-3">
+                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Enter your name for signature">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-pencil-square me-2"></i> Sign PDF
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "Sign PDF Online",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web",
+          "url": "https://ratpdf.com/PDF/SignText",
+          "description": "Add your signature to PDF files online for free. Easy and secure PDF signing tool.",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+    </script>
+}

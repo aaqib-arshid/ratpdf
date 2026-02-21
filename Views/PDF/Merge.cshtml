@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Merge PDFs online free";
+    ViewData["Description"] = "Merge multiple PDFs online for free. Fast and secure PDF merger tool.";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+
+            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
+            <h2 class="fw-bold mb-3">Merge PDFs</h2>
+            <p class="text-muted mb-4">Upload two or more PDF files to merge them into a single document.</p>
+
+            <!-- Validation Errors -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start" role="alert">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="Merge" method="post" enctype="multipart/form-data" id="mergeForm">
+                <div class="mb-3">
+                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
+                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
+                        <p class="mb-0 text-muted">Drag & drop PDFs here or click to select</p>
+                        <input type="file" name="files" multiple class="form-control form-control-lg d-none" id="fileInput" accept="application/pdf">
+                    </div>
+                </div>
+
+                <!-- Preview Selected Files -->
+                <ul id="preview" class="list-group list-group-flush mb-3"></ul>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i> Merge PDFs
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "Merge PDF Files Online",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "url": "https://ratpdf.com/PDF/Merge",
+  "description": "Combine multiple PDF files into one document online for free. Quick and secure PDF merging.",
+  "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-primary', 'bg-light');
+            fileInput.files = e.dataTransfer.files;
+            showPreview();
+        });
+
+        fileInput.addEventListener('change', showPreview);
+
+        function showPreview() {
+            preview.innerHTML = '';
+            const files = fileInput.files;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type !== 'application/pdf') continue;
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.textContent = files[i].name;
+                preview.appendChild(li);
+            }
+        }
+    </script>
+}

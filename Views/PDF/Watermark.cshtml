@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Add Watermark To PDF Online Free";
+    ViewData["Description"] = "Add Watermark to PDF online for free. Fast and secure Water mark tool.";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+
+            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
+            <h2 class="fw-bold mb-3">Add Watermark</h2>
+            <p class="text-muted mb-4">Upload a PDF and add a text watermark to all pages.</p>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start" role="alert">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="Watermark" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input type="file" name="file" class="form-control" accept="application/pdf">
+                </div>
+                <div class="mb-3">
+                    <input type="text" name="watermarkText" class="form-control" placeholder="Watermark Text">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-droplet-half me-2"></i> Add Watermark
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "Add Watermark to PDF",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "url": "https://ratpdf.com/PDF/Watermark",
+  "description": "Add custom text or image watermarks to your PDF files online for free.",
+  "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+}

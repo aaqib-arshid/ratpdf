@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Convert PDF to DOCX Online Free";
+    ViewData["Description"] = "Convert PDF to DOCX online for free. Fast and secure PDF to DOCX converter.";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+
+            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
+            <h2 class="fw-bold mb-3">PDF to DOCX</h2>
+            <p class="text-muted mb-4">Upload a PDF file to convert all its text content into a Word document.</p>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start" role="alert">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="PdfToDoc" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
+                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
+                        <p class="mb-0 text-muted">Drag & drop a PDF here or click to select</p>
+                        <input type="file" name="file" class="form-control form-control-lg d-none" id="fileInput" accept="application/pdf">
+                    </div>
+                </div>
+
+                <div id="filePreview" class="text-muted mb-3"></div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-file-earmark-text me-2"></i> Convert to DOCX
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "PDF to Word Converter",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "url": "https://ratpdf.com/PDF/PdfToDoc",
+  "description": "Convert PDF files to editable Word documents online quickly and safely for free.",
+  "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+
+        function updatePreview() {
+            if (fileInput.files.length === 0) {
+                filePreview.textContent = '';
+                return;
+            }
+            filePreview.textContent = 'Selected file: ' + fileInput.files[0].name;
+        }
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-primary', 'bg-light');
+            fileInput.files = e.dataTransfer.files;
+            updatePreview();
+        });
+
+        fileInput.addEventListener('change', updatePreview);
+    </script>
+}
