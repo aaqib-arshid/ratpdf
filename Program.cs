@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using ratpdf.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<PdfConversionService>();
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB
+});
 var app = builder.Build();
 
 //if (!app.Environment.IsDevelopment())
