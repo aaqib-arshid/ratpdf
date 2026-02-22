@@ -1,6 +1,5 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ratpdf.Models;
-using System.Diagnostics;
 
 namespace ratpdf.Controllers
 {
@@ -19,7 +18,10 @@ namespace ratpdf.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var exceptionFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+            return View(exceptionFeature);
+            //return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         public IActionResult Terms()
         {
