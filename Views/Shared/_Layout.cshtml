@@ -108,9 +108,19 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="ExcelToPdf">Excel To PDF</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="TextToPdf">Text To PDF</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="PdfToText">PDF To Text</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="ImgToBase64">IMG To BASE64</a></li>
                             </ul>
                         </li>
-
+                        <!-- Formatter Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="converterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Formatters
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="converterDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="HtmlFormatter">HTML Formatter</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="JsonFormatter">JSON Formatter</a></li>
+                            </ul>
+                        </li>
                         <!-- Other tools outside dropdown -->
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="PDF" asp-action="Merge">Merge PDFs</a>

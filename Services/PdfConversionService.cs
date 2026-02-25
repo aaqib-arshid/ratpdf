@@ -470,5 +470,17 @@ namespace ratpdf.Services
             document.Close();
             return memoryStream.ToArray();
         }
+        public async Task<string> ConvertImageToBase64(IFormFile file)
+        {
+            if (file == null)
+                throw new ArgumentException("No image file provided.");
+
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            var bytes = ms.ToArray();
+            var base64 = Convert.ToBase64String(bytes);
+            var mimeType = file.ContentType;
+            return $"data:{mimeType};base64,{base64}";
+        }
     }
 }

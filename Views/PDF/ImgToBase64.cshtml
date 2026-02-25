@@ -1,0 +1,156 @@
+﻿@{
+    ViewData["Title"] = "Convert Image to Base64 Free Online";
+    ViewData["Description"] = "Convert JPG, PNG, or WebP images to Base64 string online for free. Fast, secure, and browser-based image to Base64 converter.";
+}
+
+<head>
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="image to base64, jpg to base64, png to base64, base64 converter online, webp to base64" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/PDF/ImgToBase64" />
+</head>
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 700px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+
+            <img src="~/images/ratpdf-logo.png" alt="RatPDF Logo" height="60" class="mb-3">
+            <h2 class="fw-bold mb-3">Image to Base64</h2>
+            <p class="text-muted mb-4">
+                Upload a JPG, PNG, or WebP image to instantly convert it into a Base64 string.
+            </p>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="ImgToBase64" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3"
+                         style="cursor: pointer; background-color: #f8f9fa;">
+                        <i class="bi bi-image display-4 text-primary mb-2"></i>
+                        <p class="mb-0 text-muted">
+                            Drag & drop image here or click to select
+                        </p>
+                        <input type="file"
+                               name="file"
+                               class="form-control d-none"
+                               id="fileInput"
+                               accept="image/png, image/jpeg, image/webp">
+                    </div>
+                </div>
+
+                <div id="filePreview" class="text-muted mb-3"></div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                    Convert to Base64
+                </button>
+            </form>
+            <div class="mt-5 text-start">
+                <h3>How to Convert Image to Base64?</h3>
+                <ol>
+                    <li>Upload your image file (JPG, PNG, or WebP).</li>
+                    <li>Click “Convert to Base64”.</li>
+                    <li>Copy the generated Base64 string.</li>
+                </ol>
+            </div>
+            @if (ViewBag.Base64String != null)
+            {
+                <hr />
+                <label class="fw-bold">Base64 Output:</label>
+                <textarea id="base64Output" class="form-control mt-2" rows="6">@ViewBag.Base64String</textarea>
+
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-success" onclick="copyBase64()">
+                        Copy to Clipboard
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="clearOutput()">
+                        Clear
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "Image to Base64 Converter",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web",
+          "url": "https://ratpdf.com/PDF/ImgToBase64",
+          "description": "Free online tool to convert JPG, PNG, and WebP images to Base64 string instantly. Secure, fast, and browser-based conversion.",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "creator": {
+            "@@type": "Organization",
+            "name": "RatPDF",
+            "url": "https://ratpdf.com"
+          }
+        }
+    </script>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+
+        function updatePreview() {
+            if (fileInput.files.length === 0) {
+                filePreview.textContent = '';
+                return;
+            }
+            filePreview.textContent = 'Selected file: ' + fileInput.files[0].name;
+        }
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-primary', 'bg-light');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-primary', 'bg-light');
+            fileInput.files = e.dataTransfer.files;
+            updatePreview();
+        });
+
+        fileInput.addEventListener('change', updatePreview);
+
+
+        function copyBase64() {
+            const textarea = document.getElementById('base64Output');
+            navigator.clipboard.writeText(textarea.value)
+                .then(() => {
+                    alert('Base64 copied to clipboard!');
+                })
+                .catch(err => {
+                    alert('Failed to copy.');
+                });
+        }
+
+        function clearOutput() {
+            document.getElementById('base64Output').value = '';
+        }
+    </script>
+}

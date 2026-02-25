@@ -32,6 +32,9 @@ namespace ratpdf.Controllers
         public IActionResult RotateOrRemove() => View();
         public IActionResult PdfToExcel() => View();
         public IActionResult ExcelToPdf() => View();
+        public IActionResult ImgToBase64() => View();
+        public IActionResult HtmlFormatter() => View();
+        public IActionResult JsonFormatter() => View();
         #endregion
         #region --POST--
 
@@ -358,6 +361,31 @@ namespace ratpdf.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("", "Conversion failed: " + ex.Message);
+                return View();
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> ImgToBase64(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                ModelState.AddModelError("File", "Please upload an image file.");
+                return View();
+            }
+            if (file.Length > 5 * 1024 * 1024)
+            {
+                ModelState.AddModelError("File", "Maximum file size is 5MB.");
+                return View();
+            }
+            try
+            {
+                var base64String = await _pdfService.ConvertImageToBase64(file);
+                ViewBag.Base64String = base64String;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error converting image: " + ex.Message);
                 return View();
             }
         }

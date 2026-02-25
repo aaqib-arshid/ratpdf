@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "HTML Formatter & Beautifier Online Free";
+    ViewData["Description"] = "Format, beautify, and minify HTML code online for free. Clean and organize your HTML instantly with our fast and secure HTML formatter tool.";
+}
+
+<head>
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="html formatter, html beautifier, html minifier, format html online, beautify html code" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/PDF/HtmlFormatter" />
+</head>
+
+<div class="container py-5">
+    <div class="card shadow-lg p-4" style="border-radius:15px;">
+        <div class="card-body">
+
+            <div class="text-center mb-4">
+                <img src="~/images/ratpdf-logo.png" height="60" class="mb-3" />
+                <h2 class="fw-bold">HTML Formatter</h2>
+                <p class="text-muted">
+                    Beautify, clean, and format your HTML code instantly.
+                </p>
+            </div>
+
+            <!-- Input -->
+            <label class="fw-bold">Paste HTML Code:</label>
+            <textarea id="htmlInput" class="form-control mb-3" rows="8"
+                      placeholder="Paste your HTML code here..."></textarea>
+
+            <!-- Buttons -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-between mb-4">
+                <button class="btn btn-primary" onclick="formatHtml()">Beautify</button>
+                <button class="btn btn-warning" onclick="minifyHtml()">Minify</button>
+                <button class="btn btn-success" onclick="copyOutput()">Copy</button>
+                <button class="btn btn-outline-secondary" onclick="clearAll()">Clear</button>
+            </div>
+
+            <!-- Output -->
+            <label class="fw-bold">Formatted Output:</label>
+            <textarea id="htmlOutput" class="form-control" rows="10"
+                      placeholder="Formatted HTML will appear here..."></textarea>
+
+        </div>
+    </div>
+
+    <!-- SEO Content -->
+    <div class="mt-5">
+        <h3>How to Use HTML Formatter?</h3>
+        <ol>
+            <li>Paste your HTML code into the input box.</li>
+            <li>Click “Beautify” to format your code.</li>
+            <li>Click “Minify” to compress your HTML.</li>
+            <li>Copy the result instantly.</li>
+        </ol>
+
+        <h3>Why Use Our HTML Beautifier?</h3>
+        <ul>
+            <li>Fast browser-based processing</li>
+            <li>No data stored on server</li>
+            <li>Free forever</li>
+            <li>Clean and readable formatting</li>
+        </ul>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "HTML Formatter & Beautifier",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web",
+          "url": "https://ratpdf.com/PDF/HtmlFormatter",
+          "description": "Free online HTML formatter and beautifier tool to clean, organize, and minify HTML code instantly.",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "creator": {
+            "@@type": "Organization",
+            "name": "RatPDF",
+            "url": "https://ratpdf.com"
+          }
+        }
+    </script>
+
+    <script>
+        function formatHtml() {
+            let input = document.getElementById("htmlInput").value;
+            let formatted = html_beautify(input, {
+                indent_size: 2,
+                wrap_line_length: 120
+            });
+            document.getElementById("htmlOutput").value = formatted;
+        }
+
+        function minifyHtml() {
+            let input = document.getElementById("htmlInput").value;
+            let minified = input
+                .replace(/\n/g, "")
+                .replace(/\s+/g, " ")
+                .replace(/>\s+</g, "><")
+                .trim();
+            document.getElementById("htmlOutput").value = minified;
+        }
+
+        function copyOutput() {
+            let output = document.getElementById("htmlOutput");
+            navigator.clipboard.writeText(output.value)
+                .then(() => alert("Copied to clipboard!"))
+                .catch(() => alert("Copy failed"));
+        }
+
+        function clearAll() {
+            document.getElementById("htmlInput").value = "";
+            document.getElementById("htmlOutput").value = "";
+        }
+    </script>
+
+    <!-- Include Beautify Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.9/beautify-html.min.js"></script>
+
+}
