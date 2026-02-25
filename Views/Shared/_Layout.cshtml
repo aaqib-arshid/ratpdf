@@ -161,3 +161,33 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const maxSize = 50 * 1024 * 1024; // 50 MB
+
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            let errorMsg = document.createElement('div');
+            errorMsg.style.color = 'red';
+            errorMsg.style.fontSize = '0.9em';
+            errorMsg.style.marginTop = '5px';
+            errorMsg.style.display = 'none';
+            input.parentNode.insertBefore(errorMsg, input.nextSibling);
+
+            input.addEventListener('change', function() {
+                let hasError = false;
+                errorMsg.style.display = 'none';
+                for (let file of this.files) {
+                    if (file.size > maxSize) {
+                        hasError = true;
+                        errorMsg.textContent = `File "${file.name}" is too large. Max 50 MB allowed.`;
+                        this.value = ''; 
+                        break;
+                    }
+                }
+                if (hasError) {
+                    errorMsg.style.display = 'block';
+                }
+            });
+        });
+    });
+</script>
