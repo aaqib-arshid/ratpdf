@@ -1,0 +1,171 @@
+﻿@{
+    ViewData["Title"] = "Compress Image Online Free";
+    ViewData["Description"] = "Compress JPG, PNG, or WebP images online for free. Reduce file size without losing quality. Fast and secure image compression tool.";
+}
+
+<head>
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="compress image, reduce image size, jpg compressor, png compressor, webp compressor, image optimizer online" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/PDF/ImageCompressor" />
+</head>
+
+<div class="container py-5">
+    <div class="card shadow-lg p-4" style="border-radius:15px;">
+        <div class="card-body text-center">
+
+            <img src="~/images/ratpdf-logo.png" height="60" class="mb-3" />
+            <h2 class="fw-bold mb-3">Image Compressor</h2>
+            <p class="text-muted mb-4">Compress JPG, PNG, or WebP images instantly without losing visible quality.</p>
+
+            <div class="mb-3">
+                <input type="file" id="imageInput" class="form-control" accept="image/png, image/jpeg, image/webp">
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-3">
+                <button class="btn btn-primary" onclick="compressImage()">Compress</button>
+                <button class="btn btn-outline-secondary" onclick="clearAll()">Clear</button>
+            </div>
+
+            <div id="outputSection" class="mt-4 d-none">
+                <p class="fw-bold">Original Size: <span id="originalSize"></span></p>
+                <p class="fw-bold">Compressed Size: <span id="compressedSize"></span></p>
+
+                <img id="previewImg" class="img-fluid mb-3" style="max-height:300px; border:1px solid #ccc;" />
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a id="downloadLink" class="btn btn-success" download="compressed_image.jpg">Download Compressed Image</a>
+                    <button class="btn btn-secondary" onclick="copyBase64()">Copy Base64</button>
+                </div>
+
+                <textarea id="base64Output" class="form-control mt-3" rows="4" readonly></textarea>
+            </div>
+
+            <div id="errorBox" class="alert alert-danger d-none mt-3"></div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "Image Compressor",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web",
+          "url": "https://ratpdf.com/PDF/ImageCompressor",
+          "description": "Free online tool to compress JPG, PNG, and WebP images instantly, reducing file size without losing quality.",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "creator": {
+            "@@type": "Organization",
+            "name": "RatPDF",
+            "url": "https://ratpdf.com"
+          }
+        }
+    </script>
+
+    <script>
+        function compressImage() {
+            const input = document.getElementById("imageInput");
+            const errorBox = document.getElementById("errorBox");
+            const outputSection = document.getElementById("outputSection");
+            const previewImg = document.getElementById("previewImg");
+            const originalSize = document.getElementById("originalSize");
+            const compressedSize = document.getElementById("compressedSize");
+            const base64Output = document.getElementById("base64Output");
+            const downloadLink = document.getElementById("downloadLink");
+
+            errorBox.classList.add("d-none");
+            errorBox.innerText = "";
+            outputSection.classList.add("d-none");
+
+            if (!input.files || !input.files[0]) {
+                errorBox.innerText = "Please upload an image file.";
+                errorBox.classList.remove("d-none");
+                return;
+            }
+
+            const file = input.files[0];
+            originalSize.innerText = (file.size / 1024).toFixed(2) + " KB";
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+
+                    // Optional: Resize large images
+                    let maxWidth = 1920;
+                    let maxHeight = 1080;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxWidth) {
+                        height = height * (maxWidth / width);
+                        width = maxWidth;
+                    }
+                    if (height > maxHeight) {
+                        width = width * (maxHeight / height);
+                        height = maxHeight;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Compress image: convert PNG/WebP to JPEG for real compression
+                    const mimeType = "image/jpeg";
+                    const quality = 0.7; // 0.1–1.0 adjust as needed
+
+                    const dataUrl = canvas.toDataURL(mimeType, quality);
+
+                    // Show preview
+                    previewImg.src = dataUrl;
+
+                    // Approximate compressed size
+                    const compressedBytes = Math.round((dataUrl.length * 3) / 4);
+                    compressedSize.innerText = (compressedBytes / 1024).toFixed(2) + " KB";
+
+                    // Show output section
+                    base64Output.value = dataUrl;
+                    downloadLink.href = dataUrl;
+                    downloadLink.download = "compressed_image.jpg";
+                    outputSection.classList.remove("d-none");
+                };
+                img.onerror = function() {
+                    errorBox.innerText = "Invalid image file.";
+                    errorBox.classList.remove("d-none");
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function copyBase64() {
+            const base64 = document.getElementById("base64Output").value;
+            navigator.clipboard.writeText(base64)
+                .then(() => alert("Copied Base64 to clipboard!"))
+                .catch(() => alert("Copy failed."));
+        }
+
+        function clearAll() {
+            document.getElementById("imageInput").value = "";
+            document.getElementById("previewImg").src = "";
+            document.getElementById("originalSize").innerText = "";
+            document.getElementById("compressedSize").innerText = "";
+            document.getElementById("base64Output").value = "";
+            document.getElementById("outputSection").classList.add("d-none");
+            document.getElementById("errorBox").classList.add("d-none");
+        }
+    </script>
+
+}

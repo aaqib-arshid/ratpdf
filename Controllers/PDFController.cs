@@ -35,6 +35,8 @@ namespace ratpdf.Controllers
         public IActionResult ImgToBase64() => View();
         public IActionResult HtmlFormatter() => View();
         public IActionResult JsonFormatter() => View();
+        public IActionResult JwtDecoder() => View();
+        public IActionResult ImageCompressor() => View();
         #endregion
         #region --POST--
 

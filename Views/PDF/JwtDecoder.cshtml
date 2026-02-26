@@ -1,0 +1,188 @@
+﻿@{
+    ViewData["Title"] = "JWT Decoder Online Free";
+    ViewData["Description"] = "Decode and verify JWT tokens online for free. View header, payload, and signature instantly with our secure JWT decoder tool.";
+}
+
+<head>
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="jwt decoder, jwt decode, json web token decoder, decode jwt online, view jwt payload" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/PDF/JwtDecoder" />
+</head>
+
+<div class="container py-5">
+    <div class="card shadow-lg p-4" style="border-radius:15px;">
+        <div class="card-body">
+
+            <div class="text-center mb-4">
+                <img src="~/images/ratpdf-logo.png" height="60" class="mb-3" />
+                <h2 class="fw-bold">JWT Decoder</h2>
+                <p class="text-muted">Decode JWT tokens instantly and view Header, Payload, and Signature.</p>
+            </div>
+
+            <!-- Input -->
+            <label class="fw-bold">Paste JWT Token:</label>
+            <textarea id="jwtInput" class="form-control mb-3" rows="4"
+                      placeholder="Paste your JWT token here..."></textarea>
+
+            <!-- Buttons -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-between mb-3">
+                <button class="btn btn-primary" onclick="decodeJWT()">Decode</button>
+                <button class="btn btn-success" onclick="copyAll()">Copy All</button>
+                <button class="btn btn-outline-secondary" onclick="clearAll()">Clear</button>
+            </div>
+
+            <!-- Error Box -->
+            <div id="errorBox" class="alert alert-danger d-none"></div>
+
+            <!-- Output -->
+            <div id="jwtOutput" class="mt-3 d-none">
+                <label class="fw-bold">Header:</label>
+                <textarea id="jwtHeader" class="form-control mb-2" rows="4" readonly></textarea>
+                <button class="btn btn-sm btn-success mb-3" onclick="copyText('jwtHeader')">Copy Header</button>
+
+                <label class="fw-bold">Payload:</label>
+                <textarea id="jwtPayload" class="form-control mb-2" rows="6" readonly></textarea>
+                <button class="btn btn-sm btn-success mb-3" onclick="copyText('jwtPayload')">Copy Payload</button>
+
+                <label class="fw-bold">Signature:</label>
+                <textarea id="jwtSignature" class="form-control mb-2" rows="2" readonly></textarea>
+                <button class="btn btn-sm btn-success mb-3" onclick="copyText('jwtSignature')">Copy Signature</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SEO Content -->
+    <div class="mt-5">
+        <h3>How to Decode JWT?</h3>
+        <ol>
+            <li>Paste your JWT token into the input box.</li>
+            <li>Click “Decode” to view Header, Payload, and Signature.</li>
+            <li>Copy each section if needed.</li>
+        </ol>
+        <h3>Why Use Our JWT Decoder?</h3>
+        <ul>
+            <li>Instant decoding in the browser</li>
+            <li>Secure – no server processing</li>
+            <li>Formatted JSON output for easy reading</li>
+            <li>Free and fast</li>
+        </ul>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "JWT Decoder",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web",
+          "url": "https://ratpdf.com/PDF/JwtDecoder",
+          "description": "Free online JWT decoder to view header, payload, and signature of JWT tokens instantly.",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "creator": {
+            "@@type": "Organization",
+            "name": "RatPDF",
+            "url": "https://ratpdf.com"
+          }
+        }
+    </script>
+
+    <script>
+        function base64UrlDecode(str) {
+            try {
+                str = str.replace(/-/g, '+').replace(/_/g, '/');
+                const pad = str.length % 4;
+                if (pad) str += '='.repeat(4 - pad);
+                return decodeURIComponent(escape(atob(str)));
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function decodeJWT() {
+            const token = document.getElementById("jwtInput").value.trim();
+            const errorBox = document.getElementById("errorBox");
+            const output = document.getElementById("jwtOutput");
+
+            errorBox.classList.add("d-none");
+            errorBox.innerText = "";
+            output.classList.add("d-none");
+
+            if (!token) {
+                errorBox.innerText = "Please paste a JWT token.";
+                errorBox.classList.remove("d-none");
+                return;
+            }
+
+            const parts = token.split(".");
+            if (parts.length !== 3) {
+                errorBox.innerText = "Invalid JWT token. Must have 3 parts.";
+                errorBox.classList.remove("d-none");
+                return;
+            }
+
+            const [header, payload, signature] = parts;
+
+            const decodedHeader = base64UrlDecode(header);
+            const decodedPayload = base64UrlDecode(payload);
+
+            if (!decodedHeader || !decodedPayload) {
+                errorBox.innerText = "Failed to decode JWT. Invalid Base64 URL encoding.";
+                errorBox.classList.remove("d-none");
+                return;
+            }
+
+            try {
+                document.getElementById("jwtHeader").value = JSON.stringify(JSON.parse(decodedHeader), null, 2);
+            } catch {
+                document.getElementById("jwtHeader").value = decodedHeader;
+            }
+
+            try {
+                document.getElementById("jwtPayload").value = JSON.stringify(JSON.parse(decodedPayload), null, 2);
+            } catch {
+                document.getElementById("jwtPayload").value = decodedPayload;
+            }
+
+            document.getElementById("jwtSignature").value = signature;
+
+            output.classList.remove("d-none");
+        }
+
+        function copyText(id) {
+            const textarea = document.getElementById(id);
+            navigator.clipboard.writeText(textarea.value)
+                .then(() => alert("Copied!"))
+                .catch(() => alert("Copy failed"));
+        }
+
+        function copyAll() {
+            const header = document.getElementById("jwtHeader").value;
+            const payload = document.getElementById("jwtPayload").value;
+            const signature = document.getElementById("jwtSignature").value;
+            const combined = `Header:\n${header}\n\nPayload:\n${payload}\n\nSignature:\n${signature}`;
+            navigator.clipboard.writeText(combined)
+                .then(() => alert("Copied all JWT data!"))
+                .catch(() => alert("Copy failed"));
+        }
+
+        function clearAll() {
+            document.getElementById("jwtInput").value = "";
+            document.getElementById("jwtHeader").value = "";
+            document.getElementById("jwtPayload").value = "";
+            document.getElementById("jwtSignature").value = "";
+            document.getElementById("errorBox").classList.add("d-none");
+            document.getElementById("jwtOutput").classList.add("d-none");
+        }
+    </script>
+
+}
