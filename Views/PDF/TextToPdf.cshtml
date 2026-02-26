@@ -89,21 +89,70 @@
 </div>
 @section Scripts {
 <script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "Text to PDF Converter",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/PDF/TextToPdf",
-  "description": "Convert plain text files to PDF online for free. Easy and secure text to PDF conversion.",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""Text to PDF Converter"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/PDF/TextToPdf"",
+      ""description"": ""Convert plain text files to PDF online for free. Easy and secure text to PDF conversion."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How do I convert text to PDF online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload a text file or type your content directly in the text area, then click 'Convert to PDF' to generate your PDF document.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is converting text to PDF free?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, our Text to PDF converter is completely free with no registration or software installation required.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Can I type text directly instead of uploading a file?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, you can type your text in the provided textarea and convert it to PDF directly.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is my text file secure when using this tool?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all files are processed securely and privately. Uploaded text is not stored permanently and is deleted after conversion.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Which devices are supported?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""This online Text to PDF converter works on any device with a web browser, including Windows, Mac, Android, and iOS.""
+          }
+        }
+      ]
+    }
+  ]
+}");
+    </script>
     <script>
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');

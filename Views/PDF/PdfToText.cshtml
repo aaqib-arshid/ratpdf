@@ -80,22 +80,72 @@
     </div>
 </div>
 @section Scripts {
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "PDF to Text Converter",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/PDF/PdfToText",
-  "description": "Extract text content from PDF files quickly and safely online for free.",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
+
+    <script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""PDF to Text Converter"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/PDF/PdfToText"",
+      ""description"": ""Extract text content from PDF files quickly and safely online for free."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How do I convert a PDF to text online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload your PDF file by dragging and dropping it into the upload area or selecting it from your device, click 'Extract Text', and download the resulting plain text file.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is converting PDF to text free?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, our PDF to Text converter is completely free and does not require any registration or software installation.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Will the extracted text be accurate?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, the converter preserves the text content accurately without adding formatting errors, making it easy to edit or reuse.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is my PDF file safe when using this converter?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all files are handled securely and privately. Uploaded PDFs are not stored permanently and are deleted after conversion.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Which devices and operating systems are supported?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Our online converter works on any device with a browser, including Windows, Mac, Android, and iOS.""
+          }
+        }
+      ]
+    }
+  ]
+}");
+    </script>
     <script>
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');

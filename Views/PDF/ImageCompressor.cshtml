@@ -71,7 +71,55 @@
           }
         }
     </script>
-
+      <!-- FAQ JSON-LD -->
+    <script type="application/ld+json">
+    @Html.Raw(@"{
+      ""@context"": ""https://schema.org"",
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How do I compress images online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload your JPG, PNG, or WebP image and click 'Compress' to reduce its file size instantly.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Can I compress multiple image formats?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, the tool supports JPG, PNG, and WebP images for compression.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Does compression reduce image quality?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""The tool uses optimized compression to reduce file size while preserving visible image quality.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Do I need to register or install software?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""No registration or installation is required; the tool is completely free and works in your browser.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Can I use this tool on mobile devices?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, the Image Compressor works on Windows, Mac, Android, and iOS devices.""
+          }
+        }
+      ]
+    }")
+    </script>
     <script>
         function compressImage() {
             const input = document.getElementById("imageInput");

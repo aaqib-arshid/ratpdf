@@ -97,6 +97,54 @@
   }
 }
 </script>
+<script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@type"": ""FAQPage"",
+  ""mainEntity"": [
+    {
+      ""@type"": ""Question"",
+      ""name"": ""How do I convert DOCX to PDF online?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Upload your DOCX or DOC file into the converter, click 'Convert to PDF', and download the resulting PDF instantly.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Can I convert multiple Word files at once?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Currently, the tool converts one DOC or DOCX file at a time. You can repeat the process for multiple files.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Is my document secure during conversion?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, all uploaded documents are securely processed and deleted from our servers after conversion.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Do I need to install software or register?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""No installation or registration is required; the converter is completely free and web-based.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Can I use this tool on mobile devices?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, the Word to PDF converter works on Windows, Mac, Android, and iOS devices.""
+      }
+    }
+  ]
+}")
+</script>
     <script>
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');

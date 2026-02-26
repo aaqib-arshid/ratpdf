@@ -77,20 +77,70 @@
     </div>
 </div>
 @section Scripts {
+   
     <script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""Rotate or Remove PDF Pages"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/PDF/RotateOrRemove"",
+      ""description"": ""Rotate or remove pages from your PDF documents online for free."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
         {
-          "@@context": "https://schema.org",
-          "@@type": "SoftwareApplication",
-          "name": "Rotate or Remove PDF Pages",
-          "applicationCategory": "UtilityApplication",
-          "operatingSystem": "Web",
-          "url": "https://ratpdf.com/PDF/RotateOrRemove",
-          "description": "Rotate or remove pages from your PDF documents online for free.",
-          "offers": {
-            "@@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
+          ""@type"": ""Question"",
+          ""name"": ""How do I rotate a page in a PDF online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload your PDF file, enter the 0-indexed page number and rotation degree (90, 180, 270), then click 'Rotate Page' to rotate that page.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How do I remove a page from a PDF online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload your PDF file, enter the 0-indexed page number, then click 'Remove Page' to delete that page from the PDF.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is this PDF editor free to use?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, rotating or removing PDF pages online is completely free with no registration or software installation required.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is my PDF file safe when using this tool?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all files are processed securely and privately. Uploaded PDFs are not stored permanently and are deleted after editing.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Which devices are supported?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""This online PDF editor works on any device with a web browser, including Windows, Mac, Android, and iOS.""
           }
         }
+      ]
+    }
+  ]
+}");
     </script>
 }

@@ -87,7 +87,55 @@
           }
         }
     </script>
-
+    <!-- FAQ JSON-LD -->
+    <script type="application/ld+json">
+        @Html.Raw(@"{
+          ""@context"": ""https://schema.org"",
+          ""@type"": ""FAQPage"",
+            ""mainEntity"": [
+                {
+                  ""@type"": ""Question"",
+                    ""name"": ""How do I format HTML online ? "",
+                    ""acceptedAnswer"": {
+                        ""@type"": ""Answer"",
+                        ""text"": ""Paste your HTML code into the input box and click 'Beautify' to format it instantly.""
+                    }
+            },
+                {
+                  ""@type"": ""Question"",
+                    ""name"": ""Can I minify HTML using this tool ? "",
+                    ""acceptedAnswer"": {
+                        ""@type"": ""Answer"",
+                        ""text"": ""Yes, click the 'Minify' button to compress your HTML code into a single line.""
+                    }
+            },
+                {
+                  ""@type"": ""Question"",
+                    ""name"": ""Is my HTML code private? "",
+                    ""acceptedAnswer"": {
+                ""@type"": ""Answer"",
+                        ""text"": ""Yes, all formatting happens in your browser, and no data is stored on our server.""
+                    }
+                },
+                {
+              ""@type"": ""Question"",
+                    ""name"": ""Do I need to register or install software?"",
+                    ""acceptedAnswer"": {
+                    ""@type"": ""Answer"",
+                        ""text"": ""No registration or installation is required; the tool works entirely online and is free.""
+                    }
+        },
+                {
+              ""@type"": ""Question"",
+                    ""name"": ""Can I use this tool on mobile devices?"",
+                    ""acceptedAnswer"": {
+                    ""@type"": ""Answer"",
+                        ""text"": ""Yes, the HTML Formatter works on Windows, Mac, Android, and iOS devices.""
+                    }
+        }
+            ]
+        }")
+</script>
     <script>
         function formatHtml() {
             let input = document.getElementById("htmlInput").value;

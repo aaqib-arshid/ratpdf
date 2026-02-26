@@ -109,6 +109,54 @@
   }
 }
 </script>
+<script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@type"": ""FAQPage"",
+  ""mainEntity"": [
+    {
+      ""@type"": ""Question"",
+      ""name"": ""How do I convert images to PDF online?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Drag and drop your images into the upload area or click to select files, then click 'Convert to PDF' to create a PDF instantly.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Can I convert multiple images at once?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, you can select and upload multiple images to combine them into a single PDF.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Is my data secure when using this tool?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, all images are processed securely and deleted from our servers after conversion.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Do I need to install software or register?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""No installation or registration is required; the tool is completely free and web-based.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Can I use this tool on mobile devices?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, the Image to PDF converter works on Windows, Mac, Android, and iOS devices.""
+      }
+    }
+  ]
+}")
+</script>
     <script>
         // Drag & Drop and Preview
         const dropZone = document.getElementById('dropZone');

@@ -79,20 +79,69 @@
     </div>
 </div>
 @section Scripts {
-    <script type="application/ld+json">
+   <script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""Sign PDF Online"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/PDF/SignText"",
+      ""description"": ""Add your signature to PDF files online for free. Easy and secure PDF signing tool."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
         {
-          "@@context": "https://schema.org",
-          "@@type": "SoftwareApplication",
-          "name": "Sign PDF Online",
-          "applicationCategory": "UtilityApplication",
-          "operatingSystem": "Web",
-          "url": "https://ratpdf.com/PDF/SignText",
-          "description": "Add your signature to PDF files online for free. Easy and secure PDF signing tool.",
-          "offers": {
-            "@@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
+          ""@type"": ""Question"",
+          ""name"": ""How do I sign a PDF online with my name?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload your PDF file, enter your name in the provided field, click 'Sign PDF', and download the signed PDF.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is signing PDFs online free?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, our PDF signing tool is completely free and does not require any registration or software installation.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is my PDF secure when using this tool?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all files are processed securely and privately. Uploaded PDFs are not stored permanently and are deleted after signing.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Which devices can I use to sign PDFs?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""This online PDF signing tool works on any device with a web browser, including Windows, Mac, Android, and iOS.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Can I customize the signature style?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, this tool adds your name as a signature in italic style.""
           }
         }
+      ]
+    }
+  ]
+}");
     </script>
 }

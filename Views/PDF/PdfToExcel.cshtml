@@ -69,20 +69,69 @@
     </div>
 </div>
 @section Scripts {
-    <script type="application/ld+json">
+     <script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""PDF to Excel Converter"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/PDF/PdfToExcel"",
+      ""description"": ""Convert PDF files to Excel spreadsheets online for free. Fast and secure."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
         {
-          "@@context": "https://schema.org",
-          "@@type": "SoftwareApplication",
-          "name": "PDF to Excel Converter",
-          "applicationCategory": "UtilityApplication",
-          "operatingSystem": "Web",
-          "url": "https://ratpdf.com/PDF/PdfToExcel",
-          "description": "Convert PDF files to Excel spreadsheets online for free. Fast and secure.",
-          "offers": {
-            "@@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
+          ""@type"": ""Question"",
+          ""name"": ""How do I convert a PDF to Excel online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload your PDF file using the upload button, click 'Convert to Excel', and then download the Excel file once the conversion is complete.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is converting PDF to Excel free?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, our PDF to Excel converter is completely free and does not require any signup or software installation.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Will the Excel file retain the formatting from the PDF?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, the converter preserves table structures and formatting as accurately as possible, making the data ready for editing and analysis.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is my PDF file safe when using this converter?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all files are processed securely and privately. Uploaded PDFs are not stored permanently and are deleted after conversion.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Which devices and operating systems are supported?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Our online converter works on any device with a browser, including Windows, Mac, Android, and iOS.""
           }
         }
+      ]
+    }
+  ]
+}");
     </script>
 }

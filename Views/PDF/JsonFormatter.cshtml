@@ -90,7 +90,55 @@
           }
         }
     </script>
-
+     <!-- FAQ JSON-LD -->
+    <script type="application/ld+json">
+    @Html.Raw(@"{
+      ""@context"": ""https://schema.org"",
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How do I format JSON online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Paste your JSON into the input field, then click 'Beautify' to format it instantly.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Can I validate JSON with this tool?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, the tool automatically validates your JSON and shows errors if any.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Does it minify JSON?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, click 'Minify' to compress your JSON into a single line without spaces.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is my JSON secure?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all processing happens in your browser; nothing is sent to our server.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Do I need to register or install anything?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""No registration or software installation is required; the tool is completely free and browser-based.""
+          }
+        }
+      ]
+    }")
+    </script>
     <script>
         function beautifyJson() {
             const input = document.getElementById("jsonInput").value;

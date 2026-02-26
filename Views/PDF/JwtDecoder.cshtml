@@ -95,7 +95,55 @@
           }
         }
     </script>
-
+     <!-- FAQ JSON-LD -->
+    <script type="application/ld+json">
+    @Html.Raw(@"{
+      ""@context"": ""https://schema.org"",
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How do I decode a JWT token?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Paste your JWT token into the input box and click 'Decode' to view the header, payload, and signature.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is decoding JWT secure?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all decoding happens in your browser; no data is sent to our server.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Can I copy the decoded sections?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, you can copy each section individually or all sections at once using the 'Copy All' button.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Do I need to register or install anything?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""No registration or software installation is required; the tool is completely free and browser-based.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""What if the JWT is invalid?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""The tool will display an error message if the JWT is malformed or cannot be decoded.""
+          }
+        }
+      ]
+    }")
+    </script>
     <script>
         function base64UrlDecode(str) {
             try {

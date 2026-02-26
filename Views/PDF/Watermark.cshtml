@@ -78,20 +78,70 @@
     </div>
 </div>
 @section Scripts {
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "Add Watermark to PDF",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/PDF/Watermark",
-  "description": "Add custom text or image watermarks to your PDF files online for free.",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
+
+    <script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""Add Watermark to PDF"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/PDF/Watermark"",
+      ""description"": ""Add custom text or image watermarks to your PDF files online for free."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How do I add a watermark to a PDF online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload your PDF file, enter the text you want as a watermark, click 'Add Watermark', and download the new PDF.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is adding watermarks online free?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, our PDF watermark tool is completely free and does not require registration or software installation.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Can I apply a watermark to all pages?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, the tool applies the watermark text to all pages of your PDF automatically.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is my PDF file secure when using this tool?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all PDFs are processed securely and deleted after processing to ensure privacy.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Which devices can I use to add watermarks?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""This online watermark tool works on any device with a browser, including Windows, Mac, Android, and iOS.""
+          }
+        }
+      ]
+    }
+  ]
+}");
+    </script>
 }

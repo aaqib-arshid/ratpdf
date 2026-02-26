@@ -89,4 +89,52 @@
           }
         }
     </script>
+    <script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@type"": ""FAQPage"",
+  ""mainEntity"": [
+    {
+      ""@type"": ""Question"",
+      ""name"": ""How do I convert Excel to PDF online?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Upload your XLS, XLSX, or CSV file, click 'Convert to PDF', and download your PDF instantly.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Can I convert CSV files as well?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, you can convert CSV files to PDF using this tool, and it preserves the spreadsheet layout.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Is my Excel data secure?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, all uploaded files are processed securely and deleted from our servers after conversion.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Do I need to install software or register?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""No registration or software installation is required; the converter is completely web-based and free.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Can I use this tool on mobile devices?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, the Excel to PDF converter works on Windows, Mac, Android, and iOS devices.""
+      }
+    }
+  ]
+}")
+</script>
 }

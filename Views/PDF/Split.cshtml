@@ -93,22 +93,71 @@
     </div>
 </div>
 @section Scripts {
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "Split PDF Pages Online",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/PDF/Split",
-  "description": "Split your PDF files into separate pages or extract selected pages easily online for free.",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
+   <script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""Split PDF Pages Online"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/PDF/Split"",
+      ""description"": ""Split your PDF files into separate pages or extract selected pages easily online for free."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How do I split a PDF online?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Upload your PDF file, enter the start and end page numbers for the pages you want to extract, click 'Split PDF', and download the new PDF.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is splitting PDFs online free?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, our PDF splitting tool is completely free and does not require any registration or software installation.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Can I select a range of pages to extract?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, you can specify the start and end page numbers to extract only the pages you need.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is my PDF secure when using this tool?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, all uploaded PDFs are processed securely and deleted after splitting to ensure privacy.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Which devices can I use to split PDFs?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""This online PDF splitter works on any device with a browser, including Windows, Mac, Android, and iOS.""
+          }
+        }
+      ]
+    }
+  ]
+}");
+    </script>
     <script>
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');

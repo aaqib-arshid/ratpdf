@@ -98,6 +98,47 @@
   }
 }
 </script>
+    <!-- FAQ JSON-LD -->
+    <script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@type"": ""FAQPage"",
+  ""mainEntity"": [
+    {
+      ""@type"": ""Question"",
+      ""name"": ""How do I compress a PDF file online?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Drag and drop your PDF into the upload area or click to select a file, then click 'Compress PDF' to reduce the file size instantly.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Is my PDF file secure when uploaded?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, all files are processed securely and deleted from our servers after compression.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Can I use this tool on mobile devices?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""Yes, the PDF compressor works on all devices including Windows, Mac, Android, and iOS.""
+      }
+    },
+    {
+      ""@type"": ""Question"",
+      ""name"": ""Do I need to register to use the PDF compressor?"",
+      ""acceptedAnswer"": {
+        ""@type"": ""Answer"",
+        ""text"": ""No registration or installation is required; the tool is completely free to use.""
+      }
+    }
+  ]
+}")
+</script>
     <script>
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
