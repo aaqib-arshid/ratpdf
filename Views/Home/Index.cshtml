@@ -56,3 +56,76 @@
         </a>
     </div>
 </div>
+<section class="tools-section">
+    <h2 class="tools-title">Free PDF & Utility Tools</h2>
+
+    <ul class="tools-grid">
+        <li><a href="/PDF/Merge"><span>Merge PDF</span></a></li>
+        <li><a href="/PDF/Split"><span>Split PDF</span></a></li>
+        <li><a href="/PDF/Compress"><span>Compress PDF</span></a></li>
+        <li><a href="/PDF/ConvertImages"><span>Images to PDF</span></a></li>
+        <li><a href="/PDF/TextToPdf"><span>Text to PDF</span></a></li>
+        <li><a href="/PDF/PdfToText"><span>PDF to Text</span></a></li>
+        <li><a href="/PDF/DocToPdf"><span>Word to PDF</span></a></li>
+        <li><a href="/PDF/PdfToDoc"><span>PDF to Word</span></a></li>
+        <li><a href="/PDF/PdfToExcel"><span>PDF to Excel</span></a></li>
+        <li><a href="/PDF/ExcelToPdf"><span>Excel to PDF</span></a></li>
+        <li><a href="/PDF/Watermark"><span>Add Watermark</span></a></li>
+        <li><a href="/PDF/Password"><span>Protect PDF</span></a></li>
+        <li><a href="/PDF/RotateOrRemove"><span>Rotate PDF</span></a></li>
+        <li><a href="/PDF/SignText"><span>Sign PDF</span></a></li>
+        <li><a href="/PDF/ImageCompressor"><span>Image Compressor</span></a></li>
+        <li><a href="/PDF/ImgToBase64"><span>Image to Base64</span></a></li>
+        <li><a href="/PDF/HtmlFormatter"><span>HTML Formatter</span></a></li>
+        <li><a href="/PDF/JsonFormatter"><span>JSON Formatter</span></a></li>
+        <li><a href="/PDF/JwtDecoder"><span>JWT Decoder</span></a></li>
+    </ul>
+</section>
+<style>
+    .tools-section {
+        margin: 40px auto;
+        max-width: 1200px;
+        padding: 0 16px;
+    }
+
+    .tools-title {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .tools-grid {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+    }
+
+        .tools-grid li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 90px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #111827;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+            .tools-grid li a:hover {
+                background: #f9fafb;
+                border-color: #2563eb;
+                color: #2563eb;
+                transform: translateY(-2px);
+            }
+
+            .tools-grid li a span {
+                text-align: center;
+                padding: 0 8px;
+            }
+</style>
