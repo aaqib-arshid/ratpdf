@@ -8,7 +8,12 @@
           "@@context": "https://schema.org",
           "@@type": "WebSite",
           "name": "Rat PDF",
-          "url": "https://ratpdf.com"
+          "url": "https://ratpdf.com",
+                 "potentialAction": {
+          "@@type": "SearchAction",
+          "target": "https://ratpdf.com/PDF?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
         }
     </script>
 
@@ -23,7 +28,6 @@
     </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Free online PDF tools to convert, merge, split, compress, and edit PDF files easily. Fast, secure and easy to use." />
     <meta name="keywords" content="PDF converter, merge PDF, split PDF, compress PDF, img to pdf, pdf to img, PDF to Word, Word to PDF,doc to pdf, pdf to doc, docx to pdf, pdf to docx, pdf to xls, xls to pdf, excel to pdf, pdf to excel, edit pdf, free PDF tools" />
     <meta name="author" content="Rat PDF" />
     <meta name="description" content="@ViewData["Description"]" />
