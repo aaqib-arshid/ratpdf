@@ -8,6 +8,26 @@
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2855035251823717"
             crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("hTDWduyc9ut7NaL0E"); 
+        })();
+
+        function sendEmail(event) {
+            event.preventDefault();
+
+            const form = event.target;
+
+            emailjs.sendForm('service_84ust0p', 'RatPDFGmail', form)
+                .then(function () {
+                    window.location.href = "/Home/ThankyouContact";
+                }, function (error) {
+                    alert("Failed to send message. Please try again later.");
+                });
+        }
+    </script>
 </head>
 
 <div class="card p-4">
@@ -21,16 +41,7 @@
 
     <hr />
 
-    <form action="https://formsubmit.co/aaqib.arshid@gmail.com" method="POST">
-
-        <!-- Disable Captcha if needed -->
-        <input type="hidden" name="_captcha" value="false">
-
-        <!-- Redirect after submit -->
-        <input type="hidden" name="_next" value="https://ratpdf.com/Home/ThankyouContact">
-
-        <!-- Subject -->
-        <input type="hidden" name="_subject" value="New message from RatPDF Contact Form">
+    <form onsubmit="sendEmail(event)">
 
         <div class="mb-3">
             <label class="form-label">Your Name</label>
