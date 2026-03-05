@@ -1,10 +1,31 @@
 using Microsoft.AspNetCore.Http.Features;
 using ratpdf.Services;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+    {
+        var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+        return RateLimitPartition.GetFixedWindowLimiter(ip, _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 50,
+            Window = TimeSpan.FromSeconds(10),
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+            QueueLimit = 0 
+        });
+    });
+    options.OnRejected = (context, cancellationToken) =>
+    {
+        context.HttpContext.Response.Redirect("/Error/TooManyRequests");
+        return ValueTask.CompletedTask;
+    };
+});
 builder.Services.AddScoped<PdfConversionService>();
 builder.Services.Configure<FormOptions>(options =>
 {
@@ -15,10 +36,10 @@ builder.WebHost.ConfigureKestrel(options =>
     options.Limits.MaxRequestBodySize = 50 * 1024 * 1024; // 50 MB
 });
 var app = builder.Build();
-
+app.UseRateLimiter();
 //if (!app.Environment.IsDevelopment())
 //{
-    app.UseExceptionHandler("/Home/Error");
+app.UseExceptionHandler("/Home/Error");
 
     app.UseHsts();
 //}
