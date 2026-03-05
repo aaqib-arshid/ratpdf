@@ -27,5 +27,21 @@ namespace ratpdf.Controllers
         {
             return View();
         }
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        public IActionResult ThankyouContact()
+        {
+            return View();
+        }
+        public IActionResult About()
+        {
+            return View();
+        }
+        public IActionResult Disclaimer()
+        {
+            return View();
+        }
     }
 }

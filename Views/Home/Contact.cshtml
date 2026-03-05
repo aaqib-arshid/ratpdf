@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+    ViewData["Description"] = "Contact RatPDF for support, questions, or feedback about our online PDF tools.";
+}
+
+<head>
+    <meta name="robots" content="index, follow">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2855035251823717"
+            crossorigin="anonymous"></script>
+</head>
+
+<div class="card p-4">
+
+    <h1>Contact Us</h1>
+
+    <p>
+        If you have questions, suggestions, or need help using our PDF tools,
+        please send us a message using the form below.
+    </p>
+
+    <hr />
+
+    <form action="https://formsubmit.co/aaqib.arshid@gmail.com" method="POST">
+
+        <!-- Disable Captcha if needed -->
+        <input type="hidden" name="_captcha" value="false">
+
+        <!-- Redirect after submit -->
+        <input type="hidden" name="_next" value="https://ratpdf.com/Home/ThankyouContact">
+
+        <!-- Subject -->
+        <input type="hidden" name="_subject" value="New message from RatPDF Contact Form">
+
+        <div class="mb-3">
+            <label class="form-label">Your Name</label>
+            <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Subject</label>
+            <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Message</label>
+            <textarea name="message" rows="5" class="form-control" placeholder="Write your message here..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send Message</button>
+
+    </form>
+
+    <hr />
+
+    <h4>Support Information</h4>
+
+    <p>
+        For faster support, please include details about the tool you were using
+        and the issue you experienced.
+    </p>
+
+    <ul>
+        <li>The PDF tool you used</li>
+        <li>Your browser (Chrome, Firefox, etc.)</li>
+        <li>Description of the issue</li>
+    </ul>
+
+    <hr />
+
+    <p>
+        Your privacy matters to us. Any information submitted through this form
+        will only be used to respond to your inquiry.
+    </p>
+
+    <p>
+        Please review our <a href="/Home/Privacy">Privacy Policy</a> for more information.
+    </p>
+
+</div>
