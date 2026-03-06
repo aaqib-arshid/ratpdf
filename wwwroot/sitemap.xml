@@ -4,7 +4,7 @@
   <!-- Home -->
   <url>
     <loc>https://ratpdf.com/</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -12,28 +12,28 @@
   <!-- Core PDF Tools -->
   <url>
     <loc>https://ratpdf.com/PDF/Merge</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/Split</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/Compress</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/ConvertImages</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -41,105 +41,105 @@
   <!-- Other Tools -->
   <url>
     <loc>https://ratpdf.com/PDF/TextToPdf</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/PdfToText</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/Watermark</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/Password</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/DocToPdf</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/PdfToDoc</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/PdfToExcel</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/ExcelToPdf</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/ImgToBase64</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/HtmlFormatter</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/JsonFormatter</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/JwtDecoder</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/ImageCompressor</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/SignText</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/RotateOrRemove</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -147,16 +147,33 @@
   <!-- Legal Pages -->
   <url>
     <loc>https://ratpdf.com/Home/Terms</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/Home/Privacy</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
-
+  <url>
+    <loc>https://ratpdf.com/Home/About</loc>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ratpdf.com/Home/Disclaimer</loc>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ratpdf.com/Home/Contact</loc>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>
