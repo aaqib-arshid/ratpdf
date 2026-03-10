@@ -1,0 +1,167 @@
+﻿@model List<RingSize>
+
+@{
+    ViewData["Title"] = "Ring Size Converter";
+    ViewData["Description"] = "Convert ring sizes between US, UK/AU/NZ, EU, JP, CH, CN, IN, and diameter/circumference in mm instantly.";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 700px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+            <h2 class="fw-bold mb-3">Ring Size Converter 💍</h2>
+            <p class="text-muted mb-4">Type your ring size in any system, and see live conversions instantly.</p>
+
+            <div class="row g-3 mb-4">
+                <div class="col"><input type="text" class="form-control" id="usInput" placeholder="US"></div>
+                <div class="col"><input type="text" class="form-control" id="ukInput" placeholder="UK"></div>
+                <div class="col"><input type="text" class="form-control" id="auInput" placeholder="AU/NZ"></div>
+                <div class="col"><input type="text" class="form-control" id="euInput" placeholder="EU"></div>
+                <div class="col"><input type="text" class="form-control" id="jpInput" placeholder="JP"></div>
+                <div class="col"><input type="text" class="form-control" id="inInput" placeholder="IN"></div>
+                <div class="col"><input type="text" class="form-control" id="diameterInput" placeholder="Diameter mm"></div>
+            </div>
+
+            <div class="mb-4 d-flex flex-column align-items-center">
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary" id="printSizer">PRINT</button>
+                <button class="btn btn-outline-danger" id="clearFields">CLEAR</button>
+            </div>
+            <canvas id="circleSizer" width="400" height="400" class="border rounded mt-2"></canvas>
+        </div>
+
+            <p class="text-muted">Tip: Use a printable sizer or the on-screen circle to measure your finger if you don't have a ring handy.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="card shadow-sm p-4" style="border-radius: 12px;">
+        <h2 class="fw-bold mb-3">How to Use the Ring Size Converter</h2>
+        <ol>
+            <li>Enter your ring size in any system (US, UK, AU/NZ, EU, JP, IN, etc.).</li>
+            <li>All other fields will update instantly with the corresponding sizes.</li>
+            <li>If you don’t have a ring, use the printable sizer or the on-screen circle to measure your finger.</li>
+        </ol>
+
+        <h3 class="fw-semibold mt-4">FAQ</h3>
+        <p><strong>Q1: How accurate is the conversion?</strong></p>
+        <p>The converter uses a universal table covering all standard international ring sizes with precise diameter and circumference measurements.</p>
+
+        <p><strong>Q2: Can I print a ring sizer?</strong></p>
+        <p>Yes, click the “Print Ring Sizer” button to get a 1:1 printable template for accurate measurement.</p>
+
+        <p><strong>Q3: Do I need a physical ring to measure?</strong></p>
+        <p>No, use the on-screen circle or printable sizer to measure your finger directly.</p>
+
+        <h3 class="fw-semibold mt-4">Conclusion</h3>
+        <p>
+            This Ring Size Converter provides a fast, reliable, and accurate way to find your ring size in any system. Whether you’re buying rings online or gifting jewelry, this tool ensures a perfect fit.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "Ring Size Converter",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "url": "https://ratpdf.com/Tools/RingSizeConverter",
+  "description": "Convert ring sizes between US, UK/AU/NZ, EU, JP, CH, CN, IN, and diameter/circumference in mm instantly."
+}
+</script>
+
+<script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@type"": ""FAQPage"",
+  ""mainEntity"": [
+    {""@type"":""Question"",""name"":""How accurate is the conversion?"",""acceptedAnswer"":{""@type"":""Answer"",""text"":""The converter uses a universal table covering all standard international ring sizes with precise diameter and circumference measurements."" }},
+    {""@type"":""Question"",""name"":""Can I print a ring sizer?"",""acceptedAnswer"":{""@type"":""Answer"",""text"":""Yes, click the 'Print Ring Sizer' button to get a 1:1 printable template for accurate measurement."" }},
+    {""@type"":""Question"",""name"":""Do I need a physical ring to measure?"",""acceptedAnswer"":{""@type"":""Answer"",""text"":""No, use the on-screen circle or printable sizer to measure your finger directly."" }}
+  ]
+}")
+</script>
+
+<script>
+    const ringSizes = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model));
+
+    const usInput = document.getElementById('usInput');
+    const ukInput = document.getElementById('ukInput');
+    const auInput = document.getElementById('auInput');
+    const euInput = document.getElementById('euInput');
+    const jpInput = document.getElementById('jpInput');
+    const diameterInput = document.getElementById('diameterInput');
+    const inInput = document.getElementById('inInput');
+
+   function updateFields(changedField, value) {
+    const val = value.trim();
+    if (!val) return;
+
+    let size;
+
+    if (changedField === "diametermm") {
+        const numVal = parseFloat(val);
+        if (!isNaN(numVal)) {
+            size = ringSizes.find(s => Math.abs(parseFloat(s.DiameterMM) - numVal) < 0.05);
+        }
+    } else if (changedField === "uk" || changedField === "au") {
+        const normalizeUK = str => str.replace(/\s|½|1\/2/gi, '½').toUpperCase();
+        const inputUK = normalizeUK(val);
+        size = ringSizes.find(s => normalizeUK(s.UK) === inputUK || normalizeUK(s.AU) === inputUK);
+    } else if (changedField === "eu" || changedField === "jp" || changedField === "in") {
+        const numVal = parseFloat(val);
+        if (!isNaN(numVal)) {
+            size = ringSizes.find(s => Math.abs(parseFloat(s[changedField.toUpperCase()]) - numVal) < 0.5);
+        }
+    } else if (changedField === "us") {
+        const numVal = parseFloat(val);
+        if (!isNaN(numVal)) {
+            size = ringSizes.find(s => Math.abs(parseFloat(s.US) - numVal) < 0.1);
+        }
+    }
+
+    if (!size) return;
+
+    usInput.value = size.US;
+    ukInput.value = size.UK;
+    auInput.value = size.AU;
+    euInput.value = size.EU;
+    jpInput.value = size.JP;
+    inInput.value = size.IN;
+    diameterInput.value = size.DiameterMM;
+    drawCircle(parseFloat(size.DiameterMM));
+}
+
+    [usInput, ukInput, auInput, euInput, jpInput, diameterInput, inInput].forEach(input => {
+        input.addEventListener('input', (e) => {
+            const field = e.target.id.replace('Input', '');
+            updateFields(field, e.target.value);
+            drawCircle(parseFloat(diameterInput.value));
+        });
+    });
+
+    const canvas = document.getElementById('circleSizer');
+    const ctx = canvas.getContext('2d');
+
+    function drawCircle(mm) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (isNaN(mm)) return;
+        const scale = 10; // 1 mm = 10 pixels
+        const radius = mm / 2 * scale;
+        ctx.beginPath();
+        ctx.arc(canvas.width/2, canvas.height/2, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = 'blue';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
+    document.getElementById('printSizer').addEventListener('click', () => window.print());
+    document.getElementById('clearFields').addEventListener('click', () => {
+    [usInput, ukInput, auInput, euInput, jpInput, inInput, diameterInput].forEach(input => input.value = '');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+</script>
+}
