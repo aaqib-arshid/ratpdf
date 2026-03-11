@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ratpdf.Models;
+using System.Text.RegularExpressions;
 
 namespace ratpdf.Controllers
 {
@@ -47,6 +48,123 @@ namespace ratpdf.Controllers
             #endregion
 
             return View(ringSizes);
+        }
+        public ActionResult WordCounter()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetWordStats(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return Json(new WordStats());
+            var stats = CalculateStats(text);
+            return Json(stats);
+        }
+
+        private WordStats CalculateStats(string text)
+        {
+            var wordArray = Regex.Matches(text, @"\b[a-zA-Z]+(?:-[a-zA-Z]+)*\b")
+                     .Cast<Match>()
+                     .Select(m => m.Value.ToLower())
+                     .ToArray();
+
+            var sentenceCount = Regex.Split(text.Trim(), @"(?<=[.!?])\s*")
+                                     .Where(s => !string.IsNullOrWhiteSpace(s))
+                                     .Count();
+
+            var normalized = text.Replace("\r\n", "\n").Replace("\r", "\n");
+            int paragraphCount;
+            if (normalized.Contains("\n\n"))
+                paragraphCount = Regex.Split(normalized.Trim(), @"\n{2,}")
+                                      .Where(p => !string.IsNullOrWhiteSpace(p))
+                                      .Count();
+            else
+                paragraphCount = normalized.Split('\n')
+                                           .Where(p => !string.IsNullOrWhiteSpace(p))
+                                           .Count();
+
+            int charCount = text.Count(c => c != '\r' && c != '\n');
+            var charCountNoSpaces = Regex.Replace(text, @"\s+", "").Length;
+
+            double readingTimeSec = wordArray.Length / 265.0 * 60;
+            double speakingTimeSec = wordArray.Length / 180.0 * 60;
+
+            var stopWords = new HashSet<string>
+            {
+                "the","a","an","and","or","but","in","on","at","to","for",
+                "of","with","by","from","is","it","its","as","be","was",
+                "are","were","been","has","have","had","not","this","that",
+                "these","those","i","you","he","she","we","they","my","your",
+                "his","her","our","their","do","did","will","would","can",
+                "could","should","may","might","so","if","than","then","into",
+                "about","up","out","no","what","all","more","also","any","just"
+            };
+
+            var topKeywords = wordArray
+                .Where(w => !stopWords.Contains(w) && w.Length > 1)
+                .GroupBy(w => w)
+                .OrderByDescending(g => g.Count())
+                .Take(5)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            double fkGrade = 0;
+            if (wordArray.Length > 0 && sentenceCount > 0)
+            {
+                var syllables = wordArray.Sum(w => CountSyllables(w));
+                fkGrade = 0.39 * (wordArray.Length / (double)sentenceCount)
+                          + 11.8 * (syllables / (double)wordArray.Length) - 15.59;
+            }
+
+            return new WordStats
+            {
+                WordCount = wordArray.Length,
+                CharacterCount = charCount,
+                CharacterCountNoSpaces = charCountNoSpaces,
+                SentenceCount = sentenceCount,
+                ParagraphCount = paragraphCount,
+                ReadingTimeSeconds = (int)Math.Round(readingTimeSec),   
+                SpeakingTimeSeconds = (int)Math.Round(speakingTimeSec),  
+                TopKeywords = topKeywords,
+                FleschKincaidGrade = Math.Round(fkGrade, 2),
+                ReadingLevel = GetReadingLevel(fkGrade)          
+            };
+        }
+
+        private string GetReadingLevel(double grade)
+        {
+            if (grade <= 6) return "Elementary";
+            if (grade <= 8) return "Middle School";
+            if (grade <= 9) return "High School";
+            if (grade <= 12) return "College Graduate";  
+            if (grade <= 16) return "Post Graduate";      
+            return "Professional";
+        }
+
+        private int CountSyllables(string word)
+        {
+            word = word.ToLower();
+
+            var vowels = "aeiouy";
+            int count = 0;
+            bool lastWasVowel = false;
+
+            foreach (var c in word)
+            {
+                bool isVowel = vowels.Contains(c);
+                if (isVowel && !lastWasVowel) count++;
+                lastWasVowel = isVowel;
+            }
+
+            bool endsInConsonantLE = word.Length >= 3
+                                     && word.EndsWith("le")
+                                     && !vowels.Contains(word[word.Length - 3]);
+
+            if (word.EndsWith("e") && !endsInConsonantLE)
+                count--;
+
+            return Math.Max(count, 1);
         }
     }
 }

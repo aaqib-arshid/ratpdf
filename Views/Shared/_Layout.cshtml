@@ -170,7 +170,6 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="TextToPdf">Text To PDF</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="PdfToText">PDF To Text</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="ImgToBase64">IMG To BASE64</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Tools" asp-action="RingSizeConverter">Ring Size Converter</a></li>
                             </ul>
                         </li>
                         <!-- Formatter Dropdown -->
@@ -184,9 +183,19 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="JwtDecoder">Decode JWT</a></li>
                             </ul>
                         </li>
+                        <!-- Tools Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="converterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Tools
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="converterDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Tools" asp-action="RingSizeConverter">Ring Size Converter</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Tools" asp-action="WordCounter">Word Counter</a></li>
+                            </ul>
+                        </li>
                         <!-- Other tools outside dropdown -->
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="PDF" asp-action="ImageCompressor">Compress Image Size</a>
+                            <a class="nav-link" asp-area="" asp-controller="PDF" asp-action="ImageCompressor">Compress Image</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="PDF" asp-action="Merge">Merge PDFs</a>
@@ -207,7 +216,7 @@
                             <a class="nav-link" asp-area="" asp-controller="PDF" asp-action="SignText">Sign PDF</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="PDF" asp-action="RotateOrRemove">Rotate/Remove PDF</a>
+                            <a class="nav-link" asp-area="" asp-controller="PDF" asp-action="RotateOrRemove">Edit PDF</a>
                         </li>
 
                     </ul>
