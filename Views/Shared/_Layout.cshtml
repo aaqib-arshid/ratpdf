@@ -32,6 +32,7 @@
     <meta name="author" content="Rat PDF" />
     <meta name="description" content="@ViewData["Description"]" />
     <title>@ViewData["Title"] - Rat PDF</title>
+    @RenderSection("Head", required: false)
 
     @* Fav Icons *@
     <link href="/favicon-48x48.png" rel="icon">
@@ -172,23 +173,16 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="ImgToBase64">IMG To BASE64</a></li>
                             </ul>
                         </li>
-                        <!-- Formatter Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="converterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Formatters
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="converterDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="HtmlFormatter">HTML Formatter</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="JsonFormatter">JSON Formatter</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="JwtDecoder">Decode JWT</a></li>
-                            </ul>
-                        </li>
+
                         <!-- Tools Dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="converterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Tools
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="converterDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="HtmlFormatter">HTML Formatter</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="JsonFormatter">JSON Formatter</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PDF" asp-action="JwtDecoder">Decode JWT</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Tools" asp-action="RingSizeConverter">Ring Size Converter</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Tools" asp-action="WordCounter">Word Counter</a></li>
                             </ul>
