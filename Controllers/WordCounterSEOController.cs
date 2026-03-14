@@ -6,10 +6,10 @@ namespace ratpdf.Controllers
     public class WordCounterSEOController : Controller
     {
         #region Constructor/Private Fieds
-        private static Dictionary<string, WordCounterPageModel> PagesData = new();
+        private static Dictionary<string, SEOPageModel> PagesData = new();
         static WordCounterSEOController()
         {
-            PagesData["word-counter-for-essays"] = new WordCounterPageModel
+            PagesData["word-counter-for-essays"] = new SEOPageModel
             {
                 Slug = "word-counter-for-essays",
                 Title = "Word Counter for Essays – Free Online Tool",
@@ -95,7 +95,7 @@ namespace ratpdf.Controllers
         ("Can it help with online publication?", "Yes, it helps meet word count requirements for SEO or educational articles.")
     }
             };
-            PagesData["word-counter-for-students"] = new WordCounterPageModel
+            PagesData["word-counter-for-students"] = new SEOPageModel
             {
                 Title = "Word Counter for Students – Free Academic Word Count Tool",
                 Description = "Free word counter for students. Instantly count words, characters, sentences, and paragraphs for essays, assignments, and research papers.",
@@ -161,7 +161,7 @@ namespace ratpdf.Controllers
         ("Can I use it for online submissions?", "Yes, you can check your content length before submitting online or via email.")
     }
             };
-            PagesData["word-counter-for-blog-posts"] = new WordCounterPageModel
+            PagesData["word-counter-for-blog-posts"] = new SEOPageModel
             {
                 Slug = "word-counter-for-blog-posts",
                 Title = "Word Counter for Blog Posts – Free Online Tool",
@@ -228,7 +228,7 @@ namespace ratpdf.Controllers
         ("Can I use it on mobile?", "Yes, it works on all devices including desktop, tablet, and mobile.")
     }
             };
-            PagesData["word-counter-for-seo-articles"] = new WordCounterPageModel
+            PagesData["word-counter-for-seo-articles"] = new SEOPageModel
             {
                 Slug = "word-counter-for-seo-articles",
                 Title = "Word Counter for SEO Articles – Optimize Your Content for Google",
@@ -308,7 +308,7 @@ namespace ratpdf.Controllers
         ("Does it help improve SEO ranking?", "Yes, by optimizing word count, sentence structure, and readability, it indirectly improves SEO performance.")
     }
             };
-            PagesData["word-counter-for-twitter"] = new WordCounterPageModel
+            PagesData["word-counter-for-twitter"] = new SEOPageModel
             {
                 Slug = "word-counter-for-twitter",
                 Title = "Word Counter for Twitter – Optimize Your Tweets for Maximum Engagement",
@@ -385,7 +385,7 @@ namespace ratpdf.Controllers
         ("Does it help improve engagement?", "Yes, by optimizing word count and sentence clarity, your tweets are more likely to get noticed and shared.")
     }
             };
-            PagesData["word-counter-for-instagram-captions"] = new WordCounterPageModel
+            PagesData["word-counter-for-instagram-captions"] = new SEOPageModel
             {
                 Slug = "word-counter-for-instagram-captions",
                 Title = "Word Counter for Instagram Captions – Perfect Length for Engagement",
@@ -463,7 +463,7 @@ namespace ratpdf.Controllers
         ("Does it help improve engagement?", "Yes, optimizing your caption length, hashtags, and clarity increases the likelihood of likes, comments, and shares.")
     }
             };
-            PagesData["word-counter-for-research-papers"] = new WordCounterPageModel
+            PagesData["word-counter-for-research-papers"] = new SEOPageModel
             {
                 Slug = "word-counter-for-research-papers",
                 Title = "Word Counter for Research Papers – Free Academic Writing Tool",
@@ -539,7 +539,7 @@ namespace ratpdf.Controllers
         ("Does it help with journal submission requirements?", "Yes, by ensuring your paper meets the required word count and structure, it supports submission compliance.")
     }
             };
-            PagesData["word-counter-for-assignments"] = new WordCounterPageModel
+            PagesData["word-counter-for-assignments"] = new SEOPageModel
             {
                 Slug = "word-counter-for-assignments",
                 Title = "Word Counter for Assignments – Free Academic Writing Tool",
@@ -616,7 +616,7 @@ namespace ratpdf.Controllers
         ("Does it help with meeting submission requirements?", "Yes, by monitoring word count, sentence structure, and paragraph length, you can ensure your assignment meets requirements.")
     }
             };
-            PagesData["word-counter-for-content-writers"] = new WordCounterPageModel
+            PagesData["word-counter-for-content-writers"] = new SEOPageModel
             {
                 Slug = "word-counter-for-content-writers",
                 Title = "Word Counter for Content Writers – Optimize Your Writing Effortlessly",
@@ -694,7 +694,7 @@ namespace ratpdf.Controllers
         ("Can it be used for multiple types of content?", "Yes, it is suitable for blogs, articles, social media posts, marketing copy, and more.")
     }
             };
-            PagesData["word-counter-for-novels"] = new WordCounterPageModel
+            PagesData["word-counter-for-novels"] = new SEOPageModel
             {
                 Slug = "word-counter-for-novels",
                 Title = "Word Counter for Novels – Track Your Novel's Progress Accurately",
@@ -773,7 +773,7 @@ namespace ratpdf.Controllers
         ("Does it help with editing and pacing?", "Absolutely, by monitoring word count and structure, you can improve chapter balance, sentence clarity, and overall pacing.")
     }
             };
-            PagesData["character-counter-and-word-counter"] = new WordCounterPageModel
+            PagesData["character-counter-and-word-counter"] = new SEOPageModel
             {
                 Slug = "character-counter-and-word-counter",
                 Title = "Character Counter and Word Counter – Free Online Text Analysis Tool",
@@ -850,7 +850,7 @@ namespace ratpdf.Controllers
         ("Can it be used for academic papers?", "Absolutely, it is suitable for essays, assignments, research papers, and other academic content.")
     }
             };
-            PagesData["word-counter-for-emails"] = new WordCounterPageModel
+            PagesData["word-counter-for-emails"] = new SEOPageModel
             {
                 Slug = "word-counter-for-emails",
                 Title = "Word Counter for Emails – Optimize Your Email Length and Clarity",
@@ -928,7 +928,7 @@ namespace ratpdf.Controllers
         ("Can it be used for marketing emails?", "Absolutely, it helps optimize newsletter content and promotional emails for length and engagement.")
     }
             };
-            PagesData["word-counter-for-academic-writing"] = new WordCounterPageModel
+            PagesData["word-counter-for-academic-writing"] = new SEOPageModel
             {
                 Slug = "word-counter-for-academic-writing",
                 Title = "Word Counter for Academic Writing – Free Tool for Students and Researchers",
@@ -1006,7 +1006,7 @@ namespace ratpdf.Controllers
         ("Does it help with journal or assignment submissions?", "Yes, monitoring word count and structure ensures compliance with academic guidelines and submission requirements.")
     }
             };
-            PagesData["word-counter-for-youtube-descriptions"] = new WordCounterPageModel
+            PagesData["word-counter-for-youtube-descriptions"] = new SEOPageModel
             {
                 Slug = "word-counter-for-youtube-descriptions",
                 Title = "Word Counter for YouTube Descriptions – Optimize Your Video Content",
@@ -1084,7 +1084,7 @@ namespace ratpdf.Controllers
         ("Does it work on all devices?", "Yes, you can use the tool on desktop, tablet, or mobile devices.")
     }
             };
-            PagesData["word-counter-for-linkedin-posts"] = new WordCounterPageModel
+            PagesData["word-counter-for-linkedin-posts"] = new SEOPageModel
             {
                 Slug = "word-counter-for-linkedin-posts",
                 Title = "Word Counter for LinkedIn Posts – Optimize Your Professional Content",
@@ -1162,7 +1162,7 @@ namespace ratpdf.Controllers
         ("Can it be used for both posts and articles?", "Absolutely, it works for short updates, long-form articles, and all LinkedIn content types.")
     }
             };
-            PagesData["word-counter-for-copywriting"] = new WordCounterPageModel
+            PagesData["word-counter-for-copywriting"] = new SEOPageModel
             {
                 Slug = "word-counter-for-copywriting",
                 Title = "Word Counter for Copywriting – Enhance Your Marketing Content",
@@ -1240,7 +1240,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of marketing content?", "Yes, it is suitable for ads, emails, landing pages, websites, social media posts, and more.")
     }
             };
-            PagesData["word-counter-for-marketing-content"] = new WordCounterPageModel
+            PagesData["word-counter-for-marketing-content"] = new SEOPageModel
             {
                 Slug = "word-counter-for-marketing-content",
                 Title = "Word Counter for Marketing Content – Optimize Your Campaigns",
@@ -1318,7 +1318,7 @@ namespace ratpdf.Controllers
         ("Does it work for social media, email, and web content?", "Absolutely, it works across all digital marketing platforms and content types.")
     }
             };
-            PagesData["word-counter-for-resume-writing"] = new WordCounterPageModel
+            PagesData["word-counter-for-resume-writing"] = new SEOPageModel
             {
                 Slug = "word-counter-for-resume-writing",
                 Title = "Word Counter for Resume Writing – Perfect Your Professional Resume",
@@ -1396,7 +1396,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of resumes?", "Yes, it works for entry-level, professional, and executive resumes.")
     }
             };
-            PagesData["word-counter-for-cover-letters"] = new WordCounterPageModel
+            PagesData["word-counter-for-cover-letters"] = new SEOPageModel
             {
                 Slug = "word-counter-for-cover-letters",
                 Title = "Word Counter for Cover Letters – Create Concise & Impactful Letters",
@@ -1474,7 +1474,7 @@ namespace ratpdf.Controllers
         ("Does it work for entry-level and executive cover letters?", "Yes, it works for all types of cover letters, including entry-level, professional, and executive-level applications.")
     }
             };
-            PagesData["word-counter-for-storytelling"] = new WordCounterPageModel
+            PagesData["word-counter-for-storytelling"] = new SEOPageModel
             {
                 Slug = "word-counter-for-storytelling",
                 Title = "Word Counter for Storytelling – Craft Engaging Stories with Precision",
@@ -1552,7 +1552,7 @@ namespace ratpdf.Controllers
         ("Does it work for novels, short stories, and scripts?", "Yes, it works for all storytelling formats, including short stories, novellas, novels, and scripts.")
     }
             };
-            PagesData["word-counter-for-social-media-posts"] = new WordCounterPageModel
+            PagesData["word-counter-for-social-media-posts"] = new SEOPageModel
             {
                 Slug = "word-counter-for-social-media-posts",
                 Title = "Word Counter for Social Media Posts – Optimize Your Content for Engagement",
@@ -1630,7 +1630,7 @@ namespace ratpdf.Controllers
         ("Does it work for all social media platforms?", "Absolutely, it works for Twitter, Facebook, Instagram, LinkedIn, and other platforms.")
     }
             };
-            PagesData["word-counter-for-product-descriptions"] = new WordCounterPageModel
+            PagesData["word-counter-for-product-descriptions"] = new SEOPageModel
             {
                 Slug = "word-counter-for-product-descriptions",
                 Title = "Word Counter for Product Descriptions – Optimize Your E-commerce Content",
@@ -1708,7 +1708,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of products?", "Absolutely, it works for electronics, fashion, home goods, and any product category.")
     }
             };
-            PagesData["word-counter-for-website-content"] = new WordCounterPageModel
+            PagesData["word-counter-for-website-content"] = new SEOPageModel
             {
                 Slug = "word-counter-for-website-content",
                 Title = "Word Counter for Website Content – Optimize Your Web Pages for SEO and Readability",
@@ -1786,7 +1786,7 @@ namespace ratpdf.Controllers
         ("Does it work for blogs, landing pages, and product pages?", "Absolutely, it works for all types of website content, including blogs, landing pages, and e-commerce pages.")
     }
             };
-            PagesData["word-counter-for-blog-seo"] = new WordCounterPageModel
+            PagesData["word-counter-for-blog-seo"] = new SEOPageModel
             {
                 Slug = "word-counter-for-blog-seo",
                 Title = "Word Counter for Blog SEO – Optimize Your Blog Posts for Maximum Visibility",
@@ -1864,7 +1864,7 @@ namespace ratpdf.Controllers
         ("Does it work for all blog types?", "Absolutely, it works for tutorials, guides, product reviews, and all types of blog content.")
     }
             };
-            PagesData["word-counter-for-keyword-optimization"] = new WordCounterPageModel
+            PagesData["word-counter-for-keyword-optimization"] = new SEOPageModel
             {
                 Slug = "word-counter-for-keyword-optimization",
                 Title = "Word Counter for Keyword Optimization – Boost SEO with Precise Content",
@@ -1942,7 +1942,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of content?", "Absolutely, it works for blog posts, web pages, product descriptions, and any content targeting keywords.")
     }
             };
-            PagesData["word-counter-for-paragraphs"] = new WordCounterPageModel
+            PagesData["word-counter-for-paragraphs"] = new SEOPageModel
             {
                 Slug = "word-counter-for-paragraphs",
                 Title = "Word Counter for Paragraphs – Perfect Your Writing Structure",
@@ -2020,7 +2020,7 @@ namespace ratpdf.Controllers
         ("Does it work for all writing types?", "Yes, it works for essays, blogs, professional reports, storytelling, and other types of content.")
     }
             };
-            PagesData["word-counter-for-sentences"] = new WordCounterPageModel
+            PagesData["word-counter-for-sentences"] = new SEOPageModel
             {
                 Slug = "word-counter-for-sentences",
                 Title = "Word Counter for Sentences – Improve Clarity and Writing Flow",
@@ -2098,7 +2098,7 @@ namespace ratpdf.Controllers
         ("Does it work for all writing types?", "Yes, it works for essays, blog posts, reports, storytelling, and professional content.")
     }
             };
-            PagesData["word-counter-for-articles"] = new WordCounterPageModel
+            PagesData["word-counter-for-articles"] = new SEOPageModel
             {
                 Slug = "word-counter-for-articles",
                 Title = "Word Counter for Articles – Optimize Your Writing for Readability and SEO",
@@ -2176,7 +2176,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of articles?", "Absolutely, it works for news articles, blog posts, guides, and long-form content.")
     }
             };
-            PagesData["word-counter-for-press-releases"] = new WordCounterPageModel
+            PagesData["word-counter-for-press-releases"] = new SEOPageModel
             {
                 Slug = "word-counter-for-press-releases",
                 Title = "Word Counter for Press Releases – Perfect Length for Media Coverage",
@@ -2254,7 +2254,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of press releases?", "Absolutely, it works for corporate announcements, product launches, event updates, and news releases.")
     }
             };
-            PagesData["word-counter-for-newsletters"] = new WordCounterPageModel
+            PagesData["word-counter-for-newsletters"] = new SEOPageModel
             {
                 Slug = "word-counter-for-newsletters",
                 Title = "Word Counter for Newsletters – Create Engaging and Concise Email Content",
@@ -2332,7 +2332,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of newsletters?", "Absolutely, it works for promotional emails, updates, announcements, and educational newsletters.")
     }
             };
-            PagesData["word-counter-for-academic-essays"] = new WordCounterPageModel
+            PagesData["word-counter-for-academic-essays"] = new SEOPageModel
             {
                 Slug = "word-counter-for-academic-essays",
                 Title = "Word Counter for Academic Essays – Write with Precision and Clarity",
@@ -2410,7 +2410,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of academic essays?", "Yes, it works for short essays, research papers, term papers, and dissertations.")
     }
             };
-            PagesData["word-counter-for-homework"] = new WordCounterPageModel
+            PagesData["word-counter-for-homework"] = new SEOPageModel
             {
                 Slug = "word-counter-for-homework",
                 Title = "Word Counter for Homework – Complete Assignments Accurately",
@@ -2488,7 +2488,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of homework?", "Yes, it works for essays, reports, research assignments, and other homework tasks.")
     }
             };
-            PagesData["word-counter-for-english-writing"] = new WordCounterPageModel
+            PagesData["word-counter-for-english-writing"] = new SEOPageModel
             {
                 Slug = "word-counter-for-english-writing",
                 Title = "Word Counter for English Writing – Enhance Grammar, Clarity, and Style",
@@ -2566,7 +2566,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of English writing?", "Yes, it works for essays, blog posts, creative writing, emails, and professional documents.")
     }
             };
-            PagesData["word-counter-for-proofreading"] = new WordCounterPageModel
+            PagesData["word-counter-for-proofreading"] = new SEOPageModel
             {
                 Slug = "word-counter-for-proofreading",
                 Title = "Word Counter for Proofreading – Ensure Accuracy and Precision in Your Writing",
@@ -2644,7 +2644,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of content?", "Yes, it works for essays, articles, reports, blog posts, and professional documents.")
     }
             };
-            PagesData["word-counter-for-editing"] = new WordCounterPageModel
+            PagesData["word-counter-for-editing"] = new SEOPageModel
             {
                 Slug = "word-counter-for-editing",
                 Title = "Word Counter for Editing – Perfect Your Writing with Precision",
@@ -2722,7 +2722,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of writing?", "Yes, it works for essays, articles, blog posts, creative writing, and professional documents.")
     }
             };
-            PagesData["word-counter-for-translation"] = new WordCounterPageModel
+            PagesData["word-counter-for-translation"] = new SEOPageModel
             {
                 Slug = "word-counter-for-translation",
                 Title = "Word Counter for Translation – Accurate Word and Character Count for Translators",
@@ -2800,7 +2800,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of content?", "Yes, it works for emails, articles, technical documents, books, and websites.")
     }
             };
-            PagesData["word-counter-for-scripts"] = new WordCounterPageModel
+            PagesData["word-counter-for-scripts"] = new SEOPageModel
             {
                 Slug = "word-counter-for-scripts",
                 Title = "Word Counter for Scripts – Optimize Screenplays, Plays, and Dialogues",
@@ -2878,7 +2878,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of scripts?", "Yes, it works for screenplays, stage plays, podcasts, and video scripts.")
     }
             };
-            PagesData["word-counter-for-podcast-scripts"] = new WordCounterPageModel
+            PagesData["word-counter-for-podcast-scripts"] = new SEOPageModel
             {
                 Slug = "word-counter-for-podcast-scripts",
                 Title = "Word Counter for Podcast Scripts – Perfect Your Audio Content",
@@ -2956,7 +2956,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of podcast content?", "Yes, it works for interviews, storytelling, educational podcasts, and scripted segments.")
     }
             };
-            PagesData["word-counter-for-speech-writing"] = new WordCounterPageModel
+            PagesData["word-counter-for-speech-writing"] = new SEOPageModel
             {
                 Slug = "word-counter-for-speech-writing",
                 Title = "Word Counter for Speech Writing – Perfect Your Speeches with Precision",
@@ -3034,7 +3034,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of speeches?", "Yes, it works for presentations, keynotes, debates, classroom speeches, and formal addresses.")
     }
             };
-            PagesData["word-counter-for-presentations"] = new WordCounterPageModel
+            PagesData["word-counter-for-presentations"] = new SEOPageModel
             {
                 Slug = "word-counter-for-presentations",
                 Title = "Word Counter for Presentations – Perfect Your Slides and Speaking Notes",
@@ -3112,7 +3112,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of presentations?", "Yes, it works for business, academic, webinar, and professional presentations.")
     }
             };
-            PagesData["word-counter-for-reports"] = new WordCounterPageModel
+            PagesData["word-counter-for-reports"] = new SEOPageModel
             {
                 Slug = "word-counter-for-reports",
                 Title = "Word Counter for Reports – Enhance Accuracy and Professional Quality",
@@ -3190,7 +3190,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of reports?", "Yes, it works for academic, business, technical, and research reports.")
     }
             };
-            PagesData["word-counter-for-documentation"] = new WordCounterPageModel
+            PagesData["word-counter-for-documentation"] = new SEOPageModel
             {
                 Slug = "word-counter-for-documentation",
                 Title = "Word Counter for Documentation – Ensure Accurate and Clear Technical Writing",
@@ -3268,7 +3268,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of technical documents?", "Yes, it works for API guides, manuals, user instructions, and internal documentation.")
     }
             };
-            PagesData["word-counter-for-case-studies"] = new WordCounterPageModel
+            PagesData["word-counter-for-case-studies"] = new SEOPageModel
             {
                 Slug = "word-counter-for-case-studies",
                 Title = "Word Counter for Case Studies – Ensure Accurate and Professional Reports",
@@ -3346,7 +3346,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of case studies?", "Yes, it works for academic, business, research, and professional case studies.")
     }
             };
-            PagesData["word-counter-for-whitepapers"] = new WordCounterPageModel
+            PagesData["word-counter-for-whitepapers"] = new SEOPageModel
             {
                 Slug = "word-counter-for-whitepapers",
                 Title = "Word Counter for Whitepapers – Create Professional and Concise Documents",
@@ -3424,7 +3424,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of whitepapers?", "Yes, it works for marketing, technical, academic, and research whitepapers.")
     }
             };
-            PagesData["word-counter-for-research-summaries"] = new WordCounterPageModel
+            PagesData["word-counter-for-research-summaries"] = new SEOPageModel
             {
                 Slug = "word-counter-for-research-summaries",
                 Title = "Word Counter for Research Summaries – Streamline Your Academic Writing",
@@ -3502,7 +3502,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of research summaries?", "Yes, it works for academic papers, project reports, journal abstracts, and theses.")
     }
             };
-            PagesData["word-counter-for-summaries"] = new WordCounterPageModel
+            PagesData["word-counter-for-summaries"] = new SEOPageModel
             {
                 Slug = "word-counter-for-summaries",
                 Title = "Word Counter for Summaries – Create Clear and Concise Content",
@@ -3580,7 +3580,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of summaries?", "Yes, it works for academic, business, research, and content summaries.")
     }
             };
-            PagesData["word-counter-for-headlines"] = new WordCounterPageModel
+            PagesData["word-counter-for-headlines"] = new SEOPageModel
             {
                 Slug = "word-counter-for-headlines",
                 Title = "Word Counter for Headlines – Craft Compelling and SEO-Friendly Headlines",
@@ -3656,7 +3656,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of headlines?", "Yes, it works for blog posts, social media, marketing campaigns, and news articles.")
     }
             };
-            PagesData["word-counter-for-meta-descriptions"] = new WordCounterPageModel
+            PagesData["word-counter-for-meta-descriptions"] = new SEOPageModel
             {
                 Slug = "word-counter-for-meta-descriptions",
                 Title = "Word Counter for Meta Descriptions – Optimize SEO and Click-Through Rates",
@@ -3732,7 +3732,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of pages?", "Yes, it works for blog posts, product pages, marketing pages, and landing pages.")
     }
             };
-            PagesData["word-counter-for-seo-optimization"] = new WordCounterPageModel
+            PagesData["word-counter-for-seo-optimization"] = new SEOPageModel
             {
                 Slug = "word-counter-for-seo-optimization",
                 Title = "Word Counter for SEO Optimization – Boost Your Content’s Search Rankings",
@@ -3810,7 +3810,7 @@ namespace ratpdf.Controllers
         ("Does it work for all types of SEO content?", "Yes, it works for blogs, landing pages, product descriptions, and marketing content.")
     }
             };
-            PagesData["word-counter-online-free"] = new WordCounterPageModel
+            PagesData["word-counter-online-free"] = new SEOPageModel
             {
                 Slug = "word-counter-online-free",
                 Title = "Word Counter Online Free – Instantly Count Words, Characters, and More",
