@@ -24,7 +24,7 @@
                 </div>
             }
 
-            <form asp-action="Watermark" method="post" enctype="multipart/form-data">
+            <form asp-action="Watermark" method="post" enctype="multipart/form-data" id="watermarkForm">
                 <div class="mb-3">
                     <input type="file" name="file" class="form-control" accept="application/pdf">
                 </div>
@@ -281,5 +281,17 @@
     }
   ]
 }");
+    </script>
+    <script>
+         $('#watermarkForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Processing...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('watermarkForm', 'Downloading...');
+         }, 5000);
+        });
     </script>
 }

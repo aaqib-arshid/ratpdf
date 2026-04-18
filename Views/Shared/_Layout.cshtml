@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899635585691076"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899635585691076"
+            crossorigin="anonymous"></script>
     <script type="application/ld+json">
         {
           "@@context": "https://schema.org",
@@ -135,10 +135,38 @@
                         outline: none;
                         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
                     }
+        @@keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
-
+    <!-- Global Loader -->
+    <div id="globalLoader" style="
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    ">
+        <div style="
+        width: 56px; height: 56px;
+        border: 6px solid #fff;
+        border-top-color: #0d6efd;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    ">
+    </div>
+        <span id="loaderMessage" style="color:#fff; font-size:1rem; font-weight:500; letter-spacing:0.3px;">
+            Processing...
+        </span>
+    </div>
     <!-- Navbar -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
@@ -262,7 +290,7 @@
                     if (file.size > maxSize) {
                         hasError = true;
                         errorMsg.textContent = `File "${file.name}" is too large. Max 50 MB allowed.`;
-                        this.value = ''; 
+                        this.value = '';
                         break;
                     }
                 }
@@ -272,4 +300,34 @@
             });
         });
     });
+        function showLoader(message = 'Processing...') {
+        $('#loaderMessage').text(message);
+        $('#globalLoader').css('display', 'flex');
+    }
+
+    function hideLoader() {
+        $('#globalLoader').hide();
+    }
+        function submitWithLoader(formId, message = 'Processing...') {
+        showLoader(message);
+
+        // Clearing old cookie
+        document.cookie = 'downloadReady=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+        const poll = setInterval(function () {
+            if (document.cookie.includes('downloadReady=1')) {
+                document.cookie = 'downloadReady=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                clearInterval(poll);
+                hideLoader();
+            }
+        }, 500);
+
+        // Safety fallback
+        setTimeout(function () {
+            clearInterval(poll);
+            hideLoader();
+        }, 30000);
+
+        $('#' + formId).off('submit').submit();
+    }
 </script>

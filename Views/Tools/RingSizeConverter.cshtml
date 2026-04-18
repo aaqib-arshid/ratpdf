@@ -431,29 +431,79 @@ Whether you are purchasing jewelry locally or from international retailers, usin
 </div>
 
 @section Scripts {
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "Ring Size Converter",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/Tools/RingSizeConverter",
-  "description": "Convert ring sizes between US, UK/AU/NZ, EU, JP, CH, CN, IN, and diameter/circumference in mm instantly."
-}
-</script>
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "Ring Size Converter",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web",
+          "url": "https://ratpdf.com/Tools/RingSizeConverter",
+          "description": "Convert ring sizes between US, UK/AU/NZ, EU, JP, CH, CN, IN, and diameter/circumference in mm instantly.",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+    </script>
 
-<script type="application/ld+json">
-@Html.Raw(@"{
-  ""@context"": ""https://schema.org"",
-  ""@type"": ""FAQPage"",
-  ""mainEntity"": [
-    {""@type"":""Question"",""name"":""How accurate is the conversion?"",""acceptedAnswer"":{""@type"":""Answer"",""text"":""The converter uses a universal table covering all standard international ring sizes with precise diameter and circumference measurements."" }},
-    {""@type"":""Question"",""name"":""Can I print a ring sizer?"",""acceptedAnswer"":{""@type"":""Answer"",""text"":""Yes, click the 'Print Ring Sizer' button to get a 1:1 printable template for accurate measurement."" }},
-    {""@type"":""Question"",""name"":""Do I need a physical ring to measure?"",""acceptedAnswer"":{""@type"":""Answer"",""text"":""No, use the on-screen circle or printable sizer to measure your finger directly."" }}
-  ]
-}")
-</script>
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@@type": "Question",
+              "name": "How accurate is this ring size converter?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "The converter uses standardized international ring size charts based on official jewelry industry measurements. While results are highly accurate, slight variations can occur depending on ring design and manufacturer."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Can I print a ring sizer?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Yes, click the Print button to get a 1:1 printable template for accurate ring size measurement at home."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Do I need a physical ring to measure?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "No, you can use the on-screen circle sizer or the printable strip to measure your finger directly without an existing ring."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Are men's and women's ring sizes different?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "The sizing systems are the same, but typical ranges differ. Women usually wear US sizes 5–9, while men commonly wear sizes 8–13."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "What if my size falls between two measurements?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "If you are between sizes, it is generally recommended to choose the larger size for better comfort."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Can ring size change over time?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Yes. Finger size can change due to weight fluctuations, temperature, pregnancy, and other factors. Always measure again before purchasing a new ring."
+              }
+            }
+          ]
+        }
+    </script>
 
 <script>
     const ringSizes = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model));

@@ -24,7 +24,7 @@
                 </div>
             }
 
-            <form asp-action="DocToPdf" method="post" enctype="multipart/form-data">
+            <form asp-action="DocToPdf" method="post" enctype="multipart/form-data" id="docToPdfForm">
                 <div class="mb-3">
                     <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
                         <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
@@ -251,5 +251,16 @@
         });
 
         fileInput.addEventListener('change', updatePreview);
+
+         $('#docToPdfForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Processing...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('docToPdfForm', 'Downloading...');
+         }, 5000);
+        });
     </script>
 }

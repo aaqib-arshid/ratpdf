@@ -50,6 +50,11 @@ namespace ratpdf.Controllers
             }
 
             var pdfBytes = _pdfService.ConvertImagesToPdf(model.Files);
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             return File(pdfBytes, "application/pdf", "images.pdf");
         }
         [HttpPost]
@@ -60,7 +65,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("Files", "Please select at least 2 PDF files to merge.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var mergedPdf = _pdfService.MergePdfFiles(files);
@@ -80,7 +89,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("File", "Please upload a PDF file.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var splitPdf = _pdfService.SplitPdf(file, startPage, endPage);
@@ -100,7 +113,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("File", "Please upload a PDF file to compress.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var compressedPdf = _pdfService.CompressPdf(file);
@@ -120,7 +137,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("Text", "Please upload a text file or type some text.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 byte[] pdfBytes;
@@ -146,7 +167,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("File", "Please upload a PDF file.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 string extractedText = _pdfService.ExtractTextFromPdf(file);
@@ -167,7 +192,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("File", "Upload PDF and provide watermark text.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var result = _pdfService.AddWatermark(file, watermarkText);
@@ -188,7 +217,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("File", "Upload PDF and enter a password.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var result = _pdfService.AddPassword(file, password);
@@ -208,7 +241,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("File", "Please upload a DOCX file.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var pdfBytes = _pdfService.ConvertDocxToPdf(file);
@@ -228,7 +265,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("File", "Please upload a PDF file.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var docBytes = _pdfService.ConvertPdfToDoc(file);
@@ -256,7 +297,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("Name", "Please enter a name for signature.");
                 return View();
             }
-
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var signedPdf = _pdfService.SignPdfWithName(file, name);
@@ -276,6 +321,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("", "PDF file or text missing.");
                 return View("EditPdf");
             }
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             var pdf = _pdfService.AddText(file, text, pageNumber);
             return File(pdf, "application/pdf", "Edited.pdf");
         }
@@ -288,6 +338,11 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("", "PDF or image missing.");
                 return View("EditPdf");
             }
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             var pdf = _pdfService.AddImage(file, image, pageNumber);
             return File(pdf, "application/pdf", "Edited.pdf");
         }
@@ -298,8 +353,13 @@ namespace ratpdf.Controllers
             if (file == null)
             {
                 ModelState.AddModelError("", "PDF missing.");
-                return View("EditPdf");
+                return View("RotateOrRemove");
             }
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var pdf = _pdfService.RotatePage(file, pageNumber, degree);
@@ -307,7 +367,7 @@ namespace ratpdf.Controllers
             }catch(Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Error rotating PDF: " + ex.Message);
-                return View("EditPdf");
+                return View("RotateOrRemove");
             }
         }
 
@@ -317,8 +377,13 @@ namespace ratpdf.Controllers
             if (file == null)
             {
                 ModelState.AddModelError("", "PDF missing.");
-                return View("EditPdf");
+                return View("RotateOrRemove");
             }
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             var pdf = _pdfService.RemovePage(file, pageNumber);
             return File(pdf, "application/pdf", "Edited.pdf");
         }
@@ -330,7 +395,16 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("", "Please upload a PDF file.");
                 return View();
             }
-
+            if (file.Length > 5 * 1024 * 1024)
+            {
+                ModelState.AddModelError("", "File is too large. Maximum allowed size is 5 MB.");
+                return View();
+            }
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var excelBytes = _pdfService.ConvertPdfToExcel(file);
@@ -352,7 +426,16 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError("", "Please upload an Excel file.");
                 return View();
             }
-
+            if (file.Length > 5 * 1024 * 1024)
+            {
+                ModelState.AddModelError("", "File is too large. Maximum allowed size is 5 MB.");
+                return View();
+            }
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             try
             {
                 var pdfBytes = _pdfService.ConvertExcelToPdf(file);

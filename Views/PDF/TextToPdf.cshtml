@@ -322,5 +322,16 @@
         });
 
         fileInput.addEventListener('change', updatePreview);
+
+         $('#textForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Processing...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('textForm', 'Downloading...');
+         }, 5000);
+        });
     </script>
 }

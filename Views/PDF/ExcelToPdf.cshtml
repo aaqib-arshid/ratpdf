@@ -25,7 +25,7 @@
                 </div>
             }
 
-            <form asp-action="ExcelToPdf" method="post" enctype="multipart/form-data">
+            <form asp-action="ExcelToPdf" method="post" enctype="multipart/form-data" id="xlToPdfForm">
                 <input type="file" name="file" class="form-control mb-3"
                        accept=".xlsx,.xls">
                 <button type="submit" class="btn btn-primary w-100">
@@ -212,4 +212,16 @@
   ]
 }")
 </script>
+    <script>
+         $('#xlToPdfForm').on('submit', function (e) {
+     e.preventDefault();
+     showLoader('Getting Ready...');
+     setTimeout(function () {
+             showLoader('Processing...');;
+     }, 3000);
+     setTimeout(function () {
+            submitWithLoader('xlToPdfForm', 'Downloading...');
+     }, 5000);
+    });
+    </script>
 }

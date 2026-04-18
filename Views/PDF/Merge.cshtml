@@ -334,5 +334,15 @@
                 preview.appendChild(li);
             }
         }
+           $('#mergeForm').on('submit', function (e) {
+             e.preventDefault();
+             showLoader('Processing...');
+             setTimeout(function () {
+                     showLoader('Merging...');;
+             }, 3000);
+             setTimeout(function () {
+                    submitWithLoader('mergeForm', 'Downloading...');
+             }, 5000);
+        });
     </script>
 }

@@ -124,11 +124,11 @@ namespace ratpdf.Controllers
                 CharacterCountNoSpaces = charCountNoSpaces,
                 SentenceCount = sentenceCount,
                 ParagraphCount = paragraphCount,
-                ReadingTimeSeconds = (int)Math.Round(readingTimeSec),   
-                SpeakingTimeSeconds = (int)Math.Round(speakingTimeSec),  
+                ReadingTimeSeconds = (int)Math.Round(readingTimeSec),
+                SpeakingTimeSeconds = (int)Math.Round(speakingTimeSec),
                 TopKeywords = topKeywords,
                 FleschKincaidGrade = Math.Round(fkGrade, 2),
-                ReadingLevel = GetReadingLevel(fkGrade)          
+                ReadingLevel = GetReadingLevel(fkGrade)
             };
         }
 
@@ -137,8 +137,8 @@ namespace ratpdf.Controllers
             if (grade <= 6) return "Elementary";
             if (grade <= 8) return "Middle School";
             if (grade <= 9) return "High School";
-            if (grade <= 12) return "College Graduate";  
-            if (grade <= 16) return "Post Graduate";      
+            if (grade <= 12) return "College Graduate";
+            if (grade <= 16) return "Post Graduate";
             return "Professional";
         }
 

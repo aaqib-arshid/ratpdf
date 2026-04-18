@@ -23,7 +23,7 @@
                 </div>
             }
 
-            <form asp-action="SignText" method="post" enctype="multipart/form-data">
+            <form asp-action="SignText" method="post" enctype="multipart/form-data" id="signPdfForm">
                 <div class="mb-3">
                     <input type="file" name="file" class="form-control form-control-lg" accept="application/pdf">
                 </div>
@@ -281,4 +281,16 @@
   ]
 }");
     </script>
+    <script>
+        $('#signPdfForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Processing...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('signPdfForm', 'Downloading...');
+         }, 5000);
+        });
+  </script>
 }

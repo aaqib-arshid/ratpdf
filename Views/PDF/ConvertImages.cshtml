@@ -291,5 +291,15 @@
                 reader.readAsDataURL(files[i]);
             }
         }
+        $('#imageForm').on('submit', function (e) {
+        e.preventDefault();
+        showLoader('Processing Images...');
+        setTimeout(function () {
+                showLoader('Converting images to pdf...');;
+        }, 3000);
+        setTimeout(function () {
+               submitWithLoader('imageForm', 'Downloading...');
+        }, 5000);
+       });
     </script>
 }

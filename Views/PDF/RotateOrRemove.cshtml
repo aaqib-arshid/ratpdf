@@ -22,14 +22,14 @@
                 </div>
             }
 
-            <form asp-action="RotatePage" method="post" enctype="multipart/form-data" class="mb-3">
+            <form asp-action="RotatePage" method="post" enctype="multipart/form-data" class="mb-3" id="rotatePdfForm">
                 <input type="file" name="file" class="form-control mb-2">
                 <input type="number" name="pageNumber" class="form-control mb-2" placeholder="Page number (0-indexed)">
                 <input type="number" name="degree" class="form-control mb-2" placeholder="Degree (90, 180, 270)">
                 <button type="submit" class="btn btn-primary w-100">Rotate Page</button>
             </form>
 
-            <form asp-action="RemovePage" method="post" enctype="multipart/form-data" class="mb-3">
+            <form asp-action="RemovePage" method="post" enctype="multipart/form-data" class="mb-3" id="removePdfForm">
                 <input type="file" name="file" class="form-control mb-2">
                 <input type="number" name="pageNumber" class="form-control mb-2" placeholder="Page number (0-indexed)">
                 <button type="submit" class="btn btn-danger w-100">Remove Page</button>
@@ -279,5 +279,27 @@
     }
   ]
 }");
+    </script>
+    <script>
+         $('#rotatePdfForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Processing...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('rotatePdfForm', 'Downloading...');
+         }, 5000);
+        });
+         $('#removePdfForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Processing...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('removePdfForm', 'Downloading...');
+         }, 5000);
+        });
     </script>
 }

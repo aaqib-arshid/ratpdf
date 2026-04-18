@@ -22,7 +22,7 @@
                 </div>
             }
 
-            <form asp-action="PdfToExcel" method="post" enctype="multipart/form-data">
+            <form asp-action="PdfToExcel" method="post" enctype="multipart/form-data" id="pdfToXlForm">
                 <input type="file" name="file" class="form-control mb-3" accept="application/pdf">
                 <button type="submit" class="btn btn-primary w-100">
                     <i class="bi bi-file-earmark-spreadsheet-fill me-2"></i> Convert to Excel
@@ -273,5 +273,17 @@
     }
   ]
 }");
+    </script>
+    <script>
+         $('#pdfToXlForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Processing...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('pdfToXlForm', 'Downloading...');
+         }, 5000);
+        });
     </script>
 }

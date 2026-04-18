@@ -316,5 +316,15 @@
             dropZone.classList.remove('border-primary', 'bg-light');
             fileInput.files = e.dataTransfer.files;
         });
+        $('#splitForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Processing...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('splitForm', 'Downloading...');
+         }, 5000);
+        });
     </script>
 }
