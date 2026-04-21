@@ -1,0 +1,216 @@
+﻿@{
+ViewData["Title"] = "DNS Lookup Tool - Check A, MX Records Online";
+ViewData["Description"] = "Free DNS lookup tool. Check A records, MX records, and domain DNS information instantly.";
+}
+
+<head>
+    <link rel="canonical" href="https://ratpdf.com/Tools/DnsLookup" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899635585691076"
+        crossorigin="anonymous"></script>
+
+
+</head>
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+        <h2 class="fw-bold mb-3">DNS Lookup Tool</h2>
+        <p class="text-muted mb-4">Enter a domain to check DNS records like A and MX.</p>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger text-start">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <form method="post" asp-action="DnsLookup">
+            <div class="mb-3">
+                <input type="text" name="domain" class="form-control form-control-lg"
+                       placeholder="Enter domain (example.com)">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100">
+                Lookup DNS
+            </button>
+        </form>
+
+        @if (ViewBag.ARecords != null)
+        {
+            <hr />
+            <div class="text-start mt-3">
+                <h5>A Records (IP Addresses)</h5>
+                <ul>
+                    @foreach (var ip in ViewBag.ARecords)
+                    {
+                        <li>@ip</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (ViewBag.MXRecords != null)
+        {
+            <div class="text-start mt-3">
+                <h5>MX Records (Mail Servers)</h5>
+                <ul>
+                    @foreach (var mx in ViewBag.MXRecords)
+                    {
+                        <li>@mx</li>
+                    }
+                </ul>
+            </div>
+        }
+
+    </div>
+</div>
+
+</div>
+
+<!-- RELATED TOOLS -->
+
+<section class="related-tools text-center mt-4">
+    <h3>Related Tools</h3>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="/Tools/WhatIsMyIP">What is My IP</a></li>
+        <li class="list-inline-item"><a href="/Tools/IpLookup">IP Lookup</a></li>
+    </ul>
+</section>
+
+<!-- SEO CONTENT -->
+
+<div class="container py-5">
+    <div class="card shadow-sm p-4" style="border-radius: 12px;">
+
+    <h2 class="fw-bold mb-3">DNS Lookup Tool – Check Domain Records Instantly</h2>
+
+    <p>
+        Our free <strong>DNS lookup tool</strong> allows you to check domain DNS records such as A records and MX records instantly.
+        It helps you troubleshoot domain issues, verify configurations, and understand how domains connect to servers.
+    </p>
+
+    <h2 class="fw-semibold mt-5">What is DNS?</h2>
+    <p>
+        DNS (Domain Name System) translates domain names into IP addresses so browsers can load websites.
+    </p>
+
+    <h2 class="fw-semibold mt-5">How to Use This Tool</h2>
+    <ol>
+        <li>Enter a domain name (e.g., example.com)</li>
+        <li>Click "Lookup DNS"</li>
+        <li>View DNS records instantly</li>
+    </ol>
+
+    <h2 class="fw-semibold mt-5">Types of DNS Records</h2>
+    <ul>
+        <li><strong>A Record:</strong> Maps domain to IP address</li>
+        <li><strong>MX Record:</strong> Defines mail servers</li>
+        <li><strong>CNAME:</strong> Alias for another domain</li>
+        <li><strong>TXT:</strong> Stores verification data</li>
+    </ul>
+
+    <h2 class="fw-semibold mt-5">Use Cases</h2>
+
+    <h4 class="mt-3">1. Website Troubleshooting</h4>
+    <p>Check if your domain points to the correct server.</p>
+
+    <h4 class="mt-3">2. Email Setup</h4>
+    <p>Verify MX records for email delivery.</p>
+
+    <h4 class="mt-3">3. Security Checks</h4>
+    <p>Validate DNS configurations to prevent issues.</p>
+
+    <h2 class="fw-semibold mt-5">FAQ</h2>
+
+    <h4>What is an A record?</h4>
+    <p>An A record maps a domain to its IP address.</p>
+
+    <h4>What is an MX record?</h4>
+    <p>An MX record specifies mail servers for a domain.</p>
+
+    <h4>Is this DNS lookup tool free?</h4>
+    <p>Yes, it is completely free and requires no signup.</p>
+
+    <h2 class="fw-semibold mt-5">Conclusion</h2>
+    <p>
+        Use our DNS lookup tool to quickly analyze domain records and troubleshoot issues.
+        It is fast, accurate, and works on all devices.
+    </p>
+
+</div>
+
+</div>
+
+@section Scripts {
+
+<script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""DNS Lookup Tool"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/Tools/DnsLookup"",
+      ""description"": ""Check A records, MX records, and DNS details instantly."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+
+    {
+      ""@type"": ""HowTo"",
+      ""name"": ""How to Perform DNS Lookup"",
+      ""step"": [
+        {
+          ""@type"": ""HowToStep"",
+          ""name"": ""Enter Domain"",
+          ""text"": ""Type the domain name into the input field.""
+        },
+        {
+          ""@type"": ""HowToStep"",
+          ""name"": ""Click Lookup"",
+          ""text"": ""Press the lookup button.""
+        },
+        {
+          ""@type"": ""HowToStep"",
+          ""name"": ""View Records"",
+          ""text"": ""See A and MX records instantly.""
+        }
+      ]
+    },
+
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""What is DNS?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""DNS translates domain names into IP addresses.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is this DNS lookup tool free?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, it is completely free.""
+          }
+        }
+      ]
+    }
+
+  ]
+}");
+</script>
+
+}

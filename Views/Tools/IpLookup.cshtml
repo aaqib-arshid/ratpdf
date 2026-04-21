@@ -1,0 +1,265 @@
+﻿@model IpResult
+@{
+    ViewData["Title"] = "IP Address Lookup - Find Location, ISP & Geo Details";
+    ViewData["Description"] = "Free IP address lookup tool. Find location, ISP, city, country, and geolocation of any IP instantly.";
+}
+
+<head>
+    <link rel="canonical" href="https://ratpdf.com/Tools/IpLookup" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899635585691076"
+     crossorigin="anonymous"></script>
+</head>
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+
+            <h2 class="fw-bold mb-3">IP Address Lookup</h2>
+            <p class="text-muted mb-4">Enter an IP address to find location, ISP, and geolocation details.</p>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="IpLookup" method="post">
+                <div class="mb-3">
+                    <input type="text" name="ipAddress" class="form-control form-control-lg"
+                           placeholder="Enter IP (e.g. 8.8.8.8)">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    Lookup IP
+                </button>
+            </form>
+
+            @if (Model != null)
+            {
+                <hr />
+                <div class="text-start mt-3">
+                    <h5>Results:</h5>
+                    <p><strong>IP:</strong> @Model.Query</p>
+                    <p><strong>Country:</strong> @Model.Country</p>
+                    <p><strong>Region:</strong> @Model.RegionName</p>
+                    <p><strong>City:</strong> @Model.City</p>
+                    <p><strong>ZIP:</strong> @Model.Zip</p>
+                    <p><strong>ISP:</strong> @Model.ISP</p>
+                    <p><strong>Organization:</strong> @Model.Org</p>
+                    <p><strong>Latitude:</strong> @Model.Lat</p>
+                    <p><strong>Longitude:</strong> @Model.Lon</p>
+                </div>
+
+                <iframe width="100%" height="300" style="border:0"
+                        src="https://maps.google.com/maps?q=@Model.Lat,@Model.Lon&z=10&output=embed">
+                </iframe>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- RELATED TOOLS -->
+<section class="related-tools">
+    <h3>Related Tools</h3>
+    <ul>
+        <li><a href="/Tools/WhatIsMyIP">What is My IP</a></li>
+        <li><a href="/Tools/DnsLookup">DNS Lookup</a></li>
+    </ul>
+</section>
+
+<!-- SEO CONTENT -->
+<div class="container py-5">
+<div class="card shadow-sm p-4" style="border-radius: 12px;">
+
+<h2 class="fw-bold mb-3">IP Address Lookup Tool – Find Location & ISP Instantly</h2>
+
+<p>
+Our free <strong>IP address lookup tool</strong> allows you to quickly find the geographic location,
+internet service provider (ISP), city, region, and country of any IP address.
+Whether you're troubleshooting network issues, analyzing traffic, or checking security logs,
+this tool provides accurate and fast IP geolocation results.
+</p>
+
+<h2 class="fw-semibold mt-5">What is an IP Address?</h2>
+<p>
+An IP (Internet Protocol) address is a unique identifier assigned to every device connected to the internet.
+It allows devices to communicate with each other across networks.
+</p>
+
+<h2 class="fw-semibold mt-4">Types of IP Addresses</h2>
+<ul>
+<li><strong>IPv4:</strong> Most common format (e.g., 192.168.1.1)</li>
+<li><strong>IPv6:</strong> Newer format with more capacity</li>
+<li><strong>Public IP:</strong> Visible on the internet</li>
+<li><strong>Private IP:</strong> Used inside local networks</li>
+</ul>
+
+<h2 class="fw-semibold mt-5">How IP Lookup Works</h2>
+<p>
+IP lookup tools use global databases to map IP addresses to physical locations.
+These databases are maintained by ISPs and network providers.
+</p>
+
+<h2 class="fw-semibold mt-5">How to Use This Tool</h2>
+<ol>
+<li>Enter any IP address</li>
+<li>Click "Lookup IP"</li>
+<li>View instant location and ISP details</li>
+</ol>
+
+<h2 class="fw-semibold mt-5">Features of Our IP Lookup Tool</h2>
+<ul>
+<li>Fast and accurate results</li>
+<li>Free to use</li>
+<li>No registration required</li>
+<li>Works on all devices</li>
+<li>Displays map location</li>
+</ul>
+
+<h2 class="fw-semibold mt-5">Use Cases</h2>
+
+<h4 class="mt-3">1. Cybersecurity</h4>
+<p>Detect suspicious IP addresses and prevent fraud.</p>
+
+<h4 class="mt-3">2. Website Analytics</h4>
+<p>Understand visitor locations.</p>
+
+<h4 class="mt-3">3. Network Troubleshooting</h4>
+<p>Identify connection issues.</p>
+
+<h4 class="mt-3">4. Digital Marketing</h4>
+<p>Target users by location.</p>
+
+<h2 class="fw-semibold mt-5">FAQ</h2>
+
+<h4>Is IP lookup accurate?</h4>
+<p>It is generally accurate to city level but not exact location.</p>
+
+<h4>Can I track someone using IP?</h4>
+<p>No, IP lookup only gives approximate location, not exact address.</p>
+
+<h4>Is this tool free?</h4>
+<p>Yes, completely free with no signup required.</p>
+
+<h2 class="fw-semibold mt-5">Conclusion</h2>
+<p>
+Our IP lookup tool makes it easy to find location and network details instantly.
+Use it for security, analytics, or general information—fast, free, and reliable.
+</p>
+
+</div>
+</div>
+
+@section Scripts {
+<script type="application/ld+json">
+@Html.Raw(@"{
+  ""@context"": ""https://schema.org"",
+  ""@graph"": [
+
+    {
+      ""@type"": ""SoftwareApplication"",
+      ""name"": ""IP Address Lookup Tool"",
+      ""applicationCategory"": ""UtilityApplication"",
+      ""operatingSystem"": ""Web"",
+      ""url"": ""https://ratpdf.com/Tools/IpLookup"",
+      ""description"": ""Free IP address lookup tool to find location, ISP, city, country, and geolocation details instantly."",
+      ""offers"": {
+        ""@type"": ""Offer"",
+        ""price"": ""0"",
+        ""priceCurrency"": ""USD""
+      }
+    },
+
+    {
+      ""@type"": ""WebPage"",
+      ""name"": ""IP Address Lookup - Find Location, ISP & Geo Details"",
+      ""url"": ""https://ratpdf.com/Tools/IpLookup"",
+      ""description"": ""Lookup IP address location, ISP, and geolocation details quickly and accurately.""
+    },
+
+    {
+      ""@type"": ""HowTo"",
+      ""name"": ""How to Lookup an IP Address"",
+      ""description"": ""Step-by-step guide to find location and ISP details of an IP address."",
+      ""totalTime"": ""PT1M"",
+      ""step"": [
+        {
+          ""@type"": ""HowToStep"",
+          ""name"": ""Enter IP Address"",
+          ""text"": ""Type the IP address you want to look up in the input field.""
+        },
+        {
+          ""@type"": ""HowToStep"",
+          ""name"": ""Click Lookup"",
+          ""text"": ""Press the Lookup IP button to start the search.""
+        },
+        {
+          ""@type"": ""HowToStep"",
+          ""name"": ""View Results"",
+          ""text"": ""See location, ISP, city, and country details instantly.""
+        }
+      ]
+    },
+
+    {
+      ""@type"": ""FAQPage"",
+      ""mainEntity"": [
+        {
+          ""@type"": ""Question"",
+          ""name"": ""What is an IP address lookup?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""An IP lookup finds the approximate geographic location and ISP of an IP address.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""How accurate is IP geolocation?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""It is usually accurate to the city level but not exact location.""
+          }
+        },
+        {
+          ""@type"": ""Question"",
+          ""name"": ""Is this IP lookup tool free?"",
+          ""acceptedAnswer"": {
+            ""@type"": ""Answer"",
+            ""text"": ""Yes, it is completely free and requires no signup.""
+          }
+        }
+      ]
+    },
+
+    {
+      ""@type"": ""BreadcrumbList"",
+      ""itemListElement"": [
+        {
+          ""@type"": ""ListItem"",
+          ""position"": 1,
+          ""name"": ""Home"",
+          ""item"": ""https://ratpdf.com""
+        },
+        {
+          ""@type"": ""ListItem"",
+          ""position"": 2,
+          ""name"": ""Tools"",
+          ""item"": ""https://ratpdf.com/Tools""
+        },
+        {
+          ""@type"": ""ListItem"",
+          ""position"": 3,
+          ""name"": ""IP Address Lookup"",
+          ""item"": ""https://ratpdf.com/Tools/IpLookup""
+        }
+      ]
+    }
+
+  ]
+}");
+</script>
+}

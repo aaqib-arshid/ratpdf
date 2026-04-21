@@ -1,11 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ratpdf.Models;
 using System.Text.RegularExpressions;
-
+using DnsClient;
 namespace ratpdf.Controllers
 {
     public class ToolsController : Controller
     {
+        private readonly HttpClient _httpClient;
+
+        public ToolsController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClient = httpClientFactory.CreateClient();
+        }
         public IActionResult RingSizeConverter()
         {
             #region Ring Sizes
@@ -53,6 +60,28 @@ namespace ratpdf.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult IpLookup() => View();
+        [HttpGet]
+        public IActionResult DnsLookup() => View();
+        [HttpGet]
+        public async Task<IActionResult> WhatIsMyIP()
+        {
+            var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(ip))
+                ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            if (ip == "::1")
+                ip = "8.8.8.8"; // fallback for localhost testing
+
+            var url = $"http://ip-api.com/json/{ip}";
+            var response = await _httpClient.GetStringAsync(url);
+
+            var result = JsonConvert.DeserializeObject<IpResult>(response);
+
+            return View(result);
+        }
 
         [HttpPost]
         public JsonResult GetWordStats(string text)
@@ -62,6 +91,42 @@ namespace ratpdf.Controllers
             var stats = CalculateStats(text);
             return Json(stats);
         }
+        [HttpPost]
+        public async Task<IActionResult> IpLookup(string ipAddress)
+        {
+            if (string.IsNullOrWhiteSpace(ipAddress))
+            {
+                ModelState.AddModelError("", "Please enter a valid IP address.");
+                return View();
+            }
+
+            var url = $"http://ip-api.com/json/{ipAddress}";
+            var response = await _httpClient.GetStringAsync(url);
+
+            var result = JsonConvert.DeserializeObject<IpResult>(response);
+
+            return View(result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DnsLookup(string domain)
+        {
+            if (string.IsNullOrWhiteSpace(domain))
+            {
+                ModelState.AddModelError("", "Enter a valid domain.");
+                return View();
+            }
+
+            var lookup = new LookupClient();
+
+            var aRecords = await lookup.QueryAsync(domain, QueryType.A);
+            var mxRecords = await lookup.QueryAsync(domain, QueryType.MX);
+
+            ViewBag.ARecords = aRecords.Answers.ARecords().Select(x => x.Address.ToString()).ToList();
+            ViewBag.MXRecords = mxRecords.Answers.MxRecords().Select(x => x.Exchange.Value).ToList();
+
+            return View();
+        }
+        #region private methods
 
         private WordStats CalculateStats(string text)
         {
@@ -166,5 +231,6 @@ namespace ratpdf.Controllers
 
             return Math.Max(count, 1);
         }
+        #endregion
     }
 }
