@@ -3,144 +3,26 @@
   <!--Tools-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemaptools.xml</loc>
-    <lastmod>2026-03-17</lastmod>
+    <lastmod>2026-04-21</lastmod>
   </sitemap>
   <!--WordCounter-->
   <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_wordcounterseo1.xml</loc>
-    <lastmod>2026-03-17</lastmod>
+    <loc>https://ratpdf.com/sitemaps/sitemap_wordcounterseo.xml</loc>
+    <lastmod>2026-04-21</lastmod>
   </sitemap>
   <!--RingSizeConverter-->
   <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_ring_converter1.xml</loc>
-    <lastmod>2026-03-17</lastmod>
+    <loc>https://ratpdf.com/sitemaps/sitemap_ring_converter.xml</loc>
+    <lastmod>2026-04-21</lastmod>
   </sitemap>
+  <!--Pdf to text-->
   <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt1.xml</loc>
-    <lastmod>2026-03-17</lastmod>
+    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt.xml</loc>
+    <lastmod>2026-04-21</lastmod>
   </sitemap>
-
+  <!--Compress Pdf-->
   <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt2.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt3.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt4.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt5.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt6.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt7.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt8.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt9.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt10.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt11.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt12.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt13.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt14.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt15.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt16.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt17.xml</loc>
-    <lastmod>2026-03-17</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_1.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_2.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_3.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_4.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_5.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_6.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_7.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_8.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_9.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_10.xml</loc>
-    <lastmod>2026-03-18</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf_11.xml</loc>
-    <lastmod>2026-03-18</lastmod>
+    <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf.xml</loc>
+    <lastmod>2026-04-21</lastmod>
   </sitemap>
 </sitemapindex>
