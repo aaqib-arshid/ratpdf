@@ -3,15 +3,17 @@ using Newtonsoft.Json;
 using ratpdf.Models;
 using System.Text.RegularExpressions;
 using DnsClient;
+using ratpdf.Services;
 namespace ratpdf.Controllers
 {
     public class ToolsController : Controller
     {
         private readonly HttpClient _httpClient;
-
-        public ToolsController(IHttpClientFactory httpClientFactory)
+        private readonly ImageBackgroundAIRemovalService _imgAIBgRemovalservice;
+        public ToolsController(IHttpClientFactory httpClientFactory, ImageBackgroundAIRemovalService imageBackgroundAIRemovalService)
         {
             _httpClient = httpClientFactory.CreateClient();
+            _imgAIBgRemovalservice = imageBackgroundAIRemovalService;
         }
         public IActionResult RingSizeConverter()
         {
@@ -60,6 +62,8 @@ namespace ratpdf.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult ImgBackgroundRemove() => View();
         [HttpGet]
         public IActionResult IpLookup() => View();
         [HttpGet]
@@ -125,6 +129,39 @@ namespace ratpdf.Controllers
             ViewBag.MXRecords = mxRecords.Answers.MxRecords().Select(x => x.Exchange.Value).ToList();
 
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemoveImgBackground(RemoveImgBgModel model)
+        {
+            if (model.File == null || model.File.Length == 0)
+            {
+                ModelState.AddModelError("File", "Please upload an image.");
+                return View("ImgBackgroundRemove", model);
+            }
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+            var ext = Path.GetExtension(model.File.FileName).ToLower();
+
+            if (!allowedExtensions.Contains(ext))
+            {
+                ModelState.AddModelError("File", "Only JPG and PNG formats are allowed.");
+                return View("ImgBackgroundRemove", model);
+            }
+            var allowedTypes = new[] { "image/jpeg", "image/png" };
+
+            if (!allowedTypes.Contains(model.File.ContentType))
+            {
+                ModelState.AddModelError("File", "Invalid file type.");
+                return View(model);
+            }
+            var result = await _imgAIBgRemovalservice.RemoveBackgroundAsync(model.File.OpenReadStream());
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
+            var fileName = $"bg-removed-{DateTime.Now:yyyyMMddHHmmss}.png";
+            return File(result, "image/png", fileName);
         }
         #region private methods
 
