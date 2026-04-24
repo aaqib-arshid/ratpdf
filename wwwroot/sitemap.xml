@@ -3,26 +3,31 @@
   <!--Tools-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemaptools.xml</loc>
-    <lastmod>2026-04-21</lastmod>
+    <lastmod>2026-04-24</lastmod>
   </sitemap>
   <!--WordCounter-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_wordcounterseo.xml</loc>
-    <lastmod>2026-04-21</lastmod>
+    <lastmod>2026-04-24</lastmod>
   </sitemap>
   <!--RingSizeConverter-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_ring_converter.xml</loc>
-    <lastmod>2026-04-21</lastmod>
+    <lastmod>2026-04-24</lastmod>
   </sitemap>
   <!--Pdf to text-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt.xml</loc>
-    <lastmod>2026-04-21</lastmod>
+    <lastmod>2026-04-24</lastmod>
   </sitemap>
   <!--Compress Pdf-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf.xml</loc>
-    <lastmod>2026-04-21</lastmod>
+    <lastmod>2026-04-24</lastmod>
+  </sitemap>
+  <!--AI Image Background Remover Tool-->
+  <sitemap>
+    <loc>https://ratpdf.com/sitemaps/sitemap_img_background_remover.xml</loc>
+    <lastmod>2026-04-24</lastmod>
   </sitemap>
 </sitemapindex>

@@ -11,7 +11,14 @@ namespace ratpdf.Services
 
         public ImageBackgroundAIRemovalService()
         {
-            _session = new InferenceSession("AIModels/u2net.onnx");
+            var modelPath = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "wwwroot",
+            "AIModels",
+            "u2net.onnx"
+        );
+
+            _session = new InferenceSession(modelPath);
         }
 
         public async Task<byte[]> RemoveBackgroundAsync(Stream imageStream)
