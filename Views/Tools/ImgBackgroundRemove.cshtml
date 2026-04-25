@@ -380,15 +380,73 @@
         filePreview.innerText = fileInput.files[0].name;
     });
     
-         $('#removeImgBgForm').on('submit', function (e) {
-     e.preventDefault();
-     showLoader('Getting Ready...');
-     setTimeout(function () {
-             showLoader('Processing removing background...');;
-     }, 3000);
-     setTimeout(function () {
-            submitWithLoader('removeImgBgForm', 'Downloading...');
-     }, 5000);
+   $('#removeImgBgForm').on('submit', function (e) {
+    e.preventDefault();
+
+    showLoader('Uploading image...');
+
+    var formData = new FormData(this);
+
+    $.ajax({
+        url: '/Tools/RemoveImgBackground',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+
+        success: function (res) {
+            if (!res.jobId) {
+                hideLoader();
+                showToast(res.message || "Something went wrong");
+                return;
+            }
+
+            showToast(res.message || "Processing started");
+
+            showLoader('Removing background...');
+
+            pollJob(res.jobId);
+        },
+
+        error: function () {
+            hideLoader();
+            showToast("Server error. Please try again.");
+        }
     });
+});
+function pollJob(jobId) {
+
+    let interval = setInterval(function () {
+
+        $.get('/Tools/GetJobStatus?jobId=' + jobId, function (res) {
+
+            if (res.status === "completed") {
+
+                clearInterval(interval);
+
+                hideLoader();
+
+                window.location.href = res.url; 
+            }
+        });
+
+    }, 2000);
+}
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.innerText = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.background = '#333';
+    toast.style.color = '#fff';
+    toast.style.padding = '10px 15px';
+    toast.style.borderRadius = '8px';
+    toast.style.zIndex = '9999';
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.remove(), 5000);
+}
 </script>
 }

@@ -28,7 +28,6 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 builder.Services.AddScoped<PdfConversionService>();
-builder.Services.AddSingleton<ImageBackgroundAIRemovalService>();
 builder.Services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB

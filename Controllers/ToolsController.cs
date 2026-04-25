@@ -1,19 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
+using DnsClient;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ratpdf.Models;
 using System.Text.RegularExpressions;
-using DnsClient;
-using ratpdf.Services;
 namespace ratpdf.Controllers
 {
     public class ToolsController : Controller
     {
         private readonly HttpClient _httpClient;
-        private readonly ImageBackgroundAIRemovalService _imgAIBgRemovalservice;
-        public ToolsController(IHttpClientFactory httpClientFactory, ImageBackgroundAIRemovalService imageBackgroundAIRemovalService)
+        private readonly BlobContainerClient _blobContainer;
+        private readonly QueueClient _queueClient;
+        public ToolsController(IHttpClientFactory httpClientFactory)
         {
+            _blobContainer = new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdf");
+            _queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdfai-queue");
             _httpClient = httpClientFactory.CreateClient();
-            _imgAIBgRemovalservice = imageBackgroundAIRemovalService;
         }
         public IActionResult RingSizeConverter()
         {
@@ -133,10 +136,18 @@ namespace ratpdf.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveImgBackground(RemoveImgBgModel model)
         {
+            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Path = "/"
+            });
             if (model.File == null || model.File.Length == 0)
             {
-                ModelState.AddModelError("File", "Please upload an image.");
-                return View("ImgBackgroundRemove", model);
+                return Json(new
+                {
+                    jobId = string.Empty,
+                    message = "Please upload an image."
+                });
             }
 
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
@@ -144,24 +155,63 @@ namespace ratpdf.Controllers
 
             if (!allowedExtensions.Contains(ext))
             {
-                ModelState.AddModelError("File", "Only JPG and PNG formats are allowed.");
-                return View("ImgBackgroundRemove", model);
+                return Json(new
+                {
+                    jobId = string.Empty,
+                    message = "Only JPG and PNG formats are allowed."
+                });
             }
             var allowedTypes = new[] { "image/jpeg", "image/png" };
 
             if (!allowedTypes.Contains(model.File.ContentType))
             {
-                ModelState.AddModelError("File", "Invalid file type.");
-                return View(model);
+                return Json(new
+                {
+                    jobId = string.Empty,
+                    message = "Invalid file type."
+                });
             }
-            var result = await _imgAIBgRemovalservice.RemoveBackgroundAsync(model.File.OpenReadStream());
-            Response.Cookies.Append("downloadReady", "1", new CookieOptions
+
+            var jobId = Guid.NewGuid().ToString();
+
+            var blobName = $"input/{jobId}.png";
+            var blobClient = _blobContainer.GetBlobClient(blobName);
+
+            await blobClient.UploadAsync(model.File.OpenReadStream());
+
+            var job = new
             {
-                Expires = DateTimeOffset.Now.AddMinutes(1),
-                Path = "/"
+                JobId = jobId,
+                InputUrl = blobName,
+                OutputPath = $"output/{jobId}.png"
+            };
+
+            await _queueClient.SendMessageAsync(System.Text.Json.JsonSerializer.Serialize(job));
+
+            return Json(new
+            {
+                jobId = jobId,
+                message = "Processing started"
             });
-            var fileName = $"bg-removed-{DateTime.Now:yyyyMMddHHmmss}.png";
-            return File(result, "image/png", fileName);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetJobStatus(string jobId)
+        {
+            var resultBlob = _blobContainer.GetBlobClient($"output/{jobId}.png");
+
+            if (await resultBlob.ExistsAsync())
+            {
+                return Json(new
+                {
+                    status = "completed",
+                    url = resultBlob.Uri.ToString()
+                });
+            }
+
+            return Json(new
+            {
+                status = "processing"
+            });
         }
         #region private methods
 
