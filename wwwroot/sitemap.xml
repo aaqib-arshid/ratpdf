@@ -30,4 +30,9 @@
     <loc>https://ratpdf.com/sitemaps/sitemap_img_background_remover.xml</loc>
     <lastmod>2026-04-24</lastmod>
   </sitemap>
+  <!--What is my ip Tool-->
+  <sitemap>
+    <loc>https://ratpdf.com/sitemaps/sitemap_my_ip.xml</loc>
+    <lastmod>2026-04-26</lastmod>
+  </sitemap>
 </sitemapindex>

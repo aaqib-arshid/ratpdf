@@ -16,5 +16,19 @@ namespace ratpdf.Controllers
         [HttpGet("how-to-remove-background-from-product-images-for-ecommerce")] public IActionResult HowToRemoveBackgroundFromProductImagesForEcommerce() => View();
         [HttpGet("how-to-remove-background-from-portrait-photo-online")] public IActionResult HowToRemoveBackgroundFromPortraitPhotoOnline() => View();
         [HttpGet("how-to-erase-background-from-image-automatically-using-ai")] public IActionResult HowToEraseBackgroundFromImageAutomaticallyUsingAI() => View();
+        [HttpGet("how-to-remove-background-no-watermark")]
+        public IActionResult RemoveBackgroundNoWatermark()
+        {
+            ViewData["Title"] = "How to Remove Background Without Watermark (Free Methods)";
+            ViewData["Description"] = "Learn how to remove background from images without watermark using free online tools, AI, and step-by-step methods.";
+            return View();
+        }
+        [HttpGet("remove-background-without-losing-quality-free")]
+        public IActionResult RemoveBackgroundWithoutLosingQualityFree()
+        {
+            ViewData["Title"] = "How to Remove Background from Image Without Losing Quality (Free Guide)";
+            ViewData["Description"] = "Learn how to remove background from images without losing quality using free tools, AI methods, and step-by-step techniques.";
+            return View();
+        }
     }
 }

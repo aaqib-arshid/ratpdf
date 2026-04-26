@@ -1,137 +1,835 @@
 ﻿@{
-    ViewData["Title"] = "Free PDF Tools Online – Merge, Split, Compress & Convert PDFs | Rat PDF";
-    ViewData["Description"] = "Free online PDF tools to convert, merge, split, compress, and edit PDF files easily. Fast, secure and easy to use.";
+    ViewData["Title"] = "Free PDF & Image Tools Online – Convert, Compress, Edit | Rat PDF";
+    ViewData["Description"] = "Free online tools to convert, merge, split, compress PDFs and remove image backgrounds. Fast, secure, browser-based tools by Rat PDF.";
 }
+
 <head>
     <link rel="canonical" href="https://ratpdf.com/" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2855035251823717"
-            crossorigin="anonymous"></script>
 </head>
-<div class="container py-5">
 
-    <div class="text-center mb-5">
-        <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="80" class="mb-3">
-        <h1 class="display-4 fw-bold">Welcome to Rat PDF</h1>
-        <p class="lead text-muted">Convert, merge, and manage your PDF files quickly and easily — all online and free to start!</p>
-        <a class="btn btn-primary btn-lg mt-3" asp-controller="PDF" asp-action="ConvertImages">
-            <i class="bi bi-file-earmark-pdf-fill me-2"></i> Convert Images to PDF
+<div class="rp">
+    <!-- HERO -->
+    <div class="rp-hero">
+        <div class="hero-pill">
+            <span class="pill-dot"></span>
+            No signup <span class="pill-dot"></span> No installation <span class="pill-dot"></span> 100% Free
+        </div>
+        <h1>Free PDF &amp; Image<br /><span class="blu">Tools Online</span></h1>
+        <p>Convert, compress, merge, split PDFs and remove image backgrounds — fast, secure, and entirely in your browser.</p>
+        <div class="hero-btns">
+            <a href="/PDF/ConvertImages" class="btn-primary">Start Free Tools &rarr;</a>
+            <a href="/Home/About" class="btn-outline">Learn more</a>
+        </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="rp-stats">
+        <div class="stat">
+            <div class="stat-num">26+</div>
+            <div class="stat-label">Free Tools</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Browser-based</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">0</div>
+            <div class="stat-label">Files Stored</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">Free</div>
+            <div class="stat-label">Always</div>
+        </div>
+    </div>
+
+    <!-- POPULAR TOOLS -->
+    <div class="rp-section">
+        <div class="sec-tag">Popular Tools</div>
+        <div class="sec-h">Everything you need</div>
+        <div class="sec-sub">All tools work directly in your browser — no installs, no accounts needed.</div>
+
+        <div class="tools-grid">
+
+            <a href="/PDF/ConvertImages" class="tool-card">
+                <div class="tool-icon ic-b">🖼️</div>
+                <h3>Image to PDF</h3>
+                <p>Convert JPG or PNG images into a PDF instantly.</p>
+                <div class="tool-tag">Try Free &rarr;</div>
+            </a>
+
+            <a href="/PDF/Merge" class="tool-card">
+                <div class="tool-icon ic-p">📄</div>
+                <h3>Merge PDFs</h3>
+                <p>Combine multiple PDF files into one document easily.</p>
+                <div class="tool-tag">Try Free &rarr;</div>
+            </a>
+
+            <a href="/PDF/Split" class="tool-card">
+                <div class="tool-icon ic-c">✂️</div>
+                <h3>Split PDF</h3>
+                <p>Extract or split PDF pages with just one click.</p>
+                <div class="tool-tag">Try Free &rarr;</div>
+            </a>
+
+            <a href="/PDF/Compress" class="tool-card">
+                <div class="tool-icon ic-g">⚡</div>
+                <h3>Compress PDF</h3>
+                <p>Reduce PDF file size without losing quality.</p>
+                <div class="tool-tag">Try Free &rarr;</div>
+            </a>
+
+            <a href="/Tools/ImgBackgroundRemove" class="tool-card">
+                <div class="tool-icon ic-a">🪄</div>
+                <h3>Background Remover</h3>
+                <p>Remove image background using AI in seconds.</p>
+                <div class="tool-tag">Try Free &rarr;</div>
+            </a>
+
+            <a href="/Tools/WordCounter" class="tool-card">
+                <div class="tool-icon ic-pk">📝</div>
+                <h3>Word Counter</h3>
+                <p>Count words, characters and reading time easily.</p>
+                <div class="tool-tag">Try Free &rarr;</div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- WHY CHOOSE US -->
+    <div class="rp-section pt-0">
+        <div class="sec-tag">Why Rat PDF</div>
+        <div class="sec-h">Built for speed &amp; privacy</div>
+        <div class="sec-sub">No bloat. No ads. No data collection. Just tools that work.</div>
+
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-icon">🔒</div>
+                <div>
+                    <h4>No file storage</h4>
+                    <p>Files are processed securely and never stored on our servers permanently.</p>
+                </div>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">⚡</div>
+                <div>
+                    <h4>Lightning fast</h4>
+                    <p>Lightweight browser-based processing — results ready in seconds.</p>
+                </div>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">📱</div>
+                <div>
+                    <h4>Works everywhere</h4>
+                    <p>Fully responsive — works on mobile, tablet, and desktop.</p>
+                </div>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🆓</div>
+                <div>
+                    <h4>Always free</h4>
+                    <p>All core tools are free with no hidden paywalls or surprise charges.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUIDES -->
+    <div class="rp-section pt-0">
+        <div class="sec-tag">Helpful Guides</div>
+        <div class="sec-h">Learn how to use our tools</div>
+        <div class="sec-sub">Step-by-step tutorials to get the best results.</div>
+        <a href="/guides/compress-pdf-guide" class="guide-box">
+            <span>📘 Compress PDF &mdash; Complete Guide</span>
+            <span class="guide-arr">&rarr;</span>
+        </a>
+        <a href="/guides/pdf-txt-guide" class="guide-box">
+            <span>📘 Pdf To Text &mdash; Complete Guide</span>
+            <span class="guide-arr">&rarr;</span>
+        </a>
+        <a href="/guides/background-remover" class="guide-box">
+            <span>📘 Background Removal &mdash; Complete Guide</span>
+            <span class="guide-arr">&rarr;</span>
+        </a>
+        <a href="/guides/ring-size-converter-guide" class="guide-box">
+            <span>📘 Ring Size Calculator or Converter &mdash; Complete Guide</span>
+            <span class="guide-arr">&rarr;</span>
+        </a>
+        <a href="/guides/word-counter-guide" class="guide-box">
+            <span>📘 Word And Character Counting &mdash; Complete Guide</span>
+            <span class="guide-arr">&rarr;</span>
+        </a>
+        <a href="/guides/my-ip-guide" class="guide-box">
+            <span>📘 What Is My IP &mdash; Complete Guide</span>
+            <span class="guide-arr">&rarr;</span>
         </a>
     </div>
 
+    <!-- FAQ -->
+    <div class="rp-section pt-0">
+        <div class="sec-tag">FAQ</div>
+        <div class="sec-h">Common questions</div>
+        <div class="faq-list">
 
-    <div class="row text-center g-4">
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
-                    <i class="bi bi-file-earmark-arrow-up-fill display-3 text-primary mb-3"></i>
-                    <h5 class="card-title fw-bold">Image to PDF</h5>
-                    <p class="card-text text-muted">Convert JPG, PNG, and GIF images into high-quality PDF files quickly and easily.</p>
+            <div class="faq-item" id="f1">
+                <div class="faq-q" onclick="toggleFaq('f1')">
+                    Is Rat PDF completely free?
+                    <span class="ch">+</span>
                 </div>
+                <div class="faq-a">Yes — all basic tools are 100% free. No signup, no credit card, no hidden charges at all.</div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
-                    <i class="bi bi-files display-3 text-primary mb-3"></i>
-                    <h5 class="card-title fw-bold">Merge PDFs</h5>
-                    <p class="card-text text-muted">Combine multiple PDF documents into a single file in just a few clicks.</p>
+
+            <div class="faq-item" id="f2">
+                <div class="faq-q" onclick="toggleFaq('f2')">
+                    Do I need to install anything?
+                    <span class="ch">+</span>
                 </div>
+                <div class="faq-a">No installation needed. Everything runs directly in your browser — just open a tool and start using it.</div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
-                    <i class="bi bi-scissors display-3 text-primary mb-3"></i>
-                    <h5 class="card-title fw-bold">Split PDFs</h5>
-                    <p class="card-text text-muted">Split large PDFs into smaller files or extract specific pages with ease.</p>
+
+            <div class="faq-item" id="f3">
+                <div class="faq-q" onclick="toggleFaq('f3')">
+                    Is my data safe and private?
+                    <span class="ch">+</span>
                 </div>
+                <div class="faq-a">Yes. Files are processed securely and not stored permanently on our servers. Your privacy is our priority.</div>
             </div>
+
+            <div class="faq-item" id="f4">
+                <div class="faq-q" onclick="toggleFaq('f4')">
+                    Can I use Rat PDF on my phone?
+                    <span class="ch">+</span>
+                </div>
+                <div class="faq-a">Absolutely — Rat PDF is fully mobile responsive and works on any smartphone or tablet browser.</div>
+            </div>
+
         </div>
     </div>
 
-    <div class="mt-5 text-center">
-        <h2 class="fw-bold mb-3">Why Choose Rat PDF?</h2>
-        <p class="text-muted mb-4">Fast, reliable, and completely browser-based. No installations, no upload to server/server storage, no external dependencies — just upload your files and get results instantly.</p>
-        <a class="btn btn-outline-primary btn-lg" asp-controller="PDF" asp-action="ConvertImages">
-            Try It Now
-        </a>
+    <!-- CTA BANNER -->
+    <div class="rp-cta">
+        <h2>Ready to get started?</h2>
+        <p>Free tools. No signup. Results in seconds.</p>
+        <a href="/PDF/ConvertImages" class="btn-white">Start Using Free Tools &rarr;</a>
     </div>
+
 </div>
-<section class="tools-section">
-    <h2 class="tools-title">Free PDF & Utility Tools</h2>
 
-    <ul class="tools-grid">
-        <li><a href="/PDF/Merge"><span>Merge PDF</span></a></li>
-        <li><a href="/PDF/Split"><span>Split PDF</span></a></li>
-        <li><a href="/PDF/Compress"><span>Compress PDF</span></a></li>
-        <li><a href="/PDF/ConvertImages"><span>Images to PDF</span></a></li>
-        <li><a href="/PDF/TextToPdf"><span>Text to PDF</span></a></li>
-        <li><a href="/PDF/PdfToText"><span>PDF to Text</span></a></li>
-        <li><a href="/PDF/DocToPdf"><span>Word to PDF</span></a></li>
-        <li><a href="/PDF/PdfToDoc"><span>PDF to Word</span></a></li>
-        <li><a href="/PDF/PdfToExcel"><span>PDF to Excel</span></a></li>
-        <li><a href="/PDF/ExcelToPdf"><span>Excel to PDF</span></a></li>
-        <li><a href="/PDF/Watermark"><span>Add Watermark</span></a></li>
-        <li><a href="/PDF/Password"><span>Protect PDF</span></a></li>
-        <li><a href="/PDF/RotateOrRemove"><span>Rotate PDF</span></a></li>
-        <li><a href="/PDF/SignText"><span>Sign PDF</span></a></li>
-        <li><a href="/PDF/ImageCompressor"><span>Image Compressor</span></a></li>
-        <li><a href="/PDF/ImgToBase64"><span>Image to Base64</span></a></li>
-        <li><a href="/PDF/HtmlFormatter"><span>HTML Formatter</span></a></li>
-        <li><a href="/PDF/JsonFormatter"><span>JSON Formatter</span></a></li>
-        <li><a href="/PDF/JwtDecoder"><span>JWT Decoder</span></a></li>
-        <li><a href="/Tools/RingSizeConverter"><span>Ring Size Converter</span></a></li>
-        <li><a href="/Tools/WordCounter"><span>Word Counter</span></a></li>
-        <li><a href="/Tools/WhatIsMyIP"><span>What Is My IP</span></a></li>
-        <li><a href="/Tools/IpLookup"><span>Ip Lookup</span></a></li>
-        <li><a href="/Tools/ImgBackgroundRemove"><span>Remove Img Background</span></a></li>
-    </ul>
-</section>
 <style>
-    .tools-section {
-        margin: 40px auto;
-        max-width: 1200px;
-        padding: 0 16px;
+
+    /* ===== BASE ===== */
+    .rp {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background: #f8f9ff;
+        color: #1a1d2e;
+        overflow-x: hidden;
+    }
+    .rp-logo img {
+        height: 38px;
+        object-fit: contain;
     }
 
-    .tools-title {
-        font-size: 1.6rem;
-        margin-bottom: 20px;
-        text-align: center;
+    .rp-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
     }
 
-    .tools-grid {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 16px;
-    }
-
-        .tools-grid li a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 90px;
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
+        .rp-links a {
+            font-size: 13px;
+            color: #6b7280;
             text-decoration: none;
-            color: #111827;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            font-weight: 500;
+            transition: color 0.2s;
         }
 
-            .tools-grid li a:hover {
-                background: #f9fafb;
-                border-color: #2563eb;
+            .rp-links a:hover {
                 color: #2563eb;
-                transform: translateY(-2px);
             }
 
-            .tools-grid li a span {
-                text-align: center;
-                padding: 0 8px;
+        .rp-links .nav-btn {
+            background: #2563eb;
+            color: #fff !important;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+            .rp-links .nav-btn:hover {
+                background: #1d4ed8;
             }
+
+    /* ===== HERO ===== */
+    .rp-hero {
+        background: #fff;
+        padding: 4.5rem 2rem 3.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid #eef0f8;
+        animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(90px);
+        pointer-events: none;
+    }
+
+    .blob1 {
+        width: 450px;
+        height: 350px;
+        background: rgba(37,99,235,0.07);
+        top: -80px;
+        right: -60px;
+    }
+
+    .blob2 {
+        width: 350px;
+        height: 300px;
+        background: rgba(99,102,241,0.06);
+        bottom: -80px;
+        left: -60px;
+    }
+
+    .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 100px;
+        padding: 5px 14px 5px 8px;
+        font-size: 12px;
+        color: #2563eb;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+    }
+
+    .pill-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #2563eb;
+        animation: blink 2s infinite;
+        display: inline-block;
+    }
+
+    @@keyframes blink {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.3;
+        }
+    }
+
+    .rp-hero h1 {
+        font-family: 'Syne', sans-serif;
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        color: #0f172a;
+        margin: 0 auto 1.1rem;
+        max-width: 640px;
+    }
+
+        .rp-hero h1 .blu {
+            background: linear-gradient(135deg, #2563eb, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+    .rp-hero p {
+        font-size: 1rem;
+        color: #64748b;
+        max-width: 500px;
+        margin: 0 auto 2rem;
+        line-height: 1.75;
+    }
+
+    .hero-btns {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: #fff;
+        padding: 12px 26px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: box-shadow 0.2s, transform 0.2s;
+        box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37,99,235,0.35);
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .btn-outline {
+        background: #fff;
+        color: #374151;
+        border: 1.5px solid #e5e7eb;
+        padding: 12px 26px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: border-color 0.2s, color 0.2s;
+    }
+
+        .btn-outline:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+    .btn-white {
+        background: #fff;
+        color: #2563eb;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+        transition: transform 0.2s;
+    }
+
+        .btn-white:hover {
+            transform: translateY(-2px);
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+    /* ===== STATS ===== */
+    .rp-stats {
+        display: flex;
+        justify-content: center;
+        background: #fff;
+        border-bottom: 1px solid #eef0f8;
+        flex-wrap: wrap;
+        animation: fadeUp 0.6s 0.12s ease both;
+    }
+
+    .stat {
+        text-align: center;
+        padding: 1.25rem 2.5rem;
+        border-right: 1px solid #eef0f8;
+    }
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+    .stat-num {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .stat-label {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 2px;
+        font-weight: 500;
+    }
+
+    /* ===== SECTIONS ===== */
+    .rp-section {
+        padding: 3.5rem 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .pt-0 {
+        padding-top: 0;
+    }
+
+    .sec-tag {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #2563eb;
+        margin-bottom: 0.5rem;
+    }
+
+    .sec-h {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+    }
+
+    .sec-sub {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    /* ===== TOOL CARDS ===== */
+    .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+    }
+
+    .tool-card {
+        background: #fff;
+        border: 1.5px solid #eef0f8;
+        border-radius: 16px;
+        padding: 1.35rem;
+        text-decoration: none;
+        display: block;
+        transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+        color: inherit;
+    }
+
+        .tool-card:hover {
+            border-color: #bfdbfe;
+            box-shadow: 0 8px 28px rgba(37,99,235,0.1);
+            transform: translateY(-4px);
+            text-decoration: none;
+            color: inherit;
+        }
+
+    .tool-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.9rem;
+        font-size: 18px;
+    }
+
+    .ic-b {
+        background: #eff6ff;
+    }
+
+    .ic-p {
+        background: #f5f3ff;
+    }
+
+    .ic-c {
+        background: #ecfeff;
+    }
+
+    .ic-g {
+        background: #f0fdf4;
+    }
+
+    .ic-a {
+        background: #fffbeb;
+    }
+
+    .ic-pk {
+        background: #fdf2f8;
+    }
+
+    .tool-card h3 {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 5px;
+    }
+
+    .tool-card p {
+        font-size: 12px;
+        color: #94a3b8;
+        margin: 0 0 0.85rem;
+        line-height: 1.5;
+    }
+
+    .tool-tag {
+        font-size: 11px;
+        color: #2563eb;
+        font-weight: 600;
+    }
+
+    /* ===== WHY CARDS ===== */
+    .why-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .why-card {
+        background: #fff;
+        border: 1.5px solid #eef0f8;
+        border-radius: 14px;
+        padding: 1.2rem;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .why-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #eff6ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 16px;
+    }
+
+    .why-card h4 {
+        font-family: 'Syne', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 4px;
+    }
+
+    .why-card p {
+        font-size: 12px;
+        color: #94a3b8;
+        margin: 0;
+        line-height: 1.55;
+    }
+
+    /* ===== GUIDE BOX ===== */
+    .guide-box {
+        background: #fff;
+        border: 1.5px solid #eef0f8;
+        border-radius: 14px;
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+        .guide-box:hover {
+            border-color: #bfdbfe;
+            box-shadow: 0 4px 16px rgba(37,99,235,0.08);
+            text-decoration: none;
+        }
+
+        .guide-box span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e3a8a;
+        }
+
+    .guide-arr {
+        font-size: 18px;
+        color: #2563eb;
+    }
+
+    /* ===== FAQ ===== */
+    .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .faq-item {
+        background: #fff;
+        border: 1.5px solid #eef0f8;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .faq-q {
+        padding: 1rem 1.25rem;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1a1d2e;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background 0.15s;
+        user-select: none;
+    }
+
+        .faq-q:hover {
+            background: #f8f9ff;
+        }
+
+    .faq-a {
+        display: none;
+        padding: 0 1.25rem 1rem;
+        font-size: 13px;
+        color: #64748b;
+        line-height: 1.65;
+    }
+
+    .faq-item.open .faq-a {
+        display: block;
+    }
+
+    .faq-item.open .ch {
+        transform: rotate(45deg);
+        color: #2563eb;
+    }
+
+    .ch {
+        font-size: 20px;
+        color: #cbd5e1;
+        transition: transform 0.2s, color 0.2s;
+        line-height: 1;
+        display: inline-block;
+    }
+
+    /* ===== CTA BANNER ===== */
+    .rp-cta {
+        margin: 0 2rem 3rem;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #2563eb 0%, #4f46e5 60%, #6366f1 100%);
+        padding: 3rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .rp-cta::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            top: -80px;
+            right: -60px;
+            pointer-events: none;
+        }
+
+        .rp-cta h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 0.6rem;
+            letter-spacing: -0.02em;
+        }
+
+        .rp-cta p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.75);
+            margin: 0 0 1.75rem;
+        }
+
+    /* ===== FOOTER ===== */
+    .rp-footer {
+        text-align: center;
+        padding: 1.75rem 2rem;
+        border-top: 1px solid #eef0f8;
+        font-size: 12px;
+        color: #94a3b8;
+        background: #fff;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @@media (max-width: 768px) {
+
+        .rp-nav {
+            padding: 1rem;
+        }
+
+        .rp-links {
+            gap: 0.75rem;
+        }
+
+            .rp-links a {
+                font-size: 12px;
+            }
+
+        .rp-hero h1 {
+            font-size: 2rem;
+        }
+
+        .tools-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .why-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .rp-stats .stat {
+            padding: 1rem 1.25rem;
+        }
+
+        .rp-cta {
+            margin: 0 1rem 2rem;
+            padding: 2rem 1.25rem;
+        }
+
+        .rp-section {
+            padding: 2.5rem 1.25rem;
+        }
+    }
+
+    @@media (max-width: 480px) {
+
+        .tools-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .rp-hero h1 {
+            font-size: 1.75rem;
+        }
+
+        .rp-links .nav-btn {
+            display: none;
+        }
+    }
+
 </style>
+
+<script>
+    function toggleFaq(id) {
+        document.getElementById(id).classList.toggle('open');
+    }
+</script>
+<script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "WebSite",
+        "name": "Rat PDF",
+        "url": "https://ratpdf.com/"
+    }
+</script>
