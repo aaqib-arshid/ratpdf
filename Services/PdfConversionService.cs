@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Packaging;
+using iText.Html2pdf;
 using iText.IO.Font.Constants;
 using iText.IO.Image;
 using iText.Kernel.Colors;
@@ -149,6 +150,27 @@ namespace ratpdf.Services
             using var reader = new StreamReader(file.OpenReadStream());
             var text = reader.ReadToEnd();
             return ConvertTextToPdf(text);
+        }
+        public byte[] ConvertHtmlToPdf(string htmlContent)
+        {
+            string fullHtml = $$"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8"/>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 40px; font-size: 14px; line-height: 1.6; }
+                    h1, h2, h3 { color: #222; }
+                    ul, ol { padding-left: 20px; }
+                </style>
+            </head>
+            <body>{{htmlContent}}</body>
+            </html>
+            """;
+
+            using var ms = new MemoryStream();
+            HtmlConverter.ConvertToPdf(fullHtml, ms);
+            return ms.ToArray();
         }
         public string ExtractTextFromPdf(IFormFile file)
         {

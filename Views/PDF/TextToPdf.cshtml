@@ -39,8 +39,8 @@
                 <div id="filePreview" class="text-muted mb-3"></div>
 
                 <!-- Or Typed Text -->
-                <textarea name="typedText" class="form-control mb-3" rows="8" placeholder="Or type your text here..."></textarea>
-
+                <div id="quillEditor" style="height: 250px; background: white; border-radius: 6px;"></div>
+                <input type="hidden" name="typedText" id="typedText" />
                 <button type="submit" class="btn btn-primary btn-lg w-100">
                     <i class="bi bi-file-earmark-text-fill me-2"></i> Convert to PDF
                 </button>
@@ -291,6 +291,19 @@
 }");
     </script>
     <script>
+        const quill = new Quill('#quillEditor', {
+        theme: 'snow',
+        placeholder: 'Or type your text here...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'header': [1, 2, 3, false] }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['link'],
+                ['clean']
+            ]
+        }
+    });
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
         const filePreview = document.getElementById('filePreview');
@@ -325,6 +338,7 @@
 
          $('#textForm').on('submit', function (e) {
          e.preventDefault();
+         document.getElementById('typedText').value = quill.root.innerHTML;
          showLoader('Getting Ready...');
          setTimeout(function () {
                  showLoader('Processing...');;

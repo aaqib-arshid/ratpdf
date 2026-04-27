@@ -132,7 +132,7 @@ namespace ratpdf.Controllers
         [HttpPost]
         public IActionResult TextToPdf(IFormFile file, string typedText)
         {
-            if (file == null && string.IsNullOrWhiteSpace(typedText))
+            if (file == null && typedText.Equals("<p><br></p>"))
             {
                 ModelState.AddModelError("Text", "Please upload a text file or type some text.");
                 return View();
@@ -149,7 +149,7 @@ namespace ratpdf.Controllers
                 if (file != null)
                     pdfBytes = _pdfService.ConvertTextFileToPdf(file);
                 else
-                    pdfBytes = _pdfService.ConvertTextToPdf(typedText);
+                    pdfBytes = _pdfService.ConvertHtmlToPdf(typedText);
 
                 return File(pdfBytes, "application/pdf", "document.pdf");
             }
