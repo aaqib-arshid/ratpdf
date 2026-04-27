@@ -184,14 +184,6 @@ namespace ratpdf.Services
                             <a href='/Tools/DnsLookup'>DNS Lookup</a> for complete control over your network data.</p>
 
                             <hr/>
-
-                            <p><strong>Internal Tools Used (SEO Linking):</strong></p>
-                            <ul>
-                            <li>/Tools/WhatIsMyIP</li>
-                            <li>/Tools/IpLookup</li>
-                            <li>/Tools/DnsLookup</li>
-                            <li>/Tools/ImgBackgroundRemove</li>
-                            </ul>
                             "
                             },
          new GlobalSeoPageModel
@@ -399,13 +391,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>, you can instantly analyze your network and location data.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -600,13 +585,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>, you can fully understand your internet connection details in seconds.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -767,13 +745,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>, you can instantly access complete IP details from any device.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -957,13 +928,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>, you can instantly access full IPv4 details from any device.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -1130,13 +1094,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>, you can instantly access full network details from any smartphone.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -1316,13 +1273,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>, you can instantly trace and analyze any IP address worldwide.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -1504,13 +1454,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>, you can instantly find detailed location data for any IP address worldwide.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -1674,13 +1617,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -1865,13 +1801,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>, you can monitor and verify your network changes instantly.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -2057,13 +1986,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a> to get full network insights instantly.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 },
          new GlobalSeoPageModel
@@ -2254,13 +2176,6 @@ namespace ratpdf.Services
 <a href='/Tools/DnsLookup'>DNS Lookup</a>.</p>
 
 <hr/>
-
-<p><strong>Internal SEO Tool Links Used:</strong></p>
-<ul>
-<li>/Tools/WhatIsMyIP</li>
-<li>/Tools/IpLookup</li>
-<li>/Tools/DnsLookup</li>
-</ul>
 "
 }
         };
