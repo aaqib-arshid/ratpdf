@@ -1,0 +1,291 @@
+﻿@{
+    ViewData["Title"] = "Free ATS Resume Checker — Get Instant ATS Score Online";
+    ViewData["Description"] = "Free ATS Resume Checker online. Upload your resume PDF and get instant ATS score analysis based on structure, content, formatting, and keywords.";
+}
+
+<!-- ================= BREADCRUMB SCHEMA ================= -->
+<script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ratpdf.com"
+        },
+        {
+          "@@type": "ListItem",
+          "position": 2,
+          "name": "ATS Resume Checker",
+          "item": "https://ratpdf.com/Tools/AtsDashboard"
+        }
+      ]
+    }
+</script>
+
+<!-- ================= SOFTWARE SCHEMA ================= -->
+<script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "SoftwareApplication",
+      "name": "Free ATS Resume Checker",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "url": "https://ratpdf.com/Tools/AtsDashboard",
+      "description": "Free ATS Resume Checker tool that analyzes resumes and provides instant ATS score based on formatting, keywords, structure, and readability.",
+      "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+</script>
+
+<!-- ================= FAQ SCHEMA ================= -->
+<script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@@type": "Question",
+          "name": "What is an ATS Resume Checker?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "An ATS Resume Checker is a tool that evaluates how well your resume performs against Applicant Tracking Systems used by companies to filter job applications."
+          }
+        },
+        {
+          "@@type": "Question",
+          "name": "Is this ATS Resume Checker free?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "Yes, this ATS Resume Checker is completely free to use with no registration required."
+          }
+        },
+        {
+          "@@type": "Question",
+          "name": "What file formats are supported?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "Currently, only PDF files are supported for ATS resume analysis."
+          }
+        },
+        {
+          "@@type": "Question",
+          "name": "What is a good ATS score?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "A score above 75 is considered excellent, 60–75 is good, 40–60 is average, and below 40 needs improvement."
+          }
+        }
+      ]
+    }
+</script>
+
+<!-- ================= UI SECTION ================= -->
+<div class="container py-5 d-flex justify-content-center">
+
+    <div class="card shadow-lg p-5"
+         style="max-width:700px;width:100%;border-radius:15px;">
+
+        <div class="text-center">
+
+            <img src="~/images/ratpdf-logo.png" height="60" class="mb-3" />
+
+            <h1 class="fw-bold">Free ATS Resume Checker Online</h1>
+
+            <p class="text-muted">
+                Upload your resume and get instant ATS score analysis used by recruiters and hiring systems worldwide.
+            </p>
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger text-start" role="alert">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- UPLOAD UI -->
+        <form asp-controller="Tools"
+              asp-action="AtsDashboard"
+              method="post"
+              enctype="multipart/form-data"
+              id="atsForm">
+
+            <div id="dropZone"
+                 class="border border-dashed rounded p-4 text-center mb-3"
+                 style="cursor:pointer; background:#f8f9fa;">
+
+                <i class="bi bi-file-earmark-text display-4 text-primary"></i>
+
+                <p class="mt-2 mb-0 text-muted">
+                    Drag & drop your resume PDF or click to upload
+                </p>
+
+                <input type="file"
+                       name="file"
+                       id="fileInput"
+                       accept="application/pdf"
+                       class="d-none" />
+            </div>
+
+            <div id="filePreview" class="text-muted mb-3"></div>
+
+            <button type="submit" class="btn btn-primary w-100 btn-lg">
+                Analyze Resume Now
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<!-- ================= SEO CONTENT (1500–2000 WORDS) ================= -->
+<div class="container py-4">
+
+    <div class="card p-4 shadow-sm" style="border-radius:12px;">
+
+        <h2 class="fw-bold mb-3">What is an ATS Resume Checker?</h2>
+
+        <p>
+            An ATS Resume Checker is a powerful online tool designed to evaluate how well your resume performs
+            against Applicant Tracking Systems (ATS). These systems are widely used by companies and recruiters
+            to filter job applications before a human ever sees them. If your resume is not optimized for ATS,
+            it may get rejected automatically even if you are highly qualified.
+        </p>
+
+        <p>
+            Our free ATS Resume Checker helps you understand how your resume is scored based on key factors such as
+            formatting, keyword usage, structure, readability, and overall compatibility with ATS software.
+            By analyzing your resume instantly, the tool provides actionable insights that can help you improve
+            your chances of getting shortlisted for interviews.
+        </p>
+
+        <h2 class="fw-bold mt-4">Why ATS Optimization is Important</h2>
+
+        <p>
+            In today’s competitive job market, most companies rely on automated systems to handle large volumes
+            of job applications. These systems scan resumes for relevant keywords, proper formatting, and structured
+            content. If your resume does not meet these requirements, it may never reach a recruiter.
+        </p>
+
+        <p>
+            ATS optimization ensures that your resume is readable by machines as well as humans. It increases
+            your visibility and improves your chances of passing the initial screening stage. This is especially
+            important for job seekers applying to large organizations or multinational companies.
+        </p>
+
+        <h2 class="fw-bold mt-4">How Our ATS Resume Checker Works</h2>
+
+        <p>
+            Our tool analyzes your resume using multiple evaluation parameters:
+        </p>
+
+        <ul>
+            <li><strong>Structure Analysis:</strong> Checks if your resume has proper sections like experience, education, and skills.</li>
+            <li><strong>Content Quality:</strong> Evaluates clarity, relevance, and keyword optimization.</li>
+            <li><strong>Formatting Check:</strong> Ensures your resume is clean, readable, and ATS-friendly.</li>
+            <li><strong>Semantic Matching:</strong> Compares job-related keywords with your resume content.</li>
+        </ul>
+
+        <p>
+            After analysis, the tool generates an ATS score that reflects how well your resume is optimized.
+            A higher score means better chances of passing automated screening systems.
+        </p>
+
+        <h2 class="fw-bold mt-4">How to Improve Your ATS Score</h2>
+
+        <p>
+            Improving your ATS score is essential for increasing your job opportunities. Here are some proven tips:
+        </p>
+
+        <ul>
+            <li>Use relevant keywords from job descriptions.</li>
+            <li>Keep formatting simple and clean.</li>
+            <li>Avoid images, tables, and complex layouts.</li>
+            <li>Use standard headings like Experience, Education, Skills.</li>
+            <li>Save your resume in PDF format for consistency.</li>
+        </ul>
+
+        <p>
+            By following these guidelines and using our ATS Resume Checker, you can significantly improve your
+            resume performance and increase your chances of getting interview calls.
+        </p>
+
+        <h2 class="fw-bold mt-4">Who Should Use This Tool?</h2>
+
+        <p>
+            This ATS Resume Checker is useful for students, fresh graduates, professionals, freelancers,
+            and job seekers in all industries. Whether you are applying for IT jobs, marketing roles, finance
+            positions, or government jobs, optimizing your resume for ATS is crucial.
+        </p>
+
+        <p>
+            Recruiters and hiring managers rely heavily on ATS systems, so ensuring your resume is compatible
+            gives you a competitive advantage in the job market.
+        </p>
+
+        <h2 class="fw-bold mt-4">Conclusion</h2>
+
+        <p>
+            The ATS Resume Checker is an essential tool for anyone serious about improving their career opportunities.
+            By analyzing your resume and providing instant feedback, it helps you create a job-ready document that
+            stands out in both automated systems and human reviews.
+        </p>
+
+        <p>
+            Upload your resume today and discover how well it performs in ATS systems. Improve your score, optimize
+            your content, and increase your chances of landing your dream job.
+        </p>
+    </div>
+</div>
+<section class="related-tools">
+    <h3>Related Tools</h3>
+    <ul>
+        <li><a href="/PDF/DocToPdf">Word to PDF</a></li>
+        <li><a href="/PDF/PdfToExcel">PDF to Excel</a></li>
+        <li><a href="/PDF/Compress">Compress PDF</a></li>
+    </ul>
+</section>
+<!-- ================= SCRIPT ================= -->
+@section Scripts {
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                filePreview.innerText = "Selected file: " + fileInput.files[0].name;
+            }
+        });
+
+        dropZone.addEventListener('dragover', e => {
+            e.preventDefault();
+            dropZone.style.borderColor = "#0d6efd";
+        });
+
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            fileInput.files = e.dataTransfer.files;
+            filePreview.innerText = "Selected file: " + fileInput.files[0].name;
+        }); 
+        $('#atsForm').on('submit', function (e) {
+         e.preventDefault();
+         showLoader('Getting Ready...');
+         setTimeout(function () {
+                 showLoader('Checking...');;
+         }, 3000);
+         setTimeout(function () {
+                submitWithLoader('atsForm', 'AI Processing...');
+         }, 5000);
+        });
+    </script>
+}

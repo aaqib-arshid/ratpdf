@@ -1,0 +1,295 @@
+﻿@using Microsoft.AspNetCore.Html
+@model ratpdf.Models.AtsUiResult
+
+@{
+    ViewData["Title"] = "ATS Score Result";
+
+    var score = Model.TotalScore;
+    var angle = score * 3.6;
+}
+
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>ATS Score Report</h1>
+        <p>AI-powered resume analysis summary</p>
+    </div>
+
+    @if (Model.TotalScore == 0)
+    {
+        <div class="alert">
+            This document does not appear to be a valid resume.
+        </div>
+    }
+
+    <!-- GAUGE + SCORE -->
+    <div class="gauge-section">
+
+        <div class="circle-wrap">
+            <div class="circle">
+
+                <div class="mask full" style="transform: rotate(@angle deg);">
+                    <div class="circle-fill"></div>
+                </div>
+
+                <div class="mask half">
+                    <div class="circle-fill" style="transform: rotate(@angle deg);"></div>
+                </div>
+
+                <div class="inside-circle">
+                    @score%
+                </div>
+
+            </div>
+        </div>
+
+        <div class="score-text">
+            <h2>@score%</h2>
+            <p class="badge">
+                @(score >= 75 ? "Excellent ATS Score" :
+                                score >= 60 ? "Good ATS Score" :
+                                score >= 40 ? "Average ATS Score" :
+                                        "Needs Improvement")
+            </p>
+        </div>
+
+    </div>
+
+    <!-- SCORE BREAKDOWN -->
+    <div class="card glass">
+
+        <h3>Score Breakdown</h3>
+
+        <div class="grid">
+            <div class="item"><b>@Model.Structure</b></div>
+            <div class="item"><b>@Model.Content</b></div>
+            <div class="item"><b>@Model.Semantic</b></div>
+            <div class="item"><b>@Model.Formatting</b></div>
+        </div>
+
+    </div>
+
+    <!-- VISUAL BARS -->
+    <div class="card glass">
+        <h3>Visual Breakdown</h3>
+
+        @RenderBar("Structure", Model.Structure)
+        @RenderBar("Content", Model.Content)
+        @RenderBar("Semantic", Model.Semantic)
+        @RenderBar("Formatting", Model.Formatting)
+
+    </div>
+
+    <!-- BUTTON -->
+    <div class="footer">
+        <a href="AtsDashboard" class="btn">Analyze Another Resume</a>
+    </div>
+
+</div>
+
+@functions {
+    public IHtmlContent RenderBar(string label, string text)
+    {
+        var match = System.Text.RegularExpressions.Regex.Match(text ?? "", @"\d+");
+        var score = match.Success ? int.Parse(match.Value) : 0;
+
+        var color = score switch
+        {
+            >= 75 => "#22c55e",
+            >= 50 => "#3b82f6",
+            _ => "#ef4444"
+        };
+
+        return new HtmlString($@"
+        <div class='bar'>
+            <div class='bar-top'>
+                <span>{label}</span>
+                <b>{score}%</b>
+            </div>
+
+            <div class='track'>
+                <div class='bar-fill' style='width:{score}%; background:{color};'></div>
+            </div>
+        </div>
+        ");
+    }
+}
+
+<style>
+
+    /* PAGE */
+    .page {
+        font-family: 'Segoe UI', sans-serif;
+        max-width: 900px;
+        margin: auto;
+        padding: 30px;
+        color: #111827;
+    }
+
+    /* HEADER */
+    .header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+        .header h1 {
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .header p {
+            color: gray;
+        }
+
+    /* ALERT */
+    .alert {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 12px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* GAUGE */
+    .gauge-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+    }
+
+    .circle-wrap {
+        width: 160px;
+        height: 160px;
+        position: relative;
+    }
+
+    .circle {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        position: relative;
+    }
+
+    .mask {
+        clip: rect(0px,160px,160px,80px);
+        width: 160px;
+        height: 160px;
+        position: absolute;
+    }
+
+    .circle-fill {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: linear-gradient(135deg,#3b82f6,#22c55e);
+        position: absolute;
+    }
+
+    .inside-circle {
+        width: 120px;
+        height: 120px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        text-align: center;
+        line-height: 120px;
+        font-size: 26px;
+        font-weight: 700;
+    }
+
+    /* SCORE TEXT */
+    .score-text h2 {
+        font-size: 40px;
+        margin: 0;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        background: #111827;
+        color: white;
+        font-size: 13px;
+    }
+
+    /* CARD */
+    .card {
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+    }
+
+    .glass {
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    /* GRID */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        background: #f3f4f6;
+        border-radius: 10px;
+    }
+
+    /* BAR */
+    .bar {
+        margin-bottom: 15px;
+    }
+
+    .bar-top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .track {
+        height: 10px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .bar-fill {
+        height: 100%;
+        border-radius: 20px;
+        transition: width 0.6s ease-in-out;
+    }
+
+    /* BUTTON */
+    .footer {
+        text-align: center;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 18px;
+        background: linear-gradient(135deg,#111827,#374151);
+        color: white;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+</style>

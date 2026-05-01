@@ -4,6 +4,7 @@ using DnsClient;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ratpdf.Models;
+using ratpdf.Services;
 using System.Text.RegularExpressions;
 namespace ratpdf.Controllers
 {
@@ -12,11 +13,14 @@ namespace ratpdf.Controllers
         private readonly HttpClient _httpClient;
         private readonly BlobContainerClient _blobContainer;
         private readonly QueueClient _queueClient;
-        public ToolsController(IHttpClientFactory httpClientFactory)
+        private readonly AtsEngine _atsEngine;
+        private readonly PdfConversionService _pdf = new();
+        public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine)
         {
             _blobContainer = new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdf");
             _queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdfai-queue");
             _httpClient = httpClientFactory.CreateClient();
+            _atsEngine = atsEngine;
         }
         public IActionResult RingSizeConverter()
         {
@@ -213,6 +217,60 @@ namespace ratpdf.Controllers
                 status = "processing"
             });
         }
+        [HttpGet]
+        public IActionResult AtsDashboard()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AtsDashboard(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                ModelState.AddModelError("", "Please upload a file.");
+                return View();
+            }
+
+            var extension = Path.GetExtension(file.FileName).ToLower();
+
+            if (extension != ".pdf")
+            {
+                ModelState.AddModelError("", "Only PDF files are allowed.");
+                return View();
+            }
+
+            const long maxSize = 1 * 1024 * 1024; 
+
+            if (file.Length > maxSize)
+            {
+                ModelState.AddModelError("", "File size must be less than or equal to 1 MB.");
+                return View();
+            }
+
+            var resumeText = _pdf.ExtractTextFromPdf(file);
+            var result = _atsEngine.Score(resumeText);
+            var structure = (int)(result.StructureScore * 100);
+            var content = (int)(result.ContentScore * 100);
+            var semantic = (int)(result.SemanticScore * 100);
+            var formatting = (int)(result.FormattingScore * 100);
+
+            var uiResult = new AtsUiResult
+            {
+                Structure = $"{structure}/100 - {Explain("Structure", structure)}",
+                Content = $"{content}/100 - {Explain("Content", content)}",
+                Semantic = $"{semantic}/100 - {Explain("Semantic", semantic)}",
+                Formatting = $"{formatting}/100 - {Explain("Formatting", formatting)}",
+                TotalScore =
+            (int)Math.Round(
+                (result.StructureScore * 30 +
+                 result.ContentScore * 30 +
+                 result.SemanticScore * 25 +
+                 result.FormattingScore * 15)
+            )
+            };
+            return View("AtsScoreDashboard", uiResult);
+        }
         #region private methods
 
         private WordStats CalculateStats(string text)
@@ -317,6 +375,26 @@ namespace ratpdf.Controllers
                 count--;
 
             return Math.Max(count, 1);
+        }
+        public static string Explain(string metric, int score)
+        {
+            return metric switch
+            {
+                "Structure" when score < 60 =>
+                    "Your resume is missing key sections.",
+
+                "Content" when score < 60 =>
+                    "Your resume lacks strong achievement-based statements.",
+
+                "Semantic" when score < 60 =>
+                    "Your content is not strongly aligned with professional language.",
+
+                "Formatting" when score < 60 =>
+                    "Improve spacing, bullet points, and readability.",
+
+                _ =>
+                    "Well optimized for ATS systems."
+            };
         }
         #endregion
     }

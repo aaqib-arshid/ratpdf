@@ -14,7 +14,7 @@ using iText.Layout.Properties;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf.IO;
 using System.Text;
-using Paragraph = iText.Layout.Element.Paragraph;
+using UglyToad.PdfPig.Content;
 
 namespace ratpdf.Services
 {
@@ -24,7 +24,7 @@ namespace ratpdf.Services
         {
             using var ms = new MemoryStream();
             var writer = new PdfWriter(ms);
-            var pdf = new PdfDocument(writer);
+            var pdf = new iText.Kernel.Pdf.PdfDocument(writer);
             var document = new iText.Layout.Document(pdf);
 
             foreach (var imageFile in images)
@@ -57,12 +57,12 @@ namespace ratpdf.Services
 
             using var ms = new MemoryStream();
             using var writer = new PdfWriter(ms);
-            using var pdfDoc = new PdfDocument(writer);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(writer);
 
             foreach (var file in files)
             {
                 using var inputStream = file.OpenReadStream();
-                using var readerPdf = new PdfDocument(new iText.Kernel.Pdf.PdfReader(inputStream));
+                using var readerPdf = new iText.Kernel.Pdf.PdfDocument(new iText.Kernel.Pdf.PdfReader(inputStream));
                 readerPdf.CopyPagesTo(1, readerPdf.GetNumberOfPages(), pdfDoc);
                 readerPdf.Close();
             }
@@ -83,9 +83,9 @@ namespace ratpdf.Services
                 throw new ArgumentException("No PDF file provided.");
 
             using var ms = new MemoryStream();
-            using var pdfDoc = new PdfDocument(new PdfWriter(ms));
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(new PdfWriter(ms));
 
-            using var reader = new PdfDocument(new iText.Kernel.Pdf.PdfReader(file.OpenReadStream()));
+            using var reader = new iText.Kernel.Pdf.PdfDocument(new iText.Kernel.Pdf.PdfReader(file.OpenReadStream()));
             int totalPages = reader.GetNumberOfPages();
 
             if (startPage < 1 || endPage > totalPages || startPage > endPage)
@@ -114,7 +114,7 @@ namespace ratpdf.Services
                 .UseSmartMode();
             using var writer = new PdfWriter(ms, writerProperties);
 
-            using var pdfDoc = new PdfDocument(reader, writer);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
 
             for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
             {
@@ -133,7 +133,7 @@ namespace ratpdf.Services
 
             using var ms = new MemoryStream();
             using var writer = new PdfWriter(ms);
-            using var pdfDoc = new PdfDocument(writer);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(writer);
             var document = new iText.Layout.Document(pdfDoc);
 
             // Add text as paragraphs
@@ -178,7 +178,7 @@ namespace ratpdf.Services
                 throw new ArgumentException("No PDF file provided.");
 
             using var reader = new iText.Kernel.Pdf.PdfReader(file.OpenReadStream());
-            using var pdfDoc = new PdfDocument(reader);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader);
             var sb = new StringBuilder();
 
             for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
@@ -199,7 +199,7 @@ namespace ratpdf.Services
             using var reader = new iText.Kernel.Pdf.PdfReader(file.OpenReadStream());
             using var ms = new MemoryStream();
             using var writer = new PdfWriter(ms);
-            using var pdfDoc = new PdfDocument(reader, writer);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
 
             int totalPages = pdfDoc.GetNumberOfPages();
             for (int i = 1; i <= totalPages; i++)
@@ -239,7 +239,7 @@ namespace ratpdf.Services
 
             using var ms = new MemoryStream();
             using var writer = new PdfWriter(ms, writerProperties);
-            using var pdfDoc = new PdfDocument(reader, writer);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
 
             pdfDoc.Close();
             return ms.ToArray();
@@ -253,7 +253,7 @@ namespace ratpdf.Services
             using var wordDoc = WordprocessingDocument.Open(file.OpenReadStream(), false);
             using var pdfMs = new MemoryStream();
             using var writer = new PdfWriter(pdfMs);
-            using var pdfDoc = new PdfDocument(writer);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(writer);
             var document = new iText.Layout.Document(pdfDoc);
 
             var paragraphs = wordDoc.MainDocumentPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
@@ -273,7 +273,7 @@ namespace ratpdf.Services
 
             using var pdfStream = file.OpenReadStream();
             using var reader = new iText.Kernel.Pdf.PdfReader(pdfStream);
-            using var pdfDoc = new PdfDocument(reader);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader);
 
             using var ms = new MemoryStream();
             using (var wordDoc = DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Create(
@@ -333,7 +333,7 @@ namespace ratpdf.Services
             using var reader = new iText.Kernel.Pdf.PdfReader(pdfStream);
             using var ms = new MemoryStream();
             using var writer = new PdfWriter(ms);
-            using var pdfDoc = new PdfDocument(reader, writer);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
             var document = new Document(pdfDoc);
 
 
@@ -428,7 +428,7 @@ namespace ratpdf.Services
 
             using var pdfStream = pdfFile.OpenReadStream();
             using var pdfReader = new iText.Kernel.Pdf.PdfReader(pdfStream);
-            using var pdfDoc = new PdfDocument(pdfReader);
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(pdfReader);
 
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet1");
@@ -463,7 +463,7 @@ namespace ratpdf.Services
 
             using var memoryStream = new MemoryStream();
             using var writer = new PdfWriter(memoryStream);
-            using var pdf = new PdfDocument(writer);
+            using var pdf = new iText.Kernel.Pdf.PdfDocument(writer);
             using var document = new Document(pdf);
 
             foreach (var worksheet in workbook.Worksheets)
@@ -504,5 +504,121 @@ namespace ratpdf.Services
             var mimeType = file.ContentType;
             return $"data:{mimeType};base64,{base64}";
         }
+        public async Task<string> ConvertPdfToHtml(IFormFile file)
+        {
+            using var stream = file.OpenReadStream();
+            using var pdf = UglyToad.PdfPig.PdfDocument.Open(stream);
+
+            var sb = new StringBuilder();
+
+            sb.Append("<div class='document'>");
+
+            foreach (var page in pdf.GetPages())
+            {
+                var words = page.GetWords()
+                    .OrderByDescending(w => w.BoundingBox.Top)
+                    .ToList();
+
+                var lines = GroupLines(words);
+
+                foreach (var line in lines)
+                {
+                    var text = string.Join(" ", line.Select(w => w.Text)).Trim();
+
+                    if (string.IsNullOrWhiteSpace(text))
+                        continue;
+
+                    var style = InferStyle(line);
+
+                    sb.Append($"<{style.Tag} style='{style.Css}'>");
+                    sb.Append(text);
+                    sb.Append($"</{style.Tag}>");
+                }
+            }
+
+            sb.Append("</div>");
+
+            return sb.ToString();
+        }
+
+        // -----------------------------
+        // GROUP WORDS INTO LINES
+        // -----------------------------
+        private List<List<WordWrapper>> GroupLines(List<Word> words)
+        {
+            var lines = new List<List<WordWrapper>>();
+            const double threshold = 2.5;
+
+            foreach (var word in words)
+            {
+                var line = lines.FirstOrDefault(l =>
+                    Math.Abs(l[0].Top - word.BoundingBox.Top) < threshold);
+
+                if (line == null)
+                {
+                    lines.Add(new List<WordWrapper>
+                    {
+                        new WordWrapper(word)
+                    });
+                }
+                else
+                {
+                    line.Add(new WordWrapper(word));
+                }
+            }
+
+            return lines;
+        }
+
+        // -----------------------------
+        // STYLE INFERENCE (NO HARD RULES)
+        // -----------------------------
+        private (string Tag, string Css) InferStyle(List<WordWrapper> line)
+        {
+            var avgFontSize = line.Average(w => w.FontSize);
+
+            var text = string.Join(" ", line.Select(l => l.Text));
+
+            // Bold inference (very simple heuristic)
+            bool isLikelyBold = avgFontSize > 14;
+
+            if (avgFontSize > 18)
+            {
+                return ("h1", $"font-size:{avgFontSize}px; font-weight:bold;");
+            }
+
+            if (avgFontSize > 14)
+            {
+                return ("h2", $"font-size:{avgFontSize}px; font-weight:bold;");
+            }
+
+            if (isLikelyBold)
+            {
+                return ("p", "font-weight:bold;");
+            }
+
+            return ("p", $"font-size:{avgFontSize}px;");
+        }
     }
+
+    // -----------------------------
+    // WORD WRAPPER (with metadata)
+    // -----------------------------
+    public class WordWrapper
+    {
+        public string Text { get; }
+        public double Top { get; }
+        public double FontSize { get; }
+
+        public WordWrapper(Word word)
+        {
+            Text = word.Text;
+            Top = word.BoundingBox.Top;
+
+            // PdfPig does not always give font size directly
+            FontSize = word.BoundingBox.Height;
+        }
+    }
+
 }
+

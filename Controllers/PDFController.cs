@@ -37,6 +37,16 @@ namespace ratpdf.Controllers
         public IActionResult JsonFormatter() => View();
         public IActionResult JwtDecoder() => View();
         public IActionResult ImageCompressor() => View();
+        public IActionResult EditPDF()
+        {
+            var html = HttpContext.Session.GetString("PdfHtml");
+            var model = new HtmlRequest
+            {
+                Html = html ?? string.Empty
+            };
+
+            return View(model);
+        }
         #endregion
         #region --POST--
 
@@ -473,6 +483,26 @@ namespace ratpdf.Controllers
                 ModelState.AddModelError(string.Empty, "Error converting image: " + ex.Message);
                 return View();
             }
+        }
+        [HttpPost]
+        public IActionResult ExportPdf([FromBody] HtmlRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.Html))
+                return BadRequest("Empty content");
+
+            var pdfBytes = _pdfService.ConvertHtmlToPdf(request.Html);
+
+            return File(pdfBytes, "application/pdf", $"EditedDocument.pdf");
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadPdf(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded");
+
+            var html = await _pdfService.ConvertPdfToHtml(file);
+            HttpContext.Session.SetString("PdfHtml", html);
+            return RedirectToAction("EditPDF","PDF");
         }
         #endregion
     }

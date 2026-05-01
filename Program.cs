@@ -32,6 +32,11 @@ builder.Services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB
 });
+builder.Services.AddSession();
+builder.Services.AddMemoryCache();
+
+builder.Services.AddSingleton<EmbeddingService>();
+builder.Services.AddScoped<AtsEngine>();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 50 * 1024 * 1024; // 50 MB
@@ -73,7 +78,7 @@ app.Use(async (context, next) =>
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.MapStaticAssets();

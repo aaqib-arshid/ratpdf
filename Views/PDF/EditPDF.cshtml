@@ -1,0 +1,151 @@
+﻿@model HtmlRequest
+@{
+    ViewData["Title"] = "Document Editor";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Document Editor</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+
+        .top-bar {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        #toolbar {
+            background: white;
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        #editor {
+            height: 700px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .actions {
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #2d6cdf;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background: #1f56c0;
+            }
+
+        input[type="file"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+
+        <!-- PDF Upload (IMPORT) -->
+        <form method="post" enctype="multipart/form-data" action="/PDF/UploadPdf">
+            <input type="file" name="file" accept="application/pdf" />
+            <button type="submit">Import PDF</button>
+        </form>
+
+    </div>
+
+    <!-- Toolbar -->
+    <div id="toolbar">
+        <select class="ql-font"></select>
+        <select class="ql-size"></select>
+
+        <button class="ql-bold"></button>
+        <button class="ql-italic"></button>
+        <button class="ql-underline"></button>
+
+        <select class="ql-align"></select>
+
+        <button class="ql-image"></button>
+    </div>
+
+    <!-- Editor -->
+    <div id="editor"></div>
+
+    <!-- Actions -->
+    <div class="actions">
+        <button onclick="downloadPdf()">Download PDF</button>
+    </div>
+
+    <script>
+        // ==============================
+        // 1. Initialize Quill editor
+        // ==============================
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: '#toolbar'
+            }
+        });
+
+        // ==============================
+        // 2. Load imported HTML (if any)
+        // ==============================
+           var importedHtml = @Html.Raw(Json.Serialize(Model.Html ?? ""));
+
+        if (importedHtml && importedHtml.length > 0) {
+            quill.clipboard.dangerouslyPasteHTML(importedHtml);
+        }
+
+        // ==============================
+        // 3. Export PDF (HTML → server)
+        // ==============================
+        function downloadPdf() {
+
+            const html = quill.root.innerHTML;
+
+            fetch('/PDF/ExportPdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ html: html })
+            })
+            .then(response => response.blob())
+            .then(blob => {
+
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "document.pdf";
+
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("PDF generation failed");
+            });
+        }
+    </script>
+
+</body>
+</html>
