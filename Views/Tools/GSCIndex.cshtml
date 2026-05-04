@@ -334,20 +334,17 @@
             color: #888780;
         }
 
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
 
-        .faq-answer p {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #5F5E5A;
-            padding-bottom: 18px;
-        }
-
-        .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-item.open .faq-answer {
+        max-height: 300px;
+        opacity: 1;
+    }
 
         /* ── Embed section ── */
         .embed-section {
@@ -818,6 +815,22 @@
             );
             btn.innerText = "Copied!";
             setTimeout(() => btn.innerText = "Copy code", 1500);
+        }
+                function toggleFaq(button) {
+            const item = button.parentElement;
+            const answer = item.querySelector(".faq-answer");
+
+            const isOpen = item.classList.contains("open");
+
+            document.querySelectorAll(".faq-item").forEach(i => {
+                i.classList.remove("open");
+                i.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+            });
+
+            if (!isOpen) {
+                item.classList.add("open");
+                button.setAttribute("aria-expanded", "true");
+            }
         }
     </script>
 }

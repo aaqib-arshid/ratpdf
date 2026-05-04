@@ -359,6 +359,7 @@ namespace ratpdf.Controllers
         [HttpGet]
         public IActionResult Embed()
         {
+            Response.Headers.Add("X-Frame-Options", "ALLOWALL");
             return View(); 
         }
         #region private methods
