@@ -35,4 +35,9 @@
     <loc>https://ratpdf.com/sitemaps/sitemap_my_ip.xml</loc>
     <lastmod>2026-04-26</lastmod>
   </sitemap>
+  <!--Content Decay Detector-->
+  <sitemap>
+    <loc>https://ratpdf.com/sitemaps/sitemap_content_decay_detector.xml</loc>
+    <lastmod>2026-05-04</lastmod>
+  </sitemap>
 </sitemapindex>
