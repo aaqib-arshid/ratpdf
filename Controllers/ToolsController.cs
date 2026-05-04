@@ -1,6 +1,12 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Core;
+using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using DnsClient;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ratpdf.Models;
@@ -15,12 +21,18 @@ namespace ratpdf.Controllers
         private readonly QueueClient _queueClient;
         private readonly AtsEngine _atsEngine;
         private readonly PdfConversionService _pdf = new();
-        public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine)
+        private readonly SearchConsoleService _gsc;
+        private readonly DecayCalculatorService _calculator;
+        private readonly GoogleOAuthService _googleOAuth;
+        public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine, SearchConsoleService gsc, DecayCalculatorService calculator,GoogleOAuthService googleOAuth)
         {
             _blobContainer = new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdf");
             _queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdfai-queue");
             _httpClient = httpClientFactory.CreateClient();
             _atsEngine = atsEngine;
+            _gsc = gsc;
+            _calculator = calculator;
+            _googleOAuth = googleOAuth;
         }
         public IActionResult RingSizeConverter()
         {
@@ -224,7 +236,7 @@ namespace ratpdf.Controllers
         }
 
         [HttpPost]
-        public IActionResult AtsDashboard(IFormFile file)
+        public async Task<IActionResult> AtsDashboard(IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -249,7 +261,7 @@ namespace ratpdf.Controllers
             }
 
             var resumeText = _pdf.ExtractTextFromPdf(file);
-            var result = _atsEngine.Score(resumeText);
+            var result = await _atsEngine.ScoreAsync(resumeText);
             var structure = (int)(result.StructureScore * 100);
             var content = (int)(result.ContentScore * 100);
             var semantic = (int)(result.SemanticScore * 100);
@@ -271,8 +283,93 @@ namespace ratpdf.Controllers
             };
             return View("AtsScoreDashboard", uiResult);
         }
-        #region private methods
+        [HttpGet]
+        public IActionResult LoginGoogle()
+        {
+            var redirectUrl = Url.Action("GoogleCallback", "Tools");
 
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl,
+                Items =
+                {
+                    { "prompt", "select_account" } 
+                }
+            };
+
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GoogleCallback()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!result.Succeeded)
+                return RedirectToAction("GSCIndex");
+
+            var accessToken = result.Properties.GetTokenValue("access_token");
+
+            HttpContext.Session.SetString("gsc_token", accessToken ?? "");
+
+            return RedirectToAction("GSCIndex");
+        }
+        [HttpGet]
+        public IActionResult GSCIndex()
+        {
+            ViewData["Title"] = "Free Content Decay Detector — Find Dying SEO Pages Instantly";
+            ViewData["MetaDescription"] = "Paste your domain and instantly see which articles are losing Google rankings. Free, no signup required.";
+            ViewData["Canonical"] = "https://ratpdf.com/Tools/GSCIndex";
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Analyze(DecayRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Domain))
+            {
+                ModelState.AddModelError("Domain", "Domain is required");
+                return View("GSCIndex", request);
+            }
+
+            var accessToken = HttpContext.Session.GetString("gsc_token");
+
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                ModelState.AddModelError(string.Empty, "Google Search Console not connected");
+                return View("GSCIndex", request);
+            }
+            var cleanDomain = NormalizeGscSite(request.Domain);
+
+            var credential = GoogleCredential
+            .FromAccessToken(accessToken)
+            .CreateScoped("https://www.googleapis.com/auth/webmasters.readonly");
+
+            var articles = await _gsc.GetPagePerformanceAsync(credential, cleanDomain);
+            if (articles.Count == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid site or no permission");
+                return View("GSCIndex", request);
+            }
+
+            var result = _calculator.Calculate(cleanDomain, articles);
+
+            return View("SeoResults", result);
+        }
+
+        [HttpGet]
+        public IActionResult Embed()
+        {
+            return View(); 
+        }
+        #region private methods
+        private string NormalizeGscSite(string domain)
+        {
+            return domain.Trim()
+            .Replace("https://", "")
+            .Replace("http://", "")
+            .TrimEnd('/')
+            .ToLower();
+        }
         private WordStats CalculateStats(string text)
         {
             var wordArray = Regex.Matches(text, @"\b[a-zA-Z]+(?:-[a-zA-Z]+)*\b")

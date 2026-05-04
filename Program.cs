@@ -1,3 +1,6 @@
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http.Features;
 using ratpdf.Services;
 using System.Threading.RateLimiting;
@@ -35,11 +38,36 @@ builder.Services.Configure<FormOptions>(options =>
 builder.Services.AddSession();
 builder.Services.AddMemoryCache();
 
-builder.Services.AddSingleton<EmbeddingService>();
+builder.Services.AddHttpClient<RemoteEmbeddingService>(client =>
+{
+    client.BaseAddress = new Uri("https://ai-embed-app.jollyisland-ab3b4974.canadacentral.azurecontainerapps.io/");
+});
 builder.Services.AddScoped<AtsEngine>();
+builder.Services.AddSingleton<SearchConsoleService>();
+builder.Services.AddSingleton<DecayCalculatorService>();
+builder.Services.AddSingleton<GoogleOAuthService>();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 50 * 1024 * 1024; // 50 MB
+});
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["GoogleOAuth:ClientId"];
+    options.ClientSecret = builder.Configuration["GoogleOAuth:ClientSecret"];
+
+    // 🔥 IMPORTANT SCOPES
+    options.Scope.Add("https://www.googleapis.com/auth/webmasters.readonly");
+    options.Scope.Add("openid");
+    options.Scope.Add("profile");
+    options.Scope.Add("email");
+
+    options.SaveTokens = true;
 });
 var app = builder.Build();
 app.UseRateLimiter();
@@ -79,6 +107,7 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

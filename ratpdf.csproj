@@ -5,15 +5,25 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\AIModels\**" />
+    <Content Remove="wwwroot\AIModels\**" />
+    <EmbeddedResource Remove="wwwroot\AIModels\**" />
+    <None Remove="wwwroot\AIModels\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.27.0" />
     <PackageReference Include="Azure.Storage.Queues" Version="12.25.0" />
     <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="DnsClient" Version="1.8.0" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.4.1" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.74.0" />
+    <PackageReference Include="Google.Apis.SearchConsole.v1" Version="1.70.0.3847" />
     <PackageReference Include="itext" Version="9.5.0" />
     <PackageReference Include="itext.bouncy-castle-adapter" Version="9.5.0" />
     <PackageReference Include="itext.pdfhtml" Version="6.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.7" />
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.24.4" />
     <PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.25.1" />
     <PackageReference Include="Microsoft.ML.Tokenizers" Version="2.0.0" />

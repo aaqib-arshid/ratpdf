@@ -1,19 +1,18 @@
 ﻿using ratpdf.Models;
+
 namespace ratpdf.Services
 {
     public class AtsEngine
     {
+        private readonly RemoteEmbeddingService _embedding;
 
-        private readonly EmbeddingService _embedding;
-
-        public AtsEngine(EmbeddingService embedding)
+        public AtsEngine(RemoteEmbeddingService embedding)
         {
             _embedding = embedding;
         }
 
-        public AtsResult Score(string resume)
+        public async Task<AtsResult> ScoreAsync(string resume)
         {
-            var result = new AtsResult();
             var validity = ResumeValidity(resume);
 
             if (validity < 0.4)
@@ -27,10 +26,14 @@ namespace ratpdf.Services
                     FormattingScore = 0
                 };
             }
-            result.StructureScore = StructureScore(resume);
-            result.ContentScore = ContentScore(resume);
-            result.SemanticScore = SemanticScore(resume);
-            result.FormattingScore = FormattingScore(resume);
+
+            var result = new AtsResult
+            {
+                StructureScore = StructureScore(resume),
+                ContentScore = await ContentScoreAsync(resume),
+                SemanticScore = await SemanticScoreAsync(resume),
+                FormattingScore = FormattingScore(resume)
+            };
 
             result.Score =
                 result.StructureScore * 0.30 +
@@ -41,25 +44,27 @@ namespace ratpdf.Services
             return result;
         }
 
+        // ---------------- STRUCTURE ----------------
         private double StructureScore(string text)
         {
             text = text.ToLower();
 
             string[] sections =
             {
-            "experience",
-            "education",
-            "projects",
-            "certifications",
-            "languages",
-            "awards",
-            "skills"
+                "experience",
+                "education",
+                "projects",
+                "certifications",
+                "languages",
+                "awards",
+                "skills"
             };
 
             return sections.Count(s => text.Contains(s)) / (double)sections.Length;
         }
 
-        private double ContentScore(string text)
+        // ---------------- CONTENT (ASYNC FIXED) ----------------
+        private async Task<double> ContentScoreAsync(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return 0;
@@ -68,6 +73,7 @@ namespace ratpdf.Services
                 .Split(new[] { '\n', '.', '•', '-' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim())
                 .Where(s => s.Length > 5)
+                .Distinct()
                 .ToList();
 
             if (segments.Count == 0)
@@ -81,15 +87,18 @@ namespace ratpdf.Services
                 "projects and work contributions"
             };
 
+            var anchorTasks = anchors.Select(a => _embedding.EmbedAsync(a)).ToList();
+            var anchorVectors = await Task.WhenAll(anchorTasks);
+
+            var segmentTasks = segments.Select(s => _embedding.EmbedAsync(s)).ToList();
+            var segmentVectors = await Task.WhenAll(segmentTasks);
+
             double score = 0;
 
-            foreach (var a in anchors)
+            foreach (var aVec in anchorVectors)
             {
-                var aVec = _embedding.Embed(a);
-
-                foreach (var s in segments)
+                foreach (var vec in segmentVectors)
                 {
-                    var vec = _embedding.Embed(s);
                     var c = CosineSimilarity.Compute(vec, aVec);
                     score += (c + 1) / 2.0;
                 }
@@ -98,26 +107,32 @@ namespace ratpdf.Services
             return score / (segments.Count * anchors.Length);
         }
 
-        private double SemanticScore(string resume)
+        // ---------------- SEMANTIC (ASYNC FIXED) ----------------
+        private async Task<double> SemanticScoreAsync(string resume)
         {
             if (string.IsNullOrWhiteSpace(resume))
                 return 0;
 
-            var resumeVec = _embedding.Embed(resume);
-
             var anchors = new[]
             {
-                "work experience responsibilities achievements",
-                "professional skills and competencies",
-                "education certifications training",
-                "projects accomplishments outcomes"
-           };
+        "work experience responsibilities achievements",
+        "professional skills and competencies",
+        "education certifications training",
+        "projects accomplishments outcomes"
+    };
 
+            // STEP 1: embed resume once
+            var resumeVec = await _embedding.EmbedAsync(resume);
+
+            // STEP 2: parallelize anchor embeddings
+            var anchorTasks = anchors.Select(a => _embedding.EmbedAsync(a));
+            var anchorVectors = await Task.WhenAll(anchorTasks);
+
+            // STEP 3: compute in-memory only
             double score = 0;
 
-            foreach (var a in anchors)
+            foreach (var vec in anchorVectors)
             {
-                var vec = _embedding.Embed(a);
                 var c = CosineSimilarity.Compute(resumeVec, vec);
                 score += (c + 1) / 2.0;
             }
@@ -125,6 +140,7 @@ namespace ratpdf.Services
             return Math.Clamp(score / anchors.Length, 0, 1);
         }
 
+        // ---------------- FORMATTING ----------------
         private double FormattingScore(string text)
         {
             double score = 0;
@@ -137,6 +153,8 @@ namespace ratpdf.Services
 
             return Math.Clamp(score, 0, 1);
         }
+
+        // ---------------- VALIDITY ----------------
         private double ResumeValidity(string text)
         {
             text = text.ToLower();
@@ -149,11 +167,15 @@ namespace ratpdf.Services
             if (text.Contains("projects")) score += 0.10;
             if (text.Contains("contact")) score += 0.10;
 
-            if (text.Contains("@gmail") || text.Contains("@hotmail")|| text.Contains("@outlook")|| text.Contains("@rediffmail")) score += 0.10;
+            if (text.Contains("@gmail") ||
+                text.Contains("@hotmail") ||
+                text.Contains("@outlook") ||
+                text.Contains("@rediffmail"))
+                score += 0.10;
+
             if (text.Contains("linkedin")) score += 0.05;
 
             return Math.Clamp(score, 0, 1);
         }
     }
 }
-
