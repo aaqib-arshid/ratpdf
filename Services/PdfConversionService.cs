@@ -1,5 +1,7 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using iText.Html2pdf;
 using iText.IO.Font.Constants;
 using iText.IO.Image;
@@ -8,6 +10,9 @@ using iText.Kernel.Font;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
 using iText.Kernel.Pdf.Canvas.Parser;
+using iText.Kernel.Pdf.Canvas.Parser.Data;
+using iText.Kernel.Pdf.Canvas.Parser.Listener;
+using iText.Kernel.Pdf.Xobject;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
@@ -15,7 +20,13 @@ using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf.IO;
 using System.Text;
 using UglyToad.PdfPig.Content;
-
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using System.Linq;
+using SixLabors.ImageSharp;         
+using SixLabors.ImageSharp.Formats.Png;
+using Paragraph = DocumentFormat.OpenXml.Wordprocessing.Paragraph;
 namespace ratpdf.Services
 {
     public class PdfConversionService
@@ -39,7 +50,7 @@ namespace ratpdf.Services
                 }
 
                 var imgData = ImageDataFactory.Create(imgBytes);
-                var img = new Image(imgData);
+                var img = new iText.Layout.Element.Image(imgData);
 
                 img.SetAutoScale(true);
 
@@ -139,7 +150,7 @@ namespace ratpdf.Services
             // Add text as paragraphs
             foreach (var line in text.Split("\n"))
             {
-                document.Add(new Paragraph(line));
+                document.Add(new iText.Layout.Element.Paragraph(line));
             }
 
             document.Close();
@@ -260,7 +271,7 @@ namespace ratpdf.Services
             foreach (var p in paragraphs)
             {
                 var text = string.Concat(p.Descendants<DocumentFormat.OpenXml.Wordprocessing.Text>().Select(t => t.Text));
-                document.Add(new Paragraph(text));
+                document.Add(new iText.Layout.Element.Paragraph(text));
             }
 
             document.Close();
@@ -269,51 +280,118 @@ namespace ratpdf.Services
         public byte[] ConvertPdfToDoc(IFormFile file)
         {
             if (file == null)
-                throw new System.ArgumentException("No PDF file provided.");
+                throw new ArgumentException("No PDF file provided.");
 
             using var pdfStream = file.OpenReadStream();
             using var reader = new iText.Kernel.Pdf.PdfReader(pdfStream);
-            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader);
-
+            using var pdfDoc = new PdfDocument(reader);
             using var ms = new MemoryStream();
-            using (var wordDoc = DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Create(
-                ms, DocumentFormat.OpenXml.WordprocessingDocumentType.Document, true))
+
+            using (var wordDoc = WordprocessingDocument.Create(
+                       ms, WordprocessingDocumentType.Document, true))
             {
                 var mainPart = wordDoc.AddMainDocumentPart();
-                mainPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(
-                    new DocumentFormat.OpenXml.Wordprocessing.Body());
+                mainPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
                 var body = mainPart.Document.Body;
 
-                for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
-                {
-                    var page = pdfDoc.GetPage(i);
-                    string text = PdfTextExtractor.GetTextFromPage(page);
+                int imageCounter = 0;
 
-                    if (!string.IsNullOrWhiteSpace(text))
+                for (int pageNum = 1; pageNum <= pdfDoc.GetNumberOfPages(); pageNum++)
+                {
+                    var page = pdfDoc.GetPage(pageNum);
+
+                    // ── Extracting IMAGES ──────────────────────────────────────────
+                    var xObjects = page.GetResources().GetResource(iText.Kernel.Pdf.PdfName.XObject);
+                    if (xObjects != null)
                     {
-                        foreach (var line in text.Split('\n'))
+                        foreach (var entry in xObjects.EntrySet())
                         {
-                            var trimmedLine = line.Trim();
-                            if (!string.IsNullOrEmpty(trimmedLine))
+                            var xObj = xObjects.GetAsStream(entry.Key);
+                            if (xObj == null) continue;
+
+                            var pdfObj = PdfXObject.MakeXObject(xObj);
+                            if (pdfObj is PdfImageXObject imageXObj)
                             {
-                                // Fully qualified OpenXML types
-                                var run = new DocumentFormat.OpenXml.Wordprocessing.Run(
-                                    new DocumentFormat.OpenXml.Wordprocessing.Text(trimmedLine));
-                                var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph(run);
-                                body.Append(paragraph);
+                                try
+                                {
+                                    byte[] imgBytes = imageXObj.GetImageBytes(true);
+                                    if (imgBytes == null || imgBytes.Length == 0) continue;
+
+                                    byte[] pngBytes = NormalizeToPng(imgBytes);
+
+                                    var imagePart = mainPart.AddImagePart(ImagePartType.Png);
+                                    using var imgMs = new MemoryStream(pngBytes);
+                                    imagePart.FeedData(imgMs);
+
+                                    string relationshipId = mainPart.GetIdOfPart(imagePart);
+                                    imageCounter++;
+
+                                    float widthPt = imageXObj.GetWidth();
+                                    float heightPt = imageXObj.GetHeight();
+
+                                    float maxWidthPt = 451f;
+                                    if (widthPt > maxWidthPt)
+                                    {
+                                        float scale = maxWidthPt / widthPt;
+                                        widthPt *= scale;
+                                        heightPt *= scale;
+                                    }
+                                    long widthEmu = (long)(widthPt * 12700);
+                                    long heightEmu = (long)(heightPt * 12700);
+
+                                    var imgParagraph = BuildImageParagraph(
+                                        relationshipId, imageCounter, widthEmu, heightEmu);
+                                    body.Append(imgParagraph);
+                                }
+                                catch { /* skip corrupt images */ }
                             }
                         }
                     }
 
-                    // Add a page break after each PDF page
-                    if (i < pdfDoc.GetNumberOfPages())
+                    var strategy = new FormattedTextExtractionStrategy();
+                    var processor = new PdfCanvasProcessor(strategy);
+                    processor.ProcessPageContent(page);
+
+                    foreach (var line in strategy.GetLines())
                     {
-                        var pageBreak = new DocumentFormat.OpenXml.Wordprocessing.Paragraph(
-                            new DocumentFormat.OpenXml.Wordprocessing.Run(
-                                new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = DocumentFormat.OpenXml.Wordprocessing.BreakValues.Page }
-                            )
-                        );
-                        body.Append(pageBreak);
+                        var para = new Paragraph();
+
+                        foreach (var chunk in line)
+                        {
+                            var run = new Run();
+                            var rpr = new RunProperties();
+
+                            if (!string.IsNullOrEmpty(chunk.FontName))
+                            {
+                                string cleanFont = CleanFontName(chunk.FontName);
+                                rpr.Append(new RunFonts { Ascii = cleanFont, HighAnsi = cleanFont });
+                            }
+
+                            if (chunk.FontSize > 0)
+                                rpr.Append(new FontSize { Val = ((int)Math.Round(chunk.FontSize * 2)).ToString() });
+
+                            if (chunk.IsBold) rpr.Append(new Bold());
+                            if (chunk.IsItalic) rpr.Append(new Italic());
+
+                            if (chunk.HexColor != "000000")
+                                rpr.Append(new DocumentFormat.OpenXml.Wordprocessing.Color
+                                { Val = chunk.HexColor });
+
+                            if (rpr.HasChildren) run.Append(rpr);
+
+                            string text = chunk.Text;
+                            run.Append(new DocumentFormat.OpenXml.Wordprocessing.Text(text) { Space = SpaceProcessingModeValues.Preserve });
+                            para.Append(run);
+                        }
+
+                        body.Append(para);
+                    }
+                    strategy.Reset();
+
+                    if (pageNum < pdfDoc.GetNumberOfPages())
+                    {
+                        body.Append(new DocumentFormat.OpenXml.Wordprocessing.Paragraph(
+                            new Run(new Break { Type = BreakValues.Page })));
                     }
                 }
 
@@ -334,26 +412,25 @@ namespace ratpdf.Services
             using var ms = new MemoryStream();
             using var writer = new PdfWriter(ms);
             using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
-            var document = new Document(pdfDoc);
+            var document = new iText.Layout.Document(pdfDoc);
 
 
             PdfFont font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_OBLIQUE);
 
             var lastPage = pdfDoc.GetNumberOfPages();
-            document.SetTextAlignment(TextAlignment.RIGHT);
+            document.SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
 
-            var signature = new Paragraph(name)
+            var signature = new iText.Layout.Element.Paragraph(name)
                 .SetFont(font)
                 .SetFontSize(24)
                 .SetFontColor(ColorConstants.BLUE)
-                .SetFixedPosition(lastPage, 400, 50, 200); // x, y, width
+                .SetFixedPosition(lastPage, 400, 50, 200); 
 
             document.Add(signature);
             document.Close();
 
             return ms.ToArray();
         }
-        // Add text overlay
         public byte[] AddText(IFormFile pdfFile, string text, int pageNumber = 0, float x = 50, float y = 50)
         {
             using var ms = new MemoryStream();
@@ -371,7 +448,6 @@ namespace ratpdf.Services
             return ms.ToArray();
         }
 
-        // Add image overlay
         public byte[] AddImage(IFormFile pdfFile, IFormFile imageFile, int pageNumber = 0, float x = 50, float y = 50, float width = 200, float height = 200)
         {
             using var ms = new MemoryStream();
@@ -391,7 +467,6 @@ namespace ratpdf.Services
             return ms.ToArray();
         }
 
-        // Rotate a page
         public byte[] RotatePage(IFormFile pdfFile, int pageNumber = 0, int rotationDegree = 90)
         {
             using var ms = new MemoryStream();
@@ -408,7 +483,6 @@ namespace ratpdf.Services
             return ms.ToArray();
         }
 
-        // Remove a page
         public byte[] RemovePage(IFormFile pdfFile, int pageNumber = 0)
         {
             using var ms = new MemoryStream();
@@ -464,24 +538,24 @@ namespace ratpdf.Services
             using var memoryStream = new MemoryStream();
             using var writer = new PdfWriter(memoryStream);
             using var pdf = new iText.Kernel.Pdf.PdfDocument(writer);
-            using var document = new Document(pdf);
+            using var document = new iText.Layout.Document(pdf);
 
             foreach (var worksheet in workbook.Worksheets)
             {
-                document.Add(new Paragraph($"Sheet: {worksheet.Name}")
+                document.Add(new iText.Layout.Element.Paragraph($"Sheet: {worksheet.Name}")
                     .SetFontSize(16));
 
                 var range = worksheet.RangeUsed();
                 if (range == null) continue;
 
                 int columnCount = range.ColumnCount();
-                var table = new Table(columnCount);
+                var table = new iText.Layout.Element.Table(columnCount);
 
                 foreach (var row in range.Rows())
                 {
                     foreach (var cell in row.Cells())
                     {
-                        table.AddCell(new Cell().Add(new Paragraph(cell.GetFormattedString())));
+                        table.AddCell(new Cell().Add(new iText.Layout.Element.Paragraph(cell.GetFormattedString())));
                     }
                 }
 
@@ -541,9 +615,6 @@ namespace ratpdf.Services
             return sb.ToString();
         }
 
-        // -----------------------------
-        // GROUP WORDS INTO LINES
-        // -----------------------------
         private List<List<WordWrapper>> GroupLines(List<Word> words)
         {
             var lines = new List<List<WordWrapper>>();
@@ -569,17 +640,12 @@ namespace ratpdf.Services
 
             return lines;
         }
-
-        // -----------------------------
-        // STYLE INFERENCE (NO HARD RULES)
-        // -----------------------------
         private (string Tag, string Css) InferStyle(List<WordWrapper> line)
         {
             var avgFontSize = line.Average(w => w.FontSize);
 
             var text = string.Join(" ", line.Select(l => l.Text));
 
-            // Bold inference (very simple heuristic)
             bool isLikelyBold = avgFontSize > 14;
 
             if (avgFontSize > 18)
@@ -599,11 +665,148 @@ namespace ratpdf.Services
 
             return ("p", $"font-size:{avgFontSize}px;");
         }
-    }
+        private static string CleanFontName(string raw)
+        {
+            if (raw.Length > 7 && raw[6] == '+')
+                raw = raw.Substring(7);
+            return raw.Split('-', ',')[0].Trim();
+        }
 
-    // -----------------------------
-    // WORD WRAPPER (with metadata)
-    // -----------------------------
+        private static byte[] NormalizeToPng(byte[] input)
+        {
+            try
+            {
+                using var img = SixLabors.ImageSharp.Image.Load(input);
+                using var outMs = new MemoryStream();
+                img.Save(outMs, new PngEncoder());
+                return outMs.ToArray();
+            }
+            catch
+            {
+                return input; 
+            }
+        }
+
+        private static Paragraph BuildImageParagraph(
+            string relId, int imgId, long widthEmu, long heightEmu)
+        {
+            return new Paragraph(new Run(
+                new Drawing(
+                    new DW.Inline(
+                        new DW.Extent { Cx = widthEmu, Cy = heightEmu },
+                        new DW.EffectExtent { LeftEdge = 0, TopEdge = 0, RightEdge = 0, BottomEdge = 0 },
+                        new DW.DocProperties { Id = (uint)imgId, Name = $"Image{imgId}" },
+                        new DW.NonVisualGraphicFrameDrawingProperties(
+                            new A.GraphicFrameLocks { NoChangeAspect = true }),
+                        new A.Graphic(
+                            new A.GraphicData(
+                                new PIC.Picture(
+                                    new PIC.NonVisualPictureProperties(
+                                        new PIC.NonVisualDrawingProperties
+                                        { Id = (uint)imgId, Name = $"img{imgId}.png" },
+                                        new PIC.NonVisualPictureDrawingProperties()),
+                                    new PIC.BlipFill(
+                                        new A.Blip { Embed = relId },
+                                        new A.Stretch(new A.FillRectangle())),
+                                    new PIC.ShapeProperties(
+                                        new A.Transform2D(
+                                            new A.Offset { X = 0, Y = 0 },
+                                            new A.Extents { Cx = widthEmu, Cy = heightEmu }),
+                                        new A.PresetGeometry(new A.AdjustValueList())
+                                        { Preset = A.ShapeTypeValues.Rectangle })))
+                            { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" }))
+                    {
+                        DistanceFromTop = 0,
+                        DistanceFromBottom = 0,
+                        DistanceFromLeft = 0,
+                        DistanceFromRight = 0
+                    })));
+        }
+    }
+    /// <summary>
+    /// Listens to iText7 render events and collects text chunks with full formatting.
+    /// </summary>
+    public class FormattedTextExtractionStrategy : IEventListener
+    {
+        private readonly List<PositionedChunk> _rawChunks = new();
+
+        public void EventOccurred(IEventData data, EventType type)
+        {
+            if (type != EventType.RENDER_TEXT) return;
+            var info = (TextRenderInfo)data;
+
+            string text = info.GetText();
+            if (string.IsNullOrWhiteSpace(text)) return;
+
+            var font = info.GetFont();
+            float fontSize = Math.Abs(
+                info.GetFontSize() * info.GetTextMatrix().Get(iText.Kernel.Geom.Matrix.I11));
+            if (fontSize < 1) fontSize = 11;
+
+            string fontName = font?.GetFontProgram()?.GetFontNames()?.GetFontName() ?? "";
+            bool isBold = fontName.IndexOf("Bold", StringComparison.OrdinalIgnoreCase) >= 0
+                         || (font?.GetFontProgram()?.GetFontNames()?.GetFontWeight() ?? 0) >= 700;
+            bool isItalic = fontName.IndexOf("Italic", StringComparison.OrdinalIgnoreCase) >= 0
+                         || fontName.IndexOf("Oblique", StringComparison.OrdinalIgnoreCase) >= 0;
+
+            string hex = "000000";
+            var fillColor = info.GetFillColor();
+            if (fillColor?.GetColorValue() is { Length: >= 3 } c)
+                hex = $"{(int)(c[0] * 255):X2}{(int)(c[1] * 255):X2}{(int)(c[2] * 255):X2}";
+
+            var start = info.GetBaseline().GetStartPoint();
+            float x = start.Get(0);
+            float y = start.Get(1); 
+
+            _rawChunks.Add(new PositionedChunk
+            {
+                Text = text,
+                X = x,
+                Y = y,
+                FontName = fontName,
+                FontSize = fontSize,
+                IsBold = isBold,
+                IsItalic = isItalic,
+                HexColor = hex,
+            });
+        }
+
+        public List<List<PositionedChunk>> GetLines()
+        {
+            if (_rawChunks.Count == 0) return new();
+
+            var sorted = _rawChunks
+                .OrderByDescending(c => c.Y)
+                .ThenBy(c => c.X)
+                .ToList();
+
+            var lines = new List<List<PositionedChunk>>();
+            var curLine = new List<PositionedChunk> { sorted[0] };
+            float lineY = sorted[0].Y;
+            float lineTol = 3f;
+
+            for (int i = 1; i < sorted.Count; i++)
+            {
+                if (Math.Abs(sorted[i].Y - lineY) <= lineTol)
+                {
+                    curLine.Add(sorted[i]);
+                }
+                else
+                {
+                    lines.Add(curLine);
+                    curLine = new List<PositionedChunk> { sorted[i] };
+                    lineY = sorted[i].Y;
+                }
+            }
+            lines.Add(curLine);
+
+            return lines;
+        }
+        public void Reset() => _rawChunks.Clear();
+
+        public ICollection<EventType> GetSupportedEvents() =>
+            new[] { EventType.RENDER_TEXT };
+    }
     public class WordWrapper
     {
         public string Text { get; }
@@ -614,10 +817,19 @@ namespace ratpdf.Services
         {
             Text = word.Text;
             Top = word.BoundingBox.Top;
-
-            // PdfPig does not always give font size directly
             FontSize = word.BoundingBox.Height;
         }
+    }
+    public class PositionedChunk
+    {
+        public string Text { get; set; } = "";
+        public float X { get; set; }
+        public float Y { get; set; }
+        public string FontName { get; set; } = "";
+        public float FontSize { get; set; }
+        public bool IsBold { get; set; }
+        public bool IsItalic { get; set; }
+        public string HexColor { get; set; } = "000000";
     }
 
 }
