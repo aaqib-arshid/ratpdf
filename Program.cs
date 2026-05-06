@@ -1,4 +1,3 @@
-using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http.Features;
@@ -21,7 +20,7 @@ builder.Services.AddRateLimiter(options =>
             PermitLimit = 50,
             Window = TimeSpan.FromSeconds(10),
             QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-            QueueLimit = 0 
+            QueueLimit = 0
         });
     });
     options.OnRejected = (context, cancellationToken) =>
@@ -61,7 +60,6 @@ builder.Services.AddAuthentication(options =>
     options.ClientId = builder.Configuration["GoogleOAuth:ClientId"];
     options.ClientSecret = builder.Configuration["GoogleOAuth:ClientSecret"];
 
-    // 🔥 IMPORTANT SCOPES
     options.Scope.Add("https://www.googleapis.com/auth/webmasters.readonly");
     options.Scope.Add("openid");
     options.Scope.Add("profile");
@@ -75,7 +73,7 @@ app.UseRateLimiter();
 //{
 app.UseExceptionHandler("/Home/Error");
 
-    app.UseHsts();
+app.UseHsts();
 //}
 
 app.Use(async (context, next) =>
@@ -98,7 +96,7 @@ app.Use(async (context, next) =>
                     </body>
                 </html>
             ");
-            return; 
+            return;
         }
     }
     await next();

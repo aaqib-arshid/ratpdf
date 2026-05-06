@@ -5,6 +5,11 @@
     <loc>https://ratpdf.com/sitemaps/sitemaptools.xml</loc>
     <lastmod>2026-05-04</lastmod>
   </sitemap>
+  <!--PDF To Word-->
+  <sitemap>
+    <loc>https://ratpdf.com/sitemaps/sitemap-pdf-to-word.xml</loc>
+    <lastmod>2026-05-06</lastmod>
+  </sitemap>
   <!--WordCounter-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_wordcounterseo.xml</loc>
