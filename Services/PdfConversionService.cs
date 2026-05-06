@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using iText.Html2pdf;
+using iText.IO.Font;
 using iText.IO.Font.Constants;
 using iText.IO.Image;
 using iText.Kernel.Colors;
@@ -18,15 +19,14 @@ using iText.Layout.Element;
 using iText.Layout.Properties;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf.IO;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using System.Text;
 using UglyToad.PdfPig.Content;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-using System.Linq;
-using SixLabors.ImageSharp;         
-using SixLabors.ImageSharp.Formats.Png;
 using Paragraph = DocumentFormat.OpenXml.Wordprocessing.Paragraph;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 namespace ratpdf.Services
 {
     public class PdfConversionService
@@ -202,7 +202,6 @@ namespace ratpdf.Services
             pdfDoc.Close();
             return sb.ToString();
         }
-        // Add text watermark to every page
         public byte[] AddWatermark(IFormFile file, string watermarkText)
         {
             if (file == null) throw new ArgumentException("No PDF provided.");
@@ -234,7 +233,6 @@ namespace ratpdf.Services
             return ms.ToArray();
         }
 
-        // Add password protection
         public byte[] AddPassword(IFormFile file, string password)
         {
             if (file == null) throw new ArgumentException("No PDF provided.");
@@ -255,28 +253,393 @@ namespace ratpdf.Services
             pdfDoc.Close();
             return ms.ToArray();
         }
+
         public byte[] ConvertDocxToPdf(IFormFile file)
         {
             if (file == null)
                 throw new ArgumentException("No DOCX file provided.");
 
-            using var ms = new MemoryStream();
-            using var wordDoc = WordprocessingDocument.Open(file.OpenReadStream(), false);
             using var pdfMs = new MemoryStream();
             using var writer = new PdfWriter(pdfMs);
-            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(writer);
-            var document = new iText.Layout.Document(pdfDoc);
+            using var pdfDoc = new PdfDocument(writer);
+            using var doc = new iText.Layout.Document(pdfDoc, iText.Kernel.Geom.PageSize.A4);
+            doc.SetMargins(40, 40, 40, 40);
 
-            var paragraphs = wordDoc.MainDocumentPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
-            foreach (var p in paragraphs)
+            using var wordStream = file.OpenReadStream();
+            using var wordDoc = WordprocessingDocument.Open(wordStream, false);
+
+            var body = wordDoc.MainDocumentPart.Document.Body;
+            var mainPart = wordDoc.MainDocumentPart;
+
+            var styleMap = BuildStyleMap(mainPart);
+
+            foreach (var element in body.Elements())
             {
-                var text = string.Concat(p.Descendants<DocumentFormat.OpenXml.Wordprocessing.Text>().Select(t => t.Text));
-                document.Add(new iText.Layout.Element.Paragraph(text));
+                switch (element)
+                {
+                    case DocumentFormat.OpenXml.Wordprocessing.Paragraph para:
+                        var iTextPara = ProcessParagraph(para, mainPart, styleMap, doc); 
+                        if (iTextPara != null)
+                            doc.Add(iTextPara);
+                        break;
+
+                    case DocumentFormat.OpenXml.Wordprocessing.Table table:
+                        var iTextTable = ProcessTable(table, mainPart, styleMap,doc);
+                        if (iTextTable != null)
+                            doc.Add(iTextTable);
+                        break;
+                }
             }
 
-            document.Close();
+            doc.Close();
             return pdfMs.ToArray();
         }
+        private iText.Layout.Element.Paragraph ProcessParagraph(
+        DocumentFormat.OpenXml.Wordprocessing.Paragraph para,
+        MainDocumentPart mainPart,
+        Dictionary<string, ResolvedStyle> styleMap,iText.Layout.Document doc)
+        {
+            var iTextPara = new iText.Layout.Element.Paragraph();
+            iTextPara.SetMultipliedLeading(1.2f);
+
+            var pPr = para.ParagraphProperties;
+            ResolvedStyle baseStyle = new();
+
+            string? styleId = pPr?.ParagraphStyleId?.Val?.Value;
+            if (styleId != null && styleMap.TryGetValue(styleId, out var namedStyle))
+                baseStyle = namedStyle;
+
+            var jc = pPr?.Justification?.Val;
+            if (jc != null)
+            {
+                iText.Layout.Properties.TextAlignment alignment;
+                if (jc.Value == DocumentFormat.OpenXml.Wordprocessing.JustificationValues.Center)
+                    alignment = iText.Layout.Properties.TextAlignment.CENTER;
+                else if (jc.Value == DocumentFormat.OpenXml.Wordprocessing.JustificationValues.Right)
+                    alignment = iText.Layout.Properties.TextAlignment.RIGHT;
+                else if (jc.Value == DocumentFormat.OpenXml.Wordprocessing.JustificationValues.Both)
+                    alignment = iText.Layout.Properties.TextAlignment.JUSTIFIED;
+                else if (jc.Value == DocumentFormat.OpenXml.Wordprocessing.JustificationValues.Distribute)
+                    alignment = iText.Layout.Properties.TextAlignment.JUSTIFIED;
+                else
+                    alignment = iText.Layout.Properties.TextAlignment.LEFT;
+
+                iTextPara.SetTextAlignment(alignment);
+            }
+
+            var spacing = pPr?.SpacingBetweenLines;
+            if (spacing?.Before?.Value is string before && int.TryParse(before, out int bTwips))
+                iTextPara.SetMarginTop(bTwips / 20f);
+            if (spacing?.After?.Value is string after && int.TryParse(after, out int aTwips))
+                iTextPara.SetMarginBottom(aTwips / 20f);
+
+            var ind = pPr?.Indentation;
+            if (ind?.Left?.Value is string leftStr && int.TryParse(leftStr, out int leftTwips))
+                iTextPara.SetMarginLeft(leftTwips / 20f);
+            if (ind?.FirstLine?.Value is string flStr && int.TryParse(flStr, out int flTwips))
+                iTextPara.SetFirstLineIndent(flTwips / 20f);
+
+            bool hasContent = false;
+
+            foreach (var child in para.Elements())
+            {
+                List<ILeafElement>? leaves = child switch
+                {
+                    Run run => ProcessRun(run, mainPart, baseStyle),
+                   DocumentFormat.OpenXml.Wordprocessing.Hyperlink hlink => hlink.Elements<Run>()
+                                              .SelectMany(r => ProcessRun(r, mainPart, baseStyle, isHyperlink: true))
+                                              .ToList(),
+                    _ => null
+                };
+
+                if (leaves == null) continue;
+
+                foreach (var leaf in leaves)
+                {
+                    switch (leaf)
+                    {
+                        case ImageLeaf imgLeaf:
+                            if (hasContent)
+                            {
+                                doc.Add(iTextPara);
+                                iTextPara = new iText.Layout.Element.Paragraph();
+                                iTextPara.SetMultipliedLeading(1.2f);
+                                hasContent = false;
+                            }
+                            doc.Add(imgLeaf.Image);   
+                            break;
+
+                        case PageBreakLeaf:
+                            doc.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+                            break;
+
+                        default:
+                            iTextPara.Add(leaf);
+                            hasContent = true;
+                            break;
+                    }
+                }
+            }
+
+            if (!hasContent)
+            {
+                iTextPara.Add(new iText.Layout.Element.Text(" "));
+                iTextPara.SetMarginBottom(6f);
+            }
+
+            return iTextPara;
+        }
+        private List<ILeafElement> ProcessRun(
+        Run run,
+        MainDocumentPart mainPart,
+        ResolvedStyle baseStyle,
+        bool isHyperlink = false)
+        {
+            var result = new List<ILeafElement>();
+            var rPr = run.RunProperties;
+
+            string fontName = rPr?.RunFonts?.Ascii?.Value
+                           ?? rPr?.RunFonts?.HighAnsi?.Value
+                           ?? baseStyle.FontName
+                           ?? "Helvetica";
+
+            float fontSize = 11f;
+            if (rPr?.FontSize?.Val?.Value is string fsStr && int.TryParse(fsStr, out int fsHp))
+                fontSize = fsHp / 2f;
+            else if (baseStyle.FontSize > 0)
+                fontSize = baseStyle.FontSize;
+
+            bool isBold = (rPr?.Bold != null && rPr.Bold.Val?.Value != false)
+                         || baseStyle.Bold;
+            bool isItalic = (rPr?.Italic != null && rPr.Italic.Val?.Value != false)
+                         || baseStyle.Italic;
+            bool isUnderline = rPr?.Underline != null
+                            && rPr.Underline.Val?.Value != UnderlineValues.None;
+            bool isStrike = rPr?.Strike != null && rPr.Strike.Val?.Value != false;
+
+            string? hexColor = rPr?.Color?.Val?.Value;
+            if (hexColor == "auto" || hexColor == "AUTO") hexColor = null;
+            if (isHyperlink) hexColor ??= "0563C1";
+
+            var highlightVal = rPr?.Highlight?.Val;
+
+            PdfFont pdfFont = ResolvePdfFont(fontName, isBold, isItalic);
+
+            foreach (var drawing in run.Elements<Drawing>())
+            {
+                var blip = drawing.Descendants<DocumentFormat.OpenXml.Drawing.Blip>().FirstOrDefault();
+                if (blip?.Embed?.Value == null) continue;
+
+                var imgPart = (ImagePart)mainPart.GetPartById(blip.Embed.Value);
+                using var imgStream = imgPart.GetStream();
+                using var imgMs = new MemoryStream();
+                imgStream.CopyTo(imgMs);
+
+                try
+                {
+                    var imgData = ImageDataFactory.Create(imgMs.ToArray());
+                    var iTextImg = new iText.Layout.Element.Image(imgData);
+
+                    var extent = drawing.Descendants<DocumentFormat.OpenXml.Drawing.Wordprocessing.Extent>()
+                                        .FirstOrDefault();
+                    if (extent != null)
+                    {
+                        float wPt = extent.Cx / 12700f;
+                        float hPt = extent.Cy / 12700f;
+                        iTextImg.SetWidth(wPt).SetHeight(hPt);
+                    }
+                    else
+                    {
+                        iTextImg.SetAutoScale(true);
+                    }
+
+                    result.Add(new ImageLeaf(iTextImg));
+                }
+                catch { /* skip unreadable images */ }
+            }
+
+            foreach (var textEl in run.Elements<DocumentFormat.OpenXml.Wordprocessing.Text>())
+            {
+                string raw = textEl.Text;
+                if (string.IsNullOrEmpty(raw)) continue;
+
+                var iTextText = new  iText.Layout.Element.Text(raw);
+                iTextText.SetFont(pdfFont);
+                iTextText.SetFontSize(fontSize);
+
+                if (hexColor != null)
+                {
+                    try
+                    {
+                        var color = new DeviceRgb(
+                            Convert.ToInt32(hexColor.Substring(0, 2), 16) / 255f,
+                            Convert.ToInt32(hexColor.Substring(2, 2), 16) / 255f,
+                            Convert.ToInt32(hexColor.Substring(4, 2), 16) / 255f);
+                        iTextText.SetFontColor(color);
+                    }
+                    catch { }
+                }
+
+                if (isUnderline) iTextText.SetUnderline();
+                if (isStrike) iTextText.SetLineThrough();
+
+                if (highlightVal != null)
+                {
+                    var bgColor = HighlightToColor(highlightVal.Value);
+                    if (bgColor is not null) iTextText.SetBackgroundColor(bgColor);
+                }
+
+                result.Add(iTextText);
+            }
+
+            foreach (var br in run.Elements<Break>())
+            {
+                if (br.Type?.Value == BreakValues.Page)
+                    result.Add(new PageBreakLeaf());
+                else
+                    result.Add(new iText.Layout.Element.Text("\n"));
+            }
+
+            return result;
+        }
+        private iText.Layout.Element.Table? ProcessTable(
+        DocumentFormat.OpenXml.Wordprocessing.Table table,
+        MainDocumentPart mainPart,
+        Dictionary<string, ResolvedStyle> styleMap,
+        iText.Layout.Document doc)
+        {
+            var rows = table.Elements<TableRow>().ToList();
+            if (rows.Count == 0) return null;
+
+            int colCount = rows.Max(r => r.Elements<TableCell>().Count());
+            var iTextTable = new iText.Layout.Element.Table(colCount).UseAllAvailableWidth();
+            foreach (var row in rows)
+            {
+                foreach (var cell in row.Elements<TableCell>())
+                {
+                    var cellParagraphs = cell.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
+                    var cellContent = new iText.Layout.Element.Cell();
+
+                    foreach (var cp in cellParagraphs)
+                    {
+                        var p = ProcessParagraph(cp, mainPart, styleMap,doc);
+                        if (p != null) cellContent.Add(p);
+                    }
+
+                    var shading = cell.TableCellProperties?.Shading;
+                    if (shading?.Fill?.Value is string fill && fill != "auto" && fill.Length == 6)
+                    {
+                        try
+                        {
+                            var bg = new DeviceRgb(
+                                Convert.ToInt32(fill.Substring(0, 2), 16) / 255f,
+                                Convert.ToInt32(fill.Substring(2, 2), 16) / 255f,
+                                Convert.ToInt32(fill.Substring(4, 2), 16) / 255f);
+                            cellContent.SetBackgroundColor(bg);
+                        }
+                        catch { }
+                    }
+
+                    iTextTable.AddCell(cellContent);
+                }
+            }
+
+            return iTextTable;
+        }
+        private static readonly Dictionary<string, PdfFont> _fontCache = new();
+
+        private static PdfFont ResolvePdfFont(string name, bool bold, bool italic)
+        {
+            string key = $"{name}|{bold}|{italic}";
+            if (_fontCache.TryGetValue(key, out var cached)) return cached;
+
+            PdfFont font;
+            try
+            {
+                // iText7 will search system fonts by name
+                string style = (bold, italic) switch
+                {
+                    (true, true) => "BoldItalic",
+                    (true, false) => "Bold",
+                    (false, true) => "Italic",
+                    _ => "Normal"
+                };
+                font = PdfFontFactory.CreateFont(
+                    name, PdfEncodings.IDENTITY_H,
+                    PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+            }
+            catch
+            {
+                string stdFont = (bold, italic) switch
+                {
+                    (true, true) => StandardFonts.HELVETICA_BOLDOBLIQUE,
+                    (true, false) => StandardFonts.HELVETICA_BOLD,
+                    (false, true) => StandardFonts.HELVETICA_OBLIQUE,
+                    _ => StandardFonts.HELVETICA,
+                };
+                font = PdfFontFactory.CreateFont(stdFont);
+            }
+
+            _fontCache[key] = font;
+            return font;
+        }
+
+        private static Dictionary<string, ResolvedStyle> BuildStyleMap(MainDocumentPart mainPart)
+        {
+            var map = new Dictionary<string, ResolvedStyle>(StringComparer.OrdinalIgnoreCase);
+            var stylesPart = mainPart.StyleDefinitionsPart;
+            if (stylesPart == null) return map;
+
+            foreach (var style in stylesPart.Styles.Elements<DocumentFormat.OpenXml.Wordprocessing.Style>())
+            {
+                string? id = style.StyleId?.Value;
+                if (id == null) continue;
+
+                var rs = new ResolvedStyle();
+                var rPr = style.StyleRunProperties;
+                var pPr = style.StyleParagraphProperties;
+
+                rs.FontName = rPr?.RunFonts?.Ascii?.Value;
+                rs.Bold = rPr?.Bold != null && rPr.Bold.Val?.Value != false;
+                rs.Italic = rPr?.Italic != null && rPr.Italic.Val?.Value != false;
+                if (rPr?.FontSize?.Val?.Value is string s && int.TryParse(s, out int hp))
+                    rs.FontSize = hp / 2f;
+
+                map[id] = rs;
+            }
+            return map;
+        }
+
+        private iText.Kernel.Colors.Color? HighlightToColor(
+        DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues v)
+        {
+            if (v == DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues.Yellow)
+                return new iText.Kernel.Colors.DeviceRgb(1f, 1f, 0f);
+
+            if (v == DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues.Cyan)
+                return new iText.Kernel.Colors.DeviceRgb(0f, 1f, 1f);
+
+            if (v == DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues.Green)
+                return new iText.Kernel.Colors.DeviceRgb(0f, 1f, 0f);
+
+            if (v == DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues.Magenta)
+                return new iText.Kernel.Colors.DeviceRgb(1f, 0f, 1f);
+
+            if (v == DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues.Red)
+                return new iText.Kernel.Colors.DeviceRgb(1f, 0f, 0f);
+
+            if (v == DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues.Blue)
+                return new iText.Kernel.Colors.DeviceRgb(0f, 0f, 1f);
+
+            if (v == DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues.DarkYellow)
+                return new iText.Kernel.Colors.DeviceRgb(0.5f, 0.5f, 0f);
+
+            if (v == DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues.DarkGreen)
+                return new iText.Kernel.Colors.DeviceRgb(0f, 0.5f, 0f);
+
+            return null;
+        }
+
         public byte[] ConvertPdfToDoc(IFormFile file)
         {
             if (file == null)
@@ -424,7 +787,7 @@ namespace ratpdf.Services
                 .SetFont(font)
                 .SetFontSize(24)
                 .SetFontColor(ColorConstants.BLUE)
-                .SetFixedPosition(lastPage, 400, 50, 200); 
+                .SetFixedPosition(lastPage, 400, 50, 200);
 
             document.Add(signature);
             document.Close();
@@ -560,7 +923,7 @@ namespace ratpdf.Services
                 }
 
                 document.Add(table);
-                document.Add(new AreaBreak()); 
+                document.Add(new AreaBreak());
             }
 
             document.Close();
@@ -683,7 +1046,7 @@ namespace ratpdf.Services
             }
             catch
             {
-                return input; 
+                return input;
             }
         }
 
@@ -756,7 +1119,7 @@ namespace ratpdf.Services
 
             var start = info.GetBaseline().GetStartPoint();
             float x = start.Get(0);
-            float y = start.Get(1); 
+            float y = start.Get(1);
 
             _rawChunks.Add(new PositionedChunk
             {
@@ -832,5 +1195,22 @@ namespace ratpdf.Services
         public string HexColor { get; set; } = "000000";
     }
 
+    public class ImageLeaf : iText.Layout.Element.Text
+    {
+        public iText.Layout.Element.Image Image { get; }
+        public ImageLeaf(iText.Layout.Element.Image img) : base("") => Image = img;
+    }
+    public class PageBreakLeaf : iText.Layout.Element.Text
+    {
+        public PageBreakLeaf() : base("") { }
+    }
+
+    public class ResolvedStyle
+    {
+        public string? FontName { get; set; }
+        public float FontSize { get; set; }
+        public bool Bold { get; set; }
+        public bool Italic { get; set; }
+    }
 }
 
