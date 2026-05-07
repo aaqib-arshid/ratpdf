@@ -3,7 +3,12 @@
   <!--Tools-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemaptools.xml</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-05-07</lastmod>
+  </sitemap>
+  <!--Edit PDF-->
+  <sitemap>
+    <loc>https://ratpdf.com/sitemaps/sitemap-editpdf.xml</loc>
+    <lastmod>2026-05-07</lastmod>
   </sitemap>
   <!--PDF To Word-->
   <sitemap>
