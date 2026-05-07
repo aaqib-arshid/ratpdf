@@ -3,18 +3,19 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using iText.Html2pdf;
+using iText.Html2pdf.Resolver.Font;
 using iText.IO.Font;
 using iText.IO.Font.Constants;
 using iText.IO.Image;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
+using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
 using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Data;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using iText.Kernel.Pdf.Xobject;
-using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using PdfSharpCore.Drawing;
@@ -162,26 +163,32 @@ namespace ratpdf.Services
             var text = reader.ReadToEnd();
             return ConvertTextToPdf(text);
         }
-        public byte[] ConvertHtmlToPdf(string htmlContent)
+        public byte[] ConvertHtmlToPdf(string html)
         {
-            string fullHtml = $$"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8"/>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 40px; font-size: 14px; line-height: 1.6; }
-                    h1, h2, h3 { color: #222; }
-                    ul, ol { padding-left: 20px; }
-                </style>
-            </head>
-            <body>{{htmlContent}}</body>
-            </html>
-            """;
+            using var outputStream = new MemoryStream();
 
-            using var ms = new MemoryStream();
-            HtmlConverter.ConvertToPdf(fullHtml, ms);
-            return ms.ToArray();
+            var writerProperties = new WriterProperties();
+            using var pdfWriter = new PdfWriter(outputStream, writerProperties);
+            using var pdfDocument = new PdfDocument(pdfWriter);
+
+            pdfDocument.SetDefaultPageSize(iText.Kernel.Geom.PageSize.A4);
+
+            var converterProperties = new ConverterProperties();
+
+            var fontProvider = new DefaultFontProvider(
+                registerStandardPdfFonts: true,
+                registerShippedFonts: true,
+                registerSystemFonts: false
+            );
+            converterProperties.SetFontProvider(fontProvider);
+
+            converterProperties.SetBaseUri(AppDomain.CurrentDomain.BaseDirectory);
+
+            HtmlConverter.ConvertToPdf(html, pdfDocument, converterProperties);
+
+            pdfDocument.Close();
+
+            return outputStream.ToArray();
         }
         public string ExtractTextFromPdf(IFormFile file)
         {
@@ -278,13 +285,13 @@ namespace ratpdf.Services
                 switch (element)
                 {
                     case DocumentFormat.OpenXml.Wordprocessing.Paragraph para:
-                        var iTextPara = ProcessParagraph(para, mainPart, styleMap, doc); 
+                        var iTextPara = ProcessParagraph(para, mainPart, styleMap, doc);
                         if (iTextPara != null)
                             doc.Add(iTextPara);
                         break;
 
                     case DocumentFormat.OpenXml.Wordprocessing.Table table:
-                        var iTextTable = ProcessTable(table, mainPart, styleMap,doc);
+                        var iTextTable = ProcessTable(table, mainPart, styleMap, doc);
                         if (iTextTable != null)
                             doc.Add(iTextTable);
                         break;
@@ -297,7 +304,7 @@ namespace ratpdf.Services
         private iText.Layout.Element.Paragraph ProcessParagraph(
         DocumentFormat.OpenXml.Wordprocessing.Paragraph para,
         MainDocumentPart mainPart,
-        Dictionary<string, ResolvedStyle> styleMap,iText.Layout.Document doc)
+        Dictionary<string, ResolvedStyle> styleMap, iText.Layout.Document doc)
         {
             var iTextPara = new iText.Layout.Element.Paragraph();
             iTextPara.SetMultipliedLeading(1.2f);
@@ -346,9 +353,9 @@ namespace ratpdf.Services
                 List<ILeafElement>? leaves = child switch
                 {
                     Run run => ProcessRun(run, mainPart, baseStyle),
-                   DocumentFormat.OpenXml.Wordprocessing.Hyperlink hlink => hlink.Elements<Run>()
-                                              .SelectMany(r => ProcessRun(r, mainPart, baseStyle, isHyperlink: true))
-                                              .ToList(),
+                    DocumentFormat.OpenXml.Wordprocessing.Hyperlink hlink => hlink.Elements<Run>()
+                                               .SelectMany(r => ProcessRun(r, mainPart, baseStyle, isHyperlink: true))
+                                               .ToList(),
                     _ => null
                 };
 
@@ -366,7 +373,7 @@ namespace ratpdf.Services
                                 iTextPara.SetMultipliedLeading(1.2f);
                                 hasContent = false;
                             }
-                            doc.Add(imgLeaf.Image);   
+                            doc.Add(imgLeaf.Image);
                             break;
 
                         case PageBreakLeaf:
@@ -463,7 +470,7 @@ namespace ratpdf.Services
                 string raw = textEl.Text;
                 if (string.IsNullOrEmpty(raw)) continue;
 
-                var iTextText = new  iText.Layout.Element.Text(raw);
+                var iTextText = new iText.Layout.Element.Text(raw);
                 iTextText.SetFont(pdfFont);
                 iTextText.SetFontSize(fontSize);
 
@@ -522,7 +529,7 @@ namespace ratpdf.Services
 
                     foreach (var cp in cellParagraphs)
                     {
-                        var p = ProcessParagraph(cp, mainPart, styleMap,doc);
+                        var p = ProcessParagraph(cp, mainPart, styleMap, doc);
                         if (p != null) cellContent.Add(p);
                     }
 
@@ -943,90 +950,118 @@ namespace ratpdf.Services
         }
         public async Task<string> ConvertPdfToHtml(IFormFile file)
         {
-            using var stream = file.OpenReadStream();
-            using var pdf = UglyToad.PdfPig.PdfDocument.Open(stream);
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            ms.Position = 0;
 
             var sb = new StringBuilder();
+            sb.Append("<div style=\"font-family:Arial,sans-serif;\">");
 
-            sb.Append("<div class='document'>");
+            using var reader = new iText.Kernel.Pdf.PdfReader(ms);
+            using var doc = new PdfDocument(reader);
 
-            foreach (var page in pdf.GetPages())
+            for (int i = 1; i <= doc.GetNumberOfPages(); i++)
             {
-                var words = page.GetWords()
-                    .OrderByDescending(w => w.BoundingBox.Top)
-                    .ToList();
+                var page = doc.GetPage(i);
 
-                var lines = GroupLines(words);
+                var pageSize = page.GetPageSize(); 
 
-                foreach (var line in lines)
+                var strategy = new StyledTextExtractionStrategy();
+                strategy.SetPageSize(pageSize.GetWidth(), pageSize.GetHeight());
+
+                var processor = new PdfCanvasProcessor(strategy);
+                processor.ProcessPageContent(page);
+                sb.Append(strategy.GetResultantHtml());
+
+                var resources = page.GetResources();
+                var xObjects = resources.GetResource(PdfName.XObject);
+
+                if (xObjects != null)
                 {
-                    var text = string.Join(" ", line.Select(w => w.Text)).Trim();
+                    foreach (var key in xObjects.KeySet())
+                    {
+                        try
+                        {
+                            var xObjRef = xObjects.Get(key);
+                            if (xObjRef == null) continue;
 
-                    if (string.IsNullOrWhiteSpace(text))
-                        continue;
+                            var xObjStream = xObjects.GetAsStream(key);
+                            if (xObjStream == null) continue;
 
-                    var style = InferStyle(line);
+                            var subtype = xObjStream.GetAsName(PdfName.Subtype);
+                            if (!PdfName.Image.Equals(subtype)) continue;
 
-                    sb.Append($"<{style.Tag} style='{style.Css}'>");
-                    sb.Append(text);
-                    sb.Append($"</{style.Tag}>");
+                            var colorSpaceObj = xObjStream.Get(PdfName.ColorSpace);
+                            var filter = xObjStream.Get(PdfName.Filter);
+
+                            bool isJpx = PdfName.JPXDecode.Equals(filter) ||
+                                         (filter is PdfArray fa &&
+                                          fa.Contains(PdfName.JPXDecode));
+
+                            if (colorSpaceObj == null && !isJpx)
+                            {
+                                continue;
+                            }
+
+                            var imgXObj = new PdfImageXObject(xObjStream);
+
+                            byte[]? imgBytes = null;
+                            string mime = "image/jpeg";
+
+                            try
+                            {
+                                imgBytes = imgXObj.GetImageBytes(decoded: true);
+                                var ext = imgXObj.IdentifyImageFileExtension();
+                                mime = ext == "png" ? "image/png"
+                                         : ext == "bmp" ? "image/bmp"
+                                         : "image/jpeg";
+                            }
+                            catch
+                            {
+                                try
+                                {
+                                    imgBytes = imgXObj.GetImageBytes(decoded: false);
+                                    mime = "image/jpeg";   
+                                }
+                                catch
+                                {
+                                    continue;
+                                }
+                            }
+
+                            if (imgBytes == null || imgBytes.Length < 16) continue;
+
+                            if (imgBytes.Length > 8 &&
+                                imgBytes[0] == 0x89 && imgBytes[1] == 0x50)          
+                            {
+                                mime = "image/png";
+                            }
+                            else if (imgBytes[0] == 0xFF && imgBytes[1] == 0xD8)    
+                            {
+                                mime = "image/jpeg";
+                            }
+                            else if (imgBytes[0] == 0x47 && imgBytes[1] == 0x49)     
+                            {
+                                mime = "image/gif";
+                            }
+
+                            var b64 = Convert.ToBase64String(imgBytes);
+                            sb.Append($"<img src=\"data:{mime};base64,{b64}\" " +
+                                       "style=\"max-width:100%;height:auto;display:block;margin:8px 0;\" />");
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
                 }
+
+                if (i < doc.GetNumberOfPages())
+                    sb.Append("<hr style=\"border:none;border-top:2px dashed #ccc;margin:32px 0;\" />");
             }
 
             sb.Append("</div>");
-
             return sb.ToString();
-        }
-
-        private List<List<WordWrapper>> GroupLines(List<Word> words)
-        {
-            var lines = new List<List<WordWrapper>>();
-            const double threshold = 2.5;
-
-            foreach (var word in words)
-            {
-                var line = lines.FirstOrDefault(l =>
-                    Math.Abs(l[0].Top - word.BoundingBox.Top) < threshold);
-
-                if (line == null)
-                {
-                    lines.Add(new List<WordWrapper>
-                    {
-                        new WordWrapper(word)
-                    });
-                }
-                else
-                {
-                    line.Add(new WordWrapper(word));
-                }
-            }
-
-            return lines;
-        }
-        private (string Tag, string Css) InferStyle(List<WordWrapper> line)
-        {
-            var avgFontSize = line.Average(w => w.FontSize);
-
-            var text = string.Join(" ", line.Select(l => l.Text));
-
-            bool isLikelyBold = avgFontSize > 14;
-
-            if (avgFontSize > 18)
-            {
-                return ("h1", $"font-size:{avgFontSize}px; font-weight:bold;");
-            }
-
-            if (avgFontSize > 14)
-            {
-                return ("h2", $"font-size:{avgFontSize}px; font-weight:bold;");
-            }
-
-            if (isLikelyBold)
-            {
-                return ("p", "font-weight:bold;");
-            }
-
-            return ("p", $"font-size:{avgFontSize}px;");
         }
         private static string CleanFontName(string raw)
         {
@@ -1086,9 +1121,6 @@ namespace ratpdf.Services
                     })));
         }
     }
-    /// <summary>
-    /// Listens to iText7 render events and collects text chunks with full formatting.
-    /// </summary>
     public class FormattedTextExtractionStrategy : IEventListener
     {
         private readonly List<PositionedChunk> _rawChunks = new();
@@ -1211,6 +1243,211 @@ namespace ratpdf.Services
         public float FontSize { get; set; }
         public bool Bold { get; set; }
         public bool Italic { get; set; }
+    }
+
+    public class StyledTextExtractionStrategy : IEventListener
+    {
+        private class TextChunk
+        {
+            public string Text { get; set; } = "";
+            public float X { get; set; }
+            public float Y { get; set; }
+            public float EndX { get; set; }
+            public float FontSize { get; set; }
+            public string FontName { get; set; } = "Arial";
+            public bool IsBold { get; set; }
+            public bool IsItalic { get; set; }
+            public string Color { get; set; } = "#000000";
+        }
+
+        private readonly List<TextChunk> _chunks = new();
+        private float _pageWidth = 595f;
+        private float _pageHeight = 842f;
+
+        public void SetPageSize(float width, float height)
+        {
+            _pageWidth = width;
+            _pageHeight = height;
+        }
+
+        public void EventOccurred(IEventData data, EventType type)
+        {
+            if (type != EventType.RENDER_TEXT) return;
+            var info = (TextRenderInfo)data;
+
+            var text = info.GetText();
+            if (string.IsNullOrEmpty(text)) return;
+
+
+            var baseline = info.GetBaseline();
+            var startPoint = baseline.GetStartPoint();
+            var endPoint = baseline.GetEndPoint();
+
+            var tm = info.GetTextMatrix();
+            var scaleY = MathF.Sqrt(tm.Get(Matrix.I12) * tm.Get(Matrix.I12)
+                                     + tm.Get(Matrix.I22) * tm.Get(Matrix.I22));
+            var fontSize = Math.Abs(info.GetFontSize() * scaleY);
+            if (fontSize < 1f) fontSize = 10f;
+
+            var font = info.GetFont();
+            var fontName = "Arial";
+            bool isBold = false, isItalic = false;
+
+            if (font != null)
+            {
+                fontName = font.GetFontProgram()?.GetFontNames()?.GetFontName() ?? "Arial";
+
+                if (fontName.Contains('+'))
+                    fontName = fontName[(fontName.IndexOf('+') + 1)..];
+
+                isBold = fontName.Contains("Bold", StringComparison.OrdinalIgnoreCase);
+                isItalic = fontName.Contains("Italic", StringComparison.OrdinalIgnoreCase)
+                        || fontName.Contains("Oblique", StringComparison.OrdinalIgnoreCase);
+            }
+
+
+            string color = "#000000";
+            var fillColor = info.GetFillColor();
+            if (fillColor != null)
+            {
+                try
+                {
+                    var rgb = fillColor.GetColorValue();
+                    int r = (int)Math.Round(rgb[0] * 255);
+                    int g = (int)Math.Round(rgb[1] * 255);
+                    int b = (int)Math.Round(rgb[2] * 255);
+                    if (r != 0 || g != 0 || b != 0)
+                        color = $"#{r:X2}{g:X2}{b:X2}";
+                }
+                catch { /* leave black */ }
+            }
+
+            _chunks.Add(new TextChunk
+            {
+                Text = text,
+                X = startPoint.Get(Vector.I1),
+                Y = startPoint.Get(Vector.I2),
+                EndX = endPoint.Get(Vector.I1),
+                FontSize = fontSize,
+                FontName = fontName,
+                IsBold = isBold,
+                IsItalic = isItalic,
+                Color = color
+            });
+        }
+
+        public string GetResultantHtml()
+        {
+            if (_chunks.Count == 0) return string.Empty;
+
+            const float Y_TOLERANCE = 2.5f;   
+            const float SPACE_RATIO = 0.4f;   
+
+            var lines = new List<List<TextChunk>>();
+
+
+            foreach (var chunk in _chunks.OrderByDescending(c => c.Y).ThenBy(c => c.X))
+            {
+                var line = lines.FirstOrDefault(l =>
+                    Math.Abs(l[0].Y - chunk.Y) <= Y_TOLERANCE);
+
+                if (line != null)
+                    line.Add(chunk);
+                else
+                    lines.Add(new List<TextChunk> { chunk });
+            }
+
+
+            foreach (var line in lines)
+                line.Sort((a, b) => a.X.CompareTo(b.X));
+
+            float contentLeft = _chunks.Min(c => c.X);
+            float contentRight = _chunks.Max(c => c.EndX);
+            float pageCenter = _pageWidth / 2f;
+            float contentSpan = contentRight - contentLeft;
+
+            var sb = new StringBuilder();
+
+            foreach (var line in lines)
+            {
+                if (line.Count == 0) continue;
+
+                string rawText = string.Concat(line.Select(c => c.Text));
+                if (string.IsNullOrWhiteSpace(rawText))
+                {
+                    sb.Append("<p style=\"margin:0;line-height:0.8em;\">&nbsp;</p>");
+                    continue;
+                }
+
+                float lineLeft = line.First().X;
+                float lineRight = line.Last().EndX;
+                float lineMid = (lineLeft + lineRight) / 2f;
+                float lineWidth = lineRight - lineLeft;
+
+                float gapLeft = lineLeft - contentLeft;
+                float gapRight = contentRight - lineRight;
+                float centerDiff = Math.Abs(lineMid - pageCenter);
+
+                string alignment;
+
+                if (lineWidth >= contentSpan * 0.85f)
+                {
+                    alignment = "justify";
+                }
+                else if (centerDiff <= contentSpan * 0.06f  
+                      && gapLeft > contentSpan * 0.10f     
+                      && gapRight > contentSpan * 0.10f)   
+                {
+                    alignment = "center";
+                }
+                else if (gapRight < contentSpan * 0.08f     
+                      && gapLeft > contentSpan * 0.15f)    
+                {
+                    alignment = "right";
+                }
+                else
+                {
+                    alignment = "left";
+                }
+
+                float avgSize = line.Average(c => c.FontSize);
+                float marginPx = MathF.Round(avgSize * 0.15f, 1);
+
+                sb.Append($"<p style=\"margin:0 0 {marginPx}pt 0;" +
+                          $"text-align:{alignment};line-height:1.4;\">");
+
+                for (int i = 0; i < line.Count; i++)
+                {
+                    var chunk = line[i];
+
+                    if (i > 0)
+                    {
+                        float gap = chunk.X - line[i - 1].EndX;
+                        float spaceRef = chunk.FontSize * SPACE_RATIO;
+                        if (gap > spaceRef)
+                            sb.Append(' ');
+                    }
+
+                    var style = new StringBuilder();
+                    style.Append($"font-family:'{chunk.FontName}',Arial,sans-serif;");
+                    style.Append($"font-size:{chunk.FontSize:F1}pt;");
+                    if (chunk.IsBold) style.Append("font-weight:bold;");
+                    if (chunk.IsItalic) style.Append("font-style:italic;");
+                    if (chunk.Color != "#000000") style.Append($"color:{chunk.Color};");
+
+                    sb.Append($"<span style=\"{style}\">" +
+                              $"{System.Net.WebUtility.HtmlEncode(chunk.Text)}</span>");
+                }
+
+                sb.Append("</p>");
+            }
+
+            _chunks.Clear();
+            return sb.ToString();
+        }
+
+        public ICollection<EventType> GetSupportedEvents() =>
+            new HashSet<EventType> { EventType.RENDER_TEXT };
     }
 }
 

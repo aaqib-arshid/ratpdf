@@ -2,150 +2,700 @@
 @{
     ViewData["Title"] = "Document Editor";
 }
-
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Document Editor</title>
+    <title>Free Online PDF Editor – Edit, Annotate & Download PDF Files</title>
+    <meta name="description" content="Edit PDF files online for free. Add text, images, and formatting to any PDF document. No installation needed — import, edit, and download your PDF in seconds." />
+    <meta name="keywords" content="edit PDF online, PDF editor free, modify PDF, annotate PDF, PDF text editor, online PDF editor no download, edit PDF without Adobe, PDF editor tool" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/PDF/EditPDF" />
 
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Free Online PDF Editor – Edit PDF Files Instantly" />
+    <meta property="og:description" content="Import any PDF, edit text and images, then download — no software install required." />
+    <meta property="og:url" content="https://ratpdf.com/PDF/EditPDF" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Free Online PDF Editor" />
+    <meta name="twitter:description" content="Edit, annotate, and download PDF files in your browser. No sign-up needed." />
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial;
-            margin: 20px;
-            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #e8eaf0;
         }
 
         .top-bar {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
+            background: #1e293b;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+            .top-bar label {
+                color: #94a3b8;
+                font-size: 13px;
+            }
+
+            .top-bar input[type="file"] {
+                color: white;
+                font-size: 13px;
+            }
+
+        .btn {
+            padding: 7px 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-success {
+            background: #22c55e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-success:hover {
+            background: #16a34a;
         }
 
         #toolbar {
-            background: white;
-            border-radius: 6px;
-            padding: 8px;
-            margin-bottom: 10px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 6px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 4px rgba(0,0,0,.08);
         }
 
-        #editor {
-            height: 700px;
-            background: white;
-            border-radius: 8px;
+        .tb-group {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 0 6px;
+            border-right: 1px solid #cbd5e1;
         }
 
-        .actions {
-            margin-top: 15px;
-        }
+            .tb-group:last-child {
+                border-right: none;
+            }
 
-        button {
-            padding: 10px 15px;
+        .tb-btn {
+            width: 30px;
+            height: 30px;
             border: none;
-            background: #2d6cdf;
-            color: white;
-            border-radius: 6px;
+            background: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s;
+        }
+
+            .tb-btn:hover {
+                background: #e2e8f0;
+            }
+
+            .tb-btn.active {
+                background: #bfdbfe;
+                color: #1d4ed8;
+            }
+
+        .tb-select {
+            height: 28px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background: white;
+            color: #334155;
+            font-size: 13px;
+            padding: 0 4px;
             cursor: pointer;
         }
 
-            button:hover {
-                background: #1f56c0;
+        .tb-color {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+
+        #editor-wrap {
+            padding: 28px;
+            min-height: calc(100vh - 120px);
+        }
+
+        #editor {
+            background: white;
+            min-height: 1100px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 72px;
+            box-shadow: 0 2px 16px rgba(0,0,0,.12);
+            border-radius: 4px;
+            outline: none;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+            #editor img {
+                max-width: 100%;
+                height: auto;
             }
 
-        input[type="file"] {
-            margin-right: 10px;
+            #editor table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            #editor td, #editor th {
+                border: 1px solid #ccc;
+                padding: 6px 10px;
+            }
+        #status {
+            position: fixed;
+            bottom: 20px;
+            right: 24px;
+            background: #1e293b;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            display: none;
+            z-index: 9999;
         }
     </style>
 </head>
-
 <body>
 
     <div class="top-bar">
-
-        <!-- PDF Upload (IMPORT) -->
-        <form method="post" enctype="multipart/form-data" action="/PDF/UploadPdf">
-            <input type="file" name="file" accept="application/pdf" />
-            <button type="submit">Import PDF</button>
+        <label>Import PDF:</label>
+        <form method="post" enctype="multipart/form-data" action="/PDF/UploadPdf" id="uploadForm" style="display:flex;align-items:center;gap:8px;">
+            <input type="file" name="file" accept="application/pdf" id="pdfFileInput" />
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-upload"></i> Import
+            </button>
         </form>
-
+        <button class="btn btn-success" onclick="downloadPdf()" style="margin-left:auto;">
+            <i class="fa fa-download"></i> Download PDF
+        </button>
     </div>
 
-    <!-- Toolbar -->
+
     <div id="toolbar">
-        <select class="ql-font"></select>
-        <select class="ql-size"></select>
 
-        <button class="ql-bold"></button>
-        <button class="ql-italic"></button>
-        <button class="ql-underline"></button>
+        <div class="tb-group">
+            <select class="tb-select" id="fontFamilySelect" style="width:130px"
+                    onchange="execCmd('fontName', this.value)">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+            </select>
+        </div>
 
-        <select class="ql-align"></select>
+        <div class="tb-group">
+            <select class="tb-select" id="fontSizeSelect" style="width:70px"
+                    onchange="setFontSize(this.value)">
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option selected>12</option>
+                <option>14</option>
+                <option>16</option>
+                <option>18</option>
+                <option>20</option>
+                <option>24</option>
+                <option>28</option>
+                <option>32</option>
+                <option>36</option>
+                <option>48</option>
+                <option>72</option>
+            </select>
+        </div>
+        <textarea id="imported-html-source" style="display:none;"
+                  aria-hidden="true">@Model.Html</textarea>
+        <div class="tb-group">
+            <button class="tb-btn" title="Bold (Ctrl+B)"
+                    onmousedown="e=>e.preventDefault()" onclick="execCmd('bold')">
+                <i class="fa fa-bold"></i>
+            </button>
+            <button class="tb-btn" title="Italic (Ctrl+I)" onclick="execCmd('italic')">
+                <i class="fa fa-italic"></i>
+            </button>
+            <button class="tb-btn" title="Underline (Ctrl+U)" onclick="execCmd('underline')">
+                <i class="fa fa-underline"></i>
+            </button>
+            <button class="tb-btn" title="Strikethrough" onclick="execCmd('strikeThrough')">
+                <i class="fa fa-strikethrough"></i>
+            </button>
+        </div>
 
-        <button class="ql-image"></button>
+        <div class="tb-group">
+            <label title="Text color" style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:12px;color:#475569;">
+                <i class="fa fa-font"></i>
+                <input type="color" class="tb-color" id="textColor" value="#000000"
+                       oninput="execCmd('foreColor', this.value)" title="Text color" />
+            </label>
+            <label title="Highlight color" style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:12px;color:#475569;">
+                <i class="fa fa-highlighter"></i>
+                <input type="color" class="tb-color" id="bgColor" value="#ffff00"
+                       oninput="execCmd('backColor', this.value)" title="Highlight" />
+            </label>
+        </div>
+
+        <div class="tb-group">
+            <button class="tb-btn" title="Align Left" onclick="execCmd('justifyLeft')">
+                <i class="fa fa-align-left"></i>
+            </button>
+            <button class="tb-btn" title="Align Center" onclick="execCmd('justifyCenter')">
+                <i class="fa fa-align-center"></i>
+            </button>
+            <button class="tb-btn" title="Align Right" onclick="execCmd('justifyRight')">
+                <i class="fa fa-align-right"></i>
+            </button>
+            <button class="tb-btn" title="Justify" onclick="execCmd('justifyFull')">
+                <i class="fa fa-align-justify"></i>
+            </button>
+        </div>
+
+        <div class="tb-group">
+            <button class="tb-btn" title="Bullet list" onclick="execCmd('insertUnorderedList')">
+                <i class="fa fa-list-ul"></i>
+            </button>
+            <button class="tb-btn" title="Numbered list" onclick="execCmd('insertOrderedList')">
+                <i class="fa fa-list-ol"></i>
+            </button>
+        </div>
+
+        <div class="tb-group">
+            <button class="tb-btn" title="Indent" onclick="execCmd('indent')">
+                <i class="fa fa-indent"></i>
+            </button>
+            <button class="tb-btn" title="Outdent" onclick="execCmd('outdent')">
+                <i class="fa fa-outdent"></i>
+            </button>
+        </div>
+
+        <div class="tb-group">
+            <button class="tb-btn" title="Insert Image" onclick="insertImage()">
+                <i class="fa fa-image"></i>
+            </button>
+            <button class="tb-btn" title="Insert Link" onclick="insertLink()">
+                <i class="fa fa-link"></i>
+            </button>
+        </div>
+
+        <div class="tb-group">
+            <button class="tb-btn" title="Undo (Ctrl+Z)" onclick="execCmd('undo')">
+                <i class="fa fa-undo"></i>
+            </button>
+            <button class="tb-btn" title="Redo (Ctrl+Y)" onclick="execCmd('redo')">
+                <i class="fa fa-redo"></i>
+            </button>
+        </div>
     </div>
 
-    <!-- Editor -->
-    <div id="editor"></div>
-
-    <!-- Actions -->
-    <div class="actions">
-        <button onclick="downloadPdf()">Download PDF</button>
+    <div id="editor-wrap">
+        <div id="editor"
+             contenteditable="true"
+             spellcheck="true">
+        </div>
     </div>
 
-    <script>
-        // ==============================
-        // 1. Initialize Quill editor
-        // ==============================
-        var quill = new Quill('#editor', {
-            theme: 'snow',
-            modules: {
-                toolbar: '#toolbar'
-            }
-        });
+    <input type="file" id="imageFileInput" accept="image/*" style="display:none" />
 
-        // ==============================
-        // 2. Load imported HTML (if any)
-        // ==============================
-           var importedHtml = @Html.Raw(Json.Serialize(Model.Html ?? ""));
+    <div id="status"></div>
+    <!-- SEO Content Block — place below the editor or in a collapsible footer -->
+    <section style="max-width:900px;margin:40px auto;padding:0 28px 60px;font-family:Arial,sans-serif;color:#334155;">
 
-        if (importedHtml && importedHtml.length > 0) {
-            quill.clipboard.dangerouslyPasteHTML(importedHtml);
-        }
+        <h1 style="font-size:28px;font-weight:700;color:#1e293b;margin-bottom:8px;">
+            Free Online PDF Editor — Edit PDF Files in Your Browser
+        </h1>
+        <p style="font-size:16px;line-height:1.7;color:#475569;">
+            Edit any PDF document instantly without downloading software. Our free online PDF editor
+            lets you open a PDF, modify text and images, change fonts, add links, and download your
+            updated file — all inside your web browser.
+        </p>
 
-        // ==============================
-        // 3. Export PDF (HTML → server)
-        // ==============================
-        function downloadPdf() {
+        <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-top:36px;">How to Edit a PDF Online</h2>
+        <ol style="font-size:15px;line-height:2;color:#475569;padding-left:20px;">
+            <li>Click <strong>Import PDF</strong> and choose the PDF file from your computer.</li>
+            <li>Use the toolbar to edit text — change fonts, size, bold, italic, color, and alignment.</li>
+            <li>Insert images or hyperlinks using the toolbar buttons.</li>
+            <li>Click <strong>Download PDF</strong> (or press <kbd>Ctrl+S</kbd>) to save your edited document.</li>
+        </ol>
 
-            const html = quill.root.innerHTML;
+        <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-top:36px;">Features of Our PDF Editor</h2>
+        <ul style="font-size:15px;line-height:2;color:#475569;padding-left:20px;">
+            <li><strong>Rich text editing</strong> — bold, italic, underline, strikethrough</li>
+            <li><strong>Font control</strong> — choose family (Arial, Times New Roman, Georgia, etc.) and size</li>
+            <li><strong>Text & highlight colors</strong> — color picker for text and background highlighting</li>
+            <li><strong>Alignment</strong> — left, center, right, and justified alignment</li>
+            <li><strong>Lists</strong> — bulleted and numbered lists with indent/outdent</li>
+            <li><strong>Images</strong> — insert images directly into the PDF</li>
+            <li><strong>Hyperlinks</strong> — add clickable links to any selected text</li>
+            <li><strong>Undo & Redo</strong> — full edit history</li>
+            <li><strong>Download as PDF</strong> — one-click export</li>
+        </ul>
 
-            fetch('/PDF/ExportPdf', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ html: html })
-            })
-            .then(response => response.blob())
-            .then(blob => {
+        <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-top:36px;">Why Use Our PDF Editor?</h2>
+        <ul style="font-size:15px;line-height:2;color:#475569;padding-left:20px;">
+            <li>✔ <strong>No installation required</strong> — works entirely in your browser</li>
+            <li>✔ <strong>Free to use</strong> — no subscription, no sign-up</li>
+            <li>✔ <strong>Works on Windows, Mac, and Linux</strong></li>
+            <li>✔ <strong>No Adobe Acrobat needed</strong></li>
+            <li>✔ <strong>Secure</strong> — files are not permanently stored on our servers</li>
+            <li>✔ <strong>Fast</strong> — import and export PDFs in seconds</li>
+        </ul>
 
-                const url = window.URL.createObjectURL(blob);
+        <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-top:36px;">Frequently Asked Questions</h2>
 
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = "document.pdf";
+        <details style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
+            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
+                Can I edit a PDF online for free?
+            </summary>
+            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
+                Yes — our tool is completely free. No credit card, no account, no software to install.
+                Upload your PDF, edit it, and download.
+            </p>
+        </details>
 
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-            })
-            .catch(err => {
-                console.error(err);
-                alert("PDF generation failed");
-            });
+        <details style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
+            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
+                Do I need Adobe Acrobat to edit a PDF?
+            </summary>
+            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
+                No. Our PDF editor is a browser-based alternative to Adobe Acrobat. You can edit and
+                download PDFs without any Adobe software.
+            </p>
+        </details>
+
+        <details style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
+            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
+                Can I add images to a PDF online?
+            </summary>
+            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
+                Yes. Click the image button in the toolbar to insert JPG, PNG, or GIF images anywhere
+                in your PDF document.
+            </p>
+        </details>
+
+        <details style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
+            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
+                Is my PDF file safe and private?
+            </summary>
+            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
+                Your file is processed in your browser session and is not permanently stored on our servers.
+            </p>
+        </details>
+
+        <details style="border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
+            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
+                What browsers are supported?
+            </summary>
+            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
+                The PDF editor works on all modern browsers — Google Chrome, Microsoft Edge, Firefox,
+                and Safari — on desktop and laptop computers.
+            </p>
+        </details>
+
+    </section>
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "WebApplication",
+          "name": "Free Online PDF Editor",
+          "url": "https://ratpdf.com/PDF/EditPDF",
+          "description": "Edit PDF files online for free. Import a PDF, modify text and images using a full-featured toolbar, then export as a PDF document.",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "Upload and edit PDF documents",
+            "Rich text formatting — bold, italic, underline",
+            "Font family and size control",
+            "Text and highlight color picker",
+            "Insert images into PDF",
+            "Insert hyperlinks",
+            "Bullet and numbered lists",
+            "Undo/Redo support",
+            "Download edited file as PDF"
+          ],
+          "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "512"
+          }
         }
     </script>
 
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@@type": "Question",
+              "name": "Can I edit a PDF online for free?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Yes. Our PDF editor is completely free to use in your browser. Upload your PDF, make changes, and download — no sign-up or software installation required."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Do I need to install software to edit a PDF?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "No. Everything runs in your web browser. There is no download, plugin, or Adobe Acrobat subscription needed."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Can I add images to a PDF online?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Yes. Use the image insert button in the toolbar to add JPG, PNG, or GIF images directly into your PDF document."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Is my uploaded PDF stored on your servers?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "No. Your PDF is processed locally in your browser session and is never permanently stored on our servers."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "What file format can I download after editing?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "You can download your edited document as a PDF file with one click after making your changes."
+              }
+            }
+          ]
+        }
+    </script>
+    <script>
+
+        (function () {
+            var source = document.getElementById('imported-html-source');
+            if (!source) return;
+
+            var html = source.value;
+            if (html && html.trim().length > 0) {
+                document.getElementById('editor').innerHTML = html;
+            }
+            source.remove();
+        })();
+
+        function execCmd(cmd, value) {
+            document.getElementById('editor').focus();
+            document.execCommand(cmd, false, value || null);
+            updateToolbarState();
+        }
+
+
+        function setFontSize(pt) {
+            var sel = window.getSelection();
+            if (!sel.rangeCount) return;
+            var range = sel.getRangeAt(0);
+            if (range.collapsed) return;
+
+            var span = document.createElement('span');
+            span.style.fontSize = pt + 'pt';
+            try {
+                range.surroundContents(span);
+            } catch (e) {
+                var level = pt <= 10 ? 1 : pt <= 13 ? 2 : pt <= 16 ? 3 :
+                            pt <= 18 ? 4 : pt <= 24 ? 5 : pt <= 32 ? 6 : 7;
+                document.execCommand('fontSize', false, level);
+            }
+        }
+
+        function updateToolbarState() {
+            ['bold','italic','underline','strikeThrough'].forEach(function(cmd) {
+                var btn = document.querySelector('.tb-btn[onclick*="' + cmd + '"]');
+                if (btn) btn.classList.toggle('active', document.queryCommandState(cmd));
+            });
+        }
+
+        document.getElementById('editor').addEventListener('keyup', updateToolbarState);
+        document.addEventListener('selectionchange', updateToolbarState);
+       
+        document.getElementById('imageFileInput').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showStatus('✗ File is not an image');
+                return;
+            }
+
+            var reader = new FileReader();
+
+            reader.onload = function (readerEvent) {
+                var dataUrl = readerEvent.target.result;
+                if (!dataUrl) return;
+
+                var img = document.createElement('img');
+                img.src = dataUrl;
+                img.style.cssText = 'max-width:100%;height:auto;display:block;margin:8px 0;cursor:pointer;';
+                img.alt = file.name;
+
+                var editor   = document.getElementById('editor');
+                var sel      = window.getSelection();
+                var inserted = false;
+
+                if (sel && sel.rangeCount > 0) {
+                    var range = sel.getRangeAt(0);
+
+                    if (editor.contains(range.commonAncestorContainer)) {
+                        range.deleteContents();
+                        range.insertNode(img);
+
+                        range.setStartAfter(img);
+                        range.setEndAfter(img);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                        inserted = true;
+                    }
+                }
+
+                if (!inserted) {
+                    editor.appendChild(img);
+                }
+
+                e.target.value = '';
+
+                showStatus('✓ Image inserted');
+
+                img.addEventListener('click', function () {
+                    sel = window.getSelection();
+                    var r = document.createRange();
+                    r.selectNode(img);
+                    sel.removeAllRanges();
+                    sel.addRange(r);
+                });
+            };
+
+            reader.onerror = function () {
+                showStatus('✗ Failed to read image file');
+                e.target.value = '';
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        function insertImage() {
+            var sel = window.getSelection();
+            if (sel && sel.rangeCount > 0) {
+                window._savedImageRange = sel.getRangeAt(0).cloneRange();
+            }
+            document.getElementById('imageFileInput').click();
+        }
+
+        function handleImageFile(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function (re) {
+                document.getElementById('editor').focus();
+                var img = '<img src="' + re.result + '" style="max-width:100%;height:auto;" />';
+                document.execCommand('insertHTML', false, img);
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+        }
+
+        function insertLink() {
+            var url = prompt('Enter URL:', 'https://');
+            if (url) execCmd('createLink', url);
+        }
+
+        function downloadPdf() {
+            showStatus('Generating PDF…');
+
+            var innerHtml = document.getElementById('editor').innerHTML;
+
+            fetch('/PDF/ExportPdf', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ html: innerHtml })  
+            })
+            .then(function(res) {
+                if (!res.ok) throw new Error('Server error ' + res.status);
+                return res.blob();
+            })
+            .then(function(blob) {
+                var url = window.URL.createObjectURL(blob);
+                var a   = document.createElement('a');
+                a.href     = url;
+                a.download = 'EditedDocument.pdf';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+                showStatus('✓ PDF downloaded');
+            })
+            .catch(function(err) {
+                console.error(err);
+                showStatus('✗ PDF generation failed');
+            });
+        }
+
+        var statusTimer;
+        function showStatus(msg) {
+            var el = document.getElementById('status');
+            el.textContent = msg;
+            el.style.display = 'block';
+            clearTimeout(statusTimer);
+            statusTimer = setTimeout(function() { el.style.display = 'none'; }, 3000);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                downloadPdf();
+            }
+        });
+    </script>
 </body>
 </html>

@@ -485,24 +485,48 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult ExportPdf([FromBody] HtmlRequest request)
+        public async Task<IActionResult> ExportPdf([FromBody] HtmlRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Html))
                 return BadRequest("Empty content");
 
-            var pdfBytes = _pdfService.ConvertHtmlToPdf(request.Html);
-
-            return File(pdfBytes, "application/pdf", $"EditedDocument.pdf");
+            var pdfBytes = await Task.Run(() => _pdfService.ConvertHtmlToPdf(request.Html));
+            return File(pdfBytes, "application/pdf", "EditedDocument.pdf");
         }
         [HttpPost]
         public async Task<IActionResult> UploadPdf(IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded");
+            const long maxSizeBytes = 5 * 1024 * 1024; // 5 MB
+            if (file.Length > maxSizeBytes)
+                return BadRequest("File size exceeds the 5 MB limit. Please upload a smaller PDF.");
 
-            var html = await _pdfService.ConvertPdfToHtml(file);
-            HttpContext.Session.SetString("PdfHtml", html);
-            return RedirectToAction("EditPDF","PDF");
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (extension != ".pdf")
+                return BadRequest("Invalid file type. Only PDF files are allowed.");
+
+            if (!file.ContentType.Equals("application/pdf", StringComparison.OrdinalIgnoreCase))
+                return BadRequest("Invalid file content type. Only PDF files are accepted.");
+            try
+            {
+                using var stream = file.OpenReadStream();
+                var header = new byte[4];
+                await stream.ReadAsync(header, 0, 4);
+                if (header[0] != 0x25 || header[1] != 0x50 ||
+                    header[2] != 0x44 || header[3] != 0x46)
+                {
+                    return BadRequest("The uploaded file is not a valid PDF.");
+                }
+                stream.Position = 0;
+                var html = await _pdfService.ConvertPdfToHtml(file);
+                HttpContext.Session.SetString("PdfHtml", html);
+                return RedirectToAction("EditPDF", "PDF");
+            }
+            catch
+            {
+                return BadRequest("Pdf file is corrupted or contains sensitive data.");
+            }
         }
         #endregion
     }
