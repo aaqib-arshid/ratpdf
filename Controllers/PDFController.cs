@@ -510,6 +510,11 @@ namespace ratpdf.Controllers
                 return BadRequest("Invalid file content type. Only PDF files are accepted.");
             try
             {
+                Response.Cookies.Append("downloadReady", "1", new CookieOptions
+                {
+                    Expires = DateTimeOffset.Now.AddMinutes(1),
+                    Path = "/"
+                });
                 using var stream = file.OpenReadStream();
                 var header = new byte[4];
                 await stream.ReadAsync(header, 0, 4);

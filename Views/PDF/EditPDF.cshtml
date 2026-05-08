@@ -1,12 +1,12 @@
 ﻿@model HtmlRequest
 @{
-    ViewData["Title"] = "Document Editor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Free Online PDF Editor – Edit, Annotate & Download PDF Files";
+    ViewData["Description"] = "Edit PDF files online for free. Add text, images, and formatting to any PDF document. No installation needed — import, edit, and download your PDF in seconds.";
 }
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Free Online PDF Editor – Edit, Annotate & Download PDF Files</title>
-    <meta name="description" content="Edit PDF files online for free. Add text, images, and formatting to any PDF document. No installation needed — import, edit, and download your PDF in seconds." />
     <meta name="keywords" content="edit PDF online, PDF editor free, modify PDF, annotate PDF, PDF text editor, online PDF editor no download, edit PDF without Adobe, PDF editor tool" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://ratpdf.com/PDF/EditPDF" />
@@ -337,7 +337,7 @@
     <input type="file" id="imageFileInput" accept="image/*" style="display:none" />
 
     <div id="status"></div>
-    <!-- SEO Content Block — place below the editor or in a collapsible footer -->
+
     <section style="max-width:900px;margin:40px auto;padding:0 28px 60px;font-family:Arial,sans-serif;color:#334155;">
 
         <h1 style="font-size:28px;font-weight:700;color:#1e293b;margin-bottom:8px;">
@@ -654,7 +654,7 @@
             showStatus('Generating PDF…');
 
             var innerHtml = document.getElementById('editor').innerHTML;
-
+            showLoader('Downloading...');
             fetch('/PDF/ExportPdf', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -662,9 +662,11 @@
             })
             .then(function(res) {
                 if (!res.ok) throw new Error('Server error ' + res.status);
+                hideLoader();
                 return res.blob();
             })
             .then(function(blob) {
+                hideLoader();
                 var url = window.URL.createObjectURL(blob);
                 var a   = document.createElement('a');
                 a.href     = url;
@@ -676,7 +678,7 @@
                 showStatus('✓ PDF downloaded');
             })
             .catch(function(err) {
-                console.error(err);
+                hideLoader();
                 showStatus('✗ PDF generation failed');
             });
         }
@@ -695,6 +697,19 @@
                 e.preventDefault();
                 downloadPdf();
             }
+        });
+            document.getElementById('uploadForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            showLoader('Getting Ready...');
+
+            setTimeout(function () {
+                showLoader('Processing...');
+            }, 3000);
+
+            setTimeout(function () {
+                submitWithLoader('uploadForm', 'Importing...');
+            }, 5000);
         });
     </script>
 </body>
