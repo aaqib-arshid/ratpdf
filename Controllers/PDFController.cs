@@ -374,7 +374,8 @@ namespace ratpdf.Controllers
             {
                 var pdf = _pdfService.RotatePage(file, pageNumber, degree);
                 return File(pdf, "application/pdf", "Edited.pdf");
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Error rotating PDF: " + ex.Message);
                 return View("RotateOrRemove");
@@ -487,6 +488,24 @@ namespace ratpdf.Controllers
         [HttpPost]
         public async Task<IActionResult> ExportPdf([FromBody] HtmlRequest request)
         {
+            //ASP.NET Core MVC
+            //no database
+            //simple PDF tool
+
+            //Use:
+
+            //Razorpay + localStorage
+
+            //That is the fastest and simplest setup.
+
+            //Flow:
+
+            //User downloads 3 PDFs free
+            //Browser stores count
+            //4th download opens Razorpay
+            //Payment success → download PDF
+
+            //Very lightweight MVP.
             if (request == null || string.IsNullOrEmpty(request.Html))
                 return BadRequest("Empty content");
 
