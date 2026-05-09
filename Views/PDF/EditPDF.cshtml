@@ -190,10 +190,23 @@
             display: none;
             z-index: 9999;
         }
+
+        .pdf-notice {
+            background-color: #f5f9ff;
+            border: 1px solid #cfe3ff;
+            color: #1a3d7c;
+            padding: 10px 14px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
-
+    <div class="pdf-notice">
+        This editor is designed for text-based PDFs such as resumes, letters, and documents. Image-based or scanned PDFs (e.g., certificates or forms) may not be fully supported. We are continuously working to expand support for advanced document types
+    </div>
     <div class="top-bar">
         <label>Import PDF:</label>
         <form method="post" enctype="multipart/form-data" action="/PDF/UploadPdf" id="uploadForm" style="display:flex;align-items:center;gap:8px;">
