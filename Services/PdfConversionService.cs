@@ -34,6 +34,7 @@ namespace ratpdf.Services
 {
     public class PdfConversionService
     {
+        private const float PtToPx = 96f / 72f;
         public byte[] ConvertImagesToPdf(List<IFormFile> images)
         {
             using var ms = new MemoryStream();
@@ -957,14 +958,16 @@ namespace ratpdf.Services
 
             var sb = new StringBuilder();
 
-            sb.Append("<div style=\"" +
-                      "background:#606060;" +
-                      "padding:24px;" +
-                      "display:flex;" +
-                      "flex-direction:column;" +
-                      "align-items:center;" +
-                      "gap:24px;" +
-                      "\">");
+            // Outer grey canvas — scrollable column of page cards
+            sb.Append(
+                "<div style=\"" +
+                "background:#606060;" +
+                "padding:24px;" +
+                "display:flex;" +
+                "flex-direction:column;" +
+                "align-items:center;" +
+                "gap:24px;" +
+                "\">");
 
             using var reader = new iText.Kernel.Pdf.PdfReader(ms);
             using var doc = new PdfDocument(reader);
@@ -973,30 +976,36 @@ namespace ratpdf.Services
             {
                 var page = doc.GetPage(i);
                 var pageSize = page.GetPageSize();
-                float w = pageSize.GetWidth();
-                float h = pageSize.GetHeight();
+                float w = pageSize.GetWidth();   // PDF points
+                float h = pageSize.GetHeight();  // PDF points
+
+                // Convert to CSS pixels so nothing clips
+                float wPx = w * PtToPx;
+                float hPx = h * PtToPx;
 
                 var strategy = new StyledTextExtractionStrategy();
                 strategy.SetPageSize(w, h);
+                strategy.Scale = PtToPx;   // all coordinates will be emitted as px
 
                 var processor = new PdfCanvasProcessor(strategy);
                 processor.ProcessPageContent(page);
 
-                sb.Append($"<div style=\"" +
-                          $"position:relative;" +
-                          $"width:{w:F2}pt;" +
-                          $"height:{h:F2}pt;" +
-                          $"background:white;" +
-                          $"overflow:hidden;" +
-                          $"box-shadow:0 2px 12px rgba(0,0,0,0.45);" +
-                          $"\">");
+                // White page card — use px so it matches the scaled content exactly
+                sb.Append(
+                    $"<div style=\"" +
+                    $"position:relative;" +
+                    $"width:{wPx:F2}px;" +
+                    $"height:{hPx:F2}px;" +
+                    $"background:white;" +
+                    $"overflow:hidden;" +
+                    $"box-shadow:0 2px 12px rgba(0,0,0,0.45);" +
+                    $"\">");
 
                 sb.Append(strategy.GetResultantHtml());
-
-                sb.Append("</div>"); 
+                sb.Append("</div>"); // end page card
             }
 
-            sb.Append("</div>"); 
+            sb.Append("</div>"); // end outer canvas
             return sb.ToString();
         }
         private static string CleanFontName(string raw)
@@ -1185,6 +1194,7 @@ namespace ratpdf.Services
 
     public class StyledTextExtractionStrategy : IEventListener
     {
+        // ── inner models ──────────────────────────────────────────────────────────
 
         private class TextChunk
         {
@@ -1219,12 +1229,23 @@ namespace ratpdf.Services
             public float StrokeWidth { get; set; }
         }
 
+        // ── state ─────────────────────────────────────────────────────────────────
+
         private readonly List<TextChunk> _chunks = new();
         private readonly List<ImageElement> _images = new();
         private readonly List<PathElement> _paths = new();
 
         private float _pageWidth = 595f;
         private float _pageHeight = 842f;
+
+        /// <summary>
+        /// Multiply every PDF point coordinate by this factor before emitting CSS px.
+        /// Default = 96/72 ≈ 1.3333 — matches how browsers interpret CSS "pt".
+        /// Set to 1.0 if you want raw pt output.
+        /// </summary>
+        public float Scale { get; set; } = 96f / 72f;
+
+        // ── public API ────────────────────────────────────────────────────────────
 
         public void SetPageSize(float width, float height)
         {
@@ -1242,10 +1263,12 @@ namespace ratpdf.Services
         public ICollection<EventType> GetSupportedEvents() =>
             new HashSet<EventType>
             {
-                EventType.RENDER_TEXT,
-                EventType.RENDER_IMAGE,
-                EventType.RENDER_PATH
+            EventType.RENDER_TEXT,
+            EventType.RENDER_IMAGE,
+            EventType.RENDER_PATH
             };
+
+        // ── text ──────────────────────────────────────────────────────────────────
 
         private void HandleText(TextRenderInfo info)
         {
@@ -1256,6 +1279,7 @@ namespace ratpdf.Services
             var startPoint = baseline.GetStartPoint();
             var endPoint = baseline.GetEndPoint();
 
+            // Compute real rendered font size from the text matrix scale
             var tm = info.GetTextMatrix();
             var scaleY = MathF.Sqrt(
                 tm.Get(Matrix.I12) * tm.Get(Matrix.I12) +
@@ -1263,8 +1287,9 @@ namespace ratpdf.Services
             var fontSize = Math.Abs(info.GetFontSize() * scaleY);
             if (fontSize < 1f) fontSize = 10f;
 
+            // Font name / style
             var font = info.GetFont();
-            var fontName = "Arial";
+            string fontName = "Arial";
             bool isBold = false;
             bool isItalic = false;
 
@@ -1272,6 +1297,7 @@ namespace ratpdf.Services
             {
                 fontName = font.GetFontProgram()?.GetFontNames()?.GetFontName() ?? "Arial";
 
+                // Strip subset prefix  e.g. "ABCDEF+TimesNewRoman"
                 if (fontName.Contains('+'))
                     fontName = fontName[(fontName.IndexOf('+') + 1)..];
 
@@ -1280,6 +1306,7 @@ namespace ratpdf.Services
                         || fontName.Contains("Oblique", StringComparison.OrdinalIgnoreCase);
             }
 
+            // Text color
             string color = "#000000";
             var fillColor = info.GetFillColor();
             if (fillColor != null)
@@ -1293,7 +1320,7 @@ namespace ratpdf.Services
                     if (r != 0 || g != 0 || b != 0)
                         color = $"#{r:X2}{g:X2}{b:X2}";
                 }
-                catch { /* leave black */ }
+                catch { /* keep black */ }
             }
 
             _chunks.Add(new TextChunk
@@ -1309,6 +1336,8 @@ namespace ratpdf.Services
                 Color = color
             });
         }
+
+        // ── image ─────────────────────────────────────────────────────────────────
 
         private void HandleImage(ImageRenderInfo info)
         {
@@ -1327,28 +1356,23 @@ namespace ratpdf.Services
                 if (pdfImg == null) return;
 
                 byte[]? finalBytes = null;
-                string mime = "image/png";
 
-
+                // ── 1. Handle soft-mask (SMask) transparency ──────────────────────
                 var sMaskObj = pdfImg.GetPdfObject().Get(PdfName.SMask);
                 if (sMaskObj is PdfStream sMaskStream)
                 {
                     finalBytes = CompositeWithSoftMask(pdfImg, new PdfImageXObject(sMaskStream));
-                    mime = "image/png"; 
                 }
 
+                // ── 2. No SMask — convert to browser-safe RGBA PNG ────────────────
+                //    This handles CMYK JPEGs, DeviceGray, and anything else that
+                //    browsers would render as black.
                 if (finalBytes == null)
                 {
-                    try { finalBytes = pdfImg.GetImageBytes(decoded: true); }
-                    catch
-                    {
-                        try { finalBytes = pdfImg.GetImageBytes(decoded: false); }
-                        catch { return; }
-                    }
-
-                    if (finalBytes == null || finalBytes.Length < 16) return;
-                    mime = DetectMime(finalBytes);
+                    finalBytes = ConvertImageToRgbPng(pdfImg);
                 }
+
+                if (finalBytes == null || finalBytes.Length < 16) return;
 
                 _images.Add(new ImageElement
                 {
@@ -1356,12 +1380,49 @@ namespace ratpdf.Services
                     Y = y,
                     Width = width,
                     Height = height,
-                    Src = $"data:{mime};base64,{Convert.ToBase64String(finalBytes)}"
+                    Src = $"data:image/png;base64,{Convert.ToBase64String(finalBytes)}"
                 });
             }
             catch { }
         }
 
+        /// <summary>
+        /// Converts any PdfImageXObject to a browser-safe RGBA PNG via ImageSharp.
+        /// Handles RGB, CMYK, DeviceGray JPEG and PNG source images.
+        /// </summary>
+        private static byte[]? ConvertImageToRgbPng(PdfImageXObject pdfImg)
+        {
+            try
+            {
+                byte[] raw;
+                try { raw = pdfImg.GetImageBytes(decoded: true); }
+                catch { raw = pdfImg.GetImageBytes(decoded: false); }
+
+                if (raw == null || raw.Length < 16) return null;
+
+                using var ms = new MemoryStream(raw);
+                using var img = SixLabors.ImageSharp.Image.Load<Rgba32>(
+                    new SixLabors.ImageSharp.Formats.DecoderOptions(), ms);   
+
+                using var outMs = new MemoryStream();
+                img.SaveAsPng(outMs);
+                return outMs.ToArray();
+            }
+            catch
+            {
+                // Last resort: return raw bytes and hope browser can handle it
+                try
+                {
+                    byte[] raw = pdfImg.GetImageBytes(decoded: true);
+                    return raw?.Length >= 16 ? raw : null;
+                }
+                catch { return null; }
+            }
+        }
+
+        /// <summary>
+        /// Composites a colour image with its PDF soft mask (alpha channel).
+        /// </summary>
         private static byte[]? CompositeWithSoftMask(
             PdfImageXObject colorImg,
             PdfImageXObject maskImg)
@@ -1386,29 +1447,20 @@ namespace ratpdf.Services
                         for (int col = 0; col < colorSpan.Length; col++)
                         {
                             var px = colorSpan[col];
-                            px.A = maskSpan[col].PackedValue; 
+                            px.A = maskSpan[col].PackedValue;
                             colorSpan[col] = px;
                         }
                     }
                 });
 
-                using var ms = new MemoryStream();
-                baseImg.SaveAsPng(ms);
-                return ms.ToArray();
+                using var outMs = new MemoryStream();
+                baseImg.SaveAsPng(outMs);
+                return outMs.ToArray();
             }
             catch { return null; }
         }
 
-        private static string DetectMime(byte[] b)
-        {
-            if (b.Length >= 2)
-            {
-                if (b[0] == 0x89 && b[1] == 0x50) return "image/png";
-                if (b[0] == 0xFF && b[1] == 0xD8) return "image/jpeg";
-                if (b[0] == 0x47 && b[1] == 0x49) return "image/gif";
-            }
-            return "image/jpeg";
-        }
+        // ── path / shapes ─────────────────────────────────────────────────────────
 
         private void HandlePath(PathRenderInfo info)
         {
@@ -1436,54 +1488,42 @@ namespace ratpdf.Services
                     if (strokeColor is null or "#FFFFFF") strokeColor = null;
                 }
 
-
+                // Compute bounding box from all path points
                 float minX = float.MaxValue, minY = float.MaxValue;
                 float maxX = float.MinValue, maxY = float.MinValue;
                 bool hasPoints = false;
 
                 foreach (var subpath in info.GetPath().GetSubpaths())
-                {
                     foreach (var seg in subpath.GetSegments())
-                    {
                         foreach (var pt in seg.GetBasePoints())
                         {
                             float px = (float)pt.GetX();
                             float py = (float)pt.GetY();
-
                             minX = Math.Min(minX, px);
                             minY = Math.Min(minY, py);
                             maxX = Math.Max(maxX, px);
                             maxY = Math.Max(maxY, py);
                             hasPoints = true;
                         }
-                    }
-                }
 
                 if (!hasPoints) return;
 
                 float w = maxX - minX;
                 float h = maxY - minY;
-                bool looksLikeArtifact =
-                fillColor == "#000000" &&
-                strokeColor == null &&
-                w > 10 &&
-                h > 10;
 
-                if (looksLikeArtifact)
-                    return;
+                // Skip large solid-black filled shapes — these are usually artefacts
+                // (e.g. the page background rectangle in some PDFs)
+                bool looksLikeArtifact =
+                    fillColor == "#000000" &&
+                    strokeColor == null &&
+                    w > 10 && h > 10;
+
+                if (looksLikeArtifact) return;
                 if (w < 0.5f && h < 0.5f) return;
 
-                if (h < 0.5f && strokeWidth > 0)
-                {
-                    minY -= strokeWidth / 2f;
-                    h = strokeWidth;
-                }
-
-                if (w < 0.5f && strokeWidth > 0)
-                {
-                    minX -= strokeWidth / 2f;
-                    w = strokeWidth;
-                }
+                // Expand hairlines to their stroke width so they stay visible
+                if (h < 0.5f && strokeWidth > 0) { minY -= strokeWidth / 2f; h = strokeWidth; }
+                if (w < 0.5f && strokeWidth > 0) { minX -= strokeWidth / 2f; w = strokeWidth; }
 
                 _paths.Add(new PathElement
                 {
@@ -1514,47 +1554,49 @@ namespace ratpdf.Services
             catch { return null; }
         }
 
+        // ── HTML generation ───────────────────────────────────────────────────────
+
         public string GetResultantHtml()
         {
             var sb = new StringBuilder();
 
-
+            // ── Paths ──────────────────────────────────────────────────────────────
             foreach (var path in _paths)
             {
-
-                float htmlTop = _pageHeight - path.Y - path.Height;
-
-                sb.Append($"<div style=\"" +
-                          $"position:absolute;" +
-                          $"left:{path.X:F2}pt;" +
-                          $"top:{htmlTop:F2}pt;" +
-                          $"width:{path.Width:F2}pt;" +
-                          $"height:{path.Height:F2}pt;" +
-                          $"background:{path.FillColor ?? "transparent"};" +
-                          $"\"></div>");
+                float top = (_pageHeight - path.Y - path.Height) * Scale;
+                sb.Append(
+                    $"<div style=\"" +
+                    $"position:absolute;" +
+                    $"left:{path.X * Scale:F2}px;" +
+                    $"top:{top:F2}px;" +
+                    $"width:{path.Width * Scale:F2}px;" +
+                    $"height:{path.Height * Scale:F2}px;" +
+                    $"background:{path.FillColor ?? "transparent"};" +
+                    $"\"></div>");
             }
 
-
+            // ── Images ─────────────────────────────────────────────────────────────
             foreach (var img in _images)
             {
                 if (img.Src == null) continue;
-                float htmlTop = _pageHeight - img.Y - img.Height;
-
-                sb.Append($"<img src=\"{img.Src}\" style=\"" +
-                          $"position:absolute;" +
-                          $"left:{img.X:F2}pt;" +
-                          $"top:{htmlTop:F2}pt;" +
-                          $"width:{img.Width:F2}pt;" +
-                          $"height:{img.Height:F2}pt;" +
-                          $"\" />");
+                float top = (_pageHeight - img.Y - img.Height) * Scale;
+                sb.Append(
+                    $"<img src=\"{img.Src}\" style=\"" +
+                    $"position:absolute;" +
+                    $"left:{img.X * Scale:F2}px;" +
+                    $"top:{top:F2}px;" +
+                    $"width:{img.Width * Scale:F2}px;" +
+                    $"height:{img.Height * Scale:F2}px;" +
+                    $"\" />");
             }
 
-
+            // ── Text ───────────────────────────────────────────────────────────────
             if (_chunks.Count > 0)
             {
-                const float Y_TOLERANCE = 2.5f;  
-                const float SPACE_RATIO = 0.4f;  
+                const float Y_TOLERANCE = 2.5f;
+                const float SPACE_RATIO = 0.4f;
 
+                // Group chunks into lines by Y coordinate
                 var lines = new List<List<TextChunk>>();
                 foreach (var chunk in _chunks.OrderByDescending(c => c.Y).ThenBy(c => c.X))
                 {
@@ -1570,21 +1612,22 @@ namespace ratpdf.Services
                     line.Sort((a, b) => a.X.CompareTo(b.X));
 
                     var first = line.First();
+                    float top = (_pageHeight - first.Y - first.FontSize) * Scale;
+                    float left = first.X * Scale;
 
-                    float htmlTop = _pageHeight - first.Y - first.FontSize;
-                    float htmlLeft = first.X;
-
-                    sb.Append($"<div style=\"" +
-                              $"position:absolute;" +
-                              $"left:{htmlLeft:F2}pt;" +
-                              $"top:{htmlTop:F2}pt;" +
-                              $"white-space:nowrap;" +
-                              $"line-height:1;\">");
+                    sb.Append(
+                        $"<div style=\"" +
+                        $"position:absolute;" +
+                        $"left:{left:F2}px;" +
+                        $"top:{top:F2}px;" +
+                        $"white-space:nowrap;" +
+                        $"line-height:1;\">");
 
                     for (int i = 0; i < line.Count; i++)
                     {
                         var chunk = line[i];
 
+                        // Insert a space between chunks that are visually separated
                         if (i > 0)
                         {
                             float gap = chunk.X - line[i - 1].EndX;
@@ -1594,7 +1637,7 @@ namespace ratpdf.Services
 
                         var style = new StringBuilder();
                         style.Append($"font-family:'{chunk.FontName}',Arial,sans-serif;");
-                        style.Append($"font-size:{chunk.FontSize:F2}pt;");
+                        style.Append($"font-size:{chunk.FontSize * Scale:F2}px;");
                         if (chunk.IsBold) style.Append("font-weight:bold;");
                         if (chunk.IsItalic) style.Append("font-style:italic;");
                         if (chunk.Color != "#000000")
@@ -1608,6 +1651,7 @@ namespace ratpdf.Services
                 }
             }
 
+            // Clear for next page
             _chunks.Clear();
             _images.Clear();
             _paths.Clear();
@@ -1616,5 +1660,5 @@ namespace ratpdf.Services
         }
     }
 
-    }
+}
 
