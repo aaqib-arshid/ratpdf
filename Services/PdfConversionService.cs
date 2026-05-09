@@ -22,8 +22,6 @@ using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf.IO;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 using System.Text;
 using UglyToad.PdfPig.Content;
 using A = DocumentFormat.OpenXml.Drawing;
@@ -34,7 +32,6 @@ namespace ratpdf.Services
 {
     public class PdfConversionService
     {
-        private const float PtToPx = 96f / 72f;
         public byte[] ConvertImagesToPdf(List<IFormFile> images)
         {
             using var ms = new MemoryStream();
@@ -673,6 +670,7 @@ namespace ratpdf.Services
                 {
                     var page = pdfDoc.GetPage(pageNum);
 
+                    // ── Extracting IMAGES ──────────────────────────────────────────
                     var xObjects = page.GetResources().GetResource(iText.Kernel.Pdf.PdfName.XObject);
                     if (xObjects != null)
                     {
@@ -686,10 +684,10 @@ namespace ratpdf.Services
                             {
                                 try
                                 {
-                                    byte[] imgBytes = imageXObj.GetImageBytes(true);        
+                                    byte[] imgBytes = imageXObj.GetImageBytes(true);
                                     if (imgBytes == null || imgBytes.Length == 0) continue;
 
-                                    byte[] pngBytes = NormalizeToPng(imgBytes);               
+                                    byte[] pngBytes = NormalizeToPng(imgBytes);
 
                                     var imagePart = mainPart.AddImagePart(ImagePartType.Png);
                                     using var imgMs = new MemoryStream(pngBytes);
@@ -715,7 +713,7 @@ namespace ratpdf.Services
                                         relationshipId, imageCounter, widthEmu, heightEmu);
                                     body.Append(imgParagraph);
                                 }
-                                catch { }
+                                catch { /* skip corrupt images */ }
                             }
                         }
                     }
@@ -957,17 +955,7 @@ namespace ratpdf.Services
             ms.Position = 0;
 
             var sb = new StringBuilder();
-
-            // Outer grey canvas — scrollable column of page cards
-            sb.Append(
-                "<div style=\"" +
-                "background:#606060;" +
-                "padding:24px;" +
-                "display:flex;" +
-                "flex-direction:column;" +
-                "align-items:center;" +
-                "gap:24px;" +
-                "\">");
+            sb.Append("<div style=\"font-family:Arial,sans-serif;\">");
 
             using var reader = new iText.Kernel.Pdf.PdfReader(ms);
             using var doc = new PdfDocument(reader);
@@ -975,37 +963,104 @@ namespace ratpdf.Services
             for (int i = 1; i <= doc.GetNumberOfPages(); i++)
             {
                 var page = doc.GetPage(i);
-                var pageSize = page.GetPageSize();
-                float w = pageSize.GetWidth();   // PDF points
-                float h = pageSize.GetHeight();  // PDF points
 
-                // Convert to CSS pixels so nothing clips
-                float wPx = w * PtToPx;
-                float hPx = h * PtToPx;
+                var pageSize = page.GetPageSize();
 
                 var strategy = new StyledTextExtractionStrategy();
-                strategy.SetPageSize(w, h);
-                strategy.Scale = PtToPx;   // all coordinates will be emitted as px
+                strategy.SetPageSize(pageSize.GetWidth(), pageSize.GetHeight());
 
                 var processor = new PdfCanvasProcessor(strategy);
                 processor.ProcessPageContent(page);
-
-                // White page card — use px so it matches the scaled content exactly
-                sb.Append(
-                    $"<div style=\"" +
-                    $"position:relative;" +
-                    $"width:{wPx:F2}px;" +
-                    $"height:{hPx:F2}px;" +
-                    $"background:white;" +
-                    $"overflow:hidden;" +
-                    $"box-shadow:0 2px 12px rgba(0,0,0,0.45);" +
-                    $"\">");
-
                 sb.Append(strategy.GetResultantHtml());
-                sb.Append("</div>"); // end page card
+
+                var resources = page.GetResources();
+                var xObjects = resources.GetResource(PdfName.XObject);
+
+                if (xObjects != null)
+                {
+                    foreach (var key in xObjects.KeySet())
+                    {
+                        try
+                        {
+                            var xObjRef = xObjects.Get(key);
+                            if (xObjRef == null) continue;
+
+                            var xObjStream = xObjects.GetAsStream(key);
+                            if (xObjStream == null) continue;
+
+                            var subtype = xObjStream.GetAsName(PdfName.Subtype);
+                            if (!PdfName.Image.Equals(subtype)) continue;
+
+                            var colorSpaceObj = xObjStream.Get(PdfName.ColorSpace);
+                            var filter = xObjStream.Get(PdfName.Filter);
+
+                            bool isJpx = PdfName.JPXDecode.Equals(filter) ||
+                                         (filter is PdfArray fa &&
+                                          fa.Contains(PdfName.JPXDecode));
+
+                            if (colorSpaceObj == null && !isJpx)
+                            {
+                                continue;
+                            }
+
+                            var imgXObj = new PdfImageXObject(xObjStream);
+
+                            byte[]? imgBytes = null;
+                            string mime = "image/jpeg";
+
+                            try
+                            {
+                                imgBytes = imgXObj.GetImageBytes(decoded: true);
+                                var ext = imgXObj.IdentifyImageFileExtension();
+                                mime = ext == "png" ? "image/png"
+                                         : ext == "bmp" ? "image/bmp"
+                                         : "image/jpeg";
+                            }
+                            catch
+                            {
+                                try
+                                {
+                                    imgBytes = imgXObj.GetImageBytes(decoded: false);
+                                    mime = "image/jpeg";
+                                }
+                                catch
+                                {
+                                    continue;
+                                }
+                            }
+
+                            if (imgBytes == null || imgBytes.Length < 16) continue;
+
+                            if (imgBytes.Length > 8 &&
+                                imgBytes[0] == 0x89 && imgBytes[1] == 0x50)
+                            {
+                                mime = "image/png";
+                            }
+                            else if (imgBytes[0] == 0xFF && imgBytes[1] == 0xD8)
+                            {
+                                mime = "image/jpeg";
+                            }
+                            else if (imgBytes[0] == 0x47 && imgBytes[1] == 0x49)
+                            {
+                                mime = "image/gif";
+                            }
+
+                            var b64 = Convert.ToBase64String(imgBytes);
+                            sb.Append($"<img src=\"data:{mime};base64,{b64}\" " +
+                                       "style=\"max-width:100%;height:auto;display:block;margin:8px 0;\" />");
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+                if (i < doc.GetNumberOfPages())
+                    sb.Append("<hr style=\"border:none;border-top:2px dashed #ccc;margin:32px 0;\" />");
             }
 
-            sb.Append("</div>"); // end outer canvas
+            sb.Append("</div>");
             return sb.ToString();
         }
         private static string CleanFontName(string raw)
@@ -1065,7 +1120,6 @@ namespace ratpdf.Services
                         DistanceFromRight = 0
                     })));
         }
-
     }
     public class FormattedTextExtractionStrategy : IEventListener
     {
@@ -1166,7 +1220,6 @@ namespace ratpdf.Services
         public string Text { get; set; } = "";
         public float X { get; set; }
         public float Y { get; set; }
-        public float EndX { get; set; }
         public string FontName { get; set; } = "";
         public float FontSize { get; set; }
         public bool IsBold { get; set; }
@@ -1194,8 +1247,6 @@ namespace ratpdf.Services
 
     public class StyledTextExtractionStrategy : IEventListener
     {
-        // ── inner models ──────────────────────────────────────────────────────────
-
         private class TextChunk
         {
             public string Text { get; set; } = "";
@@ -1209,43 +1260,9 @@ namespace ratpdf.Services
             public string Color { get; set; } = "#000000";
         }
 
-        private class ImageElement
-        {
-            public float X { get; set; }
-            public float Y { get; set; }
-            public float Width { get; set; }
-            public float Height { get; set; }
-            public string? Src { get; set; }
-        }
-
-        private class PathElement
-        {
-            public float X { get; set; }
-            public float Y { get; set; }
-            public float Width { get; set; }
-            public float Height { get; set; }
-            public string? FillColor { get; set; }
-            public string? StrokeColor { get; set; }
-            public float StrokeWidth { get; set; }
-        }
-
-        // ── state ─────────────────────────────────────────────────────────────────
-
         private readonly List<TextChunk> _chunks = new();
-        private readonly List<ImageElement> _images = new();
-        private readonly List<PathElement> _paths = new();
-
         private float _pageWidth = 595f;
         private float _pageHeight = 842f;
-
-        /// <summary>
-        /// Multiply every PDF point coordinate by this factor before emitting CSS px.
-        /// Default = 96/72 ≈ 1.3333 — matches how browsers interpret CSS "pt".
-        /// Set to 1.0 if you want raw pt output.
-        /// </summary>
-        public float Scale { get; set; } = 96f / 72f;
-
-        // ── public API ────────────────────────────────────────────────────────────
 
         public void SetPageSize(float width, float height)
         {
@@ -1255,49 +1272,31 @@ namespace ratpdf.Services
 
         public void EventOccurred(IEventData data, EventType type)
         {
-            if (type == EventType.RENDER_TEXT) HandleText((TextRenderInfo)data);
-            else if (type == EventType.RENDER_IMAGE) HandleImage((ImageRenderInfo)data);
-            else if (type == EventType.RENDER_PATH) HandlePath((PathRenderInfo)data);
-        }
+            if (type != EventType.RENDER_TEXT) return;
+            var info = (TextRenderInfo)data;
 
-        public ICollection<EventType> GetSupportedEvents() =>
-            new HashSet<EventType>
-            {
-            EventType.RENDER_TEXT,
-            EventType.RENDER_IMAGE,
-            EventType.RENDER_PATH
-            };
-
-        // ── text ──────────────────────────────────────────────────────────────────
-
-        private void HandleText(TextRenderInfo info)
-        {
             var text = info.GetText();
             if (string.IsNullOrEmpty(text)) return;
+
 
             var baseline = info.GetBaseline();
             var startPoint = baseline.GetStartPoint();
             var endPoint = baseline.GetEndPoint();
 
-            // Compute real rendered font size from the text matrix scale
             var tm = info.GetTextMatrix();
-            var scaleY = MathF.Sqrt(
-                tm.Get(Matrix.I12) * tm.Get(Matrix.I12) +
-                tm.Get(Matrix.I22) * tm.Get(Matrix.I22));
+            var scaleY = MathF.Sqrt(tm.Get(Matrix.I12) * tm.Get(Matrix.I12)
+                                     + tm.Get(Matrix.I22) * tm.Get(Matrix.I22));
             var fontSize = Math.Abs(info.GetFontSize() * scaleY);
             if (fontSize < 1f) fontSize = 10f;
 
-            // Font name / style
             var font = info.GetFont();
-            string fontName = "Arial";
-            bool isBold = false;
-            bool isItalic = false;
+            var fontName = "Arial";
+            bool isBold = false, isItalic = false;
 
             if (font != null)
             {
                 fontName = font.GetFontProgram()?.GetFontNames()?.GetFontName() ?? "Arial";
 
-                // Strip subset prefix  e.g. "ABCDEF+TimesNewRoman"
                 if (fontName.Contains('+'))
                     fontName = fontName[(fontName.IndexOf('+') + 1)..];
 
@@ -1306,7 +1305,7 @@ namespace ratpdf.Services
                         || fontName.Contains("Oblique", StringComparison.OrdinalIgnoreCase);
             }
 
-            // Text color
+
             string color = "#000000";
             var fillColor = info.GetFillColor();
             if (fillColor != null)
@@ -1320,7 +1319,7 @@ namespace ratpdf.Services
                     if (r != 0 || g != 0 || b != 0)
                         color = $"#{r:X2}{g:X2}{b:X2}";
                 }
-                catch { /* keep black */ }
+                catch { /* leave black */ }
             }
 
             _chunks.Add(new TextChunk
@@ -1337,328 +1336,118 @@ namespace ratpdf.Services
             });
         }
 
-        // ── image ─────────────────────────────────────────────────────────────────
-
-        private void HandleImage(ImageRenderInfo info)
-        {
-            try
-            {
-                var ctm = info.GetImageCtm();
-                float x = ctm.Get(Matrix.I31);
-                float y = ctm.Get(Matrix.I32);
-                float width = ctm.Get(Matrix.I11);
-                float height = ctm.Get(Matrix.I22);
-
-                if (height < 0) { y += height; height = -height; }
-                if (width < 0) { x += width; width = -width; }
-
-                var pdfImg = info.GetImage();
-                if (pdfImg == null) return;
-
-                byte[]? finalBytes = null;
-
-                // ── 1. Handle soft-mask (SMask) transparency ──────────────────────
-                var sMaskObj = pdfImg.GetPdfObject().Get(PdfName.SMask);
-                if (sMaskObj is PdfStream sMaskStream)
-                {
-                    finalBytes = CompositeWithSoftMask(pdfImg, new PdfImageXObject(sMaskStream));
-                }
-
-                // ── 2. No SMask — convert to browser-safe RGBA PNG ────────────────
-                //    This handles CMYK JPEGs, DeviceGray, and anything else that
-                //    browsers would render as black.
-                if (finalBytes == null)
-                {
-                    finalBytes = ConvertImageToRgbPng(pdfImg);
-                }
-
-                if (finalBytes == null || finalBytes.Length < 16) return;
-
-                _images.Add(new ImageElement
-                {
-                    X = x,
-                    Y = y,
-                    Width = width,
-                    Height = height,
-                    Src = $"data:image/png;base64,{Convert.ToBase64String(finalBytes)}"
-                });
-            }
-            catch { }
-        }
-
-        /// <summary>
-        /// Converts any PdfImageXObject to a browser-safe RGBA PNG via ImageSharp.
-        /// Handles RGB, CMYK, DeviceGray JPEG and PNG source images.
-        /// </summary>
-        private static byte[]? ConvertImageToRgbPng(PdfImageXObject pdfImg)
-        {
-            try
-            {
-                byte[] raw;
-                try { raw = pdfImg.GetImageBytes(decoded: true); }
-                catch { raw = pdfImg.GetImageBytes(decoded: false); }
-
-                if (raw == null || raw.Length < 16) return null;
-
-                using var ms = new MemoryStream(raw);
-                using var img = SixLabors.ImageSharp.Image.Load<Rgba32>(
-                    new SixLabors.ImageSharp.Formats.DecoderOptions(), ms);   
-
-                using var outMs = new MemoryStream();
-                img.SaveAsPng(outMs);
-                return outMs.ToArray();
-            }
-            catch
-            {
-                // Last resort: return raw bytes and hope browser can handle it
-                try
-                {
-                    byte[] raw = pdfImg.GetImageBytes(decoded: true);
-                    return raw?.Length >= 16 ? raw : null;
-                }
-                catch { return null; }
-            }
-        }
-
-        /// <summary>
-        /// Composites a colour image with its PDF soft mask (alpha channel).
-        /// </summary>
-        private static byte[]? CompositeWithSoftMask(
-            PdfImageXObject colorImg,
-            PdfImageXObject maskImg)
-        {
-            try
-            {
-                var colorBytes = colorImg.GetImageBytes(decoded: true);
-                var maskBytes = maskImg.GetImageBytes(decoded: true);
-
-                using var baseImg = SixLabors.ImageSharp.Image.Load<Rgba32>(colorBytes);
-                using var maskGray = SixLabors.ImageSharp.Image.Load<L8>(maskBytes);
-
-                if (maskGray.Width != baseImg.Width || maskGray.Height != baseImg.Height)
-                    maskGray.Mutate(ctx => ctx.Resize(baseImg.Width, baseImg.Height));
-
-                baseImg.ProcessPixelRows(maskGray, (colorAcc, maskAcc) =>
-                {
-                    for (int row = 0; row < colorAcc.Height; row++)
-                    {
-                        var colorSpan = colorAcc.GetRowSpan(row);
-                        var maskSpan = maskAcc.GetRowSpan(row);
-                        for (int col = 0; col < colorSpan.Length; col++)
-                        {
-                            var px = colorSpan[col];
-                            px.A = maskSpan[col].PackedValue;
-                            colorSpan[col] = px;
-                        }
-                    }
-                });
-
-                using var outMs = new MemoryStream();
-                baseImg.SaveAsPng(outMs);
-                return outMs.ToArray();
-            }
-            catch { return null; }
-        }
-
-        // ── path / shapes ─────────────────────────────────────────────────────────
-
-        private void HandlePath(PathRenderInfo info)
-        {
-            try
-            {
-                int op = info.GetOperation();
-                if (op == PathRenderInfo.NO_OP) return;
-
-                var gs = info.GetGraphicsState();
-
-                string? fillColor = null;
-                string? strokeColor = null;
-                float strokeWidth = 0f;
-
-                if ((op & PathRenderInfo.FILL) != 0)
-                {
-                    fillColor = GetColorHex(gs.GetFillColor());
-                    if (fillColor is null or "#FFFFFF") fillColor = null;
-                }
-
-                if ((op & PathRenderInfo.STROKE) != 0)
-                {
-                    strokeColor = GetColorHex(gs.GetStrokeColor());
-                    strokeWidth = gs.GetLineWidth();
-                    if (strokeColor is null or "#FFFFFF") strokeColor = null;
-                }
-
-                // Compute bounding box from all path points
-                float minX = float.MaxValue, minY = float.MaxValue;
-                float maxX = float.MinValue, maxY = float.MinValue;
-                bool hasPoints = false;
-
-                foreach (var subpath in info.GetPath().GetSubpaths())
-                    foreach (var seg in subpath.GetSegments())
-                        foreach (var pt in seg.GetBasePoints())
-                        {
-                            float px = (float)pt.GetX();
-                            float py = (float)pt.GetY();
-                            minX = Math.Min(minX, px);
-                            minY = Math.Min(minY, py);
-                            maxX = Math.Max(maxX, px);
-                            maxY = Math.Max(maxY, py);
-                            hasPoints = true;
-                        }
-
-                if (!hasPoints) return;
-
-                float w = maxX - minX;
-                float h = maxY - minY;
-
-                // Skip large solid-black filled shapes — these are usually artefacts
-                // (e.g. the page background rectangle in some PDFs)
-                bool looksLikeArtifact =
-                    fillColor == "#000000" &&
-                    strokeColor == null &&
-                    w > 10 && h > 10;
-
-                if (looksLikeArtifact) return;
-                if (w < 0.5f && h < 0.5f) return;
-
-                // Expand hairlines to their stroke width so they stay visible
-                if (h < 0.5f && strokeWidth > 0) { minY -= strokeWidth / 2f; h = strokeWidth; }
-                if (w < 0.5f && strokeWidth > 0) { minX -= strokeWidth / 2f; w = strokeWidth; }
-
-                _paths.Add(new PathElement
-                {
-                    X = minX,
-                    Y = minY,
-                    Width = w,
-                    Height = h,
-                    FillColor = fillColor ?? strokeColor,
-                    StrokeColor = strokeColor,
-                    StrokeWidth = strokeWidth
-                });
-            }
-            catch { }
-        }
-
-        private static string? GetColorHex(iText.Kernel.Colors.Color? color)
-        {
-            if (color == null) return null;
-            try
-            {
-                var rgb = color.GetColorValue();
-                if (rgb.Length < 3) return null;
-                int r = (int)Math.Round(rgb[0] * 255);
-                int g = (int)Math.Round(rgb[1] * 255);
-                int b = (int)Math.Round(rgb[2] * 255);
-                return $"#{r:X2}{g:X2}{b:X2}";
-            }
-            catch { return null; }
-        }
-
-        // ── HTML generation ───────────────────────────────────────────────────────
-
         public string GetResultantHtml()
         {
+            if (_chunks.Count == 0) return string.Empty;
+
+            const float Y_TOLERANCE = 2.5f;
+            const float SPACE_RATIO = 0.4f;
+
+            var lines = new List<List<TextChunk>>();
+
+
+            foreach (var chunk in _chunks.OrderByDescending(c => c.Y).ThenBy(c => c.X))
+            {
+                var line = lines.FirstOrDefault(l =>
+                    Math.Abs(l[0].Y - chunk.Y) <= Y_TOLERANCE);
+
+                if (line != null)
+                    line.Add(chunk);
+                else
+                    lines.Add(new List<TextChunk> { chunk });
+            }
+
+
+            foreach (var line in lines)
+                line.Sort((a, b) => a.X.CompareTo(b.X));
+
+            float contentLeft = _chunks.Min(c => c.X);
+            float contentRight = _chunks.Max(c => c.EndX);
+            float pageCenter = _pageWidth / 2f;
+            float contentSpan = contentRight - contentLeft;
+
             var sb = new StringBuilder();
 
-            // ── Paths ──────────────────────────────────────────────────────────────
-            foreach (var path in _paths)
+            foreach (var line in lines)
             {
-                float top = (_pageHeight - path.Y - path.Height) * Scale;
-                sb.Append(
-                    $"<div style=\"" +
-                    $"position:absolute;" +
-                    $"left:{path.X * Scale:F2}px;" +
-                    $"top:{top:F2}px;" +
-                    $"width:{path.Width * Scale:F2}px;" +
-                    $"height:{path.Height * Scale:F2}px;" +
-                    $"background:{path.FillColor ?? "transparent"};" +
-                    $"\"></div>");
-            }
+                if (line.Count == 0) continue;
 
-            // ── Images ─────────────────────────────────────────────────────────────
-            foreach (var img in _images)
-            {
-                if (img.Src == null) continue;
-                float top = (_pageHeight - img.Y - img.Height) * Scale;
-                sb.Append(
-                    $"<img src=\"{img.Src}\" style=\"" +
-                    $"position:absolute;" +
-                    $"left:{img.X * Scale:F2}px;" +
-                    $"top:{top:F2}px;" +
-                    $"width:{img.Width * Scale:F2}px;" +
-                    $"height:{img.Height * Scale:F2}px;" +
-                    $"\" />");
-            }
-
-            // ── Text ───────────────────────────────────────────────────────────────
-            if (_chunks.Count > 0)
-            {
-                const float Y_TOLERANCE = 2.5f;
-                const float SPACE_RATIO = 0.4f;
-
-                // Group chunks into lines by Y coordinate
-                var lines = new List<List<TextChunk>>();
-                foreach (var chunk in _chunks.OrderByDescending(c => c.Y).ThenBy(c => c.X))
+                string rawText = string.Concat(line.Select(c => c.Text));
+                if (string.IsNullOrWhiteSpace(rawText))
                 {
-                    var line = lines.FirstOrDefault(
-                        l => Math.Abs(l[0].Y - chunk.Y) <= Y_TOLERANCE);
-
-                    if (line != null) line.Add(chunk);
-                    else lines.Add(new List<TextChunk> { chunk });
+                    sb.Append("<p style=\"margin:0;line-height:0.8em;\">&nbsp;</p>");
+                    continue;
                 }
 
-                foreach (var line in lines)
+                float lineLeft = line.First().X;
+                float lineRight = line.Last().EndX;
+                float lineMid = (lineLeft + lineRight) / 2f;
+                float lineWidth = lineRight - lineLeft;
+
+                float gapLeft = lineLeft - contentLeft;
+                float gapRight = contentRight - lineRight;
+                float centerDiff = Math.Abs(lineMid - pageCenter);
+
+                string alignment;
+
+                if (lineWidth >= contentSpan * 0.85f)
                 {
-                    line.Sort((a, b) => a.X.CompareTo(b.X));
+                    alignment = "justify";
+                }
+                else if (centerDiff <= contentSpan * 0.06f
+                      && gapLeft > contentSpan * 0.10f
+                      && gapRight > contentSpan * 0.10f)
+                {
+                    alignment = "center";
+                }
+                else if (gapRight < contentSpan * 0.08f
+                      && gapLeft > contentSpan * 0.15f)
+                {
+                    alignment = "right";
+                }
+                else
+                {
+                    alignment = "left";
+                }
 
-                    var first = line.First();
-                    float top = (_pageHeight - first.Y - first.FontSize) * Scale;
-                    float left = first.X * Scale;
+                float avgSize = line.Average(c => c.FontSize);
+                float marginPx = MathF.Round(avgSize * 0.15f, 1);
 
-                    sb.Append(
-                        $"<div style=\"" +
-                        $"position:absolute;" +
-                        $"left:{left:F2}px;" +
-                        $"top:{top:F2}px;" +
-                        $"white-space:nowrap;" +
-                        $"line-height:1;\">");
+                sb.Append($"<p style=\"margin:0 0 {marginPx}pt 0;" +
+                          $"text-align:{alignment};line-height:1.4;\">");
 
-                    for (int i = 0; i < line.Count; i++)
+                for (int i = 0; i < line.Count; i++)
+                {
+                    var chunk = line[i];
+
+                    if (i > 0)
                     {
-                        var chunk = line[i];
-
-                        // Insert a space between chunks that are visually separated
-                        if (i > 0)
-                        {
-                            float gap = chunk.X - line[i - 1].EndX;
-                            float spaceRef = chunk.FontSize * SPACE_RATIO;
-                            if (gap > spaceRef) sb.Append(' ');
-                        }
-
-                        var style = new StringBuilder();
-                        style.Append($"font-family:'{chunk.FontName}',Arial,sans-serif;");
-                        style.Append($"font-size:{chunk.FontSize * Scale:F2}px;");
-                        if (chunk.IsBold) style.Append("font-weight:bold;");
-                        if (chunk.IsItalic) style.Append("font-style:italic;");
-                        if (chunk.Color != "#000000")
-                            style.Append($"color:{chunk.Color};");
-
-                        sb.Append($"<span style=\"{style}\">" +
-                                  $"{System.Net.WebUtility.HtmlEncode(chunk.Text)}</span>");
+                        float gap = chunk.X - line[i - 1].EndX;
+                        float spaceRef = chunk.FontSize * SPACE_RATIO;
+                        if (gap > spaceRef)
+                            sb.Append(' ');
                     }
 
-                    sb.Append("</div>");
+                    var style = new StringBuilder();
+                    style.Append($"font-family:'{chunk.FontName}',Arial,sans-serif;");
+                    style.Append($"font-size:{chunk.FontSize:F1}pt;");
+                    if (chunk.IsBold) style.Append("font-weight:bold;");
+                    if (chunk.IsItalic) style.Append("font-style:italic;");
+                    if (chunk.Color != "#000000") style.Append($"color:{chunk.Color};");
+
+                    sb.Append($"<span style=\"{style}\">" +
+                              $"{System.Net.WebUtility.HtmlEncode(chunk.Text)}</span>");
                 }
+
+                sb.Append("</p>");
             }
 
-            // Clear for next page
             _chunks.Clear();
-            _images.Clear();
-            _paths.Clear();
-
             return sb.ToString();
         }
-    }
 
+        public ICollection<EventType> GetSupportedEvents() =>
+            new HashSet<EventType> { EventType.RENDER_TEXT };
+    }
 }
 
