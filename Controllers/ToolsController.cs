@@ -82,11 +82,12 @@ namespace ratpdf.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult ImgBackgroundRemove() => throw new Exception("Service Unavailable! Please try after some time"); // View();
+        public IActionResult ImgBackgroundRemove() =>  View();
         [HttpGet]
         public IActionResult IpLookup() => View();
         [HttpGet]
         public IActionResult DnsLookup() => View();
+        [HttpGet] public IActionResult AtsDashboard() => View();
         [HttpGet]
         public async Task<IActionResult> WhatIsMyIP()
         {
@@ -152,7 +153,6 @@ namespace ratpdf.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveImgBackground(RemoveImgBgModel model)
         {
-            throw new Exception("Service Unavailable! Please try after some time");
             Response.Cookies.Append("downloadReady", "1", new CookieOptions
             {
                 Expires = DateTimeOffset.Now.AddMinutes(1),
@@ -230,17 +230,12 @@ namespace ratpdf.Controllers
                 status = "processing"
             });
         }
-        [HttpGet]
-        public IActionResult AtsDashboard()
-        {
-            throw new Exception("Service Unavailable! Please try after some time");
-            return View();
-        }
+
+        
 
         [HttpPost]
         public async Task<IActionResult> AtsDashboard(IFormFile file)
         {
-            throw new Exception("Service Unavailable! Please try after some time");
             if (file == null || file.Length == 0)
             {
                 ModelState.AddModelError("", "Please upload a file.");
