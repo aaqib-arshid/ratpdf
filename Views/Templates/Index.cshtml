@@ -1,0 +1,62 @@
+﻿@using ratpdf.Data.Entities
+@model List<Template>
+@{
+    ViewData["Title"] = "My Templates";
+    var maxTemplates = (int)ViewBag.MaxTemplates;
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">My Templates</h2>
+    <p class="text-muted">
+        Save your favorite invoice layouts for quick reuse.
+        @if (maxTemplates == 1)
+        {
+            <span>You can save up to 1 template (Pro feature).</span>
+        }
+        else
+        {
+            <span>You have unlimited templates (Business plan).</span>
+        }
+    </p>
+
+    @if (Model.Any())
+    {
+        <div class="row g-3">
+            @foreach (var template in Model)
+            {
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@template.Name</h5>
+                            <p class="text-muted small mb-2">
+                                Created: @template.CreatedAt.ToString("dd MMM yyyy HH:mm")
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Load" asp-route-id="@template.Id"
+                                       class="btn btn-sm btn-primary">
+                                    Use Template
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@template.Id"
+                                      method="post" class="d-inline"
+                                      onsubmit="return confirm('Delete this template?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            You haven't saved any templates yet.
+            <a asp-controller="Invoice" asp-action="Create" class="alert-link">Create an invoice</a>
+            and click "Save as Template".
+        </div>
+    }
+</div>

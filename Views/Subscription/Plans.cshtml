@@ -1,0 +1,82 @@
+﻿@using ratpdf.Constants
+@{
+    ViewData["Title"] = "Pricing Plans";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-5">Choose Your Plan</h2>
+    <div class="row g-4 justify-content-center">
+        <!-- Free -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Free</h5>
+                    <p class="display-6 fw-bold">₹0<small class="fs-6">/mo</small></p>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>✓ Unlimited invoices</li>
+                        <li>✓ PDF download</li>
+                        <li>✓ "Powered by" watermark</li>
+                        <li class="text-muted">✗ Custom logo</li>
+                        <li class="text-muted">✗ Templates</li>
+                    </ul>
+                    <a asp-controller="Invoice" asp-action="Create" class="btn btn-outline-primary w-100">Current</a>
+                </div>
+            </div>
+        </div>
+        <!-- Pro -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-primary h-100">
+                <div class="card-header bg-primary text-white text-center fw-bold">Most Popular</div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Pro</h5>
+                    <p class="display-6 fw-bold">₹599<small class="fs-6">/mo</small></p>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>✓ Everything in Free</li>
+                        <li>✓ No watermark</li>
+                        <li>✓ Custom logo</li>
+                        <li>✓ Brand colors</li>
+                        <li>✓ 1 template</li>
+                        <li>✓ Invoice history</li>
+                    </ul>
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <form asp-controller="Subscription" asp-action="CreateCheckout" method="post">
+                            <input type="hidden" name="planId" value="@Plan.Pro_Monthly" />
+                            <button type="submit" class="btn btn-primary w-100">Upgrade</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary w-100">Sign Up & Upgrade</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- Business -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Business</h5>
+                    <p class="display-6 fw-bold">₹2999<small class="fs-6">/mo</small></p>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>✓ Everything in Pro</li>
+                        <li>✓ Unlimited templates</li>
+                        <li>✓ Bulk export</li>
+                        <li>✓ Priority support</li>
+                    </ul>
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <form asp-controller="Subscription" asp-action="CreateCheckout" method="post">
+                            <input type="hidden" name="planId" value="@Plan.Business_Monthly" />
+                            <button type="submit" class="btn btn-primary w-100">Upgrade</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary w-100">Sign Up & Upgrade</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

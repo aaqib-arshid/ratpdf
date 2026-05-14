@@ -1,8 +1,6 @@
-﻿using Azure.Core;
-using Azure.Storage.Blobs;
+﻿using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using DnsClient;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -24,7 +22,7 @@ namespace ratpdf.Controllers
         private readonly SearchConsoleService _gsc;
         private readonly DecayCalculatorService _calculator;
         private readonly GoogleOAuthService _googleOAuth;
-        public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine, SearchConsoleService gsc, DecayCalculatorService calculator,GoogleOAuthService googleOAuth)
+        public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine, SearchConsoleService gsc, DecayCalculatorService calculator, GoogleOAuthService googleOAuth)
         {
             _blobContainer = new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdf");
             _queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdfai-queue");
@@ -82,7 +80,7 @@ namespace ratpdf.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult ImgBackgroundRemove() =>  View();
+        public IActionResult ImgBackgroundRemove() => View();
         [HttpGet]
         public IActionResult IpLookup() => View();
         [HttpGet]
@@ -231,7 +229,7 @@ namespace ratpdf.Controllers
             });
         }
 
-        
+
 
         [HttpPost]
         public async Task<IActionResult> AtsDashboard(IFormFile file)
@@ -250,7 +248,7 @@ namespace ratpdf.Controllers
                 return View();
             }
 
-            const long maxSize = 1 * 1024 * 1024; 
+            const long maxSize = 1 * 1024 * 1024;
 
             if (file.Length > maxSize)
             {
@@ -291,7 +289,7 @@ namespace ratpdf.Controllers
                 RedirectUri = redirectUrl,
                 Items =
                 {
-                    { "prompt", "select_account" } 
+                    { "prompt", "select_account" }
                 }
             };
 
@@ -358,7 +356,7 @@ namespace ratpdf.Controllers
         public IActionResult Embed()
         {
             Response.Headers.Add("X-Frame-Options", "ALLOWALL");
-            return View(); 
+            return View();
         }
         #region private methods
         private string NormalizeGscSite(string domain)

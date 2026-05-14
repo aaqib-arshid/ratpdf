@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using ratpdf.Data.Entities
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899635585691076"
@@ -187,109 +191,157 @@
     </div>
     <!-- Navbar -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
-            <div class="container px-2 px-lg-3">
-                <!-- Logo -->
-                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="40" class="me-2" />
-                    Rat PDF
-                </a>
+     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <div class="container-fluid">
 
-                <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <!-- PDF Tools -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                PDF Tools
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="EditPDF">Edit PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="Merge">Merge PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="Split">Split PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="Compress">Compress PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="Tools" asp-action="AtsDashboard">ATS Checker</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="Watermark">Add Watermark</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="Password">Protect PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="SignText">Sign PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="RotateOrRemove">Other PDF Tools</a></li>
+        <!-- LOGO -->
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/images/ratpdf-logo.png" alt="RatPDF" height="32" class="me-2" />
+            <span class="fw-bold">RatPDF</span>
+        </a>
 
-                                <li><hr class="dropdown-divider"></li>
+        <!-- MOBILE TOGGLER -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                                <li><h6 class="dropdown-header">Convert</h6></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="ConvertImages">Image to PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="DocToPdf">Word to PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToDoc">PDF to Word</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToExcel">PDF to Excel</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="ExcelToPdf">Excel to PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="TextToPdf">Text to PDF</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToText">PDF to Text</a></li>
-                            </ul>
-                        </li>
+        <div class="collapse navbar-collapse" id="navbarContent">
 
-                        <!-- Image Tools -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                Image Tools
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImgBackgroundRemove">Background Remover</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="ImageCompressor">Compress Image</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="ImgToBase64">Image to Base64</a></li>
-                            </ul>
-                        </li>
+            <!-- LEFT MENU -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                        <!-- Developer Tools -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                Dev Tools
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="HtmlFormatter">HTML Formatter</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="JsonFormatter">JSON Formatter</a></li>
-                                <li><a class="dropdown-item" asp-controller="PDF" asp-action="JwtDecoder">JWT Decoder</a></li>
-                            </ul>
-                        </li>
+                <!-- PDF TOOLS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">PDF Tools</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="EditPDF">Edit PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Merge">Merge PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Split">Split PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Compress">Compress PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="AtsDashboard">ATS Checker</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Watermark">Add Watermark</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Password">Protect PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="SignText">Sign PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="RotateOrRemove">Other PDF Tools</a></li>
 
-                        <!-- Utility Tools -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                Utilities
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Tools" asp-action="WhatIsMyIP">What is My IP</a></li>
-                                <li><a class="dropdown-item" asp-controller="Tools" asp-action="IpLookup">IP Lookup</a></li>
-                                <li><a class="dropdown-item" asp-controller="Tools" asp-action="DnsLookup">DNS Lookup</a></li>
-                                <li><a class="dropdown-item" asp-controller="Tools" asp-action="WordCounter">Word Counter</a></li>
-                                <li><a class="dropdown-item" asp-controller="Tools" asp-action="RingSizeConverter">Ring Size Converter</a></li>
-                                <li><a class="dropdown-item" asp-controller="Tools" asp-action="GSCIndex">Decay SEO Tool</a></li>
-                            </ul>
-                        </li>
-                        
-                        <!-- Guides -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                Guides
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/guides/compress-pdf-guide">Compress PDF Guides</a></li>
-                                <li><a class="dropdown-item" href="/guides/pdf-txt-guide">PDF-Text Guides</a></li>
-                                <li><a class="dropdown-item" href="/guides/background-remover">Bg Remover Guides</a></li>
-                                <li><a class="dropdown-item" href="/guides/ring-size-converter-guide">Ring Size Guides</a></li>
-                                <li><a class="dropdown-item" href="/guides/word-counter-guide">Word Counter Guides</a></li>
-                                <li><a class="dropdown-item" href="/guides/my-ip-guide">What Is My IP Guides</a></li>
-                                <!-- Future -->
-                                <!-- <li><a class="dropdown-item" href="/guides/pdf-tools">PDF Guides</a></li> -->
-                            </ul>
-                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Convert</h6></li>
+
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ConvertImages">Image to PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="DocToPdf">Word to PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToDoc">PDF to Word</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToExcel">PDF to Excel</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ExcelToPdf">Excel to PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="TextToPdf">Text to PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToText">PDF to Text</a></li>
                     </ul>
-                </div>
-            </div>
-        </nav>
+                </li>
+
+                <!-- IMAGE TOOLS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Image Tools</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImgBackgroundRemove">Background Remover</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ImageCompressor">Compress Image</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ImgToBase64">Image to Base64</a></li>
+                    </ul>
+                </li>
+
+                <!-- DEV TOOLS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Dev Tools</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="HtmlFormatter">HTML Formatter</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="JsonFormatter">JSON Formatter</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="JwtDecoder">JWT Decoder</a></li>
+                    </ul>
+                </li>
+
+                <!-- UTILITIES -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Utilities</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="WhatIsMyIP">What is My IP</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="IpLookup">IP Lookup</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="DnsLookup">DNS Lookup</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="WordCounter">Word Counter</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="RingSizeConverter">Ring Size Converter</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="GSCIndex">Decay SEO Tool</a></li>
+                    </ul>
+                </li>
+
+                <!-- INVOICE GENERATOR -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Invoice Generator</a>
+                    <ul class="dropdown-menu">
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li><a class="dropdown-item" href="/InvoiceDashboard/Index">Dashboard</a></li>
+                             <li ><a class="dropdown-item" href="/Templates/Index">Templates</a></li>
+                        }
+                        else
+                        {
+                            <li><a class="dropdown-item" href="/InvoiceHome/Index">Home</a></li>
+                        }
+
+                        <li><a class="dropdown-item" href="/Invoice/Create">Create Invoice</a></li>
+                        <li><a class="dropdown-item" href="/Subscription/Plans">Plans</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- GUIDES -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Guides</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/guides/compress-pdf-guide">Compress PDF Guides</a></li>
+                        <li><a class="dropdown-item" href="/guides/pdf-txt-guide">PDF-Text Guides</a></li>
+                        <li><a class="dropdown-item" href="/guides/background-remover">Background Remover Guides</a></li>
+                        <li><a class="dropdown-item" href="/guides/ring-size-converter-guide">Ring Size Guides</a></li>
+                        <li><a class="dropdown-item" href="/guides/word-counter-guide">Word Counter Guides</a></li>
+                        <li><a class="dropdown-item" href="/guides/my-ip-guide">What Is My IP Guides</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <!-- RIGHT USER MENU -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            @UserManager.GetUserName(User)
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" asp-controller="Branding" asp-action="Edit">Branding</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                    </li>
+                }
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
     </header>
 
     <!-- Main Content -->

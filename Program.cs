@@ -1,7 +1,15 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using ratpdf.Data.AppDBContext;
+using ratpdf.Data.Entities;
 using ratpdf.Services;
+using ratpdf.Services.Invoice;
+using ratpdf.Services.Invoice.Contract;
+using ratpdf.Services.Invoice.Feature;
+using ratpdf.Services.Invoice.Implementation;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,10 +49,30 @@ builder.Services.AddHttpClient<RemoteEmbeddingService>(client =>
 {
     client.BaseAddress = new Uri("https://ai-embed-app.jollyisland-ab3b4974.canadacentral.azurecontainerapps.io/");
 });
+builder.Services.AddDbContext<RatPDFDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = false;
+    options.User.RequireUniqueEmail = true;
+})
+    .AddEntityFrameworkStores<RatPDFDbContext>()
+    .AddDefaultTokenProviders();
 builder.Services.AddScoped<AtsEngine>();
 builder.Services.AddSingleton<SearchConsoleService>();
 builder.Services.AddSingleton<DecayCalculatorService>();
 builder.Services.AddSingleton<GoogleOAuthService>();
+builder.Services.AddScoped<InvoicePdfService>();             
+builder.Services.AddScoped<BrandingService>();              
+builder.Services.AddScoped<SubscriptionManager>();         
+builder.Services.AddScoped<RazorpayService>();           
+builder.Services.AddScoped<UsageTracker>();               
+builder.Services.AddScoped<TemplateService>();            
+builder.Services.AddScoped<FeatureAccessor>();             
+builder.Services.AddScoped<ILogoStorageService, AzureLogoStorageService>();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 50 * 1024 * 1024; // 50 MB
@@ -105,11 +133,10 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

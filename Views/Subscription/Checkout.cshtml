@@ -1,0 +1,64 @@
+﻿@using ratpdf.Models.Invoice.Razorpay
+@model RazorpayCheckoutViewModel
+
+@{
+    ViewData["Title"] = "Complete Payment";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+        <h3>Redirecting to Payment...</h3>
+
+        <div class="spinner-border text-primary mt-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+        <p class="mt-2">
+            <a href="/Subscription/Plans">Cancel</a>
+        </p>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    window.onload = function () {
+
+    var options = {
+    "key": "@Model.Key",
+    "subscription_id": "@Model.SubscriptionId",
+    "name": "@Model.Name",
+    "description": "@Model.Description",
+
+    "prefill": {
+    "name": "@Model.PrefillEmail",
+    "email": "@Model.PrefillEmail"
+    },
+
+    "notes": {
+    "user_id": "@Model.Notes["user_id"]"
+    },
+
+    "theme": {
+    "color": "#3399cc"
+    },
+
+    "handler": function (response) {
+
+    window.location.href =
+    "/Subscription/Success?payment_id=" +
+    response.razorpay_payment_id;
+    },
+
+    "modal": {
+    "ondismiss": function () {
+    window.location.href = "/Subscription/Plans";
+    }
+    }
+    };
+
+    var rzp = new Razorpay(options);
+
+    rzp.open();
+    };
+</script>
