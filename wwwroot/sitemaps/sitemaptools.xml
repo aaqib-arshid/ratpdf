@@ -197,6 +197,12 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+	 <url>
+    <loc>https://ratpdf.com/InvoiceHome/Index</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
   <!-- Legal Pages -->
   <url>
     <loc>https://ratpdf.com/Home/Terms</loc>
