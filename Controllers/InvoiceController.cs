@@ -141,7 +141,7 @@ namespace ratpdf.Controllers
 
             _db.Remove(invoice);
             await _db.SaveChangesAsync();
-            return Ok();
+            return Redirect("~/InvoiceDashboard/Index");
         }
         // POST: /Invoice/SaveTemplate
         [HttpPost]
