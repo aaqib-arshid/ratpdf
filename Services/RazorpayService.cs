@@ -7,13 +7,14 @@ namespace ratpdf.Services
         private readonly RazorpayClient _client;
         private readonly string _keyId;
         private readonly ILogger<RazorpayService> _logger;
-
-        public RazorpayService(IConfiguration config, ILogger<RazorpayService> logger)
+        private readonly IConfiguration _configuration;
+        public RazorpayService(IConfiguration config, ILogger<RazorpayService> logger, IConfiguration configuration)
         {
             _keyId = config["Razorpay:KeyId"]!;
             var keySecret = config["Razorpay:KeySecret"]!;
             _client = new RazorpayClient(_keyId, keySecret);
             _logger = logger;
+            _configuration = configuration;
         }
 
         public string KeyId => _keyId;
@@ -53,5 +54,24 @@ namespace ratpdf.Services
             await Task.Run(() => subscription.Cancel(options));
             _logger.LogInformation("Razorpay subscription {SubId} cancelled", subscriptionId);
         }
+
+        #region Img Bg 
+        public Order CreateImgBgOrder(decimal amount)
+        {
+            RazorpayClient client = new RazorpayClient(
+                _configuration["Razorpay:KeyId"],
+                _configuration["Razorpay:KeySecret"]);
+
+            Dictionary<string, object> options = new();
+
+            options.Add("amount", amount * 100);
+
+            options.Add("currency", "INR");
+
+            options.Add("receipt", Guid.NewGuid().ToString());
+
+            return client.Order.Create(options);
+        }
+        #endregion
     }
 }

@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ratpdf.Data.AppDBContext;
+using ratpdf.Data.Entities;
 using ratpdf.Models;
 using ratpdf.Services;
 using System.Text.RegularExpressions;
@@ -22,7 +25,13 @@ namespace ratpdf.Controllers
         private readonly SearchConsoleService _gsc;
         private readonly DecayCalculatorService _calculator;
         private readonly GoogleOAuthService _googleOAuth;
-        public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine, SearchConsoleService gsc, DecayCalculatorService calculator, GoogleOAuthService googleOAuth)
+        private readonly RazorpayService _razorpayService;
+        private readonly RatPDFDbContext _context;
+        private readonly IConfiguration _configuration;
+        public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine,
+            SearchConsoleService gsc, DecayCalculatorService calculator,
+            GoogleOAuthService googleOAuth, RazorpayService razorpayService,
+            RatPDFDbContext context, IConfiguration configuration)
         {
             _blobContainer = new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdf");
             _queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdfai-queue");
@@ -31,6 +40,9 @@ namespace ratpdf.Controllers
             _gsc = gsc;
             _calculator = calculator;
             _googleOAuth = googleOAuth;
+            _razorpayService = razorpayService;
+            _context = context;
+            _configuration = configuration;
         }
         public IActionResult RingSizeConverter()
         {
@@ -151,45 +163,85 @@ namespace ratpdf.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveImgBackground(RemoveImgBgModel model)
         {
-            Response.Cookies.Append("downloadReady", "1", new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddMinutes(1),
-                Path = "/"
-            });
             if (model.File == null || model.File.Length == 0)
             {
                 return Json(new
                 {
-                    jobId = string.Empty,
-                    message = "Please upload an image."
+                    success = false,
+                    message = "Please upload image"
                 });
             }
 
+            var userKey = HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            // CHECKing ACTIVE PLAN
+            var activePlan = await _context.ImgBgUserSubscriptions
+                .FirstOrDefaultAsync(x =>
+                    x.UserKey == userKey &&
+                    x.IsActive &&
+                    x.EndDate > DateTime.UtcNow);
+
+            bool unlimited = activePlan != null;
+
+            // FREE LIMIT LOGIC
+            if (!unlimited)
+            {
+                var usage = await _context.ImgBgUserUsages
+                    .FirstOrDefaultAsync(x => x.UserKey == userKey);
+
+                if (usage == null)
+                {
+                    usage = new ImgBgUserUsage
+                    {
+                        UserKey = userKey ?? string.Empty,
+                        FreeDownloadsUsed = 0,
+                        LastResetDate = DateTime.UtcNow.Date
+                    };
+
+                    _context.ImgBgUserUsages.Add(usage);
+                }
+
+                // RESET DAILY
+                if (usage.LastResetDate.Date != DateTime.UtcNow.Date)
+                {
+                    usage.FreeDownloadsUsed = 0;
+                    usage.LastResetDate = DateTime.UtcNow.Date;
+                }
+
+                if (usage.FreeDownloadsUsed >= 3)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        paymentRequired = true,
+                        message = "Daily limit exceeded"
+                    });
+                }
+
+                usage.FreeDownloadsUsed++;
+
+                await _context.SaveChangesAsync();
+            }
+
+            // VALIDATIONS
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+
             var ext = Path.GetExtension(model.File.FileName).ToLower();
 
             if (!allowedExtensions.Contains(ext))
             {
                 return Json(new
                 {
-                    jobId = string.Empty,
-                    message = "Only JPG and PNG formats are allowed."
-                });
-            }
-            var allowedTypes = new[] { "image/jpeg", "image/png" };
-
-            if (!allowedTypes.Contains(model.File.ContentType))
-            {
-                return Json(new
-                {
-                    jobId = string.Empty,
-                    message = "Invalid file type."
+                    success = false,
+                    message = "Invalid format"
                 });
             }
 
+            // PROCESSing IMAGE
             var jobId = Guid.NewGuid().ToString();
 
             var blobName = $"input/{jobId}.png";
+
             var blobClient = _blobContainer.GetBlobClient(blobName);
 
             await blobClient.UploadAsync(model.File.OpenReadStream());
@@ -201,10 +253,12 @@ namespace ratpdf.Controllers
                 OutputPath = $"output/{jobId}.png"
             };
 
-            await _queueClient.SendMessageAsync(System.Text.Json.JsonSerializer.Serialize(job));
+            await _queueClient.SendMessageAsync(
+                System.Text.Json.JsonSerializer.Serialize(job));
 
             return Json(new
             {
+                success = true,
                 jobId = jobId,
                 message = "Processing started"
             });
@@ -358,6 +412,90 @@ namespace ratpdf.Controllers
             Response.Headers.Add("X-Frame-Options", "ALLOWALL");
             return View();
         }
+        #region Img BG RazorPay
+        [HttpPost]
+        public IActionResult CreateImgBgOrder(string plan)
+        {
+            decimal amount = 0;
+
+            if (plan == "daily")
+                amount = 29;
+
+            if (plan == "monthly")
+                amount = 199;
+
+            var order = _razorpayService.CreateImgBgOrder(amount);
+
+            return Json(new
+            {
+                success = true,
+                orderId = order["id"].ToString(),
+                amount = amount,
+                key = _configuration["Razorpay:KeyId"]
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> VerifyImgBgPayment(
+        string razorpay_payment_id,
+        string razorpay_order_id,
+        string razorpay_signature,
+        string plan)
+        {
+            try
+            {
+                Dictionary<string, string> attributes = new();
+
+                attributes.Add(
+                    "razorpay_payment_id",
+                    razorpay_payment_id);
+
+                attributes.Add(
+                    "razorpay_order_id",
+                    razorpay_order_id);
+
+                attributes.Add(
+                    "razorpay_signature",
+                    razorpay_signature);
+
+                Razorpay.Api.Utils.verifyPaymentSignature(attributes);
+
+                var userKey =
+                    HttpContext.Connection.RemoteIpAddress?.ToString();
+
+                int days = plan == "monthly" ? 30 : 1;
+
+                decimal amount = plan == "monthly"
+                    ? 199
+                    : 29;
+
+                var subscription = new ImgBgUserSubscription
+                {
+                    UserKey = userKey ?? string.Empty,
+                    PlanName = plan,
+                    Amount = amount,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(days),
+                    IsActive = true
+                };
+
+                _context.ImgBgUserSubscriptions.Add(subscription);
+
+                await _context.SaveChangesAsync();
+
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            catch
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
+        }
+        #endregion
         #region private methods
         private string NormalizeGscSite(string domain)
         {

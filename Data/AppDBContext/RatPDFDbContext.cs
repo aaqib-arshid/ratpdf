@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ratpdf.Data.Entities;
+using Razorpay.Api;
 
 namespace ratpdf.Data.AppDBContext
 {
@@ -11,13 +12,17 @@ namespace ratpdf.Data.AppDBContext
         {
         }
 
-        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Entities.Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
-        public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<Entities.Subscription> Subscriptions { get; set; }
         public DbSet<Template> Templates { get; set; }
         public DbSet<BrandingSettings> BrandingSettings { get; set; }
         public DbSet<UsageLog> UsageLogs { get; set; }
+        public DbSet<ImgBgUserUsage> ImgBgUserUsages { get; set; }
 
+        public DbSet<ImgBgUserSubscription> ImgBgUserSubscriptions { get; set; }
+
+        public DbSet<ImgBgPayment> ImgBgPayments { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder); 
@@ -30,7 +35,7 @@ namespace ratpdf.Data.AppDBContext
             });
 
             // --- Subscription ---
-            builder.Entity<Subscription>(entity =>
+            builder.Entity<Entities.Subscription>(entity =>
             {
                 entity.HasKey(s => s.Id);
                 entity.Property(s => s.PlanId).HasMaxLength(100).IsRequired();
@@ -39,7 +44,7 @@ namespace ratpdf.Data.AppDBContext
 
                 entity.HasOne(s => s.User)
                       .WithOne(u => u.Subscription)
-                      .HasForeignKey<Subscription>(s => s.UserId)
+                      .HasForeignKey<Entities.Subscription>(s => s.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
                 // one active subscription per user (enforced by unique index or application logic)
@@ -50,7 +55,7 @@ namespace ratpdf.Data.AppDBContext
             });
 
             // --- Invoice ---
-            builder.Entity<Invoice>(entity =>
+            builder.Entity<Entities.Invoice>(entity =>
             {
                 entity.HasKey(i => i.Id);
                 entity.Property(i => i.InvoiceNumber).HasMaxLength(50).IsRequired();
