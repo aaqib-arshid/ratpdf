@@ -92,7 +92,7 @@ namespace ratpdf.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult ImgBackgroundRemove() => View();
+        public IActionResult ImgBackgroundRemove() => throw new Exception("Service unavailable!"); //View();
         [HttpGet]
         public IActionResult IpLookup() => View();
         [HttpGet]
@@ -163,6 +163,7 @@ namespace ratpdf.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveImgBackground(RemoveImgBgModel model)
         {
+            throw new Exception("Service unavailable!");
             if (model.File == null || model.File.Length == 0)
             {
                 return Json(new
