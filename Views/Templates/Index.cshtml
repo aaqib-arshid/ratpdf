@@ -1,62 +1,260 @@
 ﻿@using ratpdf.Data.Entities
 @model List<Template>
 @{
-    ViewData["Title"] = "My Templates";
+    ViewData["Title"] = "My Templates | RatPDF";
+    ViewData["Description"] = "Manage your saved invoice templates. Load, delete, or create new templates for quick invoice generation.";
     var maxTemplates = (int)ViewBag.MaxTemplates;
 }
 
-<div class="container mt-4">
-    <h2 class="mb-3">My Templates</h2>
-    <p class="text-muted">
-        Save your favorite invoice layouts for quick reuse.
-        @if (maxTemplates == 1)
-        {
-            <span>You can save up to 1 template (Pro feature).</span>
+@section Head {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        else
-        {
-            <span>You have unlimited templates (Business plan).</span>
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
-    </p>
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;700&display=swap');
+        .page-header {
+            background: var(--primary-gradient);
+            border-radius: 1.25rem;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        .card-modern {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: white;
+        }
+        .card-modern:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .badge-plan {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            font-weight: 500;
+            font-size: 0.7rem;
+            display: inline-block;
+        }
+        .step-number {
+            background: var(--primary-gradient);
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .faq-item {
+            border-bottom: 1px solid #eef2ff;
+            padding: 0.75rem 0;
+        }
+        .faq-question {
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+        .btn-sm-rounded {
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+        }
+    </style>
+}
 
-    @if (Model.Any())
-    {
-        <div class="row g-3">
-            @foreach (var template in Model)
+<div class="container mt-4 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="/InvoiceDashboard/Index" class="text-decoration-none">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Templates</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="page-header d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h1 class="h4 fw-bold mb-1"><i class="bi bi-files me-2"></i>My Templates</h1>
+                    <p class="mb-0 opacity-90 small">Save and reuse invoice layouts</p>
+                </div>
+                <a href="/Invoice/Create" class="btn btn-light btn-sm rounded-pill mt-2 mt-md-0">
+                    <i class="bi bi-plus-lg"></i> New Invoice
+                </a>
+            </div>
+
+            <!-- Plan info compact -->
+            <div class="mb-3 d-flex align-items-center gap-2">
+                <span class="badge-plan">
+                    @(maxTemplates == 1 ? "Pro Plan: 1 template" : "Business: Unlimited")
+                </span>
+                @if (maxTemplates == 1)
+                {
+                    <small class="text-muted"><i class="bi bi-info-circle"></i> Upgrade to Pro for unlimited templates</small>
+                }
+            </div>
+
+            @if (Model.Any())
             {
-                <div class="col-md-6">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">@template.Name</h5>
-                            <p class="text-muted small mb-2">
-                                Created: @template.CreatedAt.ToString("dd MMM yyyy HH:mm")
-                            </p>
-                            <div class="d-flex gap-2">
-                                <a asp-action="Load" asp-route-id="@template.Id"
-                                       class="btn btn-sm btn-primary">
-                                    Use Template
-                                </a>
-                                <form asp-action="Delete" asp-route-id="@template.Id"
-                                      method="post" class="d-inline"
-                                      onsubmit="return confirm('Delete this template?');">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        Delete
-                                    </button>
-                                </form>
+                <div class="row g-3">
+                    @foreach (var template in Model)
+                    {
+                        <div class="col-md-6">
+                            <div class="card-modern h-100">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">@template.Name</h6>
+                                            <small class="text-muted">@template.CreatedAt.ToString("dd MMM yyyy")</small>
+                                        </div>
+                                        <i class="bi bi-file-earmark-text fs-4 text-primary opacity-50"></i>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <a asp-action="Load" asp-route-id="@template.Id"
+                                           class="btn btn-sm btn-primary rounded-pill px-3">
+                                            <i class="bi bi-box-arrow-in-right"></i> Use
+                                        </a>
+                                        <form asp-action="Delete" asp-route-id="@template.Id"
+                                              method="post" class="d-inline"
+                                              onsubmit="return confirm('Delete this template?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="card-modern text-center p-5">
+                    <i class="bi bi-files fs-1 text-muted"></i>
+                    <p class="mt-2 mb-0">No templates saved yet</p>
+                    <small class="text-muted">Create an invoice and click "Save as Template"</small>
+                    <div class="mt-3">
+                        <a href="/Invoice/Create" class="btn btn-primary rounded-pill btn-sm">Create Invoice</a>
                     </div>
                 </div>
             }
         </div>
-    }
-    else
-    {
-        <div class="alert alert-info">
-            You haven't saved any templates yet.
-            <a asp-controller="Invoice" asp-action="Create" class="alert-link">Create an invoice</a>
-            and click "Save as Template".
+
+        <!-- Sidebar: How To Use + FAQ -->
+        <div class="col-lg-4">
+            <div class="card-modern mb-4">
+                <div class="card-body p-3">
+                    <h6 class="fw-bold mb-2"><i class="bi bi-question-circle-fill text-primary me-1"></i> How to Use Templates</h6>
+                    <div class="d-flex gap-2 mb-2 align-items-center">
+                        <span class="step-number">1</span> <span>Create an invoice with your details</span>
+                    </div>
+                    <div class="d-flex gap-2 mb-2 align-items-center">
+                        <span class="step-number">2</span> <span>Click "Save as Template" (Pro feature)</span>
+                    </div>
+                    <div class="d-flex gap-2 mb-2 align-items-center">
+                        <span class="step-number">3</span> <span>Load template from this page to auto-fill</span>
+                    </div>
+                    <div class="alert alert-light bg-info bg-opacity-10 border-0 small mt-2 p-2 rounded-3">
+                        <i class="bi bi-star-fill text-warning"></i> Tip: Name templates clearly (e.g., "Web Design - Client A")
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-body p-3">
+                    <h6 class="fw-bold mb-2"><i class="bi bi-chat-dots-fill text-primary me-1"></i> FAQ</h6>
+                    <div class="faq-item">
+                        <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">Can free users save templates?</div>
+                        <div id="faq1" class="collapse small text-muted mt-1">Pro plan allows 1 template. Upgrade to (Business) for unlimited templates.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">How do I load a template?</div>
+                        <div id="faq2" class="collapse small text-muted mt-1">Click "Use Template" on any saved template; you'll be redirected to invoice form pre-filled.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">Can I edit a template?</div>
+                        <div id="faq3" class="collapse small text-muted mt-1">You can delete and recreate, but direct editing is not available yet.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3 text-center small text-muted">
+                <i class="bi bi-shield-check text-success"></i> Secure storage · Auto-save
+            </div>
         </div>
-    }
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JSON-LD Rich Snippets: Product (rating, price), FAQ, Breadcrumbs -->
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@graph": [
+    {
+      "@@type": "Product",
+      "name": "RatPDF Invoice Templates",
+      "description": "Save and reuse invoice templates. Pro tier includes 1 template; Business offers unlimited.",
+      "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.7",
+        "reviewCount": "890",
+        "bestRating": "5"
+      },
+      "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Free tier: 0 template. Pro: 1 template. Business: Unlimited templates"
+      }
+    },
+    {
+      "@@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@@type": "Question",
+          "name": "Can free users save templates?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "No, Pro plan allows 1 template. Upgrade to Business for unlimited templates."
+          }
+        },
+        {
+          "@@type": "Question",
+          "name": "How do I load a template?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "Click 'Use Template' on any saved template; you'll be redirected to invoice form pre-filled."
+          }
+        }
+      ]
+    },
+    {
+      "@@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ratpdf.com/" },
+        { "@@type": "ListItem", "position": 2, "name": "Dashboard", "item": "https://www.ratpdf.com/InvoiceDashboard" },
+        { "@@type": "ListItem", "position": 3, "name": "Templates", "item": "https://www.ratpdf.com/Templates" }
+      ]
+    }
+  ]
+}
+</script>

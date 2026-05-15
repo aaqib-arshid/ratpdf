@@ -1,5 +1,7 @@
-﻿using iText.IO.Image;
+﻿using iText.IO.Font;
+using iText.IO.Image;
 using iText.Kernel.Colors;
+using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Layout;
@@ -46,7 +48,16 @@ namespace ratpdf.Services.Invoice
             var pdf = new PdfDocument(writer);
             var document = new Document(pdf, PageSize.A4);
             document.SetMargins(36, 36, 36, 36);
-
+            var fontPath = System.IO.Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "fonts",
+                "NotoSans-Regular.ttf"
+            );
+            PdfFont unicodeFont = PdfFontFactory.CreateFont(
+               fontPath,
+               PdfEncodings.IDENTITY_H,
+               PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED
+           );
             // Colors
             var primaryColor = ParseHexColor(branding?.PrimaryColor ?? "#1A73E8");
             var accentColor = branding?.AccentColor != null ? ParseHexColor(branding.AccentColor) : null;
@@ -94,7 +105,8 @@ namespace ratpdf.Services.Invoice
                 .SetTextAlignment(TextAlignment.RIGHT));
             document.Add(new Paragraph($"Date: {invoice.IssueDate:dd MMM yyyy}")
                 .SetTextAlignment(TextAlignment.RIGHT));
-
+            document.Add(new Paragraph($"Due Date: {invoice.DueDate:dd MMM yyyy}")
+                .SetTextAlignment(TextAlignment.RIGHT));
             // --- Customer ---
             document.Add(new Paragraph("Bill To:").SimulateBold());
             document.Add(new Paragraph(invoice.CustomerName));
@@ -119,24 +131,23 @@ namespace ratpdf.Services.Invoice
             {
                 table.AddCell(new Cell().Add(new Paragraph(item.Description)).SetPadding(3));
                 table.AddCell(new Cell().Add(new Paragraph(item.Quantity.ToString("N2"))).SetPadding(3));
-                table.AddCell(new Cell().Add(new Paragraph(FormatMoney(item.UnitPrice,invoice.Currency))).SetPadding(3));
-                table.AddCell(new Cell().Add(new Paragraph(FormatMoney(item.Amount,invoice.Currency))).SetPadding(3));
+                table.AddCell(new Cell().Add(new Paragraph(FormatMoney(item.UnitPrice,invoice.Currency))).SetPadding(3).SetFont(unicodeFont));
+                table.AddCell(new Cell().Add(new Paragraph(FormatMoney(item.Amount,invoice.Currency))).SetPadding(3).SetFont(unicodeFont));
             }
 
             document.Add(table);
 
             // --- Totals ---
-            document.Add(new Paragraph($"Subtotal: {FormatMoney(invoice.Subtotal,invoice.Currency)}")
+            document.Add(new Paragraph($"Subtotal: {FormatMoney(invoice.Subtotal,invoice.Currency)}").SetFont(unicodeFont)
                 .SetTextAlignment(TextAlignment.RIGHT));
             if (invoice.TaxRate > 0)
             {
-                document.Add(new Paragraph($"{invoice.TaxName} ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount,invoice.Currency)}")
+                document.Add(new Paragraph($"{invoice.TaxName} ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount,invoice.Currency)}").SetFont(unicodeFont)
                     .SetTextAlignment(TextAlignment.RIGHT));
             }
             document.Add(new Paragraph($"Total: {FormatMoney(invoice.Total, invoice.Currency)}")
                 .SetTextAlignment(TextAlignment.RIGHT)
-                .SimulateBold()
-                .SetFontSize(14));
+                .SimulateBold()).SetFont(unicodeFont);
 
             // --- Notes / Footer ---
             if (!string.IsNullOrWhiteSpace(invoice.Notes))
@@ -148,7 +159,7 @@ namespace ratpdf.Services.Invoice
             // --- Watermark for free users ---
             if (applyWatermark)
             {
-                var watermark = new Paragraph("Powered by Rat PDF InvoiceIQ")
+                var watermark = new Paragraph("Powered by Rat PDF Invoice Generator")
                     .SetFontColor(new DeviceRgb(210, 210, 210))
                     .SetFontSize(12)
                     .SetTextAlignment(TextAlignment.CENTER)
@@ -163,15 +174,12 @@ namespace ratpdf.Services.Invoice
         {
             return currency switch
             {
-                "AFN" => $"؋ {amount:N2}",
                 "ALL" => $"Lek {amount:N2}",
-                "DZD" => $"دج {amount:N2}",
                 "AOA" => $"Kz {amount:N2}",
                 "ARS" => $"$ {amount:N2}",
                 "AMD" => $"֏ {amount:N2}",
                 "AUD" => $"A$ {amount:N2}",
                 "AZN" => $"₼ {amount:N2}",
-                "BHD" => $".د.ب {amount:N2}",
                 "BDT" => $"৳ {amount:N2}",
                 "BYN" => $"Br {amount:N2}",
                 "BZD" => $"BZ$ {amount:N2}",
@@ -205,39 +213,29 @@ namespace ratpdf.Services.Invoice
                 "ISK" => $"kr {amount:N2}",
                 "INR" => $"₹ {amount:N2}",
                 "IDR" => $"Rp {amount:N2}",
-                "IRR" => $"﷼ {amount:N2}",
-                "IQD" => $"ع.د {amount:N2}",
                 "ILS" => $"₪ {amount:N2}",
                 "JMD" => $"J$ {amount:N2}",
                 "JPY" => $"¥ {amount:N2}",
-                "JOD" => $"د.ا {amount:N2}",
                 "KZT" => $"₸ {amount:N2}",
                 "KES" => $"KSh {amount:N2}",
                 "KRW" => $"₩ {amount:N2}",
-                "KWD" => $"د.ك {amount:N2}",
                 "LAK" => $"₭ {amount:N2}",
-                "LBP" => $"ل.ل {amount:N2}",
-                "LYD" => $"ل.د {amount:N2}",
                 "MYR" => $"RM {amount:N2}",
                 "MVR" => $"ރ {amount:N2}",
                 "MXN" => $"$ {amount:N2}",
                 "MNT" => $"₮ {amount:N2}",
-                "MAD" => $"د.م. {amount:N2}",
                 "MMK" => $"Ks {amount:N2}",
                 "NPR" => $"₨ {amount:N2}",
                 "NZD" => $"NZ$ {amount:N2}",
                 "NGN" => $"₦ {amount:N2}",
                 "NOK" => $"kr {amount:N2}",
-                "OMR" => $"ر.ع. {amount:N2}",
                 "PKR" => $"₨ {amount:N2}",
                 "PAB" => $"B/. {amount:N2}",
                 "PEN" => $"S/ {amount:N2}",
                 "PHP" => $"₱ {amount:N2}",
                 "PLN" => $"zł {amount:N2}",
-                "QAR" => $"﷼ {amount:N2}",
                 "RON" => $"lei {amount:N2}",
                 "RUB" => $"₽ {amount:N2}",
-                "SAR" => $"﷼ {amount:N2}",
                 "RSD" => $"дин. {amount:N2}",
                 "SGD" => $"S$ {amount:N2}",
                 "ZAR" => $"R {amount:N2}",
@@ -249,13 +247,11 @@ namespace ratpdf.Services.Invoice
                 "THB" => $"฿ {amount:N2}",
                 "TRY" => $"₺ {amount:N2}",
                 "UAH" => $"₴ {amount:N2}",
-                "AED" => $"د.إ {amount:N2}",
                 "USD" => $"$ {amount:N2}",
                 "UYU" => $"$U {amount:N2}",
                 "UZS" => $"so'm {amount:N2}",
                 "VEF" => $"Bs {amount:N2}",
                 "VND" => $"₫ {amount:N2}",
-                "YER" => $"﷼ {amount:N2}",
                 "ZMW" => $"ZK {amount:N2}",
                 _ => $"{currency} {amount:N2}"
             };

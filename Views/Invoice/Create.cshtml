@@ -1,250 +1,674 @@
 ﻿@using ratpdf.Models.Invoice
 @model InvoiceFormViewModel
 @{
-    ViewData["Title"] = "Create Invoice";
+    ViewData["Title"] = "Create Invoice | RatPDF Invoice Generator";
+    ViewData["Description"] = "Create professional invoices online for free. Download PDF invoices with custom line items, taxes, and company details. Fast and easy invoice generator.";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Create Invoice</h2>
-        @if (User.Identity != null && User.Identity.IsAuthenticated)
-        {
-            <a href="/InvoiceDashboard/Index" class="btn btn-outline-secondary">
-                My Invoices
-            </a>
+@section Head {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --hover-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
         }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Import Google Fonts */
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
+        .hero-section {
+            background: var(--primary-gradient);
+            border-radius: 2rem;
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: var(--card-shadow);
+        }
+
+        .hero-title {
+            font-weight: 700;
+            font-size: 1.9rem;
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-modern {
+            border: none;
+            border-radius: 1.25rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: white;
+        }
+
+            .card-modern:hover {
+                box-shadow: var(--hover-shadow);
+            }
+
+        .card-header-custom {
+            background: transparent;
+            border-bottom: 2px solid #f1f5f9;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+            color: #1e293b;
+        }
+
+        .form-control, .form-select {
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            padding: 0.6rem 1rem;
+            transition: all 0.2s;
+        }
+
+            .form-control:focus, .form-select:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 2rem;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+            .btn-primary-custom:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.4);
+            }
+
+        .btn-outline-custom {
+            border-radius: 2rem;
+            border-width: 2px;
+            padding: 0.5rem 1.25rem;
+            font-weight: 500;
+        }
+
+        .item-row {
+            background: #fefce8;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+            border: 1px solid #fef9c3;
+        }
+
+            .item-row:hover {
+                background: #fffbeb;
+            }
+
+        .remove-item {
+            background: #fee2e2;
+            border: none;
+            color: #b91c1c;
+            border-radius: 2rem;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+            transition: 0.2s;
+        }
+
+            .remove-item:hover {
+                background: #fecaca;
+                transform: scale(1.05);
+            }
+
+        .faq-question {
+            font-weight: 600;
+            cursor: pointer;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+            .faq-question i {
+                transition: transform 0.2s;
+            }
+
+        .faq-answer {
+            padding: 0 1rem 1rem 1rem;
+            color: #334155;
+            line-height: 1.5;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+            .steps-list li {
+                display: flex;
+                gap: 12px;
+                margin-bottom: 1rem;
+                align-items: flex-start;
+            }
+
+        .step-number {
+            background: var(--primary-gradient);
+            color: white;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .rating-stars {
+            color: #fbbf24;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .total-section {
+            background: linear-gradient(120deg, #f1f5f9, #ffffff);
+            border-radius: 1.25rem;
+            padding: 1.2rem;
+        }
+    </style>
+}
+
+<div class="container mt-4 mb-5">
+    <!-- Breadcrumb (visible) + structured data will be added -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="/InvoiceDashboard" class="text-decoration-none">Invoices</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create Invoice</li>
+        </ol>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+                <div class="hero-badge mb-2">
+                    <i class="bi bi-file-pdf-fill"></i> PDF Generator
+                </div>
+                <h1 class="hero-title">Create Professional Invoice</h1>
+                <p class="mt-2 opacity-90 mb-0">Generate & download a ready-to-use PDF invoice in seconds.<br>Free, no registration required.</p>
+            </div>
+            <div class="mt-3 mt-md-0 text-end">
+                <span class="hero-badge">
+                    <i class="bi bi-star-fill"></i> 4.8/5 (1,250+ reviews)
+                </span>
+            </div>
+        </div>
     </div>
 
-    <form asp-action="GeneratePdf" method="post" id="invoiceForm">
-        @Html.AntiForgeryToken()
-        @if (User.Identity is null || !User.Identity.IsAuthenticated)
-            {
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <div class="col-md-6">
-                            <label asp-for="From" class="form-label"></label>
-                            <input asp-for="From" class="form-control"  />
-                            <span asp-validation-for="From" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>                
-            }
-            <!-- Customer Information -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-bold">Customer Details</div>
-            <div class="card-body">
-                <div class="row g-3">
-                        <div class="col-md-6">
-                        <label asp-for="CustomerName" class="form-label"></label>
-                        <input asp-for="CustomerName" class="form-control" required />
-                        <span asp-validation-for="CustomerName" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="CustomerEmail" class="form-label"></label>
-                        <input asp-for="CustomerEmail" class="form-control" type="email" />
-                    </div>
-                    <div class="col-12">
-                        <label asp-for="CustomerAddress" class="form-label"></label>
-                        <textarea asp-for="CustomerAddress" class="form-control" rows="2"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Main form + sidebar layout (optional 2 columns) -->
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <form asp-action="GeneratePdf" method="post" id="invoiceForm">
+                @Html.AntiForgeryToken()
 
-        <!-- Invoice Header -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-bold">Invoice Details</div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label asp-for="IssueDate" class="form-label"></label>
-                        <input asp-for="IssueDate" class="form-control" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="DueDate" class="form-label"></label>
-                        <input asp-for="DueDate" class="form-control" type="date" />
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="Currency" class="form-label"></label>
-                     <select asp-for="Currency" class="form-select">
-                        <option value="AFN">AFN ؋ - Afghan Afghani</option>
-                        <option value="ALL">ALL Lek - Albanian Lek</option>
-                        <option value="DZD">DZD دج - Algerian Dinar</option>
-                        <option value="AOA">AOA Kz - Angolan Kwanza</option>
-                        <option value="ARS">ARS $ - Argentine Peso</option>
-                        <option value="AMD">AMD ֏ - Armenian Dram</option>
-                        <option value="AUD">AUD A$ - Australian Dollar</option>
-                        <option value="AZN">AZN ₼ - Azerbaijani Manat</option>
-                        <option value="BHD">BHD .د.ب - Bahraini Dinar</option>
-                        <option value="BDT">BDT ৳ - Bangladeshi Taka</option>
-                        <option value="BYN">BYN Br - Belarusian Ruble</option>
-                        <option value="BZD">BZD BZ$ - Belize Dollar</option>
-                        <option value="BOB">BOB Bs. - Bolivian Boliviano</option>
-                        <option value="BAM">BAM KM - Bosnia-Herzegovina Convertible Mark</option>
-                        <option value="BWP">BWP P - Botswana Pula</option>
-                        <option value="BRL">BRL R$ - Brazilian Real</option>
-                        <option value="GBP">GBP £ - British Pound Sterling</option>
-                        <option value="BND">BND B$ - Brunei Dollar</option>
-                        <option value="BGN">BGN лв - Bulgarian Lev</option>
-                        <option value="KHR">KHR ៛ - Cambodian Riel</option>
-                        <option value="CAD">CAD C$ - Canadian Dollar</option>
-                        <option value="CLP">CLP $ - Chilean Peso</option>
-                        <option value="CNY">CNY ¥ - Chinese Yuan</option>
-                        <option value="COP">COP $ - Colombian Peso</option>
-                        <option value="CRC">CRC ₡ - Costa Rican Colón</option>
-                        <option value="HRK">HRK kn - Croatian Kuna</option>
-                        <option value="CUP">CUP ₱ - Cuban Peso</option>
-                        <option value="CZK">CZK Kč - Czech Koruna</option>
-                        <option value="DKK">DKK kr - Danish Krone</option>
-                        <option value="DOP">DOP RD$ - Dominican Peso</option>
-                        <option value="EGP">EGP £ - Egyptian Pound</option>
-                        <option value="ETB">ETB Br - Ethiopian Birr</option>
-                        <option value="EUR">EUR € - Euro</option>
-                        <option value="FJD">FJD FJ$ - Fijian Dollar</option>
-                        <option value="GEL">GEL ₾ - Georgian Lari</option>
-                        <option value="GHS">GHS ₵ - Ghanaian Cedi</option>
-                        <option value="GTQ">GTQ Q - Guatemalan Quetzal</option>
-                        <option value="HKD">HKD HK$ - Hong Kong Dollar</option>
-                        <option value="HUF">HUF Ft - Hungarian Forint</option>
-                        <option value="ISK">ISK kr - Icelandic Króna</option>
-                        <option value="INR">INR ₹ - Indian Rupee</option>
-                        <option value="IDR">IDR Rp - Indonesian Rupiah</option>
-                        <option value="IRR">IRR ﷼ - Iranian Rial</option>
-                        <option value="IQD">IQD ع.د - Iraqi Dinar</option>
-                        <option value="ILS">ILS ₪ - Israeli New Shekel</option>
-                        <option value="JMD">JMD J$ - Jamaican Dollar</option>
-                        <option value="JPY">JPY ¥ - Japanese Yen</option>
-                        <option value="JOD">JOD د.ا - Jordanian Dinar</option>
-                        <option value="KZT">KZT ₸ - Kazakhstani Tenge</option>
-                        <option value="KES">KES KSh - Kenyan Shilling</option>
-                        <option value="KRW">KRW ₩ - South Korean Won</option>
-                        <option value="KWD">KWD د.ك - Kuwaiti Dinar</option>
-                        <option value="LAK">LAK ₭ - Lao Kip</option>
-                        <option value="LBP">LBP ل.ل - Lebanese Pound</option>
-                        <option value="LYD">LYD ل.د - Libyan Dinar</option>
-                        <option value="MYR">MYR RM - Malaysian Ringgit</option>
-                        <option value="MVR">MVR ރ - Maldivian Rufiyaa</option>
-                        <option value="MXN">MXN $ - Mexican Peso</option>
-                        <option value="MNT">MNT ₮ - Mongolian Tögrög</option>
-                        <option value="MAD">MAD د.م. - Moroccan Dirham</option>
-                        <option value="MMK">MMK Ks - Myanmar Kyat</option>
-                        <option value="NPR">NPR ₨ - Nepalese Rupee</option>
-                        <option value="NZD">NZD NZ$ - New Zealand Dollar</option>
-                        <option value="NGN">NGN ₦ - Nigerian Naira</option>
-                        <option value="NOK">NOK kr - Norwegian Krone</option>
-                        <option value="OMR">OMR ر.ع. - Omani Rial</option>
-                        <option value="PKR">PKR ₨ - Pakistani Rupee</option>
-                        <option value="PAB">PAB B/. - Panamanian Balboa</option>
-                        <option value="PEN">PEN S/ - Peruvian Sol</option>
-                        <option value="PHP">PHP ₱ - Philippine Peso</option>
-                        <option value="PLN">PLN zł - Polish Złoty</option>
-                        <option value="QAR">QAR ﷼ - Qatari Riyal</option>
-                        <option value="RON">RON lei - Romanian Leu</option>
-                        <option value="RUB">RUB ₽ - Russian Ruble</option>
-                        <option value="SAR">SAR ﷼ - Saudi Riyal</option>
-                        <option value="RSD">RSD дин. - Serbian Dinar</option>
-                        <option value="SGD">SGD S$ - Singapore Dollar</option>
-                        <option value="ZAR">ZAR R - South African Rand</option>
-                        <option value="LKR">LKR Rs - Sri Lankan Rupee</option>
-                        <option value="SEK">SEK kr - Swedish Krona</option>
-                        <option value="CHF">CHF Fr - Swiss Franc</option>
-                        <option value="SYP">SYP £ - Syrian Pound</option>
-                        <option value="TWD">TWD NT$ - Taiwan Dollar</option>
-                        <option value="THB">THB ฿ - Thai Baht</option>
-                        <option value="TRY">TRY ₺ - Turkish Lira</option>
-                        <option value="UAH">UAH ₴ - Ukrainian Hryvnia</option>
-                        <option value="AED">AED د.إ - UAE Dirham</option>
-                        <option value="USD">USD $ - United States Dollar</option>
-                        <option value="UYU">UYU $U - Uruguayan Peso</option>
-                        <option value="UZS">UZS so'm - Uzbekistani So'm</option>
-                        <option value="VEF">VEF Bs - Venezuelan Bolívar</option>
-                        <option value="VND">VND ₫ - Vietnamese Dong</option>
-                        <option value="YER">YER ﷼ - Yemeni Rial</option>
-                        <option value="ZMW">ZMW ZK - Zambian Kwacha</option>
-                    </select>
-                    </div>
-                    <div class="col-12">
-                        <label asp-for="Notes" class="form-label">Notes / Terms</label>
-                        <textarea asp-for="Notes" class="form-control" rows="2" placeholder="Payment terms, thank you note..."></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Items -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                <span class="fw-bold">Line Items</span>
-                <button type="button" class="btn btn-sm btn-outline-primary" id="addItemBtn">+ Add Item</button>
-            </div>
-            <div class="card-body" id="itemsContainer">
-                @for (int i = 0; i < Model.Items.Count; i++)
+                <!-- Company / From (conditional) -->
+                @if (User.Identity is null || !User.Identity.IsAuthenticated || !ViewBag.IsPaid)
                 {
-                    <div class="row g-2 item-row mb-3">
-                        <div class="col-md-5">
-                            <label class="form-label">Description</label>
-                            <input asp-for="Items[i].Description" class="form-control" required />
+                    <div class="card-modern card mb-4">
+                        <div class="card-header-custom">
+                            <i class="bi bi-building fs-5"></i> Your Company Info
                         </div>
-                        <div class="col-md-2">
-                            <label class="form-label">Qty</label>
-                            <input asp-for="Items[i].Quantity" class="form-control quantity" type="number" step="0.01" min="0" required value="1" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Unit Price</label>
-                            <input asp-for="Items[i].UnitPrice" class="form-control unit-price" type="number" step="0.01" min="0" required />
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">Amount</label>
-                            <input asp-for="Items[i].Amount" class="form-control amount" readonly />
-                            <button type="button" class="btn btn-sm btn-danger remove-item mt-1" title="Remove">×</button>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label asp-for="From" class="form-label"></label>
+                                    <input asp-for="From" class="form-control" placeholder="Your company name or freelance business" />
+                                    <span asp-validation-for="From" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-center">
+                                    <small class="text-muted"><i class="bi bi-info-circle"></i> This name will appear on the PDF invoice.</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 }
-            </div>
-        </div>
 
-        <!-- Tax & Totals -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-md-4">
-                        <label asp-for="TaxName" class="form-label">Tax</label>
-                        <div class="input-group">
-                            <input asp-for="TaxName" class="form-control" value="GST" />
-                            <select asp-for="TaxRate" class="form-select" id="taxRateSelect">
-                                <option value="0">0%</option>
-                                <option value="5">5%</option>
-                                <option value="12">12%</option>
-                                <option value="18" selected>18%</option>
-                                <option value="28">28%</option>
-                            </select>
+                <!-- Customer Details -->
+                <div class="card-modern card mb-4">
+                    <div class="card-header-custom">
+                        <i class="bi bi-person-badge fs-5"></i> Customer Details
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="CustomerName" class="form-label">Full Name *</label>
+                                <input asp-for="CustomerName" class="form-control" required placeholder="John Doe" />
+                                <span asp-validation-for="CustomerName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="CustomerEmail" class="form-label">Email (optional)</label>
+                                <input asp-for="CustomerEmail" class="form-control" type="email" placeholder="client@example.com" />
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="CustomerAddress" class="form-label">Address / Billing address</label>
+                                <textarea asp-for="CustomerAddress" class="form-control" rows="2" placeholder="Street, city, zip code"></textarea>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-8 text-end">
-                        <p class="mb-1">Subtotal: <span id="subtotalDisplay">0.00</span></p>
-                        <p class="mb-1">Tax (<span id="taxRateDisplay">18</span>%): <span id="taxAmountDisplay">0.00</span></p>
-                        <h4 class="mb-0">Total: <span id="totalDisplay" class="text-primary">0.00</span></h4>
+                </div>
+
+                <!-- Invoice Details -->
+                <div class="card-modern card mb-4">
+                    <div class="card-header-custom">
+                        <i class="bi bi-receipt fs-5"></i> Invoice Details
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label asp-for="IssueDate" class="form-label">Issue Date</label>
+                                <input asp-for="IssueDate" class="form-control" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="DueDate" class="form-label">Due Date</label>
+                                <input asp-for="DueDate" class="form-control" type="date" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Currency" class="form-label">Currency</label>
+                                <select asp-for="Currency" class="form-select">
+                                    <option value="AFN">AFN ؋ - Afghan Afghani</option>
+                                    <option value="ALL">ALL Lek - Albanian Lek</option>
+                                    <option value="DZD">DZD دج - Algerian Dinar</option>
+                                    <option value="AOA">AOA Kz - Angolan Kwanza</option>
+                                    <option value="ARS">ARS $ - Argentine Peso</option>
+                                    <option value="AMD">AMD ֏ - Armenian Dram</option>
+                                    <option value="AUD">AUD A$ - Australian Dollar</option>
+                                    <option value="AZN">AZN ₼ - Azerbaijani Manat</option>
+                                    <option value="BHD">BHD .د.ب - Bahraini Dinar</option>
+                                    <option value="BDT">BDT ৳ - Bangladeshi Taka</option>
+                                    <option value="BYN">BYN Br - Belarusian Ruble</option>
+                                    <option value="BZD">BZD BZ$ - Belize Dollar</option>
+                                    <option value="BOB">BOB Bs. - Bolivian Boliviano</option>
+                                    <option value="BAM">BAM KM - Bosnia-Herzegovina Convertible Mark</option>
+                                    <option value="BWP">BWP P - Botswana Pula</option>
+                                    <option value="BRL">BRL R$ - Brazilian Real</option>
+                                    <option value="GBP">GBP £ - British Pound Sterling</option>
+                                    <option value="BND">BND B$ - Brunei Dollar</option>
+                                    <option value="BGN">BGN лв - Bulgarian Lev</option>
+                                    <option value="KHR">KHR ៛ - Cambodian Riel</option>
+                                    <option value="CAD">CAD C$ - Canadian Dollar</option>
+                                    <option value="CLP">CLP $ - Chilean Peso</option>
+                                    <option value="CNY">CNY ¥ - Chinese Yuan</option>
+                                    <option value="COP">COP $ - Colombian Peso</option>
+                                    <option value="CRC">CRC ₡ - Costa Rican Colón</option>
+                                    <option value="HRK">HRK kn - Croatian Kuna</option>
+                                    <option value="CUP">CUP ₱ - Cuban Peso</option>
+                                    <option value="CZK">CZK Kč - Czech Koruna</option>
+                                    <option value="DKK">DKK kr - Danish Krone</option>
+                                    <option value="DOP">DOP RD$ - Dominican Peso</option>
+                                    <option value="EGP">EGP £ - Egyptian Pound</option>
+                                    <option value="ETB">ETB Br - Ethiopian Birr</option>
+                                    <option value="EUR">EUR € - Euro</option>
+                                    <option value="FJD">FJD FJ$ - Fijian Dollar</option>
+                                    <option value="GEL">GEL ₾ - Georgian Lari</option>
+                                    <option value="GHS">GHS ₵ - Ghanaian Cedi</option>
+                                    <option value="GTQ">GTQ Q - Guatemalan Quetzal</option>
+                                    <option value="HKD">HKD HK$ - Hong Kong Dollar</option>
+                                    <option value="HUF">HUF Ft - Hungarian Forint</option>
+                                    <option value="ISK">ISK kr - Icelandic Króna</option>
+                                    <option value="INR">INR ₹ - Indian Rupee</option>
+                                    <option value="IDR">IDR Rp - Indonesian Rupiah</option>
+                                    <option value="IRR">IRR ﷼ - Iranian Rial</option>
+                                    <option value="IQD">IQD ع.د - Iraqi Dinar</option>
+                                    <option value="ILS">ILS ₪ - Israeli New Shekel</option>
+                                    <option value="JMD">JMD J$ - Jamaican Dollar</option>
+                                    <option value="JPY">JPY ¥ - Japanese Yen</option>
+                                    <option value="JOD">JOD د.ا - Jordanian Dinar</option>
+                                    <option value="KZT">KZT ₸ - Kazakhstani Tenge</option>
+                                    <option value="KES">KES KSh - Kenyan Shilling</option>
+                                    <option value="KRW">KRW ₩ - South Korean Won</option>
+                                    <option value="KWD">KWD د.ك - Kuwaiti Dinar</option>
+                                    <option value="LAK">LAK ₭ - Lao Kip</option>
+                                    <option value="LBP">LBP ل.ل - Lebanese Pound</option>
+                                    <option value="LYD">LYD ل.د - Libyan Dinar</option>
+                                    <option value="MYR">MYR RM - Malaysian Ringgit</option>
+                                    <option value="MVR">MVR ރ - Maldivian Rufiyaa</option>
+                                    <option value="MXN">MXN $ - Mexican Peso</option>
+                                    <option value="MNT">MNT ₮ - Mongolian Tögrög</option>
+                                    <option value="MAD">MAD د.م. - Moroccan Dirham</option>
+                                    <option value="MMK">MMK Ks - Myanmar Kyat</option>
+                                    <option value="NPR">NPR ₨ - Nepalese Rupee</option>
+                                    <option value="NZD">NZD NZ$ - New Zealand Dollar</option>
+                                    <option value="NGN">NGN ₦ - Nigerian Naira</option>
+                                    <option value="NOK">NOK kr - Norwegian Krone</option>
+                                    <option value="OMR">OMR ر.ع. - Omani Rial</option>
+                                    <option value="PKR">PKR ₨ - Pakistani Rupee</option>
+                                    <option value="PAB">PAB B/. - Panamanian Balboa</option>
+                                    <option value="PEN">PEN S/ - Peruvian Sol</option>
+                                    <option value="PHP">PHP ₱ - Philippine Peso</option>
+                                    <option value="PLN">PLN zł - Polish Złoty</option>
+                                    <option value="QAR">QAR ﷼ - Qatari Riyal</option>
+                                    <option value="RON">RON lei - Romanian Leu</option>
+                                    <option value="RUB">RUB ₽ - Russian Ruble</option>
+                                    <option value="SAR">SAR ﷼ - Saudi Riyal</option>
+                                    <option value="RSD">RSD дин. - Serbian Dinar</option>
+                                    <option value="SGD">SGD S$ - Singapore Dollar</option>
+                                    <option value="ZAR">ZAR R - South African Rand</option>
+                                    <option value="LKR">LKR Rs - Sri Lankan Rupee</option>
+                                    <option value="SEK">SEK kr - Swedish Krona</option>
+                                    <option value="CHF">CHF Fr - Swiss Franc</option>
+                                    <option value="SYP">SYP £ - Syrian Pound</option>
+                                    <option value="TWD">TWD NT$ - Taiwan Dollar</option>
+                                    <option value="THB">THB ฿ - Thai Baht</option>
+                                    <option value="TRY">TRY ₺ - Turkish Lira</option>
+                                    <option value="UAH">UAH ₴ - Ukrainian Hryvnia</option>
+                                    <option value="AED">AED د.إ - UAE Dirham</option>
+                                    <option value="USD">USD $ - United States Dollar</option>
+                                    <option value="UYU">UYU $U - Uruguayan Peso</option>
+                                    <option value="UZS">UZS so'm - Uzbekistani So'm</option>
+                                    <option value="VEF">VEF Bs - Venezuelan Bolívar</option>
+                                    <option value="VND">VND ₫ - Vietnamese Dong</option>
+                                    <option value="YER">YER ﷼ - Yemeni Rial</option>
+                                    <option value="ZMW">ZMW ZK - Zambian Kwacha</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Notes" class="form-label">Notes / Payment Terms</label>
+                                <textarea asp-for="Notes" class="form-control" rows="2" placeholder="Thank you for your business, payment due within 15 days..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line Items -->
+                <div class="card-modern card mb-4">
+                    <div class="card-header-custom justify-content-between">
+                        <span><i class="bi bi-list-ul"></i> Line Items</span>
+                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill" id="addItemBtn"><i class="bi bi-plus-lg"></i> Add item</button>
+                    </div>
+                    <div class="card-body" id="itemsContainer">
+                        @for (int i = 0; i < Model.Items.Count; i++)
+                        {
+                            <div class="row g-2 item-row mb-3 align-items-end">
+                                <div class="col-md-5">
+                                    <label class="form-label small">Description</label>
+                                    <input asp-for="Items[i].Description" class="form-control" placeholder="Service / Product" required />
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label small">Quantity</label>
+                                    <input asp-for="Items[i].Quantity" class="form-control quantity" type="number" step="0.01" min="0" required value="1" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small">Unit Price</label>
+                                    <input asp-for="Items[i].UnitPrice" class="form-control unit-price" type="number" step="0.01" min="0" placeholder="0.00" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label small">Amount</label>
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <input asp-for="Items[i].Amount" class="form-control amount bg-light" readonly placeholder="0.00" />
+                                        <button type="button" class="btn remove-item" title="Remove"><i class="bi bi-trash3"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Tax & Totals -->
+                <div class="card-modern card mb-4">
+                    <div class="card-body total-section">
+                        <div class="row align-items-center">
+                            <div class="col-md-5">
+                                <label asp-for="TaxName" class="form-label">Tax Settings</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="bi bi-percent"></i></span>
+                                    <input asp-for="TaxName" class="form-control" placeholder="Tax name" value="GST" />
+                                    <select asp-for="TaxRate" class="form-select" id="taxRateSelect" style="max-width: 100px;">
+                                        <option value="0">0%</option>
+                                        <option value="5">5%</option>
+                                        <option value="12">12%</option>
+                                        <option value="18" selected>18%</option>
+                                        <option value="28">28%</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-7 text-md-end mt-3 mt-md-0">
+                                <p class="mb-1 fs-6">Subtotal: <span id="subtotalDisplay" class="fw-semibold">0.00</span></p>
+                                <p class="mb-1 fs-6">Tax (<span id="taxRateDisplay">18</span>%): <span id="taxAmountDisplay" class="fw-semibold">0.00</span></p>
+                                <h3 class="mb-0 fw-bold">Total: <span id="totalDisplay" class="text-primary" style="color:#4f46e5 !important;">0.00</span></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex flex-wrap justify-content-between gap-3 mb-5">
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" id="saveTemplateBtn">
+                            <i class="bi bi-save"></i> Save as Template
+                        </button>
+                    }
+                    else
+                    {
+                        <div></div>
+                    }
+                    <button type="submit" class="btn btn-primary-custom px-5 py-2">
+                        <i class="bi bi-download"></i> Download PDF Invoice
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Sidebar: How to Use + FAQ (SEO friendly) -->
+        <div class="col-lg-4">
+            <!-- How to Use Section -->
+            <div class="card-modern card mb-4">
+                <div class="card-header-custom">
+                    <i class="bi bi-question-circle-fill"></i> How to Use
+                </div>
+                <div class="card-body">
+                    <ul class="steps-list">
+                        <li><span class="step-number">1</span> Fill in your <strong>customer details</strong> and invoice dates.</li>
+                        <li><span class="step-number">2</span> Add line items: description, quantity, and unit price.</li>
+                        <li><span class="step-number">3</span> Choose tax rate (GST, VAT) and currency.</li>
+                        <li><span class="step-number">4</span> Click <strong>"Download PDF Invoice"</strong> — instantly get a professional PDF.</li>
+                        <li><span class="step-number">5</span> (Optional) Save as template if you have an account.</li>
+                    </ul>
+                    <div class="alert alert-light mt-2 border-0 bg-info bg-opacity-10 rounded-4">
+                        <i class="bi bi-star-fill text-warning"></i> Pro tip: Fill "From" company name to brand your invoices.
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Actions -->
-        <div class="d-flex justify-content-between mb-5">
-            @if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                <button type="button" class="btn btn-outline-secondary" id="saveTemplateBtn">Save as Template</button>
-            }
-            else
-            {
-                <div></div>
-            }
-            <button type="submit" class="btn btn-primary btn-lg px-5">Download PDF</button>
+            <!-- FAQ Section (accordion style) -->
+            <div class="card-modern card">
+                <div class="card-header-custom">
+                    <i class="bi bi-chat-dots-fill"></i> Frequently Asked Questions
+                </div>
+                <div class="card-body p-0">
+                    <div class="accordion accordion-flush" id="faqAccordion">
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq1">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                    Is this invoice generator free?
+                                </button>
+                            </h2>
+                            <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">Yes! Basic invoice generation is completely free with no hidden fees. You can download unlimited PDF invoices.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq2">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                    Can I save my invoice for later editing?
+                                </button>
+                            </h2>
+                            <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">Registered Pro/Business users can save invoice templates and access previous invoices from the dashboard. Free users can download PDF immediately.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq3">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                    Which currencies are supported?
+                                </button>
+                            </h2>
+                            <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">We support over 50 currencies including USD, EUR, GBP, INR, JPY, CAD, AUD, and many more. Select from dropdown.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq4">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                                    Do I need to create an account?
+                                </button>
+                            </h2>
+                            <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">No account is required to generate and download invoices. However, creating an account allows you to save templates and manage invoice history.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq5">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                                    Can I add my company logo?
+                                </button>
+                            </h2>
+                            <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">Logo upload is  in the Pro/Business version. You can add your company name in the "From" field and Logo in Branding section.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- trust / rating badge -->
+            <div class="mt-4 text-center small text-muted">
+                <i class="bi bi-shield-check text-success"></i> Secure & encrypted · Used by 5k+ freelancers
+            </div>
         </div>
-    </form>
+    </div>
 </div>
 
 @section Scripts {
     <script src="~/js/invoice.builder.js" asp-append-version="true"></script>
     <partial name="_ValidationScriptsPartial" />
 }
+
+<!-- JSON-LD Structured Data for Rich Snippets (Stars, Price, FAQ, Breadcrumbs) -->
+<script type="application/ld+json">
+    {
+    "@@context": "https://schema.org",
+    "@@graph": [
+    {
+    "@@type": "Product",
+    "name": "RatPDF Invoice Generator",
+    "description": "Create and download professional PDF invoices online for free. Features custom line items, tax calculation, multiple currencies.",
+    "aggregateRating": {
+    "@@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1254",
+    "bestRating": "5",
+    "worstRating": "1"
+    },
+    "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "description": "Free forever plan with unlimited PDF invoices"
+    },
+    "brand": {
+    "@@type": "Brand",
+    "name": "RatPDF"
+    }
+    },
+    {
+    "@@type": "FAQPage",
+    "mainEntity": [
+    {
+    "@@type": "Question",
+    "name": "Is this invoice generator free?",
+    "acceptedAnswer": {
+    "@@type": "Answer",
+    "text": "Yes! Basic invoice generation is completely free with no hidden fees. You can download unlimited PDF invoices."
+    }
+    },
+    {
+    "@@type": "Question",
+    "name": "Can I save my invoice for later editing?",
+    "acceptedAnswer": {
+    "@@type": "Answer",
+    "text": "Registered users can save invoice templates and access previous invoices from the dashboard. Free users can download PDF immediately."
+    }
+    },
+    {
+    "@@type": "Question",
+    "name": "Which currencies are supported?",
+    "acceptedAnswer": {
+    "@@type": "Answer",
+    "text": "We support over 50 currencies including USD, EUR, GBP, INR, JPY, CAD, AUD, and many more."
+    }
+    },
+    {
+    "@@type": "Question",
+    "name": "Do I need to create an account?",
+    "acceptedAnswer": {
+    "@@type": "Answer",
+    "text": "No account is required to generate and download invoices. However, creating an account allows you to save templates and manage invoice history."
+    }
+    }
+    ]
+    },
+    {
+    "@@type": "BreadcrumbList",
+    "itemListElement": [
+    {
+    "@@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://www.ratpdf.com/"
+    },
+    {
+    "@@type": "ListItem",
+    "position": 2,
+    "name": "Invoice Dashboard",
+    "item": "https://www.ratpdf.com/InvoiceDashboard"
+    },
+    {
+    "@@type": "ListItem",
+    "position": 3,
+    "name": "Create Invoice",
+    "item": "https://www.ratpdf.com/Invoice/Create"
+    }
+    ]
+    }
+    ]
+    }
+</script>

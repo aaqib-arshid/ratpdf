@@ -35,6 +35,7 @@ namespace ratpdf.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create(Guid? templateId)
         {
+            var userId = GetCurrentUserId();
             var model = new InvoiceFormViewModel
             {
                 Items = new List<InvoiceItemViewModel>
@@ -50,7 +51,6 @@ namespace ratpdf.Controllers
                 var template = await _templateService.GetTemplateAsync(templateId.Value);
                 if (template != null)
                 {
-                    var userId = GetCurrentUserId();
                     if (template.UserId == userId)
                     {
                         try
@@ -63,6 +63,7 @@ namespace ratpdf.Controllers
                     }
                 }
             }
+            ViewBag.IsPaid = await _featureAccessor.CanRemoveWatermarkAsync(userId);
             return View(model);
         }
 
@@ -153,7 +154,7 @@ namespace ratpdf.Controllers
 
             var userId = GetCurrentUserId()!.Value;
             if (!await _featureAccessor.CanSaveTemplatesAsync())
-                return Forbid("Template saving is a premium feature");
+                return RedirectToAction("Plans","Subscription");
 
             await _templateService.SaveTemplateAsync(userId, templateName, model);
             return RedirectToAction("Create", new { saved = true });

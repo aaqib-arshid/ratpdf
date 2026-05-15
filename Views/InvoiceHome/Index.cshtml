@@ -1,57 +1,485 @@
-﻿@{
-    ViewData["Title"] = "Free Invoice Generator - Create Professional Invoices Instantly";
+﻿@using ratpdf.Constants
+@{
+    ViewData["Title"] = "Free Invoice Generator - Create Professional Invoices Instantly | RatPDF";
+    ViewData["Description"] = "Generate PDF invoices for free. No signup required. Pro plan adds 1 template, Business gives unlimited templates. Download instantly.";
 }
 
-<div class="container-fluid bg-primary text-white py-5">
-    <div class="container">
+@section Head {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+        }
+
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+        .hero-section {
+            background: var(--primary-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .hero-section::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+                background-size: cover;
+                opacity: 0.15;
+                pointer-events: none;
+            }
+
+        .btn-gradient {
+            background: white;
+            color: #4f46e5;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+        }
+
+            .btn-gradient:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                background: white;
+                color: #4338ca;
+            }
+
+        .btn-outline-light-custom {
+            border: 2px solid white;
+            background: transparent;
+            border-radius: 50px;
+            padding: 0.7rem 1.8rem;
+            font-weight: 500;
+        }
+
+            .btn-outline-light-custom:hover {
+                background: white;
+                color: #4f46e5;
+            }
+
+        .feature-card {
+            border: none;
+            border-radius: 1.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+            .feature-card:hover {
+                transform: translateY(-8px);
+                box-shadow: var(--hover-shadow);
+            }
+
+        .pricing-card {
+            border-radius: 2rem;
+            transition: all 0.3s;
+            background: white;
+            border: 1px solid #eef2ff;
+        }
+
+            .pricing-card.popular {
+                border: 2px solid #4f46e5;
+                box-shadow: 0 20px 35px -12px rgba(79, 70, 229, 0.2);
+                transform: scale(1.02);
+            }
+
+        .pricing-header {
+            background: #f8fafc;
+            border-top-left-radius: 2rem;
+            border-top-right-radius: 2rem;
+            padding: 1.5rem;
+        }
+
+        .price-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 0;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0;
+        }
+
+        .badge-plan {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 2rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+    </style>
+}
+
+<!-- Breadcrumb (hidden but structured) -->
+<nav aria-label="breadcrumb" class="visually-hidden">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Free Invoice Generator</li>
+    </ol>
+</nav>
+
+<!-- Hero Section -->
+<div class="hero-section text-white py-5">
+    <div class="container py-5">
         <div class="row align-items-center">
-            <div class="col-md-7">
-                <h1 class="display-4 fw-bold">Create Professional Invoices in Seconds</h1>
-                <p class="lead mt-3">Generate, download, and share beautiful invoices for free — no signup required. Upgrade for custom branding and templates.</p>
-                <a asp-controller="Invoice" asp-action="Create" class="btn btn-light btn-lg mt-3 fw-bold">Start Free</a>
+            <div class="col-lg-7">
+                <h1 class="display-4 fw-bold">Create Professional <br>Invoices in Seconds</h1>
+                <p class="lead mt-3 opacity-90">Generate, download, and share beautiful PDF invoices — no signup required. Upgrade to save templates.</p>
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a asp-controller="Invoice" asp-action="Create" class="btn btn-gradient btn-lg px-5">Start Free <i class="bi bi-arrow-right ms-2"></i></a>
+                    <a href="#pricing" class="btn btn-outline-light-custom btn-lg">View Plans <i class="bi bi-tags ms-2"></i></a>
+                </div>
+                <p class="mt-3 small opacity-75"><i class="bi bi-shield-check"></i> No credit card required · Unlimited invoices</p>
             </div>
-            <div class="col-md-5 text-center d-none d-md-block">
-                <img src="~/images/hero-invoice.svg" alt="Invoice illustration" class="img-fluid" style="max-height:300px;" />
+            <div class="col-lg-5 text-center d-none d-lg-block">
+                <img src="~/images/hero-invoice.svg" alt="Invoice illustration" class="img-fluid" style="max-height: 320px;" onerror="this.src='https://placehold.co/400x300?text=Invoice+PDF'">
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="container my-5">
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="fs-1 text-primary mb-2">⚡</div>
-                    <h5>Instant PDF Download</h5>
-                    <p class="text-muted">Fill in details, click download — your invoice is ready in milliseconds.</p>
+    <!-- Features Section -->
+    <div class="container my-5 py-4">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Why choose RatPDF Invoice Generator?</h2>
+            <p class="text-muted">Simple, fast, and packed with features you need</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card card h-100 p-4">
+                    <div class="text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-download fs-1 text-primary"></i>
+                        </div>
+                        <h5>Instant PDF Download</h5>
+                        <p class="text-muted">Fill in details, click generate — your professional invoice is ready in milliseconds.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="fs-1 text-primary mb-2">🎨</div>
-                    <h5>Custom Branding</h5>
-                    <p class="text-muted">Add your logo, brand colors, and custom footer. Remove watermarks with Pro plan.</p>
+            <div class="col-md-4">
+                <div class="feature-card card h-100 p-4">
+                    <div class="text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-palette fs-1 text-primary"></i>
+                        </div>
+                        <h5>Custom Branding</h5>
+                        <p class="text-muted">Add your logo, company name, and custom notes. Pro/Business removes watermarks.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="fs-1 text-primary mb-2">💰</div>
-                    <h5>Free Forever</h5>
-                    <p class="text-muted">No credit card required. Generate unlimited invoices for free.</p>
+            <div class="col-md-4">
+                <div class="feature-card card h-100 p-4">
+                    <div class="text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-infinity fs-1 text-primary"></i>
+                        </div>
+                        <h5>Unlimited Invoices</h5>
+                        <p class="text-muted">Generate as many invoices as you need, completely free. No hidden limits.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="bg-light py-5">
-    <div class="container text-center">
-        <h2 class="mb-4">Join thousands who trust Rat PDF's Invoice Generator</h2>
-        <a asp-controller="Invoice" asp-action="Create" class="btn btn-primary btn-lg px-5">Create Your First Invoice Now →</a>
+    <!-- Pricing Section -->
+    <div id="pricing" class="bg-light py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Simple, transparent pricing</h2>
+                <p class="text-muted">Choose the plan that fits your business</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <!-- Free Plan -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="pricing-card h-100">
+                        <div class="pricing-header text-center">
+                            <h3 class="fw-bold">Free</h3>
+                            <div class="price-value">₹0</div>
+                            <p class="text-muted">forever</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> Unlimited invoice generation</li>
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> PDF download with watermark</li>
+                                <li class="mb-2"><i class="bi bi-x-lg text-danger me-2"></i> <strong>0 templates</strong> (cannot save)</li>
+                                <li class="mb-2"><i class="bi bi-x-lg text-danger me-2"></i> Basic support</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <a asp-controller="Invoice" asp-action="Create" class="btn btn-outline-primary rounded-pill px-4">Get Started</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pro Plan -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="pricing-card popular h-100">
+                        <div class="pricing-header text-center" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe);">
+                            <span class="badge-plan mb-2">Most Popular</span>
+                            <h3 class="fw-bold">Pro</h3>
+                            <div class="price-value">₹599</div>
+                            <p class="text-muted">per month</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> Everything in Free</li>
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> Remove watermarks</li>
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> <strong>1 template</strong> (save & reuse)</li>
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> Email support within 24h</li>
+                            </ul>
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <form asp-controller="Subscription" asp-action="CreateCheckout" method="post">
+                                    <input type="hidden" name="planId" value="@Plan.Pro_Monthly" />
+                                    <button type="submit" class="btn btn-primary btn-pricing w-100 mt-3">Upgrade to Pro</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-pricing w-100 mt-3">Sign Up & Upgrade</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <!-- Business Plan -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="pricing-card h-100">
+                        <div class="pricing-header text-center">
+                            <h3 class="fw-bold">Business</h3>
+                            <div class="price-value">₹2,999</div>
+                            <p class="text-muted">per month</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> Everything in Pro</li>
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> <strong>Unlimited templates</strong></li>
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> Bulk PDF export</li>
+                                <li class="mb-2"><i class="bi bi-check-lg text-success me-2"></i> Priority support 24/7</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                                {
+                                    <form asp-controller="Subscription" asp-action="CreateCheckout" method="post">
+                                        <input type="hidden" name="planId" value="@Plan.Business_Monthly" />
+                                        <button type="submit" class="btn btn-outline-primary btn-pricing w-100 mt-3">Contact Sales</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary btn-pricing w-100 mt-3">Sign Up & Upgrade</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-muted mt-4 small">All plans include unlimited invoices. Templates available on Pro & Business.</p>
+        </div>
     </div>
-</div>
+
+    <!-- How to Use Section -->
+    <div class="container my-5 py-4">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">How to create an invoice in 3 simple steps</h2>
+                <div class="d-flex mb-4">
+                    <div class="step-number">1</div>
+                    <div><strong>Fill in details</strong><br>Enter customer info, line items, and tax rate.</div>
+                </div>
+                <div class="d-flex mb-4">
+                    <div class="step-number">2</div>
+                    <div><strong>Customize</strong><br>Add your company name, notes, and choose currency.</div>
+                </div>
+                <div class="d-flex mb-4">
+                    <div class="step-number">3</div>
+                    <div><strong>Download PDF</strong><br>Click "Download PDF" and get a ready-to-send invoice.</div>
+                </div>
+                <a asp-controller="Invoice" asp-action="Create" class="btn btn-primary rounded-pill px-5 mt-2">Try it now →</a>
+            </div>
+            <div class="col-lg-6 text-center d-none d-lg-block">
+                <div class="bg-light p-4 rounded-4 shadow-sm">
+                    <i class="bi bi-file-earmark-pdf-fill display-1 text-danger"></i>
+                    <p class="mt-2 text-muted">Your invoice is generated instantly</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="bg-light py-5">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Frequently Asked Questions</h2>
+                <p class="text-muted">Everything you need to know</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="faq-item">
+                        <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            <span>Is the invoice generator really free?</span> <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div id="faq1" class="collapse mt-2 text-muted">Yes! You can generate unlimited invoices for free. The PDF includes a small watermark. Upgrade to Pro to remove watermarks and save templates.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            <span>How many templates can I save on Free plan?</span> <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div id="faq2" class="collapse mt-2 text-muted">The Free plan allows 0 templates (you cannot save invoice layouts). Pro gives you 1 template, and Business gives unlimited templates.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            <span>Do I need to create an account?</span> <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div id="faq3" class="collapse mt-2 text-muted">No, you can generate invoices without an account. However, creating an account allows you to save templates (Pro/Business) and manage past invoices.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            <span>What currencies are supported?</span> <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div id="faq4" class="collapse mt-2 text-muted">We support over 50 currencies including USD, EUR, GBP, INR, JPY, CAD, AUD, and more.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            <span>Can I add my company logo?</span> <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div id="faq5" class="collapse mt-2 text-muted">Yes! Pro and Business plans allow custom logo upload and branding. Free version includes your company name only.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="container my-5 text-center">
+        <div class="bg-primary bg-opacity-10 p-5 rounded-4">
+            <h2 class="fw-bold">Ready to simplify your invoicing?</h2>
+            <p class="lead mb-4">Join thousands of freelancers and small businesses using RatPDF.</p>
+            <a asp-controller="Invoice" asp-action="Create" class="btn btn-primary btn-lg rounded-pill px-5">Create Invoice Free <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JSON-LD Structured Data: Product (with plan offers), FAQ, Breadcrumb, AggregateRating -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@graph": [
+        {
+        "@@type": "Product",
+        "name": "RatPDF Invoice Generator",
+        "description": "Free invoice generator with PDF download. Upgrade for templates (Pro: 1 template, Business: unlimited).",
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "2147",
+        "bestRating": "5"
+        },
+        "offers": [
+        {
+        "@@type": "Offer",
+        "name": "Free Plan",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Unlimited invoices, 0 templates, includes watermark"
+        },
+        {
+        "@@type": "Offer",
+        "name": "Pro Plan",
+        "price": "9",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "1 template, remove watermarks, email support"
+        },
+        {
+        "@@type": "Offer",
+        "name": "Business Plan",
+        "price": "29",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Unlimited templates, bulk export, priority support"
+        }
+        ]
+        },
+        {
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "Is the invoice generator really free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes! Unlimited invoices free. Watermark appears on PDF; upgrade to Pro to remove it."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "How many templates can I save on Free plan?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Free plan allows 0 templates. Pro gives 1 template, Business gives unlimited templates."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Do I need to create an account?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "No account needed to generate invoices. Accounts are required to save templates and access history."
+        }
+        }
+        ]
+        },
+        {
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.ratpdf.com/"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Free Invoice Generator",
+        "item": "https://www.ratpdf.com/"
+        }
+        ]
+        }
+        ]
+        }
+    </script>

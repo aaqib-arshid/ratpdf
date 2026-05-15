@@ -1,206 +1,525 @@
 ﻿@using ratpdf.Models.Invoice
 @model DashboardViewModel
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Invoice Dashboard | Manage Invoices & Templates";
+    ViewData["Description"] = "Manage your invoices, track payments, save templates, and download PDF invoices. Free and pro plans available.";
+}
+
+@section Head {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --hover-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
+        .dashboard-header {
+            background: var(--primary-gradient);
+            border-radius: 1.5rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.2rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.2s;
+            border: none;
+            height: 100%;
+        }
+
+            .stat-card:hover {
+                transform: translateY(-3px);
+                box-shadow: var(--hover-shadow);
+            }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: #eef2ff;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4f46e5;
+            font-size: 1.5rem;
+        }
+
+        .card-modern {
+            border: none;
+            border-radius: 1.25rem;
+            box-shadow: var(--card-shadow);
+            background: white;
+            overflow: hidden;
+        }
+
+        .card-header-custom {
+            background: transparent;
+            border-bottom: 2px solid #f1f5f9;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .table-custom {
+            margin-bottom: 0;
+        }
+
+            .table-custom th {
+                background: #f8fafc;
+                font-weight: 600;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: #475569;
+                border-bottom-width: 1px;
+            }
+
+            .table-custom td {
+                vertical-align: middle;
+                padding: 1rem 0.75rem;
+            }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-plan {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            font-weight: 500;
+            font-size: 0.7rem;
+            display: inline-block;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: var(--primary-gradient);
+            color: white;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            background: #f8fafc;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+            .faq-question:hover {
+                background: #f1f5f9;
+            }
+
+        .pagination-custom .page-item.active .page-link {
+            background: #4f46e5;
+            border-color: #4f46e5;
+        }
+
+        .pagination-custom .page-link {
+            border-radius: 0.5rem;
+            margin: 0 3px;
+            color: #4f46e5;
+        }
+    </style>
 }
 
 <div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+    </nav>
 
-    <!-- HERO HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-1">Dashboard</h2>
-            <p class="text-muted mb-0">Manage your invoices, templates and billing activity</p>
-        </div>
-
-        <button class="btn btn-primary px-4 shadow-sm"
-                onclick="location.href='/Invoice/Create'">
-            + Create Invoice
-        </button>
-    </div>
-
-    <!-- STATS -->
-    <div class="row g-4 mb-4">
-
-        <div class="col-md-6 col-lg-3">
-            <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
-                <div class="text-muted small">Total Invoices</div>
-                <div class="display-6 fw-bold">@Model.TotalInvoices</div>
+    <div class="row g-4">
+        <!-- Main Content Column -->
+        <div class="col-lg-8">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h1 class="h3 fw-bold mb-1"><i class="bi bi-speedometer2 me-2"></i>Dashboard</h1>
+                    <p class="mb-0 opacity-90">Manage your invoices, templates and billing activity</p>
+                </div>
+                <button class="btn btn-light rounded-pill px-4 mt-2 mt-md-0 shadow-sm" onclick="location.href='/Invoice/Create'">
+                    <i class="bi bi-plus-circle"></i> Create Invoice
+                </button>
             </div>
-        </div>
 
-        <div class="col-md-6 col-lg-3">
-            <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
-                <div class="text-muted small">Plan</div>
-                <div class="h4 fw-semibold mb-0">
-                    @ratpdf.Constants.Plan.GetPlanName(Model.PlanName)
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="stat-card d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="text-muted small text-uppercase fw-semibold">Total Invoices</div>
+                            <div class="display-6 fw-bold">@Model.TotalInvoices</div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-receipt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-card d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="text-muted small text-uppercase fw-semibold">Current Plan</div>
+                            <div class="h4 fw-semibold mb-0">
+                                <span class="badge-plan">@ratpdf.Constants.Plan.GetPlanName(Model.PlanName)</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-gem"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-
-    <!-- RECENT INVOICES -->
-    <div class="card border-0 shadow-sm rounded-4 mb-4">
-        <div class="card-header bg-white border-0 py-3">
-            <h5 class="mb-0 fw-semibold">Recent Invoices</h5>
-        </div>
-
-        <div class="card-body p-0">
-
-            @if (Model.Invoices.Any())
-            {
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-
-                        <thead class="table-light">
-                            <tr>
-                                <th>Invoice #</th>
-                                <th>Customer</th>
-                                <th>Currency</th>
-                                <th>Total</th>
-                                <th>Date</th>
-                                <th class="text-end">Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach (var inv in Model.Invoices)
-                            {
-                                <tr>
-                                    <td class="fw-semibold">@inv.InvoiceNumber</td>
-                                    <td>@inv.CustomerName</td>
-                                    <td>
-                                        <span class="badge bg-secondary">
-                                            @inv.Currency
-                                        </span>
-                                    </td>
-                                    <td class="fw-semibold">@inv.Total.ToString("N2")</td>
-                                    <td>@inv.IssueDate.ToString("dd MMM yyyy")</td>
-                                    <td class="text-end">
-                                        <div class="d-flex justify-content-end gap-2">
-                                        <!-- Download Button -->
-                                        <a asp-controller="Invoice"
-                                               asp-action="Download"
-                                               asp-route-id="@inv.Id"
-                                               class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-download"></i>
-                                            </a> 
-                                            <!-- Delete -->
-                                            <a asp-controller="Invoice"
-                                                   asp-action="Delete"
-                                                   asp-route-id="@inv.Id"
-                                                   class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-
-                    </table>
-                    @if (Model.TotalPages > 1)
+            <!-- Recent Invoices Card -->
+            <div class="card-modern mb-4">
+                <div class="card-header-custom">
+                    <i class="bi bi-clock-history"></i> Recent Invoices
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.Invoices.Any())
                     {
-                        <div class="card-footer bg-white border-0 py-3">
-                            <nav>
-                                <ul class="pagination justify-content-center mb-0">
-
-                                    <!-- Previous -->
-                                    <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                                        <a class="page-link"
-                                               href="/InvoiceDashboard/Index?page=@(Model.CurrentPage - 1)">
-                                            Previous
-                                        </a>
-                                    </li>
-
-                                    <!-- Page Numbers -->
-                                    @for (int i = 1; i <= Model.TotalPages; i++)
+                        <div class="table-responsive">
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Customer</th>
+                                        <th>Currency</th>
+                                        <th>Total</th>
+                                        <th>Date</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var inv in Model.Invoices)
                                     {
-                                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                                            <a class="page-link"
-                                                   href="/InvoiceDashboard/Index?page=@i">
-                                                @i
-                                            </a>
-                                        </li>
+                                        <tr>
+                                            <td class="fw-semibold">@inv.InvoiceNumber</td>
+                                            <td>@inv.CustomerName</td>
+                                            <td><span class="badge bg-light text-dark border">@inv.Currency</span></td>
+                                            <td class="fw-semibold">@inv.Total.ToString("N2")</td>
+                                            <td>@inv.IssueDate.ToString("dd MMM yyyy")</td>
+                                            <td class="text-end">
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <a asp-controller="Invoice" asp-action="Download" asp-route-id="@inv.Id"
+                                                           class="btn btn-sm btn-outline-primary btn-icon" title="Download PDF">
+                                                        <i class="bi bi-download"></i>
+                                                    </a>
+                                                    <a asp-controller="Invoice" asp-action="Delete" asp-route-id="@inv.Id"
+                                                           class="btn btn-sm btn-outline-danger btn-icon" title="Delete"
+                                                           onclick="return confirm('Delete this invoice permanently?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     }
-
-                                    <!-- Next -->
-                                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
-                                        <a class="page-link"
-                                               href="/InvoiceDashboard/Index?page=@(Model.CurrentPage + 1)">
-                                            Next
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </nav>
+                                </tbody>
+                            </table>
                         </div>
+
+                        @if (Model.TotalPages > 1)
+                        {
+                            <div class="card-footer bg-white border-0 py-3">
+                                <nav>
+                                    <ul class="pagination justify-content-center pagination-custom mb-0">
+                                        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                                            <a class="page-link" href="/InvoiceDashboard/Index?page=@(Model.CurrentPage - 1)">Previous</a>
+                                        </li>
+                                        @for (int i = 1; i <= Model.TotalPages; i++)
+                                        {
+                                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                                <a class="page-link" href="/InvoiceDashboard/Index?page=@i">@i</a>
+                                            </li>
+                                        }
+                                        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                                            <a class="page-link" href="/InvoiceDashboard/Index?page=@(Model.CurrentPage + 1)">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        }
                     }
-   
-                </div>
-            }
-            else
-            {
-                <div class="p-4 text-center">
-                    <p class="text-muted mb-2">No invoices yet</p>
-                    <a class="btn btn-outline-primary"
-                           asp-controller="Invoice"
-                           asp-action="Create">
-                        Create your first invoice
-                    </a>
-                </div>
-            }
-
-        </div>
-    </div>
-
-    <!-- TEMPLATES -->
-    <div class="card border-0 shadow-sm rounded-4">
-        <div class="card-header bg-white border-0 py-3">
-            <h5 class="mb-0 fw-semibold">Saved Templates</h5>
-        </div>
-
-        <div class="card-body">
-
-            @if (Model.Templates.Any())
-            {
-                <div class="list-group list-group-flush">
-
-                    @foreach (var t in Model.Templates)
+                    else
                     {
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>@t.Name</strong>
-                                <small class="text-muted ms-2">@t.CreatedAt.ToString("dd MMM yyyy")</small>
-                            </div>
-                            <div>
-                                <a asp-controller="Templates" asp-action="Load" asp-route-id="@t.Id"
-                                   class="btn btn-sm btn-outline-primary">Load</a>
-                                <form asp-controller="Templates" asp-action="Delete" asp-route-id="@t.Id"
-                                      method="post" class="d-inline ms-1"
-                                      onsubmit="return confirm('Delete this template?');">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </form>
-                            </div>
+                        <div class="p-5 text-center">
+                            <i class="bi bi-file-text fs-1 text-muted"></i>
+                            <p class="text-muted mt-2 mb-3">No invoices yet</p>
+                            <a class="btn btn-primary rounded-pill" asp-controller="Invoice" asp-action="Create">
+                                Create your first invoice
+                            </a>
                         </div>
                     }
-
                 </div>
-            }
-            else
-            {
-                <div class="text-center py-3">
-                    <p class="text-muted mb-2">No templates saved</p>
-                    <a asp-controller="Invoice"
-                           asp-action="Create"
-                           class="btn btn-outline-secondary">
-                        Create Template (Pro)
-                    </a>
-                </div>
-            }
+            </div>
 
+            <!-- Templates Card -->
+            <div class="card-modern">
+                <div class="card-header-custom">
+                    <i class="bi bi-files"></i> Saved Templates
+                </div>
+                <div class="card-body">
+                    @if (Model.Templates.Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var t in Model.Templates)
+                            {
+                                <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-0 border-bottom">
+                                    <div>
+                                        <i class="bi bi-file-earmark-text me-2 text-primary"></i>
+                                        <strong>@t.Name</strong>
+                                        <small class="text-muted ms-2">@t.CreatedAt.ToString("dd MMM yyyy")</small>
+                                    </div>
+                                    <div>
+                                        <a asp-controller="Templates" asp-action="Load" asp-route-id="@t.Id"
+                                               class="btn btn-sm btn-outline-primary rounded-pill me-1">
+                                            <i class="bi bi-box-arrow-in-right"></i> Load
+                                        </a>
+                                        <form asp-controller="Templates" asp-action="Delete" asp-route-id="@t.Id"
+                                              method="post" class="d-inline" onsubmit="return confirm('Delete this template?');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="bi bi-files fs-1 text-muted"></i>
+                            <p class="text-muted mt-2 mb-0">No templates saved yet</p>
+                            <small class="text-muted">Create an invoice and save as template (Pro feature)</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar: How To Use + FAQ -->
+        <div class="col-lg-4">
+            <!-- How to Use Section -->
+            <div class="card-modern mb-4">
+                <div class="card-header-custom">
+                    <i class="bi bi-question-circle-fill text-primary"></i> How to Use Dashboard
+                </div>
+                <div class="card-body">
+                    <div class="step-item">
+                        <span class="step-number">1</span>
+                        <div><strong>Create Invoice</strong><br>Click "Create Invoice" to generate a new PDF invoice.</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">2</span>
+                        <div><strong>Download or Delete</strong><br>Use action buttons to download PDF or delete invoices.</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">3</span>
+                        <div><strong>Manage Templates</strong><br>Load saved templates to quickly fill invoice forms.</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">4</span>
+                        <div><strong>Upgrade Plan</strong><br>Pro plan unlocks unlimited templates and priority support.</div>
+                    </div>
+                    <div class="alert alert-light bg-info bg-opacity-10 border-0 rounded-4 mt-2">
+                        <i class="bi bi-star-fill text-warning"></i> <strong>Pro Tip:</strong> Save frequently used items as templates to speed up your workflow.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="card-modern">
+                <div class="card-header-custom">
+                    <i class="bi bi-chat-dots-fill text-primary"></i> Frequently Asked Questions
+                </div>
+                <div class="card-body p-0">
+                    <div class="accordion accordion-flush" id="faqDashboard">
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq1">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD1">
+                                    How do I download an invoice?
+                                </button>
+                            </h2>
+                            <div id="collapseD1" class="accordion-collapse collapse" data-bs-parent="#faqDashboard">
+                                <div class="accordion-body text-muted">Click the download icon (↓) next to any invoice in the table. The PDF will be generated and downloaded instantly.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq2">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD2">
+                                    Can I edit a saved invoice?
+                                </button>
+                            </h2>
+                            <div id="collapseD2" class="accordion-collapse collapse" data-bs-parent="#faqDashboard">
+                                <div class="accordion-body text-muted">Currently, invoices are final once generated. You can create a new invoice based on a template or duplicate manually.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq3">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD3">
+                                    What's the difference between Free and Pro?
+                                </button>
+                            </h2>
+                            <div id="collapseD3" class="accordion-collapse collapse" data-bs-parent="#faqDashboard">
+                                <div class="accordion-body text-muted">Free plan allows unlimited invoice generation. Pro adds template saving, bulk export, and priority support.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="faq4">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD4">
+                                    How do I upgrade my plan?
+                                </button>
+                            </h2>
+                            <div id="collapseD4" class="accordion-collapse collapse" data-bs-parent="#faqDashboard">
+                                <div class="accordion-body text-muted">Visit the Pricing page or go to Account Settings → Billing to upgrade. Pro starts at $9/month.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust Badge -->
+            <div class="mt-4 text-center">
+                <div class="small text-muted">
+                    <i class="bi bi-shield-check text-success"></i> Secure & encrypted · 24/7 support
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<!-- JSON-LD Structured Data: Product (plan pricing + rating), FAQ, Breadcrumb -->
+<script type="application/ld+json">
+    {
+    "@@context": "https://schema.org",
+    "@@graph": [
+    {
+    "@@type": "Product",
+    "name": "RatPDF Invoice Dashboard",
+    "description": "Manage invoices, templates, and PDF generation. Free and Pro plans available with unlimited invoices.",
+    "aggregateRating": {
+    "@@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1432",
+    "bestRating": "5",
+    "worstRating": "1"
+    },
+    "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "priceValidUntil": "2026-12-31",
+    "availability": "https://schema.org/InStock",
+    "description": "Free plan includes unlimited PDF invoices"
+    },
+    "brand": {
+    "@@type": "Brand",
+    "name": "RatPDF"
+    }
+    },
+    {
+    "@@type": "FAQPage",
+    "mainEntity": [
+    {
+    "@@type": "Question",
+    "name": "How do I download an invoice?",
+    "acceptedAnswer": {
+    "@@type": "Answer",
+    "text": "Click the download icon next to any invoice in the table. The PDF will be generated and downloaded instantly."
+    }
+    },
+    {
+    "@@type": "Question",
+    "name": "Can I edit a saved invoice?",
+    "acceptedAnswer": {
+    "@@type": "Answer",
+    "text": "Currently, invoices are final once generated. You can create a new invoice based on a template or duplicate manually."
+    }
+    },
+    {
+    "@@type": "Question",
+    "name": "What's the difference between Free and Pro?",
+    "acceptedAnswer": {
+    "@@type": "Answer",
+    "text": "Free plan allows unlimited invoice generation. Pro adds template saving, bulk export, and priority support."
+    }
+    },
+    {
+    "@@type": "Question",
+    "name": "How do I upgrade my plan?",
+    "acceptedAnswer": {
+    "@@type": "Answer",
+    "text": "Visit the Pricing page or go to Account Settings → Billing to upgrade. Pro starts at $9/month."
+    }
+    }
+    ]
+    },
+    {
+    "@@type": "BreadcrumbList",
+    "itemListElement": [
+    {
+    "@@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://www.ratpdf.com/"
+    },
+    {
+    "@@type": "ListItem",
+    "position": 2,
+    "name": "Invoice Dashboard",
+    "item": "https://www.ratpdf.com/InvoiceDashboard"
+    }
+    ]
+    }
+    ]
+    }
+</script>

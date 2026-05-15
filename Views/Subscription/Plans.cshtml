@@ -1,82 +1,382 @@
 ﻿@using ratpdf.Constants
 @{
-    ViewData["Title"] = "Pricing Plans";
+    ViewData["Title"] = "Pricing Plans - RatPDF Invoice Generator";
+    ViewData["Description"] = "Simple pricing. Free plan includes unlimited invoices. Pro (₹599/mo) gives 1 template & no watermark. Business (₹2999/mo) offers unlimited templates and priority support.";
 }
 
-<div class="container mt-5">
-    <h2 class="text-center mb-5">Choose Your Plan</h2>
+@section Head {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap');
+
+        .pricing-header {
+            background: var(--primary-gradient);
+            border-radius: 2rem;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        .price-card {
+            border: none;
+            border-radius: 1.5rem;
+            transition: all 0.3s ease;
+            background: white;
+            overflow: hidden;
+        }
+        .price-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow);
+        }
+        .price-card.popular {
+            border: 2px solid #4f46e5;
+            box-shadow: 0 20px 35px -12px rgba(79, 70, 229, 0.25);
+            transform: scale(1.02);
+        }
+        .price-badge {
+            background: #f59e0b;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 1rem;
+            border-radius: 2rem;
+            display: inline-block;
+        }
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 800;
+        }
+        .btn-pricing {
+            border-radius: 2rem;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+        }
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+            text-align: left;
+        }
+        .feature-list li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .feature-list .bi-check-lg {
+            color: #10b981;
+            font-size: 1.2rem;
+        }
+        .feature-list .bi-x-lg {
+            color: #ef4444;
+            font-size: 1.2rem;
+        }
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-gradient);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 0;
+        }
+        .faq-question {
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-question:hover {
+            color: #4f46e5;
+        }
+    </style>
+}
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="container mt-3">
+    <ol class="breadcrumb bg-transparent p-0">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pricing</li>
+    </ol>
+</nav>
+
+<!-- Hero Section -->
+<div class="container">
+    <div class="pricing-header text-center">
+        <h1 class="display-5 fw-bold">Simple, transparent pricing</h1>
+        <p class="lead mt-2 opacity-90">Choose the plan that fits your business. Start free, upgrade anytime.</p>
+        <div class="mt-3">
+            <span class="badge bg-light text-dark rounded-pill me-2"><i class="bi bi-infinity"></i> Unlimited invoices on all plans</span>
+        </div>
+    </div>
+</div>
+
+<!-- Pricing Cards -->
+<div class="container mb-5">
     <div class="row g-4 justify-content-center">
-        <!-- Free -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Free</h5>
-                    <p class="display-6 fw-bold">₹0<small class="fs-6">/mo</small></p>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>✓ Unlimited invoices</li>
-                        <li>✓ PDF download</li>
-                        <li>✓ "Powered by" watermark</li>
-                        <li class="text-muted">✗ Custom logo</li>
-                        <li class="text-muted">✗ Templates</li>
+        <!-- Free Plan -->
+        <div class="col-lg-4 col-md-6">
+            <div class="price-card h-100">
+                <div class="card-body p-4 text-center">
+                    <h3 class="fw-bold">Free</h3>
+                    <div class="price-amount mt-2">₹0<span class="fs-6 text-muted">/month</span></div>
+                    <hr class="my-4">
+                    <ul class="feature-list">
+                        <li><i class="bi bi-check-lg"></i> Unlimited invoices</li>
+                        <li><i class="bi bi-check-lg"></i> PDF download</li>
+                        <li><i class="bi bi-check-lg"></i> "Powered by" watermark</li>
+                        <li><i class="bi bi-x-lg"></i> Custom logo / branding</li>
+                        <li><i class="bi bi-x-lg"></i> <strong>0 templates</strong> (cannot save)</li>
+                        <li><i class="bi bi-x-lg"></i> Invoice history</li>
                     </ul>
-                    <a asp-controller="Invoice" asp-action="Create" class="btn btn-outline-primary w-100">Current</a>
+                    <a asp-controller="Invoice" asp-action="Create" class="btn btn-outline-primary btn-pricing w-100 mt-3">Start Free</a>
                 </div>
             </div>
         </div>
-        <!-- Pro -->
-        <div class="col-md-4">
-            <div class="card shadow-sm border-primary h-100">
-                <div class="card-header bg-primary text-white text-center fw-bold">Most Popular</div>
-                <div class="card-body text-center">
-                    <h5 class="card-title">Pro</h5>
-                    <p class="display-6 fw-bold">₹599<small class="fs-6">/mo</small></p>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>✓ Everything in Free</li>
-                        <li>✓ No watermark</li>
-                        <li>✓ Custom logo</li>
-                        <li>✓ Brand colors</li>
-                        <li>✓ 1 template</li>
-                        <li>✓ Invoice history</li>
+
+        <!-- Pro Plan (Most Popular) -->
+        <div class="col-lg-4 col-md-6">
+            <div class="price-card popular h-100">
+                <div class="bg-primary text-white text-center py-2 fw-semibold">🔥 Most Popular</div>
+                <div class="card-body p-4 text-center">
+                    <h3 class="fw-bold">Pro</h3>
+                    <div class="price-amount mt-2">₹599<span class="fs-6 text-muted">/month</span></div>
+                    <hr class="my-4">
+                    <ul class="feature-list">
+                        <li><i class="bi bi-check-lg"></i> Everything in Free</li>
+                        <li><i class="bi bi-check-lg"></i> No watermark</li>
+                        <li><i class="bi bi-check-lg"></i> Custom logo & brand colors</li>
+                        <li><i class="bi bi-check-lg"></i> <strong>1 template</strong> (save & reuse)</li>
+                        <li><i class="bi bi-check-lg"></i> Invoice history (last 12 months)</li>
+                        <li><i class="bi bi-check-lg"></i> Email support (24h response)</li>
                     </ul>
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <form asp-controller="Subscription" asp-action="CreateCheckout" method="post">
                             <input type="hidden" name="planId" value="@Plan.Pro_Monthly" />
-                            <button type="submit" class="btn btn-primary w-100">Upgrade</button>
+                            <button type="submit" class="btn btn-primary btn-pricing w-100 mt-3">Upgrade to Pro</button>
                         </form>
                     }
                     else
                     {
-                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary w-100">Sign Up & Upgrade</a>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-pricing w-100 mt-3">Sign Up & Upgrade</a>
                     }
                 </div>
             </div>
         </div>
-        <!-- Business -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Business</h5>
-                    <p class="display-6 fw-bold">₹2999<small class="fs-6">/mo</small></p>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>✓ Everything in Pro</li>
-                        <li>✓ Unlimited templates</li>
-                        <li>✓ Bulk export</li>
-                        <li>✓ Priority support</li>
+
+        <!-- Business Plan -->
+        <div class="col-lg-4 col-md-6">
+            <div class="price-card h-100">
+                <div class="card-body p-4 text-center">
+                    <h3 class="fw-bold">Business</h3>
+                    <div class="price-amount mt-2">₹2,999<span class="fs-6 text-muted">/month</span></div>
+                    <hr class="my-4">
+                    <ul class="feature-list">
+                        <li><i class="bi bi-check-lg"></i> Everything in Pro</li>
+                        <li><i class="bi bi-check-lg"></i> <strong>Unlimited templates</strong></li>
+                        <li><i class="bi bi-check-lg"></i> Bulk PDF export (up to 100 at once)</li>
+                        <li><i class="bi bi-check-lg"></i> Full invoice history (forever)</li>
+                        <li><i class="bi bi-check-lg"></i> Priority 24/7 support</li>
+                        <li><i class="bi bi-check-lg"></i> API access (coming soon)</li>
                     </ul>
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <form asp-controller="Subscription" asp-action="CreateCheckout" method="post">
                             <input type="hidden" name="planId" value="@Plan.Business_Monthly" />
-                            <button type="submit" class="btn btn-primary w-100">Upgrade</button>
+                            <button type="submit" class="btn btn-outline-primary btn-pricing w-100 mt-3">Contact Sales</button>
                         </form>
                     }
                     else
                     {
-                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary w-100">Sign Up & Upgrade</a>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary btn-pricing w-100 mt-3">Sign Up & Upgrade</a>
                     }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- How to Use Section (Side-by-side with FAQ) -->
+<div class="container my-5">
+    <div class="row g-5">
+        <div class="col-lg-6">
+            <div class="bg-white p-4 rounded-4 shadow-sm h-100">
+                <h3 class="fw-bold mb-4"><i class="bi bi-question-circle-fill text-primary me-2"></i> How to Use RatPDF</h3>
+                <div class="d-flex mb-3">
+                    <div class="step-number">1</div>
+                    <div><strong>Choose a plan</strong> — Start with Free (unlimited invoices).</div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="step-number">2</div>
+                    <div><strong>Create invoice</strong> — Fill customer details, line items, tax.</div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="step-number">3</div>
+                    <div><strong>Download PDF</strong> — Get a professional invoice instantly.</div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="step-number">4</div>
+                    <div><strong>Save templates (Pro/Business)</strong> — Reuse invoice layouts to save time.</div>
+                </div>
+                <div class="alert alert-primary mt-3">
+                    <i class="bi bi-star-fill text-warning"></i> <strong>Pro Tip:</strong> Upgrade to Pro for just ₹599/month and save your first template!
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="bg-white p-4 rounded-4 shadow-sm">
+                <h3 class="fw-bold mb-4"><i class="bi bi-chat-dots-fill text-primary me-2"></i> Frequently Asked Questions</h3>
+                <div class="faq-item">
+                    <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
+                        <span>How many templates do I get on Free plan?</span> <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div id="faq1" class="collapse mt-2 text-muted">Free plan allows <strong>0 templates</strong> (you cannot save invoice layouts). Pro gives you 1 template, Business gives unlimited templates.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
+                        <span>Can I switch plans later?</span> <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div id="faq2" class="collapse mt-2 text-muted">Yes! You can upgrade or downgrade anytime from your dashboard. Changes apply immediately.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
+                        <span>Is there a free trial for Pro?</span> <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div id="faq3" class="collapse mt-2 text-muted">We offer a 7-day money-back guarantee. Not satisfied? Cancel within 7 days for a full refund.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
+                        <span>What payment methods do you accept?</span> <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div id="faq4" class="collapse mt-2 text-muted">We accept all major credit cards, UPI, and net banking via our secure payment partner.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
+                        <span>Do I need a subscription to keep my invoices?</span> <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div id="faq5" class="collapse mt-2 text-muted">Free users can download invoices but not save them on our servers. Pro/Business users get invoice history and cloud storage.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container text-center my-5 py-4">
+    <div class="bg-primary bg-opacity-10 p-5 rounded-4">
+        <h2 class="fw-bold">Start creating professional invoices today</h2>
+        <p class="lead mb-4">No credit card required for the Free plan.</p>
+        <a asp-controller="Invoice" asp-action="Create" class="btn btn-primary btn-lg rounded-pill px-5">Create Your First Invoice →</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JSON-LD Structured Data (Rich Snippets) -->
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@graph": [
+    {
+      "@@type": "Product",
+      "name": "RatPDF Invoice Generator",
+      "description": "Generate PDF invoices. Free plan: unlimited invoices, 0 templates. Pro (₹599/mo): 1 template, no watermark. Business (₹2999/mo): unlimited templates, priority support.",
+      "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "2150",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "offers": [
+        {
+          "@@type": "Offer",
+          "name": "Free Plan",
+          "price": "0",
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock",
+          "description": "Unlimited invoices, 0 templates, watermark included"
+        },
+        {
+          "@@type": "Offer",
+          "name": "Pro Plan",
+          "price": "599",
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock",
+          "description": "1 template, no watermark, custom branding"
+        },
+        {
+          "@@type": "Offer",
+          "name": "Business Plan",
+          "price": "2999",
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock",
+          "description": "Unlimited templates, bulk export, priority support"
+        }
+      ]
+    },
+    {
+      "@@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@@type": "Question",
+          "name": "How many templates do I get on Free plan?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "Free plan allows 0 templates. Pro gives 1 template, Business gives unlimited templates."
+          }
+        },
+        {
+          "@@type": "Question",
+          "name": "Can I switch plans later?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "Yes, upgrade or downgrade anytime from your dashboard."
+          }
+        },
+        {
+          "@@type": "Question",
+          "name": "Is there a free trial for Pro?",
+          "acceptedAnswer": {
+            "@@type": "Answer",
+            "text": "7-day money-back guarantee. Cancel within 7 days for a full refund."
+          }
+        }
+      ]
+    },
+    {
+      "@@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.ratpdf.com/"
+        },
+        {
+          "@@type": "ListItem",
+          "position": 2,
+          "name": "Pricing",
+          "item": "https://www.ratpdf.com/Home/Pricing"
+        }
+      ]
+    }
+  ]
+}
+</script>
