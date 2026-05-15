@@ -105,14 +105,6 @@
     </style>
 }
 
-<!-- Breadcrumb -->
-<nav aria-label="breadcrumb" class="container mt-3">
-    <ol class="breadcrumb bg-transparent p-0">
-        <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Pricing</li>
-    </ol>
-</nav>
-
 <!-- Hero Section -->
 <div class="container">
     <div class="pricing-header text-center">
@@ -197,7 +189,7 @@
                     {
                         <form asp-controller="Subscription" asp-action="CreateCheckout" method="post">
                             <input type="hidden" name="planId" value="@Plan.Business_Monthly" />
-                            <button type="submit" class="btn btn-outline-primary btn-pricing w-100 mt-3">Contact Sales</button>
+                            <button type="submit" class="btn btn-outline-primary btn-pricing w-100 mt-3">Upgrade Business</button>
                         </form>
                     }
                     else

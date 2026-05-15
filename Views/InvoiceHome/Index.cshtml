@@ -145,14 +145,6 @@
         }
     </style>
 
-<!-- Breadcrumb (hidden but structured) -->
-<nav aria-label="breadcrumb" class="visually-hidden">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Free Invoice Generator</li>
-    </ol>
-</nav>
-
 <!-- Hero Section -->
 <div class="hero-section text-white py-5">
     <div class="container py-5">
@@ -295,7 +287,7 @@
                                 {
                                     <form asp-controller="Subscription" asp-action="CreateCheckout" method="post">
                                         <input type="hidden" name="planId" value="@Plan.Business_Monthly" />
-                                        <button type="submit" class="btn btn-outline-primary btn-pricing w-100 mt-3">Contact Sales</button>
+                                        <button type="submit" class="btn btn-outline-primary btn-pricing w-100 mt-3">Upgrade Business</button>
                                     </form>
                                 }
                                 else

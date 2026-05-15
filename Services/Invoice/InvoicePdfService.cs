@@ -19,17 +19,19 @@ namespace ratpdf.Services.Invoice
         private readonly FeatureAccessor _featureAccessor;
         private readonly ILogoStorageService _logoStorage;
         private readonly ILogger<InvoicePdfService> _logger;
-
+        private readonly IWebHostEnvironment _env;
         public InvoicePdfService(
             BrandingService brandingService,
             FeatureAccessor featureAccessor,
             ILogoStorageService logoStorage,
+            IWebHostEnvironment env,
             ILogger<InvoicePdfService> logger)
         {
             _brandingService = brandingService;
             _featureAccessor = featureAccessor;
             _logoStorage = logoStorage;
             _logger = logger;
+            _env = env;
         }
 
         public async Task<byte[]> GenerateInvoicePdfAsync(Data.Entities.Invoice invoice, Guid? userId)
@@ -49,7 +51,7 @@ namespace ratpdf.Services.Invoice
             var document = new Document(pdf, PageSize.A4);
             document.SetMargins(36, 36, 36, 36);
             var fontPath = System.IO.Path.Combine(
-                Directory.GetCurrentDirectory(),
+                _env.ContentRootPath,
                 "fonts",
                 "NotoSans-Regular.ttf"
             );
