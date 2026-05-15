@@ -75,7 +75,6 @@ namespace ratpdf.Controllers
         {
             if (!ModelState.IsValid) return View("Create", model);
 
-            // Build invoice entity
             var invoice = new Invoice
             {
                 Id = Guid.NewGuid(),
@@ -103,8 +102,9 @@ namespace ratpdf.Controllers
                 From = model.From,
             };
             invoice.Total = invoice.Subtotal + invoice.TaxAmount;
-
-            if (User.Identity?.IsAuthenticated == true && invoice.UserId.HasValue)
+            var userIdValue = invoice.UserId.HasValue ? invoice.UserId.Value : Guid.Empty;
+            var isSubscribed = await _featureAccessor.CanRemoveWatermarkAsync(userIdValue);
+            if (User.Identity?.IsAuthenticated == true && invoice.UserId.HasValue && isSubscribed)
             {
                 _db.Invoices.Add(invoice);
                 await _db.SaveChangesAsync();
