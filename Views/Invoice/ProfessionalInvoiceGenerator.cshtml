@@ -1,0 +1,402 @@
+﻿@{
+    ViewData["Title"] = "Professional Invoice Generator | Create Professional Invoices Online";
+    ViewData["Description"] = "Generate professional, elegant invoices online for free. Perfect for businesses, freelancers, and agencies. Customizable templates, tax support, and instant PDF download.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/professional-invoice-generator";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Professional Invoice Generator | Create Professional Invoices Online</title>
+    <meta name="title" content="Professional Invoice Generator | Create Professional Invoices Online" />
+    <meta name="description" content="Generate professional, elegant invoices online for free. Perfect for businesses, freelancers, and agencies. Customizable templates, tax support, and instant PDF download." />
+    <meta name="keywords" content="professional invoice generator, business invoice maker, elegant invoice template, corporate invoice, professional billing, company invoice, premium invoice, clean invoice design" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Professional Invoice Generator | RatPDF" />
+    <meta property="og:description" content="Create elegant, professional invoices online for free – perfect for businesses and freelancers." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Professional Invoice Generator | RatPDF" />
+    <meta name="twitter:description" content="Generate professional invoices with clean design, tax support, and PDF download – free." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Professional Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/professional-invoice-generator",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online professional invoice generator for businesses, freelancers, consultants, and agencies.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "2678"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What makes an invoice look professional?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A professional invoice includes clear layout, your logo and branding, accurate calculations, itemized services, tax details, payment terms, and a clean, readable font."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Is this professional invoice generator free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF's professional invoice generator is completely free – no signup, no watermark, no hidden fees."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I add my company logo to the invoice?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Absolutely. You can provide a URL to your logo image, and it will be displayed prominently on the invoice."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Professional Invoice Generator",
+        "item": "https://ratpdf.com/invoice/professional-invoice-generator"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">Elegant & Professional</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Professional Invoice Generator – Create Polished Invoices That Impress
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Generate clean, elegant, and professional invoices online – free. Add your logo, business details, itemized services, taxes, and download as PDF. Perfect for businesses, freelancers, consultants, and agencies who want to present a polished image.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Professional Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.9/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">1.5M+</h3>
+                        <p class="mb-0 small text-muted">Professional Invoices</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Professional Invoice Generator"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Why Choose Our Professional Invoice Generator?</h2>
+            <p class="text-muted">
+                Your brand deserves invoices that look as good as your work.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🎨 Clean, Modern Design</h3>
+                        <p class="text-muted mb-0">
+                            Professional layout with balanced spacing, clear typography, and a polished finish that builds trust.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🏢 Add Your Logo & Branding</h3>
+                        <p class="text-muted mb-0">
+                            Upload your company logo, add your tagline, and maintain consistent brand identity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📊 Professional Calculations</h3>
+                        <p class="text-muted mb-0">
+                            Automatic tax, discount, and total calculations – no math errors, ever.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">💼 Multiple Tax Support</h3>
+                        <p class="text-muted mb-0">
+                            GST, VAT, HST, or custom tax rates – handle any jurisdiction professionally.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📄 Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            One click generates a high-quality PDF ready to email, print, or archive.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🔒 No Watermark, No Ads</h3>
+                        <p class="text-muted mb-0">
+                            Your invoices are 100% yours – no promotional stamps, no distractions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Make Every Invoice a Reflection of Your Excellence</h2>
+                <p class="text-muted mb-3">
+                    First impressions matter. When you send an invoice that's clean, professional, and error-free, your clients see you as organized and reliable. RatPDF's professional invoice generator gives you the tools to create stunning invoices without the complexity of expensive software.
+                </p>
+                <p class="text-muted mb-3">
+                    Add your logo, customize colors (using your brand's primary color), include detailed line items, apply taxes correctly, and set clear payment terms – all in one simple form. No templates to download, no subscriptions to manage.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ 100% free – no hidden costs</li>
+                    <li class="mb-2">✔ Instant PDF generation</li>
+                    <li class="mb-2">✔ No signup or data storage</li>
+                    <li class="mb-2">✔ Works on any device</li>
+                    <li class="mb-2">✔ Unlimited invoices</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Create Your Professional Invoice Now</h3>
+                    <p class="mb-4">
+                        Join thousands of businesses that trust RatPDF for their invoicing needs – free, fast, and professional.
+                    </p>
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Professional Invoice
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What makes a professional invoice different from a basic invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A professional invoice includes clean layout, consistent branding (logo, colors), accurate tax handling, clear payment terms, and professional language. It reassures clients that you're a legitimate, organized business.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this professional invoice generator really free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, completely free. No subscription, no watermark, no signup. Generate unlimited professional invoices.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I add my own logo and brand colors?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, you can add your logo via a URL. The invoice uses a clean blue primary color that works with most brands, but you can customize payment terms and details to match your brand voice.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        What tax rates can I use?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        You can set any tax rate per line item – GST (India, Canada), VAT (UK, Europe), HST (Canada), sales tax (US), or custom rates. For complex taxes (e.g., CGST+SGST), you can create two line items or use a combined rate.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to create an account to generate professional invoices?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account, no email, no password. Just open the tool, fill in your details, and download your PDF instantly. We don't store any data.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Professional Invoices That Build Trust</h2>
+        <p class="text-muted mb-4">
+            Join thousands of businesses using RatPDF to send polished, professional invoices.
+        </p>
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Professional Invoices
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

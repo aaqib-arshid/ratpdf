@@ -55,5 +55,11 @@ namespace ratpdf.Data.Entities
 
         public ICollection<InvoiceItem>? Items { get; set; }
         public string? From { get; set; }
+        public string? YourGstin { get; set; }
+        public string? ClientGstin { get; set; }
+        public string? HsnSacCode { get; set; }
+        public string? PlaceOfSupply { get; set; }
+        public string? TaxType { get; set; }
+
     }
 }

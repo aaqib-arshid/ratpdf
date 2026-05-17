@@ -1,0 +1,407 @@
+﻿@{
+    ViewData["Title"] = "Free Invoice Generator for Contractors | Create Contractor Invoices Online";
+    ViewData["Description"] = "Generate professional invoices for contractors online for free. Create construction, independent contractor, and trade invoices with labor, materials, equipment, and downloadable PDF.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-contractors";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free Invoice Generator for Contractors | Create Contractor Invoices Online</title>
+    <meta name="title" content="Free Invoice Generator for Contractors | Create Contractor Invoices Online" />
+    <meta name="description" content="Generate professional invoices for contractors online for free. Create construction, independent contractor, and trade invoices with labor, materials, equipment, and downloadable PDF." />
+    <meta name="keywords" content="invoice generator for contractors, contractor invoice maker, free contractor invoice, construction invoice template, independent contractor invoice, 1099 invoice, trade invoice, subcontractor invoice, handyman invoice, contractor billing software" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free Invoice Generator for Contractors | RatPDF" />
+    <meta property="og:description" content="Create professional contractor invoices online for free. Add labor, materials, equipment, and download PDF." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free Invoice Generator for Contractors | RatPDF" />
+    <meta name="twitter:description" content="Generate contractor invoices online with labor, materials, tax, and PDF download support." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Contractor Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-contractors",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online invoice generator for independent contractors, construction businesses, subcontractors, and trade professionals.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1832"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What should a contractor invoice include?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A contractor invoice should include your business name and contact info, client details, invoice number, project description, itemized labor hours or fixed price, materials, equipment, taxes, deposit paid, and total due."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate contractor invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows you to create and download professional contractor invoices online for free with no signup required."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the invoice generator support labor and material line items?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, you can add separate line items for labor (hourly or fixed), materials, equipment rental, travel, and other expenses."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Contractor Invoice Generator",
+        "item": "https://ratpdf.com/invoice/invoice-generator-contractors"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free for Contractors</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Invoice Generator for Contractors – Create Professional Invoices Fast
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional invoices for your contracting business in seconds. Add labor hours, materials, equipment, tax, and deposit tracking. Perfect for independent contractors, construction, handyman, electricians, plumbers, and trade professionals.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Contractor Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">Contractor Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">950K+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator for Contractors"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features Designed for Contractors</h2>
+            <p class="text-muted">
+                Everything you need to bill clients professionally and get paid faster.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Labor & Materials</h3>
+                        <p class="text-muted mb-0">
+                            Add hourly rates, fixed labor, material costs, equipment rental, and travel expenses as separate line items.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Deposit & Balance Tracking</h3>
+                        <p class="text-muted mb-0">
+                            Track deposits paid and show remaining balance clearly – perfect for large projects.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Tax Support</h3>
+                        <p class="text-muted mb-0">
+                            Add VAT, GST, or sales tax per line item – compliant with your local tax rules.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Professional Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your contractor logo, license number, company details, and payment terms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download high-quality PDF invoices ready to email to clients or print on-site.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Mobile Friendly</h3>
+                        <p class="text-muted mb-0">
+                            Create invoices from your phone or tablet – ideal for job sites and remote work.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Contractors Love Our Invoice Generator</h2>
+                <p class="text-muted mb-3">
+                    Running a contracting business means focusing on the job, not paperwork. RatPDF helps independent contractors, construction companies, handymen, and trade professionals create professional, branded invoices in seconds – for any project size.
+                </p>
+
+                <p class="text-muted mb-3">
+                    Our tool is completely free, requires no registration, and generates clean, client-friendly PDF invoices that include all the details your clients need: labor breakdown, materials list, deposit paid, balance due, and payment instructions.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ No monthly fees – 100% free</li>
+                    <li class="mb-2">✔ Contractor-specific invoice fields</li>
+                    <li class="mb-2">✔ Deposit and balance tracking</li>
+                    <li class="mb-2">✔ Add your logo and license number</li>
+                    <li class="mb-2">✔ Download as PDF instantly</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Invoice Your Next Project?</h3>
+
+                    <p class="mb-4">
+                        Create a professional invoice for your contracting client in under a minute. No signup, no credit card – just fast, free invoices.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Contractor Invoice Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions for Contractors</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What information should I include on a contractor invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A contractor invoice should include your business name, license number (if required), contact info, client details, invoice number, project description, itemized labor (hours or fixed price), materials, equipment rental, travel, any deposits paid, tax amount, and total due with payment terms.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this contractor invoice generator really free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes! RatPDF's invoice generator is completely free for contractors. There are no hidden fees, subscriptions, or watermarks. You can create unlimited invoices and download them as PDF files at no cost.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I add labor hours and materials separately?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. You can add multiple line items – for example, "10 hours $75/hr" for labor, "Lumber – 200 board feet" for materials, "Mini excavator rental" for equipment – each with its own quantity, rate, and tax setting.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Does it support deposits and progress billing?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. You can enter a deposit or advance payment, and the invoice will automatically show the remaining balance due. For large projects, you can create separate invoices for each progress payment.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to create an account to generate invoices?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account or sign-up is required. You can start creating invoices immediately, and we don't store any of your data. Your privacy is protected.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Professional Contractor Invoices in Seconds</h2>
+        <p class="text-muted mb-4">
+            Join thousands of contractors who use RatPDF to bill clients quickly and professionally.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Contractor Invoices
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

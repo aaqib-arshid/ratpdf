@@ -1,0 +1,418 @@
+﻿@{
+    ViewData["Title"] = "Free UK VAT Invoice Generator Online | Create VAT Compliant Invoices";
+    ViewData["Description"] = "Generate professional VAT invoices online for free in the UK. Create tax invoices with VAT registration number, VAT rates (standard, reduced, zero), reverse charge, and downloadable PDF invoices instantly.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/vat-invoice-generator-uk";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free UK VAT Invoice Generator Online | Create VAT Compliant Invoices</title>
+    <meta name="title" content="Free UK VAT Invoice Generator Online | Create VAT Compliant Invoices" />
+    <meta name="description" content="Generate professional VAT invoices online for free in the UK. Create tax invoices with VAT registration number, VAT rates (standard, reduced, zero), reverse charge, and downloadable PDF invoices instantly." />
+    <meta name="keywords" content="VAT invoice generator UK, VAT invoice maker UK, free VAT invoice generator, UK VAT invoice online, VAT billing software, HMRC compliant invoice, VAT invoice template UK, UK tax invoice generator, VAT receipt generator UK, online VAT invoice" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free UK VAT Invoice Generator | RatPDF" />
+    <meta property="og:description" content="Create HMRC compliant VAT invoices online for free in the UK. Download professional VAT invoices instantly in PDF format." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_GB" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free UK VAT Invoice Generator | RatPDF" />
+    <meta name="twitter:description" content="Generate VAT invoices online with VAT number, tax rates, reverse charge, and PDF download support." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Geo SEO -->
+    <meta name="geo.region" content="GB" />
+    <meta name="geo.country" content="United Kingdom" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "UK VAT Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/vat-invoice-generator-uk",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online UK VAT invoice generator for small businesses, sole traders, freelancers, and limited companies.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "GBP"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1952"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is a VAT invoice?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A VAT invoice is a tax invoice issued by a VAT-registered business in the UK showing the VAT amount charged on goods or services, required for HMRC compliance and input tax recovery."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate VAT invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows you to create and download UK VAT invoices online for free without any signup or software installation."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the VAT invoice generator support all UK VAT rates?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, the generator supports standard rate (20%), reduced rate (5%), zero rate (0%), and the VAT reverse charge for construction services."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "UK VAT Invoice Generator",
+        "item": "https://ratpdf.com/invoice/vat-invoice-generator-uk"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">Free UK VAT Invoice Tool</span>
+            <h1 class="display-4 fw-bold mb-3">
+                UK VAT Invoice Generator – HMRC Compliant
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional VAT invoices instantly with VAT registration number, itemised taxes,
+                multiple VAT rates (standard 20%, reduced 5%, zero 0%), reverse charge support, and PDF download.
+                Perfect for UK small businesses, sole traders, freelancers, and limited companies.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create VAT Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">1.5M+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="UK VAT Invoice Generator"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features of Our UK VAT Invoice Generator</h2>
+            <p class="text-muted">
+                Everything UK businesses need to create HMRC compliant VAT invoices online.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">HMRC Compliant</h3>
+                        <p class="text-muted mb-0">
+                            Generate invoices that meet UK VAT invoicing rules including VAT number,
+                            tax point, net amount, VAT amount, and total.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">All VAT Rates</h3>
+                        <p class="text-muted mb-0">
+                            Support for standard (20%), reduced (5%), zero (0%) rates, and VAT reverse charge for construction services.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download professional VAT invoices instantly in PDF format for records or customer delivery.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Business Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your company logo, VAT registration number, address, and contact details.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Mobile Friendly</h3>
+                        <p class="text-muted mb-0">
+                            Create VAT invoices from any device – desktop, tablet, or smartphone.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Secure & Fast</h3>
+                        <p class="text-muted mb-0">
+                            Quick invoice generation with secure, private processing – no data stored.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Use Our UK VAT Invoice Generator?</h2>
+                <p class="text-muted mb-3">
+                    RatPDF helps UK businesses create accurate VAT invoices without expensive accounting software.
+                    Whether you are a sole trader, freelancer, limited company, or contractor,
+                    our invoice generator simplifies VAT billing and ensures HMRC compliance.
+                </p>
+
+                <p class="text-muted mb-3">
+                    The tool supports custom VAT rates, reverse charge scenarios, and provides a clear breakdown
+                    of net amount, VAT amount, and gross total – essential for VAT returns.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ HMRC compliant VAT invoices</li>
+                    <li class="mb-2">✔ Free invoice generation – no signup</li>
+                    <li class="mb-2">✔ Supports standard, reduced, zero rates & reverse charge</li>
+                    <li class="mb-2">✔ Instant PDF download</li>
+                    <li class="mb-2">✔ Ideal for small businesses & freelancers</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Create Your UK VAT Invoice Now</h3>
+
+                    <p class="mb-4">
+                        Start generating VAT invoices online instantly with RatPDF's free UK VAT invoice generator.
+                        No software, no complexity – just compliant invoices.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Open VAT Invoice Generator
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What is a VAT invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A VAT invoice is a document issued by a VAT-registered business showing the VAT charged on a supply. It must include the VAT registration number, date, invoice number, and a breakdown of net, VAT, and gross amounts to be HMRC compliant.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this VAT invoice generator free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, our UK VAT invoice generator is completely free. No subscription, no credit card, and no sign-up required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Does it support the VAT reverse charge?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, the generator includes an option for the VAT reverse charge (commonly used in construction services). The invoice will clearly state that the reverse charge applies.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Can I download invoices as PDF?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. All generated VAT invoices can be downloaded instantly as a high-quality PDF file for printing, emailing, or record keeping.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to be VAT registered to use this tool?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No, anyone can use the tool to generate invoices. However, only VAT-registered businesses should charge VAT. The tool lets you set VAT rate to 0% if you are not registered.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Generate HMRC Compliant VAT Invoices in Seconds</h2>
+        <p class="text-muted mb-4">
+            Create professional VAT invoices online instantly with RatPDF's free UK VAT invoice generator.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Using VAT Invoice Generator
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

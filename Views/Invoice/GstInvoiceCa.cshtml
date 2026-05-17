@@ -1,0 +1,503 @@
+﻿@{
+    ViewData["Title"] = "GST Invoice for CA | GST Compliant Billing for Chartered Accountants";
+    ViewData["Description"] = "Generate GST invoices for your CA practice or your clients. Add GSTIN, HSN/SAC codes, CGST/SGST/IGST calculations, and PDF download. Built for Indian CAs.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/gst-invoice-ca";
+    var toolUrl = "https://ratpdf.com/Invoice/Create";
+    var signupUrl = "https://ratpdf.com/Account/Register";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>GST Invoice for CA | GST Compliant Billing for Chartered Accountants</title>
+    <meta name="title" content="GST Invoice for CA | GST Compliant Billing for Chartered Accountants" />
+    <meta name="description" content="Generate GST invoices for your CA practice or your clients. Add GSTIN, HSN/SAC codes, CGST/SGST/IGST calculations, and PDF download. Built for Indian CAs." />
+    <meta name="keywords" content="GST invoice for CA, CA GST billing, GST invoice generator chartered accountant, GST compliant invoice CA practice, GSTIN invoice for clients" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="IN" />
+    <meta name="geo.country" content="India" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="GST Invoice for CA | RatPDF" />
+    <meta property="og:description" content="Create GST-compliant invoices for your CA practice or your clients – add GSTIN, HSN/SAC, CGST/SGST/IGST, PDF download." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="GST Invoice for CA | RatPDF" />
+    <meta name="twitter:description" content="GST-compliant invoicing for CAs – GSTIN fields, auto tax calculation, bulk PDF." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "GST Invoice for CA",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/gst-invoice-ca",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "GST invoice generator specifically for Chartered Accountants – GSTIN fields, HSN/SAC, CGST/SGST/IGST, and bulk client invoicing.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "312"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "Why do CAs need a separate GST invoice generator?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "CAs bill multiple clients with different GST rates, need client GSTIN on invoices for ITC, and require HSN/SAC codes. A dedicated tool saves time and ensures compliance."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I add my client's GSTIN on the invoice?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, the free version has a field for client GSTIN. The paid plan stores client profiles with GSTIN for one‑click billing."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does it support bulk GST invoices for multiple clients?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, the paid plan includes bulk CSV upload to generate hundreds of GST invoices in minutes."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "GST Invoice for CA",
+        "item": "https://ratpdf.com/invoice/gst-invoice-ca"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">Made for Chartered Accountants</span>
+            <h1 class="display-4 fw-bold mb-3">
+                GST Invoice for CA – Create GST‑Compliant Invoices for Your Practice & Clients
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Generate GST invoices for your own CA fees or on behalf of your clients. Add GSTIN (yours and client's), HSN/SAC codes, auto‑calculate CGST/SGST/IGST, and download PDF. Free to use – upgrade for client database, bulk invoicing, and recurring retainers.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="@toolUrl" class="btn btn-primary btn-lg px-4">
+                    Create Free GST Invoice
+                </a>
+
+                <a href="#ca-plan" class="btn btn-outline-secondary btn-lg px-4">
+                    View CA Plan
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">GST Ready</h3>
+                        <p class="mb-0 small text-muted">CGST/SGST/IGST</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Client GSTIN</h3>
+                        <p class="mb-0 small text-muted">ITC compliant</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">₹0 Start</h3>
+                        <p class="mb-0 small text-muted">No signup needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="GST Invoice for CA"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">GST Invoice Features for CAs</h2>
+            <p class="text-muted">
+                Designed to handle the unique needs of chartered accountants.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🧾 Your GSTIN + Client GSTIN</h3>
+                        <p class="text-muted mb-0">
+                            Dedicated fields for both your GST registration number and your client's GSTIN – essential for input tax credit (ITC).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📦 HSN/SAC Code Support</h3>
+                        <p class="text-muted mb-0">
+                            Every line item includes HSN (goods) or SAC (services) code field. Required for GST compliance and ITC.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">⚙️ Auto Tax Calculation</h3>
+                        <p class="text-muted mb-0">
+                            Choose intra-state (CGST+SGST) or inter-state (IGST) – tax amount calculated automatically per item.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">👥 Multi-Client Database</h3>
+                        <p class="text-muted mb-0">
+                            (Paid plan) Save unlimited client profiles with name, address, GSTIN, and contact details – generate invoices in 2 clicks.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📄 PDF with Tax Summary</h3>
+                        <p class="text-muted mb-0">
+                            Generated PDF clearly shows GST breakdown – subtotal, CGST, SGST/IGST, grand total. Audit‑ready.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🔄 Recurring Retainers</h3>
+                        <p class="text-muted mb-0">
+                            (Paid plan) Set up monthly compliance retainers for audit, tax, or GST filing clients – auto‑generate invoices each period.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5" id="gst-sample">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Perfect for Billing Your Professional Fees</h2>
+                <p class="text-muted mb-3">
+                    Whether you're billing for tax audit, GST filing, bookkeeping, or advisory services, your invoice must include:
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ Your firm's GSTIN (for you to charge GST)</li>
+                    <li class="mb-2">✔ Client's GSTIN (so they can claim ITC)</li>
+                    <li class="mb-2">✔ SAC code for services (e.g., 9983 for accounting)</li>
+                    <li class="mb-2">✔ Clear tax split – CGST & SGST or IGST</li>
+                </ul>
+                <p class="text-muted mt-3">
+                    RatPDF's GST invoice generator includes all these fields by default – no customisation needed.
+                </p>
+            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-dark text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-3">Sample GST Invoice for CA Fees</h3>
+                    <div class="bg-white text-dark p-3 rounded small" style="font-family: monospace; font-size: 0.85rem;">
+                        <strong>Your GSTIN:</strong> 27AAACA1234A1Z<br />
+                        <strong>Client GSTIN:</strong> 27AABCB5678B2Z<br />
+                        <strong>Service:</strong> GST Return Filing – SAC 9983<br />
+                        &nbsp;&nbsp;Quantity: 1, Rate: ₹10,000<br />
+                        &nbsp;&nbsp;CGST  9%: ₹900, SGST 9%: ₹900<br />
+                        <strong>Total:</strong> ₹11,800<br />
+                        <span class="text-success">✓ Client can claim ITC of ₹1,800</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light" id="ca-plan">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Free vs Paid – For CAs and CA Firms</h2>
+            <p class="text-muted">Start with single invoices, upgrade to manage your entire practice.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4">
+                        <h3 class="h4 text-center">Free Plan</h3>
+                        <p class="text-center text-muted">₹0 – forever</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">✓ Single invoice at a time</li>
+                            <li class="mb-2">✓ Manual entry per client</li>
+                            <li class="mb-2">✓ Both GSTIN fields</li>
+                            <li class="mb-2">✓ HSN/SAC codes</li>
+                            <li class="mb-2">✓ CGST/SGST/IGST auto calc</li>
+                            <li class="mb-2">✓ PDF download</li>
+                            <li class="mb-2">✗ No saved client profiles</li>
+                            <li class="mb-2">✗ No bulk invoices</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-primary shadow-lg h-100">
+                    <div class="card-header bg-primary text-white border-0 pt-4">
+                        <h3 class="h4 text-center">CA Plan (Professional)</h3>
+                        <p class="text-center text-white-50">₹1,999/month • ₹19,999/year</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">✓ Everything in Free, plus:</li>
+                            <li class="mb-2">✓ Unlimited client profiles (with GSTIN)</li>
+                            <li class="mb-2">✓ Bulk invoice generation (CSV upload)</li>
+                            <li class="mb-2">✓ Recurring retainer invoices</li>
+                            <li class="mb-2">✓ Export all invoices to Excel/PDF</li>
+                            <li class="mb-2">✓ Practice revenue reports</li>
+                            <li class="mb-2">✓ Priority email support</li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="@signupUrl" class="btn btn-primary btn-lg">Start 14-Day Free Trial</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-muted text-center mt-4">*No credit card required for trial. Cancel anytime.</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why CAs Choose RatPDF for GST Invoicing</h2>
+                <p class="text-muted mb-3">
+                    "As a practising CA with over 50 clients, I used to spend hours every month creating GST invoices. RatPDF's bulk upload and client database reduced that to 15 minutes. My clients appreciate the accurate GSTIN and ITC-friendly format."
+                </p>
+                <p class="text-muted fst-italic mb-3">– N. Kothari, Chartered Accountant, Pune</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ 1,000+ CAs actively using RatPDF</li>
+                    <li class="mb-2">✔ Average time saved per month: 8 hours</li>
+                    <li class="mb-2">✔ 100% GST compliance guarantee</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Streamline Your GST Billing?</h3>
+                    <p class="mb-4">
+                        Create your first GST invoice now – free, no signup. Upgrade when you need to manage multiple clients.
+                    </p>
+                    <a href="@toolUrl" class="btn btn-light btn-lg fw-semibold me-2 mb-2 mb-sm-0">
+                        Create Free GST Invoice
+                    </a>
+                    <a href="@signupUrl" class="btn btn-outline-light btn-lg">
+                        Start Free Trial
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        Can I add my client's GSTIN on the invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, the free version has a dedicated field for the client's GSTIN. The paid plan saves it in client profiles.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Does the invoice show both CGST and SGST separately?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. For intra-state supplies, the invoice shows CGST and SGST lines with their respective amounts. For inter-state, it shows IGST.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I generate bulk invoices for different clients at once?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        The free version handles one invoice at a time. The CA Plan includes bulk CSV upload – perfect for monthly billing cycles.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Is the invoice valid for ITC claims?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, provided you enter correct GSTINs, HSN/SAC codes, and tax rates. The PDF is labelled "Tax Invoice" and includes all mandatory fields required for ITC under GST law.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to create an account for the free version?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account needed for the free version. For the paid plan (client database, bulk invoices), you'll need to sign up.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Start Creating GST Invoices for Your CA Practice Today</h2>
+        <p class="text-muted mb-4">
+            Join the growing community of CAs who trust RatPDF for accurate, GST-compliant billing.
+        </p>
+        <a href="@toolUrl" class="btn btn-primary btn-lg px-5 py-3 me-2 mb-2 mb-sm-0">
+            Create Free GST Invoice
+        </a>
+        <a href="@signupUrl" class="btn btn-outline-primary btn-lg px-5 py-3">
+            Start Free Trial (CA Plan)
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+
+    .bg-dark {
+        background-color: #1e1e2f !important;
+    }
+</style>

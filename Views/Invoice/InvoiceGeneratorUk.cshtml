@@ -1,0 +1,404 @@
+﻿@{
+    ViewData["Title"] = "Free Invoice Generator UK | Online VAT Invoice Maker for UK Businesses";
+    ViewData["Description"] = "Create professional invoices online in the UK for free. Generate VAT invoices, tax invoices, PDF bills, and business invoices instantly with RatPDF – HMRC friendly.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-uk";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free Invoice Generator UK | Online VAT Invoice Maker for UK Businesses</title>
+    <meta name="title" content="Free Invoice Generator UK | Online VAT Invoice Maker for UK Businesses" />
+    <meta name="description" content="Create professional invoices online in the UK for free. Generate VAT invoices, tax invoices, PDF bills, and business invoices instantly with RatPDF – HMRC friendly." />
+    <meta name="keywords" content="invoice generator UK, VAT invoice generator UK, online invoice maker UK, free invoice generator, tax invoice generator UK, invoice software UK, business invoice creator, HMRC compliant invoice, PDF invoice generator UK, self employed invoice" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="GB" />
+    <meta name="geo.country" content="United Kingdom" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free Invoice Generator UK | RatPDF" />
+    <meta property="og:description" content="Generate VAT invoices and business invoices online instantly in the UK." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_GB" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free Invoice Generator UK | RatPDF" />
+    <meta name="twitter:description" content="Create professional VAT and tax invoices online in the UK with instant PDF download support." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Invoice Generator UK",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-uk",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online invoice generator for UK businesses, freelancers, sole traders, startups, and small companies.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "GBP"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "2147"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is an invoice generator in the UK?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "An invoice generator in the UK helps businesses create HMRC friendly VAT invoices, tax invoices, and PDF bills online quickly and professionally."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate VAT invoices online for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows users to generate VAT invoices and business invoices online for free in the UK."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the invoice generator support PDF downloads?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, invoices generated using RatPDF can be downloaded instantly as PDF files."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Invoice Generator UK",
+        "item": "https://ratpdf.com/invoice/invoice-generator-uk"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">Trusted by Businesses Across the UK</span>
+
+            <h1 class="display-4 fw-bold mb-3">
+                Free Invoice Generator for the UK
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional VAT invoices, tax invoices, and business bills online instantly.
+                Perfect for UK freelancers, sole traders, startups, consultants, contractors,
+                and small businesses.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Invoice Now
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">Business Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">1.8M+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">100% Free</h3>
+                        <p class="mb-0 small text-muted">No Installation Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator UK"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features of Our UK Invoice Generator</h2>
+            <p class="text-muted">
+                Designed for UK businesses and HMRC friendly invoicing.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">VAT Invoice Support</h3>
+                        <p class="text-muted mb-0">
+                            Create VAT compliant invoices with standard (20%), reduced (5%), and zero (0%) rates.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download invoices instantly in professional PDF format – ready for your records or clients.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Business Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add logos, VAT registration number, business details, and payment terms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Mobile Friendly</h3>
+                        <p class="text-muted mb-0">
+                            Generate invoices from desktop, tablet, or smartphone – ideal for on‑the‑go.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Easy Invoice Creation</h3>
+                        <p class="text-muted mb-0">
+                            Add products, services, VAT, discounts, and customer information effortlessly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Fast & Secure</h3>
+                        <p class="text-muted mb-0">
+                            Generate invoices quickly with secure, cloud‑based processing – no data stored.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why UK Businesses Use RatPDF</h2>
+
+                <p class="text-muted mb-3">
+                    RatPDF helps UK businesses simplify invoicing with modern online invoice creation tools.
+                    Whether you are a sole trader, freelancer, startup, consultant, or limited company,
+                    our invoice generator makes billing easier and HMRC friendly.
+                </p>
+
+                <p class="text-muted mb-3">
+                    Generate professional invoices for products, services, subscriptions,
+                    VAT billing, consulting work, and freelance projects instantly.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ HMRC compliant VAT invoice format</li>
+                    <li class="mb-2">✔ Professional PDF invoices</li>
+                    <li class="mb-2">✔ Free invoice generation – no signup</li>
+                    <li class="mb-2">✔ Fast online invoice creation</li>
+                    <li class="mb-2">✔ Ideal for businesses across the UK</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Start Creating Invoices Today</h3>
+
+                    <p class="mb-4">
+                        Generate VAT and business invoices online instantly with RatPDF – no software to install.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Open Invoice Generator
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What is an invoice generator?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        An invoice generator helps businesses create professional invoices online quickly without manual design or accounting software.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Can I generate VAT invoices online?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, RatPDF supports full VAT invoice generation for UK businesses, including standard, reduced, and zero rates – HMRC compliant.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can invoices be downloaded as PDF?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. All generated invoices can be downloaded instantly as a high‑quality PDF file, ready to print, email, or keep for your records.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Who can use this invoice generator?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Sole traders, freelancers, startups, limited companies, contractors, and any business across the UK can use this free tool.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Professional Invoices Online in the UK</h2>
+
+        <p class="text-muted mb-4">
+            Generate VAT and business invoices instantly with RatPDF – free and no signup required.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Invoice
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

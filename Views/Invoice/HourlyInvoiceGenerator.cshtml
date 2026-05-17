@@ -1,0 +1,402 @@
+﻿@{
+    ViewData["Title"] = "Hourly Invoice Generator | Create Time-Based Invoices Online Free";
+    ViewData["Description"] = "Generate professional hourly invoices online for free. Perfect for freelancers, consultants, and agencies. Track billable hours, hourly rates, and download PDF instantly.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/hourly-invoice-generator";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Hourly Invoice Generator | Create Time-Based Invoices Online Free</title>
+    <meta name="title" content="Hourly Invoice Generator | Create Time-Based Invoices Online Free" />
+    <meta name="description" content="Generate professional hourly invoices online for free. Perfect for freelancers, consultants, and agencies. Track billable hours, hourly rates, and download PDF instantly." />
+    <meta name="keywords" content="hourly invoice generator, hourly rate invoice, time tracking invoice, billable hours invoice, hourly billing, timesheet invoice, freelance hourly invoice, consultant hourly invoice" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Hourly Invoice Generator | RatPDF" />
+    <meta property="og:description" content="Create hourly invoices with billable hours, rates, and PDF download – free, no signup." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Hourly Invoice Generator | RatPDF" />
+    <meta name="twitter:description" content="Generate professional hourly invoices online – track hours, rates, and download PDF." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Hourly Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/hourly-invoice-generator",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online hourly invoice generator for freelancers, consultants, and professionals who bill by the hour.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1120"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is an hourly invoice?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "An hourly invoice shows the number of hours worked, your hourly rate, and the total for each line item. It's used by freelancers, consultants, lawyers, and other professionals who bill by time."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate hourly invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF's hourly invoice generator is completely free – no signup, no watermark."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does it support different hourly rates for different tasks?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, each line item can have its own hourly rate, making it perfect for projects with multiple services or team members."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Hourly Invoice Generator",
+        "item": "https://ratpdf.com/invoice/hourly-invoice-generator"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">Perfect for Hourly Billing</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Hourly Invoice Generator – Track Time & Bill Clients Accurately
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional hourly invoices that clearly show billable hours, rates, and totals. Perfect for freelancers, consultants, lawyers, agencies, and anyone who charges by the hour. Add multiple line items with different rates, track subtotals, and download PDF instantly.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Hourly Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">400K+</h3>
+                        <p class="mb-0 small text-muted">Hourly Invoices</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Hourly Invoice Generator"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features for Hourly Billing</h2>
+            <p class="text-muted">
+                Designed to make time-based invoicing simple and accurate.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">⏱️ Per‑Line Hourly Rates</h3>
+                        <p class="text-muted mb-0">
+                            Each line item has its own hourly rate – perfect for different services, team members, or project phases.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📊 Auto Calculation</h3>
+                        <p class="text-muted mb-0">
+                            Enter hours and rate – the line total, subtotal, tax, and grand total are calculated instantly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📋 Detailed Descriptions</h3>
+                        <p class="text-muted mb-0">
+                            Add task descriptions, dates, or project codes to each line – no ambiguity for clients.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🧾 Tax on Hours</h3>
+                        <p class="text-muted mb-0">
+                            Apply tax (GST, VAT, HST, etc.) to hourly services – per line item or overall.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">💼 Professional Layout</h3>
+                        <p class="text-muted mb-0">
+                            Clean design with hours, rate, and amount columns – clients see exactly what they're paying for.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📄 Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            One click generates a professional PDF – ready to email or print.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Perfect for Freelancers, Consultants & Professionals</h2>
+                <p class="text-muted mb-3">
+                    Do you bill by the hour? RatPDF's hourly invoice generator makes it easy. Whether you're a freelance developer, consultant, designer, lawyer, or agency, you need invoices that clearly show hours worked and rates. No more manual spreadsheets or confusing formats.
+                </p>
+                <p class="text-muted mb-3">
+                    Just add line items, enter hours and your hourly rate, and let the tool do the math. Add multiple rates per project, track taxes, and include a deposit if needed. Download as a professional PDF and send to your client – all free, no signup.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ 100% free – no subscription</li>
+                    <li class="mb-2">✔ Supports different rates per line item</li>
+                    <li class="mb-2">✔ Automatic subtotal, tax & total</li>
+                    <li class="mb-2">✔ Add deposit / retainer tracking</li>
+                    <li class="mb-2">✔ Instant PDF download</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Bill Your Hours Professionally?</h3>
+                    <p class="mb-4">
+                        Create a clear, accurate hourly invoice in under a minute – free and no signup.
+                    </p>
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Hourly Invoice Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        How do I create an hourly invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Enter your business and client details, then add line items with a description, number of hours, and hourly rate. The tool calculates the line total automatically. Add taxes, deposits, then click "Generate PDF" – your invoice is ready.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Can I use different hourly rates on the same invoice?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes! Each line item has its own rate field. For example, "Web development – 10 hours  $100/hr" and "Consulting – 2 hours  $250/hr" can appear on the same invoice.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Is this hourly invoice generator free?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, completely free. No signup, no watermark, no hidden fees. Unlimited invoices.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Can I add expenses or fixed fees alongside hourly charges?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. For fixed fees or expenses, add a line item with quantity = 1 and a rate that reflects the total fixed amount. You can mix hourly and fixed lines freely.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need an account to use this tool?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account required. Just open the page, fill in your details, and download. We don't store any data.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Your Hourly Invoice Now</h2>
+        <p class="text-muted mb-4">
+            Start billing your time professionally – free, fast, and easy.
+        </p>
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Hourly Invoice
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

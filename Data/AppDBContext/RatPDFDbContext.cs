@@ -18,11 +18,11 @@ namespace ratpdf.Data.AppDBContext
         public DbSet<Template> Templates { get; set; }
         public DbSet<BrandingSettings> BrandingSettings { get; set; }
         public DbSet<UsageLog> UsageLogs { get; set; }
-        public DbSet<ImgBgUserUsage> ImgBgUserUsages { get; set; }
+        //public DbSet<ImgBgUserUsage> ImgBgUserUsages { get; set; }
 
-        public DbSet<ImgBgUserSubscription> ImgBgUserSubscriptions { get; set; }
+        //public DbSet<ImgBgUserSubscription> ImgBgUserSubscriptions { get; set; }
 
-        public DbSet<ImgBgPayment> ImgBgPayments { get; set; }
+        //public DbSet<ImgBgPayment> ImgBgPayments { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder); 

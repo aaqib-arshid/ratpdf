@@ -25,5 +25,6 @@ namespace ratpdf.Data.Entities
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }  // Quantity * UnitPrice (calculated, but stored)
+        public string HsnSacCode { get; set; }
     }
 }

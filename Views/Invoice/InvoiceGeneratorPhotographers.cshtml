@@ -1,0 +1,414 @@
+﻿@{
+    ViewData["Title"] = "Free Invoice Generator for Photographers | Create Professional Photography Invoices";
+    ViewData["Description"] = "Generate professional invoices for photographers online for free. Create photography invoices with client details, shoot information, package pricing, deposits, and downloadable PDF invoices instantly.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-photographers";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free Invoice Generator for Photographers | Create Professional Photography Invoices</title>
+    <meta name="title" content="Free Invoice Generator for Photographers | Create Professional Photography Invoices" />
+    <meta name="description" content="Generate professional invoices for photographers online for free. Create photography invoices with client details, shoot information, package pricing, deposits, and downloadable PDF invoices instantly." />
+    <meta name="keywords" content="invoice generator for photographers, photography invoice maker, free photography invoice, photographer invoice template, wedding photography invoice, portrait invoice, event photography billing, freelance photographer invoice, photography payment receipt, photo shoot invoice" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free Invoice Generator for Photographers | RatPDF" />
+    <meta property="og:description" content="Create professional photography invoices online for free. Download photo shoot invoices instantly in PDF format." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free Invoice Generator for Photographers | RatPDF" />
+    <meta name="twitter:description" content="Generate photography invoices online with client info, package details, deposit tracking, and PDF download." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Photography Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-photographers",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online invoice generator for photographers, videographers, and creative professionals.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1243"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What should a photography invoice include?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A photography invoice should include client name and contact, shoot date and location, package description, itemized services (hourly rate, editing, travel), deposit amount, payment terms, and total due."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I create free invoices for my photography business?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows you to create and download professional photography invoices online for free with no signup required."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the invoice generator support deposits and balances?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, you can add deposit amounts, deduct paid advances, and show remaining balance clearly on the invoice."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Photography Invoice Generator",
+        "item": "https://ratpdf.com/invoice/invoice-generator-photographers"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free for Photographers</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Invoice Generator for Photographers – Create Professional Photo Invoices
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create beautiful, professional invoices for your photography business in seconds. Add client details,
+                shoot information, package pricing, deposits, and download as PDF. Perfect for wedding, portrait,
+                event, commercial, and freelance photographers.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Photography Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">Photographer Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">500K+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator for Photographers"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features Designed for Photographers</h2>
+            <p class="text-muted">
+                Everything you need to invoice clients professionally and get paid faster.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Photography-Specific Fields</h3>
+                        <p class="text-muted mb-0">
+                            Add shoot date, location, session type (wedding, portrait, event), number of edited photos, and album details.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Deposit & Balance Tracking</h3>
+                        <p class="text-muted mb-0">
+                            Easily add deposit amounts, deduct paid advances, and show remaining balance clearly on the invoice.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Package & Add-On Support</h3>
+                        <p class="text-muted mb-0">
+                            Itemize photography packages, hourly rates, travel fees, editing costs, prints, and albums.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Professional Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your photography logo, business name, contact info, and payment terms for a polished look.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download high-quality PDF invoices ready to email to clients or print for records.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Mobile Friendly</h3>
+                        <p class="text-muted mb-0">
+                            Create invoices on the go from your phone or tablet – perfect for on-location shoots.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Photographers Love Our Invoice Generator</h2>
+                <p class="text-muted mb-3">
+                    Running a photography business means spending time behind the camera, not buried in paperwork.
+                    RatPDF helps photographers create professional, branded invoices in seconds – for weddings,
+                    portraits, events, commercial shoots, and more.
+                </p>
+
+                <p class="text-muted mb-3">
+                    Our tool is completely free, requires no registration, and generates clean, client-friendly
+                    PDF invoices that include all the details your clients expect: shoot date, package description,
+                    deposit paid, balance due, and payment instructions.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ No monthly fees – 100% free</li>
+                    <li class="mb-2">✔ Photography-specific invoice fields</li>
+                    <li class="mb-2">✔ Deposit and balance tracking</li>
+                    <li class="mb-2">✔ Add your logo and branding</li>
+                    <li class="mb-2">✔ Download as PDF instantly</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Invoice Your Next Photo Shoot?</h3>
+
+                    <p class="mb-4">
+                        Create a professional invoice for your photography client in under a minute.
+                        No signup, no credit card – just fast, free invoices.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Photography Invoice Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions for Photographers</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What information should I include on a photography invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A photography invoice should include your business name/logo, client name and contact details, shoot date and location, a clear description of services (e.g., "2-hour portrait session + 20 edited digital images"), package price, any add-ons (prints, albums, travel fees), deposit amount paid, remaining balance due, and payment terms (due date, accepted methods).
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this photography invoice generator really free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes! RatPDF's invoice generator is completely free for photographers. There are no hidden fees, subscriptions, or watermarks. You can create unlimited invoices and download them as PDF files at no cost.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I add a deposit or retainer to the invoice?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. You can enter a deposit amount paid by the client, and the invoice will automatically calculate the remaining balance. This is perfect for wedding photography retainers or session deposits.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Can I use this for wedding photography invoices?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, the generator works perfectly for wedding photography. You can include package details (e.g., "8-hour coverage + second shooter + online gallery"), travel fees, album costs, and deposit tracking – everything a wedding photographer needs.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to create an account to generate invoices?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account or sign-up is required. You can start creating invoices immediately, and we don't store any of your data. Your privacy is protected.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Professional Photography Invoices in Seconds</h2>
+        <p class="text-muted mb-4">
+            Join thousands of photographers who use RatPDF to bill clients quickly and professionally.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Photography Invoices
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

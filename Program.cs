@@ -138,6 +138,10 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 app.MapControllerRoute(
+    name: "bulk_invoice",
+    pattern: "invoice/bulk",
+    defaults: new { controller = "BulkInvoice", action = "Index" });
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 

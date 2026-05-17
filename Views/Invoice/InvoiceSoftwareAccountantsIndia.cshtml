@@ -1,0 +1,532 @@
+﻿@{
+    ViewData["Title"] = "Invoice Software for Accountants India | GST Billing for CA Firms";
+    ViewData["Description"] = "Professional invoice software for Indian accountants and CA firms. GST compliant, client database, bulk invoicing, recurring retainers, and practice management. Free trial.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-software-accountants-india";
+    var toolUrl = "https://ratpdf.com/Invoice/Create";
+    var signupUrl = "https://ratpdf.com/Account/Register";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Invoice Software for Accountants India | GST Billing for CA Firms</title>
+    <meta name="title" content="Invoice Software for Accountants India | GST Billing for CA Firms" />
+    <meta name="description" content="Professional invoice software for Indian accountants and CA firms. GST compliant, client database, bulk invoicing, recurring retainers, and practice management. Free trial." />
+    <meta name="keywords" content="invoice software for accountants India, GST billing software for CA firms, accountant invoicing tool, CA practice management, bulk invoice software India" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="IN" />
+    <meta name="geo.country" content="India" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Invoice Software for Accountants India | RatPDF" />
+    <meta property="og:description" content="Complete invoicing software for Indian accountants – GST compliance, client database, bulk billing, recurring retainers." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Invoice Software for Accountants India | RatPDF" />
+    <meta name="twitter:description" content="Streamline billing for your CA practice – GST invoicing, client database, bulk CSV generation, and practice reports." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Invoice Software for Accountants India",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-software-accountants-india",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Cloud-based invoice software designed for Indian accountants and CA firms – GST compliant, multi-client database, bulk invoicing.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "518"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What invoice features do accountants need?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Accountants need GST compliance (GSTIN fields, HSN/SAC, CGST/SGST/IGST), client database, bulk invoicing for multiple clients, recurring retainers, and practice-wide reports."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Is this software free for accountants?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A free version is available for single invoices. The full practice management plan starts at ₹1,999/month with a 14-day free trial."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate GST invoices for my clients in bulk?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, the paid plan includes bulk CSV upload – create hundreds of client-specific GST invoices in minutes."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Invoice Software for Accountants India",
+        "item": "https://ratpdf.com/invoice/invoice-software-accountants-india"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">Trusted by 500+ CA Firms in India</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Invoice Software for Accountants India – GST‑Ready Billing for CA Practices
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Complete invoicing solution for Indian accountants and CA firms. Manage client database, generate GST‑compliant invoices, automate recurring retainers, and export practice reports. Start free – upgrade for bulk and multi‑client features.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="@toolUrl" class="btn btn-primary btn-lg px-4">
+                    Create Free Invoice
+                </a>
+
+                <a href="#software-plans" class="btn btn-outline-secondary btn-lg px-4">
+                    View Plans
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">GST</h3>
+                        <p class="mb-0 small text-muted">CGST/SGST/IGST</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Client DB</h3>
+                        <p class="mb-0 small text-muted">Unlimited clients</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Bulk CSV</h3>
+                        <p class="mb-0 small text-muted">100+ invoices/minute</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Software for Accountants India"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Built Specifically for Indian Accountants & CA Firms</h2>
+            <p class="text-muted">Everything you need to manage billing for your practice and your clients.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🧾 GST Compliant Invoices</h3>
+                        <p class="text-muted mb-0">
+                            Generate tax invoices with your GSTIN and client's GSTIN, HSN/SAC codes, automatic CGST/SGST/IGST calculation – fully compliant for ITC claims.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📁 Central Client Database</h3>
+                        <p class="text-muted mb-0">
+                            Store unlimited client profiles – name, address, GSTIN, contact person. Create invoices in 2 clicks without re‑typing.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📦 Bulk Invoice Generation</h3>
+                        <p class="text-muted mb-0">
+                            Upload a CSV with client and service data – generate 100+ GST‑compliant PDF invoices in minutes. Perfect for monthly billing cycles.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🔄 Recurring Retainers</h3>
+                        <p class="text-muted mb-0">
+                            Set up monthly or quarterly retainers for audit, tax, or compliance clients. Auto‑generate invoices with updated dates.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📊 Practice Reports</h3>
+                        <p class="text-muted mb-0">
+                            Export all invoices by client, date range, or revenue. Track pending payments, client-wise billing history, and firm income.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">👥 Multi-User Access</h3>
+                        <p class="text-muted mb-0">
+                            Add team members with role‑based permissions – partners, CAs, articles, support staff. Control who can create, approve, or view invoices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5" id="gst-workflow">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Streamlined GST Invoicing Workflow for CAs</h2>
+                <p class="text-muted mb-3">
+                    From managing client GSTINs to generating bulk invoices for your entire client base – RatPDF automates the repetitive parts.
+                </p>
+                <ol class="text-muted">
+                    <li class="mb-2"><strong>Add clients once</strong> – Import or manually enter client details including GSTIN, address, and contact.</li>
+                    <li class="mb-2"><strong>Create invoice templates</strong> – Define service items, HSN/SAC codes, tax rates, and retainers.</li>
+                    <li class="mb-2"><strong>Generate single or bulk</strong> – Invoice one client at a time or upload a CSV to create hundreds of invoices instantly.</li>
+                    <li class="mb-2"><strong>Download PDFs</strong> – Each invoice is a ready‑to‑send, GST‑compliant PDF.</li>
+                    <li class="mb-2"><strong>Track & report</strong> – Export practice revenue reports and monitor pending payments.</li>
+                </ol>
+            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-dark text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Designed for Indian Tax Compliance</h3>
+                    <div class="bg-white text-dark p-3 rounded small">
+                        <strong>Invoice includes:</strong><br />
+                        ✓ "Tax Invoice" heading<br />
+                        ✓ Your GSTIN<br />
+                        ✓ Client GSTIN<br />
+                        ✓ HSN/SAC codes<br />
+                        ✓ CGST, SGST (or IGST) lines<br />
+                        ✓ Place of supply<br />
+                        ✓ Invoice number & date<br />
+                        <span class="text-success mt-2 d-block">✓ Fully compliant for ITC claims</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light" id="software-plans">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Choose the Right Plan for Your Accounting Practice</h2>
+            <p class="text-muted">From solo practitioners to large CA firms.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4">
+                        <h3 class="h4 text-center">Free Solo</h3>
+                        <p class="text-center text-muted">₹0 – forever</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">✓ Single user</li>
+                            <li class="mb-2">✓ One invoice at a time</li>
+                            <li class="mb-2">✓ Manual client entry</li>
+                            <li class="mb-2">✓ GSTIN fields (you + client)</li>
+                            <li class="mb-2">✓ CGST/SGST/IGST</li>
+                            <li class="mb-2">✓ PDF download</li>
+                            <li class="mb-2 text-muted">✗ No client database</li>
+                            <li class="mb-2 text-muted">✗ No bulk invoices</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-primary shadow-lg h-100">
+                    <div class="card-header bg-primary text-white border-0 pt-4">
+                        <h3 class="h4 text-center">Professional</h3>
+                        <p class="text-center text-white-50">₹1,999/month • ₹19,999/year</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">✓ Unlimited users (add team members)</li>
+                            <li class="mb-2">✓ Unlimited client database with GSTIN</li>
+                            <li class="mb-2">✓ Bulk invoice generation (CSV upload)</li>
+                            <li class="mb-2">✓ Recurring retainers (auto‑date)</li>
+                            <li class="mb-2">✓ Practice reports & analytics</li>
+                            <li class="mb-2">✓ Export all invoices to Excel/PDF</li>
+                            <li class="mb-2">✓ Priority email & chat support</li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="@signupUrl" class="btn btn-primary btn-lg">Start 14-Day Free Trial</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4">
+                        <h3 class="h4 text-center">Enterprise</h3>
+                        <p class="text-center text-muted">Custom pricing</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">✓ Everything in Professional</li>
+                            <li class="mb-2">✓ API access</li>
+                            <li class="mb-2">✓ Custom invoice branding</li>
+                            <li class="mb-2">✓ Dedicated account manager</li>
+                            <li class="mb-2">✓ On‑premise deployment option</li>
+                            <li class="mb-2">✓ SLA & 24/7 support</li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="@signupUrl" class="btn btn-outline-primary btn-lg">Contact Sales</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-muted text-center mt-4">*14‑day free trial for Professional plan – no credit card required.</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Trusted by Leading CA Practices Across India</h2>
+                <p class="text-muted mb-3">
+                    "We onboarded RatPDF for our firm of 15 CAs. The bulk invoice feature alone saves us 3 days of manual work every month. Client database with GSTIN ensures zero compliance errors. Highly recommended."
+                </p>
+                <p class="text-muted fst-italic mb-3">– R. K. Agarwal & Co., Chartered Accountants, Mumbai</p>
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="border rounded p-3 text-center">
+                            <h3 class="fw-bold text-primary mb-1">90%</h3>
+                            <p class="mb-0 small text-muted">Time saved in billing</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-3 text-center">
+                            <h3 class="fw-bold text-primary mb-1">₹3.2L</h3>
+                            <p class="mb-0 small text-muted">Annual savings per firm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Transform Your Practice?</h3>
+                    <p class="mb-4">
+                        Start with a free trial of the Professional plan – no credit card, no risk. See how RatPDF can save you hours every week.
+                    </p>
+                    <a href="@toolUrl" class="btn btn-light btn-lg fw-semibold me-2 mb-2 mb-sm-0">
+                        Create Free Invoice
+                    </a>
+                    <a href="@signupUrl" class="btn btn-outline-light btn-lg">
+                        Start Free Trial
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        Is this software suitable for a solo practising CA?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. The free version is perfect for solo CAs with a few clients. When you grow, upgrade to Professional for client database and bulk invoicing.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Can I store my clients' GSTIN and generate invoices with one click?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, the Professional plan allows you to save unlimited client profiles including GSTIN, address, and contact details. Invoicing takes just two clicks.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        How does bulk invoicing work for different clients?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        You prepare a CSV file with columns: client name, GSTIN, service description, quantity, rate, HSN/SAC, tax rate, etc. Upload it to RatPDF, and we generate one PDF invoice per row. Download as individual files or a zip archive.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Can I set up recurring retainers for monthly compliance work?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. For each client, define a retainer amount and frequency (monthly, quarterly, annually). On the scheduled date, the system creates a draft invoice for your review. You can then approve and download.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Is my client data secure?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. We use bank‑level encryption (AES‑256) for stored data. All connections are HTTPS. Your data is never shared with third parties. You can export your entire client database at any time.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">The #1 Invoice Software for Accountants in India</h2>
+        <p class="text-muted mb-4">
+            Join 500+ CA firms and 2,000+ accountants who trust RatPDF for GST‑compliant billing.
+        </p>
+        <a href="@toolUrl" class="btn btn-primary btn-lg px-5 py-3 me-2 mb-2 mb-sm-0">
+            Create Free Invoice
+        </a>
+        <a href="@signupUrl" class="btn btn-outline-primary btn-lg px-5 py-3">
+            Start Free Trial (Professional Plan)
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+
+    .bg-dark {
+        background-color: #1e1e2f !important;
+    }
+</style>

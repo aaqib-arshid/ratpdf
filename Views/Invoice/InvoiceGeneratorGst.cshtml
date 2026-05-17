@@ -1,0 +1,405 @@
+﻿@{
+    ViewData["Title"] = "GST Invoice Generator | Free Online GST Billing Software India";
+    ViewData["Description"] = "Create GST invoices online instantly with RatPDF. Generate professional GST bills, tax invoices, and downloadable PDF invoices for Indian businesses.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-gst";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>GST Invoice Generator | Free Online GST Billing Software India</title>
+    <meta name="title" content="GST Invoice Generator | Free Online GST Billing Software India" />
+    <meta name="description" content="Create GST invoices online instantly with RatPDF. Generate professional GST bills, tax invoices, and downloadable PDF invoices for Indian businesses." />
+    <meta name="keywords" content="GST invoice generator, GST billing software India, GST bill generator, GST invoice maker, tax invoice generator India, GST invoice PDF, online GST billing, GST invoice creator, free GST invoice generator" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="IN" />
+    <meta name="geo.country" content="India" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="GST Invoice Generator | RatPDF" />
+    <meta property="og:description" content="Generate GST invoices and tax bills online instantly for Indian businesses." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="GST Invoice Generator | RatPDF" />
+    <meta name="twitter:description" content="Create GST invoices online instantly with PDF download support." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "GST Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-gst",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free GST invoice generator for Indian businesses with tax invoice and PDF billing support.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "6342"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is a GST invoice generator?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A GST invoice generator helps Indian businesses create GST compliant invoices online with tax calculations and downloadable PDF support."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate GST invoices online for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows businesses and freelancers to create GST invoices online for free."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the GST invoice generator support PDF downloads?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, GST invoices can be downloaded instantly in PDF format using RatPDF."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "GST Invoice Generator",
+        "item": "https://ratpdf.com/invoice/invoice-generator-gst"
+        }
+        ]
+        }
+    </script>
+
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">GST Billing Software for India</span>
+
+            <h1 class="display-4 fw-bold mb-3">
+                GST Invoice Generator Online
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional GST invoices, tax invoices, and billing PDFs instantly.
+                Perfect for Indian businesses, freelancers, consultants, retailers,
+                startups, and agencies.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create GST Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">GST Ready</h3>
+                        <p class="mb-0 small text-muted">Indian Tax Billing</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.9/5</h3>
+                        <p class="mb-0 small text-muted">Business Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">2M+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="GST Invoice Generator"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features of Our GST Invoice Generator</h2>
+            <p class="text-muted">
+                Designed specifically for Indian GST billing requirements.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">GST Compliant Invoices</h3>
+                        <p class="text-muted mb-0">
+                            Generate GST compliant invoices with CGST, SGST, and IGST calculations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download GST invoices instantly in professional PDF format.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Business Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add logos, GSTIN, company details, and payment terms easily.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Easy Invoice Builder</h3>
+                        <p class="text-muted mb-0">
+                            Add products, services, taxes, discounts, and customer information quickly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Mobile Friendly</h3>
+                        <p class="text-muted mb-0">
+                            Generate invoices from mobile, tablet, or desktop devices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Fast & Secure</h3>
+                        <p class="text-muted mb-0">
+                            Secure cloud-based GST invoice generation with instant access.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Indian Businesses Use RatPDF</h2>
+
+                <p class="text-muted mb-3">
+                    RatPDF simplifies GST billing and invoice creation for Indian businesses.
+                    Whether you are a freelancer, startup, consultant, retailer, or agency,
+                    our GST invoice generator helps you create tax invoices quickly.
+                </p>
+
+                <p class="text-muted mb-3">
+                    Generate GST bills for products, services, subscriptions,
+                    consulting work, and business transactions instantly.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ GST compliant invoice format</li>
+                    <li class="mb-2">✔ Professional PDF invoices</li>
+                    <li class="mb-2">✔ Free GST invoice generation</li>
+                    <li class="mb-2">✔ Fast online invoice creation</li>
+                    <li class="mb-2">✔ Ideal for Indian businesses</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Generate GST Invoices Instantly</h3>
+
+                    <p class="mb-4">
+                        Create GST and tax invoices online instantly with RatPDF.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Open GST Invoice Tool
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What is a GST invoice generator?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A GST invoice generator helps businesses create GST compliant invoices online quickly.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Can I generate GST invoices online for free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, RatPDF allows businesses to create GST invoices online for free.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can GST invoices be downloaded as PDF?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, GST invoices can be downloaded instantly as PDF files.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Who can use this GST invoice generator?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Freelancers, startups, agencies, retailers, consultants, and businesses across India can use this tool.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create GST Invoices Online</h2>
+        <p class="text-muted mb-4">
+            Generate professional GST and tax invoices instantly with RatPDF.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating GST Invoice
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

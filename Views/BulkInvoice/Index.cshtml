@@ -1,0 +1,282 @@
+﻿@{
+    ViewData["Title"] = "Bulk GST Invoice Generator | Create 100+ GST Invoices at Once";
+    ViewData["Description"] = "Generate up to 500 GST‑compliant invoices in minutes using a CSV file. Perfect for CAs, accountants, and businesses. Free trial for Business plan users.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/bulk";
+    var ratingValue = 4.9;
+    var reviewCount = 187;
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="bulk GST invoice generator, mass GST invoice, CSV invoice upload, CA bulk invoicing, accountant invoice batch" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Bulk GST Invoice Generator - RatPDF" />
+    <meta property="og:description" content="Upload a CSV and generate hundreds of GST-compliant PDF invoices instantly. Ideal for CA firms and businesses." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bulk GST Invoice Generator" />
+    <meta name="twitter:description" content="Create GST invoices in bulk using CSV. Save hours of manual work." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- JSON-LD: FAQPage -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is a bulk GST invoice generator?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A bulk GST invoice generator allows you to upload a CSV file containing multiple client invoices, and then automatically creates a separate GST-compliant PDF invoice for each row (or each client), which you can download as a ZIP file."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "How many invoices can I generate at once?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "With the Business plan you can generate up to 500 GST invoices per CSV batch. For higher volumes, contact our enterprise sales team."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Do I need to be a Business plan subscriber?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, bulk invoice generation is a Business plan feature. You can start a 14-day free trial of the Business plan without any credit card."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "What GST fields does the CSV support?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "The CSV template includes columns for Client GSTIN, Your GSTIN, HSN/SAC code, Tax Type (CGST/SGST or IGST), Place of Supply, and more. The PDF invoice will show the correct tax split."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I include multiple line items for one client?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, by repeating the same client name and GSTIN across multiple rows, all rows will be combined into a single invoice with multiple line items."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <!-- JSON-LD: AggregateRating -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "Product",
+        "name": "Bulk GST Invoice Generator",
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": @ratingValue,
+        "reviewCount": @reviewCount,
+        "bestRating": "5",
+        "worstRating": "1"
+        },
+        "offers": {
+        "@@type": "Offer",
+        "price": "1999",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/OnlineOnly",
+        "validFrom": "2024-01-01"
+        }
+        }
+    </script>
+
+    <!-- JSON-LD: BreadcrumbList -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Bulk GST Invoice Generator",
+        "item": "@canonicalUrl"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Bulk GST Invoice Generator</h1>
+        <p class="lead">Generate up to <span class="fw-bold text-success">500 GST‑compliant invoices</span> in minutes using a CSV file.</p>
+        <div class="d-flex justify-content-center">
+            <span class="badge bg-primary p-2">⭐ 4.9 (187+ reviews)</span>
+        </div>
+    </div>
+
+    <!-- How‑to Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="h3 fw-bold mb-4"><i class="bi bi-question-circle-fill text-primary me-2"></i> How to Use Bulk GST Invoice Generator</h2>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">1</div>
+                    <h3 class="h5">Download CSV Template</h3>
+                    <p class="text-muted">Get the sample CSV with all required GST columns (client GSTIN, your GSTIN, HSN/SAC, tax type).</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">2</div>
+                    <h3 class="h5">Fill Client & Service Data</h3>
+                    <p class="text-muted">Enter client details, service description, quantity, rate, HSN/SAC, and choose CGST/SGST or IGST.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">3</div>
+                    <h3 class="h5">Upload & Get ZIP</h3>
+                    <p class="text-muted">Upload the CSV – we create one PDF per client, ready to download as a single ZIP file.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Form (always shown – controller handles authorization) -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <strong>CSV Template:</strong> <a href="/templates/bulk_invoice_template.csv" class="alert-link">Download sample CSV</a> – contains example rows and column headers.
+                    </div>
+                    <form method="post" enctype="multipart/form-data" asp-action="UploadCsv">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                        <div class="mb-3">
+                            <label for="csvFile" class="form-label fw-semibold">Select CSV File</label>
+                            <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required />
+                            <div class="form-text">Maximum file size: 10 MB, up to 500 rows.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-file-zip"></i> Generate & Download ZIP
+                        </button>
+                    </form>
+                    @if (ViewBag.Errors != null)
+                    {
+                        <div class="alert alert-warning mt-4">
+                            <strong>Partial errors:</strong>
+                            <ul>@foreach (var err in ViewBag.Errors) {
+                                <li>@err</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="h3 fw-bold mb-4"><i class="bi bi-question-square-fill text-primary me-2"></i> Frequently Asked Questions</h2>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                        What is a bulk GST invoice generator?
+                    </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A bulk GST invoice generator allows you to upload a CSV file containing multiple client invoices, and then automatically creates a separate GST-compliant PDF invoice for each row (or each client). You can download all PDFs as a ZIP file – saves hours of manual work.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                        How many invoices can I generate at once?
+                    </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        With the Business plan you can generate up to 500 GST invoices per CSV batch. For higher volumes (e.g., 5000+), contact our enterprise team for custom solutions.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                        What GST fields are supported in the CSV?
+                    </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        The CSV template includes: Client GSTIN, Your GSTIN, HSN/SAC code, Tax Type (choose CGST/SGST for intra-state or IGST for inter-state), Place of Supply (state code), and optional Notes. The PDF invoice will automatically split CGST/SGST (9% each) or show IGST (18%) as required.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                        Can I include multiple line items for one client?
+                    </button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. Simply repeat the same client name and GSTIN across multiple rows. The system will merge rows with identical client identifiers into a single invoice containing all line items.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Trust Badge / Rating Summary -->
+<div class="row mt-5 text-center">
+    <div class="col-12">
+        <hr />
+        <p class="text-muted">
+            ⭐ <strong>4.9/5</strong> from 187+ reviews • Trusted by 500+ CA firms
+        </p>
+    </div>
+</div>
+</div>

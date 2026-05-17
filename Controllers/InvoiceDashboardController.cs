@@ -57,7 +57,8 @@ namespace ratpdf.Controllers
                 CurrentPage = page,
                 TotalPages = (int)Math.Ceiling(totalInvoices / (double)pageSize)
             };
-
+            var canBulkUpload = userId.HasValue && await _featureAccessor.CanUseBulkInvoicingAsync(userId.Value);
+            ViewBag.CanBulkUpload = canBulkUpload;
             return View(model);
         }
 

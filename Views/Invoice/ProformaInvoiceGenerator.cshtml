@@ -1,0 +1,407 @@
+﻿@{
+    ViewData["Title"] = "Proforma Invoice Generator | Create Proforma Invoices Online Free";
+    ViewData["Description"] = "Generate professional proforma invoices online for free. Create preliminary invoices, quotes, and estimates with item details, taxes, and downloadable PDF.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/proforma-invoice-generator";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Proforma Invoice Generator | Create Proforma Invoices Online Free</title>
+    <meta name="title" content="Proforma Invoice Generator | Create Proforma Invoices Online Free" />
+    <meta name="description" content="Generate professional proforma invoices online for free. Create preliminary invoices, quotes, and estimates with item details, taxes, and downloadable PDF." />
+    <meta name="keywords" content="proforma invoice generator, proforma invoice maker, free proforma invoice, preliminary invoice, proforma bill, commercial proforma invoice, export proforma invoice, quote to invoice, estimate invoice" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Proforma Invoice Generator | RatPDF" />
+    <meta property="og:description" content="Create proforma invoices and estimates online for free. Download PDF instantly." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Proforma Invoice Generator | RatPDF" />
+    <meta name="twitter:description" content="Generate proforma invoices, quotes, and estimates with PDF download." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Proforma Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/proforma-invoice-generator",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online proforma invoice generator for businesses, freelancers, and exporters.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "987"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is a proforma invoice?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A proforma invoice is a preliminary bill or estimate sent to a buyer before goods or services are delivered. It outlines the items, prices, and terms but is not a final invoice or demand for payment."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Is this proforma invoice generator free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows you to create and download proforma invoices online for free with no signup required."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I convert a proforma invoice to a final invoice?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, you can use the same data to generate a final invoice later, or you can create a new invoice using the proforma as a reference."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Proforma Invoice Generator",
+        "item": "https://ratpdf.com/invoice/proforma-invoice-generator"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free Proforma Tool</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Proforma Invoice Generator – Create Preliminary Invoices & Quotes
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Generate professional proforma invoices, quotes, and estimates in seconds. Perfect for exporters, wholesalers, freelancers, and businesses that need to provide buyers with a preliminary bill before finalizing a sale.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Proforma Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">300K+</h3>
+                        <p class="mb-0 small text-muted">Proformas Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Proforma Invoice Generator"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features of Our Proforma Invoice Generator</h2>
+            <p class="text-muted">
+                Create clear, professional preliminary invoices that build trust and streamline sales.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Proforma Specific Format</h3>
+                        <p class="text-muted mb-0">
+                            Clearly labeled as "Proforma Invoice" to indicate it's a preliminary document, not a final bill or tax invoice.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Itemized Products/Services</h3>
+                        <p class="text-muted mb-0">
+                            List items with descriptions, quantities, unit prices, discounts, and taxes – just like a final invoice.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Estimate & Quote Details</h3>
+                        <p class="text-muted mb-0">
+                            Include validity period, payment terms, delivery estimates, and any conditions or disclaimers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Business Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your logo, company details, tax ID, and contact information for a professional look.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download your proforma invoice as a high-quality PDF – ready to email to your customer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Mobile Friendly</h3>
+                        <p class="text-muted mb-0">
+                            Create proforma invoices on any device – desktop, tablet, or mobile.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Use a Proforma Invoice Generator?</h2>
+                <p class="text-muted mb-3">
+                    A proforma invoice is essential for international trade, large orders, or custom work – it allows the buyer to see exactly what they'll receive and for how much before committing. RatPDF helps you create professional proforma invoices that build trust and reduce back-and-forth negotiations.
+                </p>
+
+                <p class="text-muted mb-3">
+                    Use our generator for export/import transactions, wholesale quotes, custom manufacturing, service estimates, or any situation where you need to provide a preliminary bill. Once the buyer agrees, you can easily create a final invoice using the same details.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ Clearly marked as "Proforma Invoice – Not a Tax Invoice"</li>
+                    <li class="mb-2">✔ Free to use – no subscription</li>
+                    <li class="mb-2">✔ No signup or data storage</li>
+                    <li class="mb-2">✔ Perfect for exporters and wholesalers</li>
+                    <li class="mb-2">✔ Instant PDF download</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Create a Proforma Invoice?</h3>
+
+                    <p class="mb-4">
+                        Provide your customers with clear, professional preliminary invoices in seconds.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Proforma Invoice Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions About Proforma Invoices</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What is a proforma invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A proforma invoice is a preliminary bill of sale sent to a buyer before goods or services are delivered. It details the items, quantities, prices, and terms but is not a demand for payment or a final tax invoice. It's often used for quotes, estimates, or customs purposes in international trade.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is a proforma invoice legally binding?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Generally, a proforma invoice is not a legally binding demand for payment. It's an estimate or quotation. However, it can form the basis of a contract if both parties agree to its terms. For a binding transaction, you would issue a final commercial invoice after the sale is confirmed.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I generate proforma invoices for free?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes! RatPDF's proforma invoice generator is completely free. No signup, no hidden fees – just create and download as many proforma invoices as you need.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        What's the difference between a proforma invoice and a commercial invoice?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A proforma invoice is sent before a transaction as a quote or estimate. A commercial invoice is issued after the sale as a final bill and is used for customs, tax, and payment purposes. A proforma invoice becomes a commercial invoice once the buyer agrees to the terms.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Can I add tax (VAT/GST) to a proforma invoice?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. You can include tax rates and amounts on the proforma invoice to give the buyer a complete estimate. However, the final tax invoice may need to reflect actual taxes due at the time of sale.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Proforma Invoices Instantly</h2>
+        <p class="text-muted mb-4">
+            Provide clear, professional preliminary invoices to your customers – free and easy.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Proforma Invoice
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

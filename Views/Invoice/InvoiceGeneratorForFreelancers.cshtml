@@ -1,0 +1,403 @@
+﻿@{
+    ViewData["Title"] = "Free Invoice Generator for Freelancers | Online Freelancer Invoice Maker";
+    ViewData["Description"] = "Create professional freelancer invoices online for free. Generate PDF invoices for clients with taxes, branding, payment terms, and instant download support.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-freelancers";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free Invoice Generator for Freelancers | Online Freelancer Invoice Maker</title>
+    <meta name="title" content="Free Invoice Generator for Freelancers | Online Freelancer Invoice Maker" />
+    <meta name="description" content="Create professional freelancer invoices online for free. Generate PDF invoices for clients with taxes, branding, payment terms, and instant download support." />
+    <meta name="keywords" content="freelancer invoice generator, invoice maker for freelancers, freelance invoice template, online invoice generator, freelancer billing software, PDF invoice generator, free invoice tool, invoice generator India, freelance billing tool" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free Freelancer Invoice Generator | RatPDF" />
+    <meta property="og:description" content="Generate professional invoices for freelance clients instantly with PDF download support." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free Freelancer Invoice Generator | RatPDF" />
+    <meta name="twitter:description" content="Create professional freelance invoices online with taxes, branding, and instant PDF export." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Invoice Generator for Freelancers",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-freelancers",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free invoice generator built for freelancers, consultants, agencies, designers, developers, and remote professionals.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "3258"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is a freelancer invoice generator?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A freelancer invoice generator is an online tool that helps freelancers create professional invoices for clients quickly and easily."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can freelancers generate invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows freelancers to generate and download invoices online for free."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I download invoices in PDF format?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, freelancer invoices can be exported and downloaded instantly as PDF files."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Invoice Generator for Freelancers",
+        "item": "https://ratpdf.com/invoice/invoice-generator-freelancers"
+        }
+        ]
+        }
+    </script>
+
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-primary mb-3 px-3 py-2">Free Freelancer Invoice Tool</span>
+
+            <h1 class="display-4 fw-bold mb-3">
+                Professional Invoice Generator for Freelancers
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional freelance invoices online in seconds.
+                Add services, hourly rates, taxes, branding, payment terms,
+                and download beautiful PDF invoices instantly.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Freelancer Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.9/5</h3>
+                        <p class="mb-0 small text-muted">Freelancer Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">500K+</h3>
+                        <p class="mb-0 small text-muted">Invoices Created</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">100% Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Required</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator for Freelancers"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features Built for Freelancers</h2>
+            <p class="text-muted">
+                Everything freelancers need to create professional invoices online.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Professional Invoice Templates</h3>
+                        <p class="text-muted mb-0">
+                            Create clean and professional invoices for clients with modern invoice layouts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Hourly & Fixed Billing</h3>
+                        <p class="text-muted mb-0">
+                            Add hourly rates, project-based pricing, taxes, discounts, and payment terms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">PDF Invoice Download</h3>
+                        <p class="text-muted mb-0">
+                            Download and send freelancer invoices instantly in PDF format.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Custom Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your logo, business name, website, and contact details for a professional image.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Fast Online Access</h3>
+                        <p class="text-muted mb-0">
+                            Create invoices from any device without installing software.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Ideal for Remote Work</h3>
+                        <p class="text-muted mb-0">
+                            Perfect for designers, developers, consultants, writers, marketers, and freelancers worldwide.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Freelancers Choose RatPDF</h2>
+
+                <p class="text-muted mb-3">
+                    RatPDF helps freelancers simplify invoicing with fast and professional invoice generation.
+                    Whether you work with local or international clients, the platform makes billing easy.
+                </p>
+
+                <p class="text-muted mb-3">
+                    Create invoices for freelance services, digital products, retainers, consulting work,
+                    and remote projects in minutes.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ Free online invoice generation</li>
+                    <li class="mb-2">✔ Professional invoice layouts</li>
+                    <li class="mb-2">✔ Instant PDF export</li>
+                    <li class="mb-2">✔ Supports global clients</li>
+                    <li class="mb-2">✔ Fast and mobile friendly</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-dark text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Start Billing Clients Professionally</h3>
+
+                    <p class="mb-4">
+                        Create freelance invoices online instantly and get paid faster with RatPDF.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Open Invoice Generator
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What is a freelancer invoice generator?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A freelancer invoice generator helps freelancers create professional invoices online quickly.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this invoice tool free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, RatPDF provides free invoice generation for freelancers.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I download invoices as PDF?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, invoices can be downloaded instantly in professional PDF format.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Who can use this invoice generator?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Designers, developers, marketers, consultants, writers, agencies, and freelancers can use this tool.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Freelancer Invoices Online</h2>
+        <p class="text-muted mb-4">
+            Generate professional freelance invoices instantly with RatPDF.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Invoices
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

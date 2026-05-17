@@ -97,7 +97,7 @@ namespace ratpdf.Controllers
         public IActionResult IpLookup() => View();
         [HttpGet]
         public IActionResult DnsLookup() => View();
-        [HttpGet] public IActionResult AtsDashboard() => View();
+        [HttpGet] public IActionResult AtsDashboard() => throw new Exception("Service unavailable"); // View();
         [HttpGet]
         public async Task<IActionResult> WhatIsMyIP()
         {
@@ -164,105 +164,105 @@ namespace ratpdf.Controllers
         public async Task<IActionResult> RemoveImgBackground(RemoveImgBgModel model)
         {
             throw new Exception("Service unavailable!");
-            if (model.File == null || model.File.Length == 0)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = "Please upload image"
-                });
-            }
+            //if (model.File == null || model.File.Length == 0)
+            //{
+            //    return Json(new
+            //    {
+            //        success = false,
+            //        message = "Please upload image"
+            //    });
+            //}
 
-            var userKey = HttpContext.Connection.RemoteIpAddress?.ToString();
+            //var userKey = HttpContext.Connection.RemoteIpAddress?.ToString();
 
-            // CHECKing ACTIVE PLAN
-            var activePlan = await _context.ImgBgUserSubscriptions
-                .FirstOrDefaultAsync(x =>
-                    x.UserKey == userKey &&
-                    x.IsActive &&
-                    x.EndDate > DateTime.UtcNow);
+            //// CHECKing ACTIVE PLAN
+            //var activePlan = await _context.ImgBgUserSubscriptions
+            //    .FirstOrDefaultAsync(x =>
+            //        x.UserKey == userKey &&
+            //        x.IsActive &&
+            //        x.EndDate > DateTime.UtcNow);
 
-            bool unlimited = activePlan != null;
+            //bool unlimited = activePlan != null;
 
-            // FREE LIMIT LOGIC
-            if (!unlimited)
-            {
-                var usage = await _context.ImgBgUserUsages
-                    .FirstOrDefaultAsync(x => x.UserKey == userKey);
+            //// FREE LIMIT LOGIC
+            //if (!unlimited)
+            //{
+            //    var usage = await _context.ImgBgUserUsages
+            //        .FirstOrDefaultAsync(x => x.UserKey == userKey);
 
-                if (usage == null)
-                {
-                    usage = new ImgBgUserUsage
-                    {
-                        UserKey = userKey ?? string.Empty,
-                        FreeDownloadsUsed = 0,
-                        LastResetDate = DateTime.UtcNow.Date
-                    };
+            //    if (usage == null)
+            //    {
+            //        usage = new ImgBgUserUsage
+            //        {
+            //            UserKey = userKey ?? string.Empty,
+            //            FreeDownloadsUsed = 0,
+            //            LastResetDate = DateTime.UtcNow.Date
+            //        };
 
-                    _context.ImgBgUserUsages.Add(usage);
-                }
+            //        _context.ImgBgUserUsages.Add(usage);
+            //    }
 
-                // RESET DAILY
-                if (usage.LastResetDate.Date != DateTime.UtcNow.Date)
-                {
-                    usage.FreeDownloadsUsed = 0;
-                    usage.LastResetDate = DateTime.UtcNow.Date;
-                }
+            //    // RESET DAILY
+            //    if (usage.LastResetDate.Date != DateTime.UtcNow.Date)
+            //    {
+            //        usage.FreeDownloadsUsed = 0;
+            //        usage.LastResetDate = DateTime.UtcNow.Date;
+            //    }
 
-                if (usage.FreeDownloadsUsed >= 3)
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        paymentRequired = true,
-                        message = "Daily limit exceeded"
-                    });
-                }
+            //    if (usage.FreeDownloadsUsed >= 3)
+            //    {
+            //        return Json(new
+            //        {
+            //            success = false,
+            //            paymentRequired = true,
+            //            message = "Daily limit exceeded"
+            //        });
+            //    }
 
-                usage.FreeDownloadsUsed++;
+            //    usage.FreeDownloadsUsed++;
 
-                await _context.SaveChangesAsync();
-            }
+            //    await _context.SaveChangesAsync();
+            //}
 
-            // VALIDATIONS
-            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+            //// VALIDATIONS
+            //var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
 
-            var ext = Path.GetExtension(model.File.FileName).ToLower();
+            //var ext = Path.GetExtension(model.File.FileName).ToLower();
 
-            if (!allowedExtensions.Contains(ext))
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = "Invalid format"
-                });
-            }
+            //if (!allowedExtensions.Contains(ext))
+            //{
+            //    return Json(new
+            //    {
+            //        success = false,
+            //        message = "Invalid format"
+            //    });
+            //}
 
-            // PROCESSing IMAGE
-            var jobId = Guid.NewGuid().ToString();
+            //// PROCESSing IMAGE
+            //var jobId = Guid.NewGuid().ToString();
 
-            var blobName = $"input/{jobId}.png";
+            //var blobName = $"input/{jobId}.png";
 
-            var blobClient = _blobContainer.GetBlobClient(blobName);
+            //var blobClient = _blobContainer.GetBlobClient(blobName);
 
-            await blobClient.UploadAsync(model.File.OpenReadStream());
+            //await blobClient.UploadAsync(model.File.OpenReadStream());
 
-            var job = new
-            {
-                JobId = jobId,
-                InputUrl = blobName,
-                OutputPath = $"output/{jobId}.png"
-            };
+            //var job = new
+            //{
+            //    JobId = jobId,
+            //    InputUrl = blobName,
+            //    OutputPath = $"output/{jobId}.png"
+            //};
 
-            await _queueClient.SendMessageAsync(
-                System.Text.Json.JsonSerializer.Serialize(job));
+            //await _queueClient.SendMessageAsync(
+            //    System.Text.Json.JsonSerializer.Serialize(job));
 
-            return Json(new
-            {
-                success = true,
-                jobId = jobId,
-                message = "Processing started"
-            });
+            //return Json(new
+            //{
+            //    success = true,
+            //    jobId = jobId,
+            //    message = "Processing started"
+            //});
         }
         [HttpGet]
         public async Task<IActionResult> GetJobStatus(string jobId)
@@ -289,6 +289,7 @@ namespace ratpdf.Controllers
         [HttpPost]
         public async Task<IActionResult> AtsDashboard(IFormFile file)
         {
+            throw new Exception("Service unavailable");
             if (file == null || file.Length == 0)
             {
                 ModelState.AddModelError("", "Please upload a file.");
@@ -479,7 +480,7 @@ namespace ratpdf.Controllers
                     IsActive = true
                 };
 
-                _context.ImgBgUserSubscriptions.Add(subscription);
+                //_context.ImgBgUserSubscriptions.Add(subscription);
 
                 await _context.SaveChangesAsync();
 

@@ -1,0 +1,402 @@
+﻿@{
+    ViewData["Title"] = "Free Invoice Generator for Tutors | Create Tutoring Invoices Online";
+    ViewData["Description"] = "Generate professional invoices for tutors online for free. Create tutoring session, hourly rate, package, and subject invoices with PDF download.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-tutors";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free Invoice Generator for Tutors | Create Tutoring Invoices Online</title>
+    <meta name="title" content="Free Invoice Generator for Tutors | Create Tutoring Invoices Online" />
+    <meta name="description" content="Generate professional invoices for tutors online for free. Create tutoring session, hourly rate, package, and subject invoices with PDF download." />
+    <meta name="keywords" content="invoice generator for tutors, tutoring invoice maker, teacher invoice, tutor billing, private tutor invoice, online tutoring invoice, hourly tutoring invoice, tutoring package invoice, lesson invoice" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free Invoice Generator for Tutors | RatPDF" />
+    <meta property="og:description" content="Create professional tutoring invoices online for free. Add session details, hourly rates, packages, and PDF download." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free Invoice Generator for Tutors | RatPDF" />
+    <meta name="twitter:description" content="Generate tutoring invoices online with hourly rates, packages, and PDF download." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Tutor Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-tutors",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online invoice generator for private tutors, online teachers, and tutoring centers.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "532"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What should a tutoring invoice include?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A tutoring invoice should include tutor name, subject, student name, session date, duration, hourly rate, number of sessions, total hours, any materials fee, tax, and payment terms."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate tutoring invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows tutors to create and download professional invoices online for free with no signup required."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the invoice generator support hourly rates and session packages?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, you can bill by the hour, per session, or for a package of sessions (e.g., 5-session math package)."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Tutor Invoice Generator",
+        "item": "https://ratpdf.com/invoice/invoice-generator-tutors"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free for Tutors</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Invoice Generator for Tutors – Professional Tutoring Invoices Fast
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional invoices for your tutoring business in seconds. Add hourly rates, session packages, subject details, student information, and download as PDF. Perfect for private tutors, online teachers, and tutoring centers.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Tutoring Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">150K+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator for Tutors"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features Designed for Tutors & Teachers</h2>
+            <p class="text-muted">
+                Everything you need to bill students and get paid on time.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Hourly or Per Session</h3>
+                        <p class="text-muted mb-0">
+                            Bill by the hour, per session, or for a package of sessions – whatever suits your tutoring style.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Subject & Grade Level</h3>
+                        <p class="text-muted mb-0">
+                            Add subject (Math, English, Science, etc.), grade level, and student name to each line item.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Session Date & Duration</h3>
+                        <p class="text-muted mb-0">
+                            Record specific lesson dates and hours – perfect for hourly or per-session billing.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Package & Retainer</h3>
+                        <p class="text-muted mb-0">
+                            Sell tutoring packages (e.g., 5 sessions for $250) or monthly retainers easily.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Professional Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your logo, qualifications (certifications, degrees), and payment terms for a trusted look.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download high-quality PDF invoices ready to email to parents or print.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Tutors Love Our Invoice Generator</h2>
+                <p class="text-muted mb-3">
+                    Running a tutoring business means focusing on teaching, not paperwork. RatPDF helps private tutors, online teachers, and tutoring centers create professional, branded invoices in seconds – for one-on-one sessions, group classes, or packaged lessons.
+                </p>
+                <p class="text-muted mb-3">
+                    Our tool is completely free, requires no registration, and generates clean, parent-friendly PDF invoices that include all the details parents need: subject, student name, session date, hours, rate, and payment instructions.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ No monthly fees – 100% free</li>
+                    <li class="mb-2">✔ Tutor-specific invoice fields</li>
+                    <li class="mb-2">✔ Subject, student, session details</li>
+                    <li class="mb-2">✔ Hourly, per-session, or package billing</li>
+                    <li class="mb-2">✔ Download as PDF instantly</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Invoice Your Tutoring Student?</h3>
+                    <p class="mb-4">
+                        Create a professional invoice for your tutoring student in under a minute. No signup, no credit card – just fast, free invoices.
+                    </p>
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Tutoring Invoice Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions for Tutors</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What should I include on a tutoring invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A tutoring invoice should include your name/logo, student name (or parent name), subject, session date(s), duration (e.g., 60 min), hourly rate or per-session fee, number of sessions, total hours, any materials fee, tax (if applicable), total due, and payment terms.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this tutoring invoice generator really free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes! RatPDF's invoice generator is completely free for tutors. No hidden fees, subscriptions, or watermarks. Create unlimited invoices and download them as PDF files at no cost.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I bill for tutoring packages (e.g., 5 sessions)?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. Create a line item like "5-session Math tutoring package" with a fixed price. You can also list individual session dates with hours if you prefer per-session billing.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Does it support multiple students or subjects on one invoice?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. Add a separate line item for each student or subject. For example, "Student A – Math (3 hours $50/hr)" and "Student B – English (2 hours  $50/hr)" can appear on the same invoice.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to create an account to generate invoices?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account or sign-up is required. Start creating invoices immediately – we don't store any of your data.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Professional Tutoring Invoices in Seconds</h2>
+        <p class="text-muted mb-4">
+            Join thousands of tutors who use RatPDF to bill students quickly and professionally.
+        </p>
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Tutoring Invoices
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

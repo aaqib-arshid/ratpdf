@@ -22,7 +22,16 @@ namespace ratpdf.Services.Invoice.Feature
                 return null;
             return uid;
         }
-
+        public async Task<bool> CanUseBulkInvoicingAsync(Guid? userId = null)
+        {
+            var uid = userId ?? GetCurrentUserId();
+            if (!uid.HasValue) return false;
+            var sub = await _db.Subscriptions
+                .FirstOrDefaultAsync(s => s.UserId == uid.Value
+                                          && s.Status == "active"
+                                          && s.CurrentPeriodEnd > DateTime.UtcNow);
+            return sub != null && sub.PlanId == Plan.Business_Monthly;
+        }
         public async Task<bool> CanRemoveWatermarkAsync(Guid? userId = null)
         {
             var uid = userId ?? GetCurrentUserId();

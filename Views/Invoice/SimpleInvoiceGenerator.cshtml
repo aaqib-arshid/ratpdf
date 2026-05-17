@@ -1,0 +1,407 @@
+﻿@{
+    ViewData["Title"] = "Simple Invoice Generator | Create Basic Invoices Online Free";
+    ViewData["Description"] = "Create simple, clean invoices online for free. Perfect for freelancers, small businesses, and side hustles. Add items, tax, and download PDF instantly.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/simple-invoice-generator";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Simple Invoice Generator | Create Basic Invoices Online Free</title>
+    <meta name="title" content="Simple Invoice Generator | Create Basic Invoices Online Free" />
+    <meta name="description" content="Create simple, clean invoices online for free. Perfect for freelancers, small businesses, and side hustles. Add items, tax, and download PDF instantly." />
+    <meta name="keywords" content="simple invoice generator, easy invoice maker, basic invoice creator, free simple invoice, online invoice generator, quick invoice, minimal invoice generator, no signup invoice" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Simple Invoice Generator | RatPDF" />
+    <meta property="og:description" content="Create simple, clean invoices online for free. Download PDF in seconds." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Simple Invoice Generator | RatPDF" />
+    <meta name="twitter:description" content="Generate basic invoices online with simple interface and PDF download." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Simple Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/simple-invoice-generator",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free, minimal invoice generator for freelancers, small businesses, and casual users.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "2145"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is a simple invoice generator?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A simple invoice generator is an easy-to-use online tool that lets you create basic invoices without complex features."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Is this invoice generator really free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF's simple invoice generator is completely free with no signup required."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I download the invoice as PDF?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, you can download your invoice instantly as a PDF file."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Simple Invoice Generator",
+        "item": "https://ratpdf.com/invoice/simple-invoice-generator"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free & Easy to Use</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Simple Invoice Generator – Create Clean Invoices in Seconds
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                No complex features, no learning curve – just a straightforward way to create professional invoices. Add your business info, line items, tax, and download as PDF. Perfect for freelancers, side hustles, and small businesses.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Simple Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Why Keep It Simple?
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">500K+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Simple Invoice Generator"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Why Keep It Simple?</h2>
+            <p class="text-muted">
+                No complicated forms – just the essentials to get you paid.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Quick & Easy</h3>
+                        <p class="text-muted mb-0">
+                            Fill in your info, add line items, and generate an invoice in under a minute.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Clean, Minimal Design</h3>
+                        <p class="text-muted mb-0">
+                            Professional, easy-to-read invoices without clutter – your clients will appreciate it.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Just What You Need</h3>
+                        <p class="text-muted mb-0">
+                            Business details, client info, items, quantity, rate, tax, and total – nothing extra.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            One click and your invoice is ready to email or print.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">No Account Required</h3>
+                        <p class="text-muted mb-0">
+                            Start creating immediately – we don't store your data or ask for an email.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Works on Any Device</h3>
+                        <p class="text-muted mb-0">
+                            Desktop, tablet, or mobile – create invoices wherever you are.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Perfect for Freelancers & Small Businesses</h2>
+                <p class="text-muted mb-3">
+                    You don't need complicated billing software to look professional. RatPDF's simple invoice generator gives you everything you need – nothing you don't. Perfect for freelancers, consultants, tutors, dog walkers, photographers, handymen, and anyone who needs to send a quick invoice.
+                </p>
+
+                <p class="text-muted mb-3">
+                    Just enter your business name, client details, add your products or services, set the quantity and rate, add tax if needed, and download. That's it.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ No learning curve</li>
+                    <li class="mb-2">✔ No registration or signup</li>
+                    <li class="mb-2">✔ No watermarks</li>
+                    <li class="mb-2">✔ No hidden fees</li>
+                    <li class="mb-2">✔ Unlimited invoices</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Create Your First Invoice?</h3>
+
+                    <p class="mb-4">
+                        It's free, fast, and incredibly simple. No strings attached.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Simple Invoice Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What is a simple invoice generator?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A simple invoice generator is an online tool that lets you create basic, professional invoices quickly without complex accounting features. It's ideal for freelancers, side hustles, and small businesses.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this really free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, 100% free. No credit card, no subscription, no watermarks, no signup. Just create and download as many invoices as you need.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        What information can I include on the invoice?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        You can add your business name/logo, client name and address, invoice number, date, line items (description, quantity, rate), tax rate, and payment terms. The design is clean and minimal.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Can I save my invoice for later?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        The tool is designed for instant generation – we don't store your data. However, you can download the PDF and save it to your device for your records.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to create an account?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account needed. You can start creating invoices immediately – no signup, no email required.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Your Simple Invoice Now</h2>
+        <p class="text-muted mb-4">
+            Join thousands of users who trust RatPDF for fast, free, and simple invoicing.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Simple Invoice
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

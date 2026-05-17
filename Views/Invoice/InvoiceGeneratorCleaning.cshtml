@@ -1,0 +1,407 @@
+﻿@{
+    ViewData["Title"] = "Free Invoice Generator for Cleaning Business | Create Cleaning Invoices Online";
+    ViewData["Description"] = "Generate professional cleaning invoices online for free. Create housekeeping, janitorial, and commercial cleaning invoices with service details, hourly rates, and PDF download.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-cleaning";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free Invoice Generator for Cleaning Business | Create Cleaning Invoices Online</title>
+    <meta name="title" content="Free Invoice Generator for Cleaning Business | Create Cleaning Invoices Online" />
+    <meta name="description" content="Generate professional cleaning invoices online for free. Create housekeeping, janitorial, and commercial cleaning invoices with service details, hourly rates, and PDF download." />
+    <meta name="keywords" content="invoice generator for cleaning business, cleaning invoice maker, housekeeping invoice, janitorial invoice, commercial cleaning invoice, maid service invoice, cleaning bill template, residential cleaning invoice" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free Invoice Generator for Cleaning Business | RatPDF" />
+    <meta property="og:description" content="Create professional cleaning invoices online for free. Add services, hourly rates, and PDF download." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free Invoice Generator for Cleaning Business | RatPDF" />
+    <meta name="twitter:description" content="Generate cleaning invoices online with service details, hourly rates, and PDF download." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Cleaning Business Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-cleaning",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online invoice generator for cleaning businesses, housekeeping services, and janitorial companies.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "845"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What should a cleaning invoice include?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A cleaning invoice should include service date and address, description of cleaning services (rooms, windows, carpet, etc.), hourly rate or fixed fee, square footage if applicable, supplies cost, taxes, and payment terms."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate cleaning invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows cleaning businesses to create and download professional invoices online for free with no signup required."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the invoice generator support recurring cleanings?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, you can create invoices for one-time, weekly, bi-weekly, or monthly cleaning services easily."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Cleaning Invoice Generator",
+        "item": "https://ratpdf.com/invoice/invoice-generator-cleaning"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free for Cleaning Businesses</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Invoice Generator for Cleaning Business – Professional Cleaning Invoices Fast
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional invoices for your cleaning business in seconds. Add service details, hourly rates, square footage, supplies, and deposit tracking. Perfect for residential cleaning, commercial janitorial, housekeeping, and maid services.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Cleaning Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">350K+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator for Cleaning Business"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features Designed for Cleaning Businesses</h2>
+            <p class="text-muted">
+                Everything you need to invoice clients and get paid faster.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Service Details</h3>
+                        <p class="text-muted mb-0">
+                            Add cleaning type (residential, commercial, deep clean, move-in/out), room count, square footage, and frequency.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Hourly or Fixed Rate</h3>
+                        <p class="text-muted mb-0">
+                            Bill by the hour with estimated hours, or set fixed prices per job – your choice.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Supplies & Add-ons</h3>
+                        <p class="text-muted mb-0">
+                            Include cleaning supplies, equipment rental, or specialty services (carpet, window, oven cleaning).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Deposit & Balance Tracking</h3>
+                        <p class="text-muted mb-0">
+                            Record deposits, track remaining balance – ideal for recurring or large cleaning contracts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Professional Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your cleaning company logo, license number, business details, and payment terms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download high-quality PDF invoices ready to email to clients or print.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Cleaning Businesses Love Our Invoice Generator</h2>
+                <p class="text-muted mb-3">
+                    Running a cleaning business means focusing on sparkling floors and happy customers, not paperwork. RatPDF helps residential cleaners, commercial janitorial services, housekeepers, and maid services create professional, branded invoices in seconds – for one-time cleans, recurring contracts, or deep cleaning projects.
+                </p>
+
+                <p class="text-muted mb-3">
+                    Our tool is completely free, requires no registration, and generates clean, client-friendly PDF invoices that include all the details your clients need: service description, hourly or fixed pricing, supplies cost, deposit paid, balance due, and payment instructions.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ No monthly fees – 100% free</li>
+                    <li class="mb-2">✔ Cleaning-specific invoice fields</li>
+                    <li class="mb-2">✔ Supplies and add-on tracking</li>
+                    <li class="mb-2">✔ Deposit and balance tracking</li>
+                    <li class="mb-2">✔ Download as PDF instantly</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Invoice Your Next Cleaning Job?</h3>
+
+                    <p class="mb-4">
+                        Create a professional invoice for your cleaning client in under a minute. No signup, no credit card – just fast, free invoices.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Cleaning Invoice Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions for Cleaning Businesses</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What should I include on a cleaning invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A cleaning invoice should include your business name, license/insurance number (if applicable), client details, service date and address, description of cleaning services (e.g., "standard residential cleaning – 3 bedrooms, 2 baths"), hourly rate or fixed fee, number of hours or square footage, supplies cost (cleaning products, equipment), any add-on services (carpet cleaning, window washing), taxes, deposit paid, balance due, and payment terms.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this cleaning invoice generator really free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes! RatPDF's invoice generator is completely free for cleaning businesses. No hidden fees, subscriptions, or watermarks. Create unlimited invoices and download them as PDF files at no cost.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I bill by the hour or by the job?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. You can set an hourly rate and enter estimated hours, or use a fixed price for the entire job. You can also mix both – for example, "Cleaning labor – 3 hours  $35/hr" plus "Carpet cleaning add-on – $75 fixed".
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Does it support recurring cleaning invoices (weekly, monthly)?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. You can create individual invoices for each occurrence, or use the same template each week/month. While we don't auto-send recurring invoices (to keep it simple and free), you can quickly duplicate your previous invoice each billing cycle.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to create an account to generate invoices?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account or sign-up is required. Start creating invoices immediately – we don't store any of your data.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Professional Cleaning Invoices in Seconds</h2>
+        <p class="text-muted mb-4">
+            Join thousands of cleaning businesses who use RatPDF to bill clients quickly and professionally.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Cleaning Invoices
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

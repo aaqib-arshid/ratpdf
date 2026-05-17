@@ -144,8 +144,31 @@ namespace ratpdf.Services.Invoice
                 .SetTextAlignment(TextAlignment.RIGHT));
             if (invoice.TaxRate > 0)
             {
-                document.Add(new Paragraph($"{invoice.TaxName} ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount,invoice.Currency)}").SetFont(unicodeFont)
-                    .SetTextAlignment(TextAlignment.RIGHT));
+                // After customer address block
+                if (!string.IsNullOrWhiteSpace(invoice.YourGstin))
+                    document.Add(new Paragraph($"Your GSTIN: {invoice.YourGstin}"));
+                if (!string.IsNullOrWhiteSpace(invoice.ClientGstin))
+                    document.Add(new Paragraph($"Client GSTIN: {invoice.ClientGstin}"));
+                if (!string.IsNullOrWhiteSpace(invoice.HsnSacCode))
+                    document.Add(new Paragraph($"HSN/SAC: {invoice.HsnSacCode}"));
+                if (!string.IsNullOrWhiteSpace(invoice.PlaceOfSupply))
+                    document.Add(new Paragraph($"Place of Supply: {invoice.PlaceOfSupply}"));
+
+                if (invoice.TaxType == "CGST/SGST")
+                {
+                    var cgst = invoice.TaxAmount / 2;
+                    var sgst = invoice.TaxAmount / 2;
+                    document.Add(new Paragraph($"CGST ({invoice.TaxRate / 2}%): {FormatMoney(cgst, invoice.Currency)}").SetTextAlignment(TextAlignment.RIGHT));
+                    document.Add(new Paragraph($"SGST ({invoice.TaxRate / 2}%): {FormatMoney(sgst, invoice.Currency)}").SetTextAlignment(TextAlignment.RIGHT));
+                }
+                else if (invoice.TaxType == "IGST")
+                {
+                    document.Add(new Paragraph($"IGST ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount, invoice.Currency)}").SetTextAlignment(TextAlignment.RIGHT));
+                }
+                else
+                {
+                    document.Add(new Paragraph($"{invoice.TaxName} ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount, invoice.Currency)}").SetTextAlignment(TextAlignment.RIGHT));
+                }
             }
             document.Add(new Paragraph($"Total: {FormatMoney(invoice.Total, invoice.Currency)}")
                 .SetTextAlignment(TextAlignment.RIGHT)

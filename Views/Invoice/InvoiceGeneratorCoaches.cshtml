@@ -1,0 +1,402 @@
+﻿@{
+    ViewData["Title"] = "Free Invoice Generator for Coaches | Create Coaching Invoices Online";
+    ViewData["Description"] = "Generate professional invoices for coaches online for free. Create coaching session, package, retainer, and group program invoices with PDF download.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-coaches";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free Invoice Generator for Coaches | Create Coaching Invoices Online</title>
+    <meta name="title" content="Free Invoice Generator for Coaches | Create Coaching Invoices Online" />
+    <meta name="description" content="Generate professional invoices for coaches online for free. Create coaching session, package, retainer, and group program invoices with PDF download." />
+    <meta name="keywords" content="invoice generator for coaches, coaching invoice maker, life coach invoice, business coach invoice, executive coaching invoice, coaching package invoice, retainer invoice, mentor invoice, coaching billing" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free Invoice Generator for Coaches | RatPDF" />
+    <meta property="og:description" content="Create professional coaching invoices online for free. Add session fees, packages, retainers, and PDF download." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free Invoice Generator for Coaches | RatPDF" />
+    <meta name="twitter:description" content="Generate coaching invoices online with session fees, packages, retainers, and PDF download." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Coach Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-coaches",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online invoice generator for life coaches, business coaches, executive coaches, and mentors.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "624"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What should a coaching invoice include?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A coaching invoice should include coach name and contact, client details, session date or package period, description of services (e.g., '60-min leadership coaching'), session rate or package fee, number of sessions, package details, retainer amount, taxes, and payment terms."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate coaching invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows coaches to create and download professional invoices online for free with no signup required."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the invoice generator support coaching packages and retainers?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, you can bill per session, for a 6/12-session package, or monthly retainers with automatic tracking."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Coach Invoice Generator",
+        "item": "https://ratpdf.com/invoice/invoice-generator-coaches"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free for Coaches</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Invoice Generator for Coaches – Professional Coaching Invoices Fast
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional invoices for your coaching practice in seconds. Add per-session fees, coaching packages, monthly retainers, group programs, and download as PDF. Perfect for life coaches, business coaches, executive coaches, and mentors.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Coaching Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">Coach Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">150K+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator for Coaches"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features Designed for Coaches & Mentors</h2>
+            <p class="text-muted">
+                Everything you need to bill clients and grow your coaching business.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Per Session or Package</h3>
+                        <p class="text-muted mb-0">
+                            Bill for individual sessions (hourly or fixed) or sell coaching packages of 6, 12, or more sessions with a single invoice.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Monthly Retainers</h3>
+                        <p class="text-muted mb-0">
+                            Create recurring invoices for ongoing coaching retainers – ideal for executive coaching or long-term clients.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Group Programs & Workshops</h3>
+                        <p class="text-muted mb-0">
+                            Invoice for group coaching programs, workshops, or corporate training events with multiple participants.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Deposit & Balance Tracking</h3>
+                        <p class="text-muted mb-0">
+                            Record deposits or upfront payments for high-ticket packages and show remaining balance clearly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Professional Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your coaching logo, credentials (PCC, ACC, CPC), business details, and payment terms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download high-quality PDF invoices ready to email to clients or print for your records.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Coaches Love Our Invoice Generator</h2>
+                <p class="text-muted mb-3">
+                    As a coach, your focus is on transformation, not admin. RatPDF helps life coaches, business coaches, executive coaches, and mentors create professional, branded invoices in seconds – for individual sessions, packages, retainers, and group programs.
+                </p>
+                <p class="text-muted mb-3">
+                    Our tool is completely free, requires no registration, and generates clean, client-friendly PDF invoices that include all the details your clients expect: session dates, package details, retainer amounts, deposit tracking, and payment instructions.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ No monthly fees – 100% free</li>
+                    <li class="mb-2">✔ Coach-specific invoice fields</li>
+                    <li class="mb-2">✔ Packages, retainers, group programs</li>
+                    <li class="mb-2">✔ Deposit and balance tracking</li>
+                    <li class="mb-2">✔ Download as PDF instantly</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Invoice Your Coaching Client?</h3>
+                    <p class="mb-4">
+                        Create a professional invoice for your coaching client in under a minute. No signup, no credit card – just fast, free invoices.
+                    </p>
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Create Coaching Invoice Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions for Coaches</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What should I include on a coaching invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A coaching invoice should include your name, credentials (if any), business name/logo, client details, invoice number and date, description of services (e.g., "6-session leadership coaching package", "60-min one-on-one session"), session or package fee, number of sessions (if package), any retainers, deposit paid, balance due, taxes, and payment terms (due date, bank details, or payment link).
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this coaching invoice generator really free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes! RatPDF's invoice generator is completely free for coaches. No hidden fees, subscriptions, or watermarks. Create unlimited invoices and download them as PDF files at no cost.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I bill for coaching packages (e.g., 6 sessions)?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. Create a line item like "6-session coaching package (valid for 3 months)" with a fixed price. You can also list individual sessions if you prefer per-session billing.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Does it support monthly retainers?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. Use the recurring invoice approach – create a new invoice each month for the retainer amount. The tool does not auto-send (to keep it free), but you can quickly duplicate the same details each month.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Do I need to create an account to generate invoices?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        No account or sign-up is required. Start creating invoices immediately – we don't store any of your data.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Professional Coaching Invoices in Seconds</h2>
+        <p class="text-muted mb-4">
+            Join thousands of coaches who use RatPDF to bill clients quickly and professionally.
+        </p>
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Creating Coaching Invoices
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

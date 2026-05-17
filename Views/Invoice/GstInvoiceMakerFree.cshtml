@@ -1,0 +1,406 @@
+﻿@{
+    ViewData["Title"] = "Free GST Invoice Maker Online India | Create GST Bills Instantly";
+    ViewData["Description"] = "Generate professional GST invoices online for free in India. Create tax invoices with GSTIN, HSN/SAC codes, CGST, SGST, IGST, customer details, and downloadable PDF invoices instantly.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/gst-invoice-maker-free";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free GST Invoice Maker Online India | Create GST Bills Instantly</title>
+    <meta name="title" content="Free GST Invoice Maker Online India | Create GST Bills Instantly" />
+    <meta name="description" content="Generate professional GST invoices online for free in India. Create tax invoices with GSTIN, HSN/SAC codes, CGST, SGST, IGST, customer details, and downloadable PDF invoices instantly." />
+    <meta name="keywords" content="GST invoice maker, GST bill maker India, free GST invoice generator, GST invoice online, GST billing software, tax invoice maker, invoice maker India, GST PDF invoice, online GST invoice, Indian GST invoice creator" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free GST Invoice Maker Online India | RatPDF" />
+    <meta property="og:description" content="Create GST compliant invoices online for free in India. Download professional GST invoices instantly in PDF format." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free GST Invoice Maker Online India | RatPDF" />
+    <meta name="twitter:description" content="Generate GST invoices online with GSTIN, HSN/SAC codes, taxes, and PDF download support." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Geo SEO -->
+    <meta name="geo.region" content="IN" />
+    <meta name="geo.country" content="India" />
+    <meta name="ICBM" content="20.5937, 78.9629" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "GST Invoice Maker",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/gst-invoice-maker-free",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online GST invoice maker for Indian businesses, freelancers, shop owners, and service providers.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "2847"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is a GST invoice?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A GST invoice is a tax invoice issued by a seller registered under GST in India that contains GSTIN, tax details, invoice number, customer details, and itemized taxes."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I make GST invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows you to create and download GST invoices online for free without installing any software."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the GST invoice maker support CGST, SGST, and IGST?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, the GST invoice maker supports CGST, SGST, and IGST calculations based on Indian GST requirements."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Free GST Invoice Maker",
+        "item": "https://ratpdf.com/invoice/gst-invoice-maker-free"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free GST Invoice Maker</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Free GST Invoice Maker for Indian Businesses
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Create professional GST invoices instantly with GSTIN, HSN/SAC codes, tax calculations,
+                customer details, invoice numbers, and downloadable PDF support.
+                Perfect for freelancers, shop owners, startups, agencies, and businesses in India.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create GST Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.9/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">2M+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Free GST Invoice Maker India"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features of Our Free GST Invoice Maker</h2>
+            <p class="text-muted">
+                Everything Indian businesses need to create GST compliant invoices online.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">GST Compliant Invoices</h3>
+                        <p class="text-muted mb-0">
+                            Generate invoices following Indian GST standards including GSTIN,
+                            tax breakup, invoice numbering, and HSN/SAC support.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download professional GST invoices instantly in high quality PDF format.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Auto GST Calculation</h3>
+                        <p class="text-muted mb-0">
+                            Automatically calculate CGST, SGST, and IGST for products and services.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Business Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your company logo, GSTIN, address, and contact details for professional branding.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Mobile Friendly</h3>
+                        <p class="text-muted mb-0">
+                            Create invoices from desktop, tablet, or mobile devices anywhere in India.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Fast & Secure</h3>
+                        <p class="text-muted mb-0">
+                            Generate GST invoices quickly with secure cloud-based processing.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Use Our GST Invoice Maker?</h2>
+                <p class="text-muted mb-3">
+                    RatPDF helps Indian businesses create accurate GST invoices without expensive billing software.
+                    Whether you are a freelancer, consultant, agency, retailer, wholesaler, or startup,
+                    our invoice maker simplifies GST billing.
+                </p>
+
+                <p class="text-muted mb-3">
+                    The platform supports GST tax calculations, invoice customization, client information,
+                    itemized billing, and PDF export functionality.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ GST compliant invoice format</li>
+                    <li class="mb-2">✔ Free invoice generation</li>
+                    <li class="mb-2">✔ Supports Indian taxation</li>
+                    <li class="mb-2">✔ Fast online PDF creation</li>
+                    <li class="mb-2">✔ Ideal for SMBs and freelancers</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Create Your GST Invoice Now</h3>
+
+                    <p class="mb-4">
+                        Start making GST invoices online instantly with RatPDF's free GST invoice maker.
+                        No installation, no complexity.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Open GST Invoice Maker
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What is a GST invoice maker?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A GST invoice maker is an online tool used to create GST compliant invoices for Indian businesses.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this GST invoice maker free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, you can generate GST invoices online for free using RatPDF's GST invoice maker.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I download GST invoices as PDF?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, generated GST invoices can be downloaded instantly in PDF format.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Does it support CGST, SGST, and IGST?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, the tool supports CGST, SGST, and IGST calculations according to Indian GST rules.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create GST Invoices Online in Seconds</h2>
+        <p class="text-muted mb-4">
+            Generate GST compliant invoices instantly with RatPDF's free online GST invoice maker.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Using GST Invoice Maker
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>

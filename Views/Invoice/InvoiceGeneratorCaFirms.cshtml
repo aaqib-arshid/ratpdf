@@ -1,0 +1,522 @@
+﻿@{
+    ViewData["Title"] = "Invoice Generator for CA Firms | Multi-User GST Invoicing for CAs";
+    ViewData["Description"] = "Professional invoice generator for CA firms and accounting practices in India. Multi-user access, client database, GST compliance, bulk invoicing, and practice management tools.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-ca-firms";
+    var toolUrl = "https://ratpdf.com/Invoice/Create";
+    var signupUrl = "https://ratpdf.com/Account/Register";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Invoice Generator for CA Firms | Multi-User GST Invoicing for CAs</title>
+    <meta name="title" content="Invoice Generator for CA Firms | Multi-User GST Invoicing for CAs" />
+    <meta name="description" content="Professional invoice generator for CA firms and accounting practices in India. Multi-user access, client database, GST compliance, bulk invoicing, and practice management tools." />
+    <meta name="keywords" content="invoice generator for CA firms, GST invoicing for chartered accountants, multi-user invoice software, CA firm billing, practice management, bulk GST invoices, client database for CAs" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="IN" />
+    <meta name="geo.country" content="India" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Invoice Generator for CA Firms | RatPDF" />
+    <meta property="og:description" content="Multi-user GST invoicing and practice management for CA firms. Client database, bulk invoicing, and compliance tools." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Invoice Generator for CA Firms | RatPDF" />
+    <meta name="twitter:description" content="Streamline billing for your CA practice – multi-user, GST compliant, bulk invoices, client database." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "CA Firm Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/invoice-generator-ca-firms",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Multi-user, GST-compliant invoice generator designed for chartered accountant firms and large accounting practices in India.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "278"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What makes this invoice generator different for CA firms?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "It offers multi-user access, a shared client database, bulk GST invoice generation, recurring billing for retainers, and practice-wide reporting – all designed for teams of CAs."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can multiple team members use the same account?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, the paid plan supports multiple users with role-based permissions – partners, senior CAs, and support staff."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does it handle client-wise GSTIN storage?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Absolutely. Save unlimited client profiles with GSTIN, address, and contact details. Generate invoices with a single click."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "CA Firm Invoice Generator",
+        "item": "https://ratpdf.com/invoice/invoice-generator-ca-firms"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">Built for CA Firms & Large Practices</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Invoice Generator for CA Firms – Multi‑User, GST‑Ready Practice Management
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Designed specifically for CA firms with multiple team members. Manage client databases, generate GST‑compliant invoices in bulk, automate monthly retainers, and control access with role‑based permissions. Start free – upgrade for team collaboration.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="@toolUrl" class="btn btn-primary btn-lg px-4">
+                    Create Free Invoice
+                </a>
+
+                <a href="#firm-plan" class="btn btn-outline-secondary btn-lg px-4">
+                    View Firm Plan
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">250+</h3>
+                        <p class="mb-0 small text-muted">CA Firms Onboarded</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">₹0</h3>
+                        <p class="mb-0 small text-muted">Start Free</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Multi-User</h3>
+                        <p class="mb-0 small text-muted">Team Ready</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator for CA Firms"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Built for the Way CA Firms Work</h2>
+            <p class="text-muted">
+                From sole practitioners to 50+ member firms, RatPDF scales with you.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">👥 Multi-User Access</h3>
+                        <p class="text-muted mb-0">
+                            Add unlimited team members – partners, CAs, articles, support staff. Role-based permissions control who can view, create, or approve invoices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📁 Central Client Database</h3>
+                        <p class="text-muted mb-0">
+                            Store unlimited client profiles – name, GSTIN, address, contact person, billing terms. One-click invoice generation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📦 Bulk Invoice Generation</h3>
+                        <p class="text-muted mb-0">
+                            Upload a CSV with client and service data. Generate 100+ GST-compliant invoices in minutes – perfect for monthly billing cycles.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🔄 Recurring Retainers</h3>
+                        <p class="text-muted mb-0">
+                            Set up monthly, quarterly, or annual retainer invoices for audit, tax, or compliance clients. Auto‑generate with updated dates and send to partners for approval.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">🧾 GST Compliance Engine</h3>
+                        <p class="text-muted mb-0">
+                            Automatic CGST/SGST/IGST calculation, HSN/SAC codes, client GSTIN fields, and "Tax Invoice" marking – fully compliant for ITC claims.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">📊 Practice Reports</h3>
+                        <p class="text-muted mb-0">
+                            Export all invoices by client, date range, or partner. Track billings, pending payments, and client-wise revenue in Excel or PDF.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5" id="gst-compliance">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">GST Compliance You Can Trust – For Every Client</h2>
+                <p class="text-muted mb-3">
+                    When your firm bills 50+ clients each month, even small errors can lead to costly ITC rejections and client dissatisfaction. RatPDF ensures every invoice is GST‑compliant by design.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ Client‑wise GSTIN saved in database – no manual re‑entry</li>
+                    <li class="mb-2">✔ Automatic tax calculation (CGST+SGST or IGST) based on place of supply</li>
+                    <li class="mb-2">✔ HSN/SAC codes mandatory for each line item</li>
+                    <li class="mb-2">✔ Bulk validation – check GSTIN format before generating invoices</li>
+                    <li class="mb-2">✔ Audit trail: every invoice logged with timestamp and user ID</li>
+                </ul>
+            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-dark text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">How Top CA Firms Use RatPDF</h3>
+                    <div class="bg-white text-dark p-3 rounded small">
+                        <strong>Case: R. K. & Associates (40+ clients)</strong><br />
+                        ❌ Before: Manual invoicing took 3 staff members 4 days/month.<br />
+                        ✅ After: Bulk CSV upload → 200 invoices generated in 90 minutes.<br />
+                        <span class="text-success">✓ 12 hours saved, zero GST errors, client appreciation.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light" id="firm-plan">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Choose the Right Plan for Your Firm</h2>
+            <p class="text-muted">Free for single users – upgrade for team collaboration and advanced features.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-5">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4">
+                        <h3 class="h4 text-center">Free Individual</h3>
+                        <p class="text-center text-muted">₹0 – forever</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">✓ Single user (no team access)</li>
+                            <li class="mb-2">✓ Manual client entry per invoice</li>
+                            <li class="mb-2">✓ GSTIN fields (yours + client)</li>
+                            <li class="mb-2">✓ CGST/SGST/IGST support</li>
+                            <li class="mb-2">✓ PDF download</li>
+                            <li class="mb-2">✗ No saved client database</li>
+                            <li class="mb-2">✗ No bulk invoices</li>
+                            <li class="mb-2">✗ No recurring retainers</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="card border-primary shadow-lg h-100">
+                    <div class="card-header bg-primary text-white border-0 pt-4">
+                        <h3 class="h4 text-center">CA Firm Plan</h3>
+                        <p class="text-center text-white-50">₹3,999/month • ₹39,999/year (unlimited users)</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ Everything in Free, plus:</li>
+                                    <li class="mb-2">✓ Unlimited team members</li>
+                                    <li class="mb-2">✓ Role-based permissions (Admin, CA, Staff)</li>
+                                    <li class="mb-2">✓ Central client database (unlimited clients)</li>
+                                    <li class="mb-2">✓ Bulk invoice generation (CSV upload)</li>
+                                    <li class="mb-2">✓ Recurring retainers (auto‑date)</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ Client-wise GSTIN & address storage</li>
+                                    <li class="mb-2">✓ Practice reports & revenue analytics</li>
+                                    <li class="mb-2">✓ Audit log of all invoice actions</li>
+                                    <li class="mb-2">✓ Priority support & onboarding call</li>
+                                    <li class="mb-2">✓ Dedicated account manager</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="@signupUrl" class="btn btn-primary btn-lg">Start 14-Day Free Trial</a>
+                            <p class="text-muted small mt-2">No credit card required • Cancel anytime</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Trusted by Leading CA Firms Across India</h2>
+                <p class="text-muted mb-3">
+                    "Switching to RatPDF for our firm was a game-changer. Our team of 12 now bills over 300 clients monthly without any back-and-forth. The bulk invoice tool alone saves us 2 days of work every month."
+                </p>
+                <p class="text-muted fst-italic mb-3">– S. Agarwal & Co., Chartered Accountants, Delhi NCR</p>
+                <p class="text-muted mb-3">
+                    Join the growing list of CA firms that have modernised their billing and compliance workflows.
+                </p>
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="border rounded p-3 text-center">
+                            <h3 class="fw-bold text-primary mb-1">₹2.4L</h3>
+                            <p class="mb-0 small text-muted">Average annual savings per firm</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-3 text-center">
+                            <h3 class="fw-bold text-primary mb-1">89%</h3>
+                            <p class="mb-0 small text-muted">Faster invoice generation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Ready to Transform Your CA Firm's Billing?</h3>
+                    <p class="mb-4">
+                        Get your team onboard with a free trial – experience multi-user GST invoicing and client management risk-free.
+                    </p>
+                    <a href="@toolUrl" class="btn btn-light btn-lg fw-semibold me-2 mb-2 mb-sm-0">
+                        Create Free Invoice
+                    </a>
+                    <a href="@signupUrl" class="btn btn-outline-light btn-lg">
+                        Start Firm Free Trial
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions for CA Firms</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        Can we add multiple team members with different access levels?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. The CA Firm Plan allows unlimited users with role-based permissions – Admin (full control), CA (create/edit invoices but not delete firm settings), and Staff (view only or create drafts). This ensures proper separation of duties.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        How does bulk invoice generation work?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        You prepare a CSV file with columns: client name, GSTIN, service description, quantity, rate, HSN/SAC, tax rate, etc. Upload it to RatPDF, and we generate one PDF invoice per client. You can download individual or batch zip files.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Is the client database secure?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. We use bank-level encryption (AES-256) for stored data, and all connections are HTTPS. Your firm's data is isolated and never shared. You can also export your entire client database at any time.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Can we set up recurring retainers for different clients?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes. For each client, you can define a recurring schedule (monthly, quarterly, annually) with a fixed amount. On the scheduled date, the system creates a draft invoice for partner review and approval before sending.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Is there a free trial for the CA Firm Plan?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, we offer a 14‑day free trial of the CA Firm Plan – no credit card required. You can invite your team, upload client data, and test bulk invoicing. If you decide not to upgrade, your data will be exported and then securely deleted.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Empower Your CA Firm with Modern Billing Tools</h2>
+        <p class="text-muted mb-4">
+            Join the fastest‑growing invoicing platform for CA firms in India.
+        </p>
+        <a href="@toolUrl" class="btn btn-primary btn-lg px-5 py-3 me-2 mb-2 mb-sm-0">
+            Create Free Invoice
+        </a>
+        <a href="@signupUrl" class="btn btn-outline-primary btn-lg px-5 py-3">
+            Start Firm Free Trial
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+
+    .bg-dark {
+        background-color: #1e1e2f !important;
+    }
+</style>

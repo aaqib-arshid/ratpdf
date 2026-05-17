@@ -1,0 +1,415 @@
+﻿@{
+    ViewData["Title"] = "Free Tax Invoice Generator | Create Professional Tax Invoices Online";
+    ViewData["Description"] = "Generate professional tax invoices online for free. Create tax invoices with GST/VAT, tax calculations, invoice number, customer details, HSN/SAC codes, and downloadable PDF invoices instantly.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonicalUrl = "https://ratpdf.com/invoice/tax-invoice-generator";
+}
+
+@section Head {
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Free Tax Invoice Generator | Create Professional Tax Invoices Online</title>
+    <meta name="title" content="Free Tax Invoice Generator | Create Professional Tax Invoices Online" />
+    <meta name="description" content="Generate professional tax invoices online for free. Create tax invoices with GST/VAT, tax calculations, invoice number, customer details, HSN/SAC codes, and downloadable PDF invoices instantly." />
+    <meta name="keywords" content="tax invoice generator, tax invoice maker, free tax invoice, GST tax invoice, VAT tax invoice, sales tax invoice, tax invoice template, business tax invoice, invoice with tax, tax receipt generator" />
+    <meta name="author" content="RatPDF" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="Free Tax Invoice Generator | RatPDF" />
+    <meta property="og:description" content="Create tax-compliant invoices online for free. Download professional tax invoices instantly in PDF format." />
+    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+    <meta property="og:site_name" content="RatPDF" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="Free Tax Invoice Generator | RatPDF" />
+    <meta name="twitter:description" content="Generate tax invoices online with tax calculations, GST/VAT support, and PDF download." />
+    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Tax Invoice Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/invoice/tax-invoice-generator",
+        "image": "https://ratpdf.com/images/hero-invoice.svg",
+        "description": "Free online tax invoice generator for businesses, freelancers, and professionals needing tax-compliant invoices.",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1892"
+        },
+        "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "url": "https://ratpdf.com"
+        }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "What is a tax invoice?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "A tax invoice is a document issued by a registered business that shows the tax amount charged on goods or services. It includes seller and buyer details, tax registration number, itemized tax rates, and total amount including tax."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I generate tax invoices for free?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, RatPDF allows you to create and download tax invoices online for free without any signup or software installation."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Does the tax invoice generator support GST and VAT?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, the generator supports multiple tax types including GST (CGST/SGST/IGST) and VAT, with customizable tax rates for different items."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+        {
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ratpdf.com"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 2,
+        "name": "Invoice Tools",
+        "item": "https://ratpdf.com/invoice/create"
+        },
+        {
+        "@@type": "ListItem",
+        "position": 3,
+        "name": "Tax Invoice Generator",
+        "item": "https://ratpdf.com/invoice/tax-invoice-generator"
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">100% Free Tax Invoice Tool</span>
+            <h1 class="display-4 fw-bold mb-3">
+                Tax Invoice Generator – Create Tax-Compliant Invoices Instantly
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Generate professional tax invoices in seconds with automatic tax calculations, customizable rates,
+                invoice numbering, customer details, and PDF download. Perfect for GST, VAT, sales tax, and
+                any business that needs tax-compliant billing.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-4">
+                    Create Tax Invoice
+                </a>
+
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                    Explore Features
+                </a>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.8/5</h3>
+                        <p class="mb-0 small text-muted">User Rating</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">1.2M+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">Free</h3>
+                        <p class="mb-0 small text-muted">No Signup Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Tax Invoice Generator"
+                 class="img-fluid rounded shadow-lg"
+                 loading="lazy" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features of Our Tax Invoice Generator</h2>
+            <p class="text-muted">
+                Everything you need to create tax-compliant invoices for your business.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Tax-Compliant Format</h3>
+                        <p class="text-muted mb-0">
+                            Generate invoices that clearly show subtotal, tax amount, tax rate, and total including tax – compliant with global tax standards.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Multiple Tax Types</h3>
+                        <p class="text-muted mb-0">
+                            Support for GST (CGST/SGST/IGST), VAT, sales tax, and custom tax rates per line item.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Instant PDF Download</h3>
+                        <p class="text-muted mb-0">
+                            Download professional tax invoices instantly in high-quality PDF format for records or customer delivery.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Business Branding</h3>
+                        <p class="text-muted mb-0">
+                            Add your company logo, tax registration number (GSTIN/VAT ID), address, and contact details.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Mobile Friendly</h3>
+                        <p class="text-muted mb-0">
+                            Create tax invoices from any device – desktop, tablet, or mobile.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-bold">Fast & Secure</h3>
+                        <p class="text-muted mb-0">
+                            Quick invoice generation with secure, private processing – no data stored on our servers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Use Our Tax Invoice Generator?</h2>
+                <p class="text-muted mb-3">
+                    Tax compliance doesn't have to be complicated. RatPDF helps businesses, freelancers, and
+                    professionals create accurate tax invoices without expensive accounting software.
+                    Whether you need GST invoices for India, VAT invoices for the UK/Europe, or sales tax
+                    invoices for the US, our generator handles it all.
+                </p>
+
+                <p class="text-muted mb-3">
+                    The tool supports custom tax rates per item, automatic tax calculation, clear subtotal/tax/total
+                    breakdown, and optional fields for tax registration numbers – everything required for
+                    tax-compliant billing.
+                </p>
+
+                <ul class="list-unstyled">
+                    <li class="mb-2">✔ Tax-compliant invoice format</li>
+                    <li class="mb-2">✔ Free invoice generation – no signup</li>
+                    <li class="mb-2">✔ Supports GST, VAT, and custom taxes</li>
+                    <li class="mb-2">✔ Instant PDF download</li>
+                    <li class="mb-2">✔ Ideal for businesses of all sizes</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="bg-primary text-white rounded-4 p-5 shadow-lg">
+                    <h3 class="fw-bold mb-4">Generate Your Tax Invoice Now</h3>
+
+                    <p class="mb-4">
+                        Start creating tax-compliant invoices online instantly with RatPDF's free tax invoice generator.
+                        No installation, no complexity – just professional invoices.
+                    </p>
+
+                    <a href="https://ratpdf.com/Invoice/Create" class="btn btn-light btn-lg fw-semibold">
+                        Open Tax Invoice Tool
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        What is the difference between a tax invoice and a regular invoice?
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        A tax invoice includes detailed tax information such as the seller's tax registration number (e.g., GSTIN, VAT ID), the tax rate applied to each item, and the total tax amount. A regular invoice may only show the total amount without tax breakdown. Tax invoices are required for claiming input tax credits and for businesses registered under tax laws.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Is this tax invoice generator free?
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, our tax invoice generator is completely free. No subscription, no hidden fees, and no sign-up required. You can generate unlimited tax invoices and download them as PDF at no cost.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Can I set different tax rates for different items?
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Absolutely. Each line item can have its own tax rate. This is perfect when you sell products with different GST/VAT rates (e.g., 5% on some items, 18% on others) or when some items are tax-exempt.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Does the tool support CGST, SGST, and IGST?
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, the tax invoice generator supports Indian GST with separate CGST and SGST (or IGST for interstate) calculations. You can also use it for VAT and other tax types.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Can I download the tax invoice as PDF?
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, all generated tax invoices can be downloaded instantly as a high-quality PDF file, ready to print, email, or save for your records.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Create Tax-Compliant Invoices in Seconds</h2>
+        <p class="text-muted mb-4">
+            Generate professional tax invoices online instantly with RatPDF's free tax invoice generator.
+        </p>
+
+        <a href="https://ratpdf.com/Invoice/Create" class="btn btn-primary btn-lg px-5 py-3">
+            Start Generating Tax Invoice
+        </a>
+    </div>
+</section>
+
+<style>
+    .display-4 {
+        line-height: 1.2;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+</style>
