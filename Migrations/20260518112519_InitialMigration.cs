@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ratpdf.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,7 +170,8 @@ namespace ratpdf.Migrations
                     AccentColor = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true),
                     CompanyName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     CompanyAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FooterText = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    FooterText = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    UpiQrUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -203,7 +204,13 @@ namespace ratpdf.Migrations
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false, defaultValue: "INR"),
                     IsPaid = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    From = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    YourGstin = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientGstin = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HsnSacCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlaceOfSupply = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TaxType = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -290,7 +297,8 @@ namespace ratpdf.Migrations
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Quantity = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    HsnSacCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -185,9 +185,6 @@ namespace ratpdf.Migrations
                         .HasColumnType("nvarchar(7)")
                         .HasDefaultValue("#1A73E8");
 
-                    b.Property<string>("UpiId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UpiQrUrl")
                         .HasColumnType("nvarchar(max)");
 

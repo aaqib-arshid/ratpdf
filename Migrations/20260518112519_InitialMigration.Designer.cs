@@ -12,8 +12,8 @@ using ratpdf.Data.AppDBContext;
 namespace ratpdf.Migrations
 {
     [DbContext(typeof(RatPDFDbContext))]
-    [Migration("20260517172110_thirdMigration")]
-    partial class thirdMigration
+    [Migration("20260518112519_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,6 +187,9 @@ namespace ratpdf.Migrations
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)")
                         .HasDefaultValue("#1A73E8");
+
+                    b.Property<string>("UpiQrUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
