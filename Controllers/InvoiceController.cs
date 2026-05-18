@@ -100,9 +100,10 @@ namespace ratpdf.Controllers
                     Description = i.Description,
                     Quantity = i.Quantity,
                     UnitPrice = i.UnitPrice,
-                    Amount = i.Amount
+                    Amount = i.Amount,
+                    HsnSacCode = ""
                 }).ToList(),
-                From = model.From,
+                From = model.From
             };
             invoice.Total = invoice.Subtotal + invoice.TaxAmount;
             var userIdValue = invoice.UserId.HasValue ? invoice.UserId.Value : Guid.Empty;

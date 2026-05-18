@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Bulk GST Invoice Generator | Create 100+ GST Invoices at Once";
-    ViewData["Description"] = "Generate up to 500 GST‑compliant invoices in minutes using a CSV file. Perfect for CAs, accountants, and businesses. Free trial for Business plan users.";
+    ViewData["Description"] = "Generate up to 100 GST‑compliant invoices in minutes using a CSV file. Perfect for CAs, accountants, and businesses. Free trial for Business plan users.";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var canonicalUrl = "https://ratpdf.com/invoice/bulk";
     var ratingValue = 4.9;
@@ -50,7 +50,7 @@
         "name": "How many invoices can I generate at once?",
         "acceptedAnswer": {
         "@@type": "Answer",
-        "text": "With the Business plan you can generate up to 500 GST invoices per CSV batch. For higher volumes, contact our enterprise sales team."
+        "text": "With the Business plan you can generate up to 100 GST invoices per CSV batch. For higher volumes, contact our enterprise sales team."
         }
         },
         {
@@ -58,7 +58,7 @@
         "name": "Do I need to be a Business plan subscriber?",
         "acceptedAnswer": {
         "@@type": "Answer",
-        "text": "Yes, bulk invoice generation is a Business plan feature. You can start a 14-day free trial of the Business plan without any credit card."
+        "text": "Yes, bulk invoice generation is a Business plan feature."
         }
         },
         {
@@ -137,7 +137,7 @@
     <!-- Header -->
     <div class="text-center mb-5">
         <h1 class="display-5 fw-bold">Bulk GST Invoice Generator</h1>
-        <p class="lead">Generate up to <span class="fw-bold text-success">500 GST‑compliant invoices</span> in minutes using a CSV file.</p>
+        <p class="lead">Generate up to <span class="fw-bold text-success">100 GST‑compliant invoices</span> in minutes using a CSV file.</p>
         <div class="d-flex justify-content-center">
             <span class="badge bg-primary p-2">⭐ 4.9 (187+ reviews)</span>
         </div>
@@ -186,13 +186,15 @@
                         <i class="bi bi-info-circle-fill me-2"></i>
                         <strong>CSV Template:</strong> <a href="/templates/bulk_invoice_template.csv" class="alert-link">Download sample CSV</a> – contains example rows and column headers.
                     </div>
-                    <form method="post" enctype="multipart/form-data" asp-action="UploadCsv">
+                    <form id="bulkInvoiceForm" method="post" enctype="multipart/form-data" asp-action="UploadCsv">
                         @Html.AntiForgeryToken()
                         <div asp-validation-summary="All" class="text-danger mb-3"></div>
                         <div class="mb-3">
                             <label for="csvFile" class="form-label fw-semibold">Select CSV File</label>
                             <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required />
-                            <div class="form-text">Maximum file size: 10 MB, up to 500 rows.</div>
+                            <div class="form-text">
+                                Maximum rows up to 100 rows. 100 rows can take 5–10 mins to process.
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg w-100">
                             <i class="bi bi-file-zip"></i> Generate & Download ZIP
@@ -238,7 +240,7 @@
                 </h2>
                 <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        With the Business plan you can generate up to 500 GST invoices per CSV batch. For higher volumes (e.g., 5000+), contact our enterprise team for custom solutions.
+                        With the Business plan you can generate up to 100 GST invoices per CSV batch. For higher volumes (e.g., 5000+), contact our enterprise team for custom solutions.
                     </div>
                 </div>
             </div>
@@ -280,3 +282,49 @@
     </div>
 </div>
 </div>
+<div id="toast" class="toast-box">
+    Processing CSV... large batches may take longer, please wait
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const form = document.getElementById("bulkInvoiceForm");
+        const toast = document.getElementById("toast");
+
+        if (!form || !toast) {
+            console.error("Form or toast not found");
+            return;
+        }
+
+        form.addEventListener("submit", function () {
+            toast.classList.add("show");
+        });
+
+    });
+</script>
+<style>
+.toast-box {
+    visibility: hidden;
+    min-width: 280px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 12px 16px;
+
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.toast-box.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>

@@ -30,5 +30,6 @@ namespace ratpdf.Data.Entities
 
         [MaxLength(500)]
         public string? FooterText { get; set; }
+        public string? UpiQrUrl { get; set; }
     }
 }

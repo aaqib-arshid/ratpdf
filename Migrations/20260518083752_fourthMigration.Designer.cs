@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ratpdf.Data.AppDBContext;
 
@@ -11,9 +12,11 @@ using ratpdf.Data.AppDBContext;
 namespace ratpdf.Migrations
 {
     [DbContext(typeof(RatPDFDbContext))]
-    partial class RatPDFDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260518083752_fourthMigration")]
+    partial class fourthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

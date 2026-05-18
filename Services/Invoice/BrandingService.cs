@@ -33,6 +33,7 @@ namespace ratpdf.Services.Invoice
                 existing.CompanyName = settings.CompanyName;
                 existing.CompanyAddress = settings.CompanyAddress;
                 existing.FooterText = settings.FooterText;
+                existing.UpiQrUrl = settings.UpiQrUrl;
             }
             await _db.SaveChangesAsync();
         }

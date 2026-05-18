@@ -415,88 +415,88 @@ namespace ratpdf.Controllers
             return View();
         }
         #region Img BG RazorPay
-        [HttpPost]
-        public IActionResult CreateImgBgOrder(string plan)
-        {
-            decimal amount = 0;
+        //[HttpPost]
+        //public IActionResult CreateImgBgOrder(string plan)
+        //{
+        //    decimal amount = 0;
 
-            if (plan == "daily")
-                amount = 29;
+        //    if (plan == "daily")
+        //        amount = 29;
 
-            if (plan == "monthly")
-                amount = 199;
+        //    if (plan == "monthly")
+        //        amount = 199;
 
-            var order = _razorpayService.CreateImgBgOrder(amount);
+        //    var order = _razorpayService.CreateImgBgOrder(amount);
 
-            return Json(new
-            {
-                success = true,
-                orderId = order["id"].ToString(),
-                amount = amount,
-                key = _configuration["Razorpay:KeyId"]
-            });
-        }
-        [HttpPost]
-        public async Task<IActionResult> VerifyImgBgPayment(
-        string razorpay_payment_id,
-        string razorpay_order_id,
-        string razorpay_signature,
-        string plan)
-        {
-            try
-            {
-                Dictionary<string, string> attributes = new();
+        //    return Json(new
+        //    {
+        //        success = true,
+        //        orderId = order["id"].ToString(),
+        //        amount = amount,
+        //        key = _configuration["Razorpay:KeyId"]
+        //    });
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> VerifyImgBgPayment(
+        //string razorpay_payment_id,
+        //string razorpay_order_id,
+        //string razorpay_signature,
+        //string plan)
+        //{
+        //    try
+        //    {
+        //        Dictionary<string, string> attributes = new();
 
-                attributes.Add(
-                    "razorpay_payment_id",
-                    razorpay_payment_id);
+        //        attributes.Add(
+        //            "razorpay_payment_id",
+        //            razorpay_payment_id);
 
-                attributes.Add(
-                    "razorpay_order_id",
-                    razorpay_order_id);
+        //        attributes.Add(
+        //            "razorpay_order_id",
+        //            razorpay_order_id);
 
-                attributes.Add(
-                    "razorpay_signature",
-                    razorpay_signature);
+        //        attributes.Add(
+        //            "razorpay_signature",
+        //            razorpay_signature);
 
-                Razorpay.Api.Utils.verifyPaymentSignature(attributes);
+        //        Razorpay.Api.Utils.verifyPaymentSignature(attributes);
 
-                var userKey =
-                    HttpContext.Connection.RemoteIpAddress?.ToString();
+        //        var userKey =
+        //            HttpContext.Connection.RemoteIpAddress?.ToString();
 
-                int days = plan == "monthly" ? 30 : 1;
+        //        int days = plan == "monthly" ? 30 : 1;
 
-                decimal amount = plan == "monthly"
-                    ? 199
-                    : 29;
+        //        decimal amount = plan == "monthly"
+        //            ? 199
+        //            : 29;
 
-                var subscription = new ImgBgUserSubscription
-                {
-                    UserKey = userKey ?? string.Empty,
-                    PlanName = plan,
-                    Amount = amount,
-                    StartDate = DateTime.UtcNow,
-                    EndDate = DateTime.UtcNow.AddDays(days),
-                    IsActive = true
-                };
+        //        var subscription = new ImgBgUserSubscription
+        //        {
+        //            UserKey = userKey ?? string.Empty,
+        //            PlanName = plan,
+        //            Amount = amount,
+        //            StartDate = DateTime.UtcNow,
+        //            EndDate = DateTime.UtcNow.AddDays(days),
+        //            IsActive = true
+        //        };
 
-                //_context.ImgBgUserSubscriptions.Add(subscription);
+        //        //_context.ImgBgUserSubscriptions.Add(subscription);
 
-                await _context.SaveChangesAsync();
+        //        await _context.SaveChangesAsync();
 
-                return Json(new
-                {
-                    success = true
-                });
-            }
-            catch
-            {
-                return Json(new
-                {
-                    success = false
-                });
-            }
-        }
+        //        return Json(new
+        //        {
+        //            success = true
+        //        });
+        //    }
+        //    catch
+        //    {
+        //        return Json(new
+        //        {
+        //            success = false
+        //        });
+        //    }
+        //}
         #endregion
         #region private methods
         private string NormalizeGscSite(string domain)

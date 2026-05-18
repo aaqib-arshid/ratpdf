@@ -51,80 +51,158 @@ namespace ratpdf.Controllers
         public async Task<IActionResult> UploadCsv(IFormFile csvFile)
         {
             var userId = GetCurrentUserId();
+
             if (!userId.HasValue || !await _featureAccessor.CanUseBulkInvoicingAsync(userId.Value))
             {
                 return Forbid();
             }
 
+       
             if (csvFile == null || csvFile.Length == 0)
             {
                 ModelState.AddModelError("", "Please select a CSV file.");
                 return View("Index");
             }
 
-            var invoices = new List<(Invoice invoice, byte[] pdfBytes)>();
-            var errors = new List<string>();
+            var extension = Path.GetExtension(csvFile.FileName).ToLower();
 
-            using var reader = new StreamReader(csvFile.OpenReadStream());
-            using var csv = new CsvHelper.CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
-            var records = csv.GetRecords<BulkInvoiceRow>().ToList();
-
-            int rowNumber = 1; 
-            foreach (var row in records)
+            if (extension != ".csv")
             {
-                rowNumber++;
-                try
-                {
-                    var invoice = MapRowToInvoice(row, userId.Value);
-                    // Calculate amounts
-                    invoice.Subtotal = invoice.Items.Sum(i => i.Quantity * i.UnitPrice);
-                    if (invoice.TaxType == "CGST/SGST")
-                    {
-                        invoice.TaxRate = 18; // 9% + 9%
-                        invoice.TaxAmount = invoice.Subtotal * 0.18m;
-                    }
-                    else if (invoice.TaxType == "IGST")
-                    {
-                        invoice.TaxRate = 18;
-                        invoice.TaxAmount = invoice.Subtotal * 0.18m;
-                    }
-                    else
-                    {
-                        invoice.TaxRate = 0;
-                        invoice.TaxAmount = 0;
-                    }
-                    invoice.Total = invoice.Subtotal + invoice.TaxAmount;
-                    invoice.InvoiceNumber = GenerateInvoiceNumber();
-                    invoice.IssueDate = DateTime.Today;
-                    invoice.DueDate = DateTime.Today.AddDays(15);
-
-                    _db.Invoices.Add(invoice);
-                    await _db.SaveChangesAsync();
-
-                    var pdfBytes = await _pdfService.GenerateInvoicePdfAsync(invoice, userId);
-                    invoices.Add((invoice, pdfBytes));
-
-                    await _usageTracker.LogAsync(userId, "bulk_invoice_generated");
-                }
-                catch (Exception ex)
-                {
-                    errors.Add($"Row {rowNumber}: {ex.Message}");
-                }
-            }
-
-            if (errors.Any())
-            {
-                ViewBag.Errors = errors;
-                if (invoices.Any())
-                {
-                    var zipBytes = CreateZipArchive(invoices);
-                    return File(zipBytes, "application/zip", "partial_invoices.zip");
-                }
+                ModelState.AddModelError("", "Only CSV files are allowed.");
                 return View("Index");
             }
 
-            var allZip = CreateZipArchive(invoices);
-            return File(allZip, "application/zip", $"invoices_{DateTime.Now:yyyyMMdd}.zip");
+            var invoices = new List<(Invoice invoice, byte[] pdfBytes)>();
+            var invoicesToSave = new List<Invoice>();
+            var errors = new List<string>();
+
+            try
+            {
+                
+                using var reader = new StreamReader(csvFile.OpenReadStream());
+
+                using var csv = new CsvHelper.CsvReader(
+                    reader,
+                    System.Globalization.CultureInfo.InvariantCulture
+                );
+
+                var records = csv.GetRecords<BulkInvoiceRow>().ToList();
+
+            
+                if (records.Count > 100)
+                {
+                    ModelState.AddModelError("", "You can upload a maximum of 100 rows only.");
+                    return View("Index");
+                }
+
+                int rowNumber = 1;
+
+          
+                _db.ChangeTracker.AutoDetectChangesEnabled = false;
+
+                foreach (var row in records)
+                {
+                    rowNumber++;
+
+                    try
+                    {
+                        var invoice = MapRowToInvoice(row, userId.Value);
+
+                       
+                        invoice.Subtotal = invoice.Items.Sum(i => i.Quantity * i.UnitPrice);
+
+                       
+                        if (invoice.TaxType == "CGST/SGST" || invoice.TaxType == "IGST")
+                        {
+                            invoice.TaxRate = 18;
+                            invoice.TaxAmount = invoice.Subtotal * 0.18m;
+                        }
+                        else
+                        {
+                            invoice.TaxRate = 0;
+                            invoice.TaxAmount = 0;
+                        }
+
+                       
+                        invoice.Total = invoice.Subtotal + invoice.TaxAmount;
+
+                        
+                        invoice.InvoiceNumber = GenerateInvoiceNumber();
+                        invoice.IssueDate = DateTime.Today;
+                        invoice.DueDate = DateTime.Today.AddDays(15);
+
+                        invoicesToSave.Add(invoice);
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add($"Row {rowNumber}: {ex.Message}");
+                    }
+                }
+
+                if (invoicesToSave.Any())
+                {
+                    _db.Invoices.AddRange(invoicesToSave);
+
+                    await _db.SaveChangesAsync();
+                }
+
+                _db.ChangeTracker.AutoDetectChangesEnabled = true;
+
+                foreach (var invoice in invoicesToSave)
+                {
+                    try
+                    {
+                        var pdfBytes = await _pdfService.GenerateInvoicePdfAsync(invoice, userId);
+
+                        invoices.Add((invoice, pdfBytes));
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add($"PDF generation failed for Invoice {invoice.InvoiceNumber}: {ex.Message}");
+                    }
+                }
+
+                if (invoicesToSave.Any())
+                {
+                    await _usageTracker.LogAsync(userId, $"bulk_invoice_generated_{invoicesToSave.Count}");
+                }
+
+                if (errors.Any())
+                {
+                    ViewBag.Errors = errors;
+
+                    if (invoices.Any())
+                    {
+                        var partialZip = CreateZipArchive(invoices);
+
+                        return File(
+                            partialZip,
+                            "application/zip",
+                            "partial_invoices.zip"
+                        );
+                    }
+
+                    return View("Index");
+                }
+
+                var zipBytes = CreateZipArchive(invoices);
+
+                return File(
+                    zipBytes,
+                    "application/zip",
+                    $"invoices_{DateTime.Now:yyyyMMdd}.zip"
+                );
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Upload failed: {ex.Message}");
+
+                return View("Index");
+            }
+            finally
+            {
+                _db.ChangeTracker.AutoDetectChangesEnabled = true;
+            }
         }
 
         private Invoice MapRowToInvoice(BulkInvoiceRow row, Guid userId)

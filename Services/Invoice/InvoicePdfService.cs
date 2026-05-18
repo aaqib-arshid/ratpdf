@@ -5,6 +5,7 @@ using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Layout;
+using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using ratpdf.Data.Entities;
@@ -50,31 +51,45 @@ namespace ratpdf.Services.Invoice
             var pdf = new PdfDocument(writer);
             var document = new Document(pdf, PageSize.A4);
             document.SetMargins(36, 36, 36, 36);
+
             var fontPath = System.IO.Path.Combine(
                 _env.ContentRootPath,
                 "fonts",
                 "NotoSans-Regular.ttf"
             );
+
             PdfFont unicodeFont = PdfFontFactory.CreateFont(
                fontPath,
                PdfEncodings.IDENTITY_H,
                PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED
            );
+
             // Colors
             var primaryColor = ParseHexColor(branding?.PrimaryColor ?? "#1A73E8");
             var accentColor = branding?.AccentColor != null ? ParseHexColor(branding.AccentColor) : null;
 
-            // --- Header ---
+            // =========================================================
+            // HEADER FIX (LOGO LEFT + QR RIGHT)
+            // =========================================================
+
+            Table headerTable = new Table(UnitValue.CreatePercentArray(new float[] { 2, 1 }))
+                .UseAllAvailableWidth();
+
+            // ---------------- LEFT CELL ----------------
+            Cell leftCell = new Cell().SetBorder(Border.NO_BORDER);
+
+            // Logo (UNCHANGED LOGIC)
             if (canCustomize && branding?.LogoUrl != null)
             {
                 try
                 {
                     var logoBytes = await _logoStorage.GetLogoBytesAsync(branding.LogoUrl);
+
                     if (logoBytes != null)
                     {
                         var logoImage = new Image(ImageDataFactory.Create(logoBytes));
                         logoImage.SetHeight(40);
-                        document.Add(logoImage);
+                        leftCell.Add(logoImage);
                     }
                 }
                 catch (Exception ex)
@@ -83,47 +98,103 @@ namespace ratpdf.Services.Invoice
                 }
             }
 
+            // Company Name (UNCHANGED LOGIC)
             var companyName = branding?.CompanyName;
+
             if (string.IsNullOrWhiteSpace(companyName))
             {
                 if (!string.IsNullOrWhiteSpace(invoice.From))
-                {
                     companyName = $"{invoice.From} • Invoice generated with RatPDF";
-                }
                 else
-                {
                     companyName = "Invoice generated with RatPDF";
-                }
             }
-            document.Add(new Paragraph(companyName)
+
+            leftCell.Add(new Paragraph(companyName)
                 .SetFontSize(20)
                 .SetFontColor(primaryColor));
 
             if (!string.IsNullOrWhiteSpace(branding?.CompanyAddress))
-                document.Add(new Paragraph(branding.CompanyAddress).SetFontSize(10));
+                leftCell.Add(new Paragraph(branding.CompanyAddress).SetFontSize(10));
 
-            // Invoice info (right aligned)
+            headerTable.AddCell(leftCell);
+
+            // ---------------- RIGHT CELL ----------------
+            Cell rightCell = new Cell()
+                .SetBorder(Border.NO_BORDER)
+                .SetTextAlignment(TextAlignment.RIGHT);
+
+            // QR (UNCHANGED LOGIC)
+            if (canCustomize && !string.IsNullOrWhiteSpace(branding?.UpiQrUrl))
+            {
+                try
+                {
+                    var qrBytes = await _logoStorage.GetLogoBytesAsync(branding.UpiQrUrl);
+
+                    if (qrBytes != null)
+                    {
+                        rightCell.Add(new Paragraph("Pay via UPI")
+                            .SetFontSize(9)
+                            .SetTextAlignment(TextAlignment.RIGHT)
+                            .SetMarginBottom(5));
+
+                        var qrImage = new Image(ImageDataFactory.Create(qrBytes));
+                        qrImage.SetHeight(90);
+                        qrImage.SetWidth(90);
+                        qrImage.SetHorizontalAlignment(HorizontalAlignment.RIGHT);
+                        rightCell.Add(qrImage);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to load UPI QR");
+                }
+            }
+
+            headerTable.AddCell(rightCell);
+
+            // ADD HEADER TO DOCUMENT
+            document.Add(headerTable);
+
+            // =========================================================
+            // INVOICE INFO (UNCHANGED)
+            // =========================================================
+
             document.Add(new Paragraph($"Invoice: {invoice.InvoiceNumber}")
                 .SetTextAlignment(TextAlignment.RIGHT));
+
             document.Add(new Paragraph($"Date: {invoice.IssueDate:dd MMM yyyy}")
                 .SetTextAlignment(TextAlignment.RIGHT));
+
             document.Add(new Paragraph($"Due Date: {invoice.DueDate:dd MMM yyyy}")
                 .SetTextAlignment(TextAlignment.RIGHT));
-            // --- Customer ---
+
+            // =========================================================
+            // CUSTOMER (UNCHANGED)
+            // =========================================================
+
             document.Add(new Paragraph("Bill To:").SimulateBold());
             document.Add(new Paragraph(invoice.CustomerName));
+
             if (!string.IsNullOrWhiteSpace(invoice.CustomerAddress))
                 document.Add(new Paragraph(invoice.CustomerAddress));
+
             if (!string.IsNullOrWhiteSpace(invoice.CustomerEmail))
                 document.Add(new Paragraph(invoice.CustomerEmail));
 
-            // --- Items Table ---
-            Table table = new Table(UnitValue.CreatePercentArray(new float[] { 3, 1, 1, 1 })).UseAllAvailableWidth();
+            // =========================================================
+            // ITEMS TABLE (UNCHANGED)
+            // =========================================================
+
+            Table table = new Table(UnitValue.CreatePercentArray(new float[] { 3, 1, 1, 1 }))
+                .UseAllAvailableWidth();
+
             Cell headerCell(string text) =>
-                new Cell().Add(new Paragraph(text))
+                new Cell()
+                    .Add(new Paragraph(text))
                     .SetFontColor(ColorConstants.WHITE)
                     .SetBackgroundColor(primaryColor)
                     .SetPadding(5);
+
             table.AddHeaderCell(headerCell("Description"));
             table.AddHeaderCell(headerCell("Qty"));
             table.AddHeaderCell(headerCell("Unit Price"));
@@ -133,24 +204,35 @@ namespace ratpdf.Services.Invoice
             {
                 table.AddCell(new Cell().Add(new Paragraph(item.Description)).SetPadding(3));
                 table.AddCell(new Cell().Add(new Paragraph(item.Quantity.ToString("N2"))).SetPadding(3));
-                table.AddCell(new Cell().Add(new Paragraph(FormatMoney(item.UnitPrice,invoice.Currency))).SetPadding(3).SetFont(unicodeFont));
-                table.AddCell(new Cell().Add(new Paragraph(FormatMoney(item.Amount,invoice.Currency))).SetPadding(3).SetFont(unicodeFont));
+                table.AddCell(new Cell().Add(new Paragraph(FormatMoney(item.UnitPrice, invoice.Currency)))
+                    .SetPadding(3)
+                    .SetFont(unicodeFont));
+                table.AddCell(new Cell().Add(new Paragraph(FormatMoney(item.Amount, invoice.Currency)))
+                    .SetPadding(3)
+                    .SetFont(unicodeFont));
             }
 
             document.Add(table);
 
-            // --- Totals ---
-            document.Add(new Paragraph($"Subtotal: {FormatMoney(invoice.Subtotal,invoice.Currency)}").SetFont(unicodeFont)
+            // =========================================================
+            // TOTALS (UNCHANGED)
+            // =========================================================
+
+            document.Add(new Paragraph($"Subtotal: {FormatMoney(invoice.Subtotal, invoice.Currency)}")
+                .SetFont(unicodeFont)
                 .SetTextAlignment(TextAlignment.RIGHT));
+
             if (invoice.TaxRate > 0)
             {
-                // After customer address block
                 if (!string.IsNullOrWhiteSpace(invoice.YourGstin))
                     document.Add(new Paragraph($"Your GSTIN: {invoice.YourGstin}"));
+
                 if (!string.IsNullOrWhiteSpace(invoice.ClientGstin))
                     document.Add(new Paragraph($"Client GSTIN: {invoice.ClientGstin}"));
+
                 if (!string.IsNullOrWhiteSpace(invoice.HsnSacCode))
                     document.Add(new Paragraph($"HSN/SAC: {invoice.HsnSacCode}"));
+
                 if (!string.IsNullOrWhiteSpace(invoice.PlaceOfSupply))
                     document.Add(new Paragraph($"Place of Supply: {invoice.PlaceOfSupply}"));
 
@@ -158,30 +240,46 @@ namespace ratpdf.Services.Invoice
                 {
                     var cgst = invoice.TaxAmount / 2;
                     var sgst = invoice.TaxAmount / 2;
-                    document.Add(new Paragraph($"CGST ({invoice.TaxRate / 2}%): {FormatMoney(cgst, invoice.Currency)}").SetTextAlignment(TextAlignment.RIGHT));
-                    document.Add(new Paragraph($"SGST ({invoice.TaxRate / 2}%): {FormatMoney(sgst, invoice.Currency)}").SetTextAlignment(TextAlignment.RIGHT));
+
+                    document.Add(new Paragraph($"CGST ({invoice.TaxRate / 2}%): {FormatMoney(cgst, invoice.Currency)}")
+                        .SetTextAlignment(TextAlignment.RIGHT));
+
+                    document.Add(new Paragraph($"SGST ({invoice.TaxRate / 2}%): {FormatMoney(sgst, invoice.Currency)}")
+                        .SetTextAlignment(TextAlignment.RIGHT));
                 }
                 else if (invoice.TaxType == "IGST")
                 {
-                    document.Add(new Paragraph($"IGST ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount, invoice.Currency)}").SetTextAlignment(TextAlignment.RIGHT));
+                    document.Add(new Paragraph($"IGST ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount, invoice.Currency)}")
+                        .SetTextAlignment(TextAlignment.RIGHT));
                 }
                 else
                 {
-                    document.Add(new Paragraph($"{invoice.TaxName} ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount, invoice.Currency)}").SetTextAlignment(TextAlignment.RIGHT));
+                    document.Add(new Paragraph($"{invoice.TaxName} ({invoice.TaxRate}%): {FormatMoney(invoice.TaxAmount, invoice.Currency)}")
+                        .SetTextAlignment(TextAlignment.RIGHT));
                 }
             }
+
             document.Add(new Paragraph($"Total: {FormatMoney(invoice.Total, invoice.Currency)}")
                 .SetTextAlignment(TextAlignment.RIGHT)
-                .SimulateBold()).SetFont(unicodeFont);
+                .SimulateBold())
+                .SetFont(unicodeFont);
 
-            // --- Notes / Footer ---
+            // =========================================================
+            // FOOTER (UNCHANGED)
+            // =========================================================
+
             if (!string.IsNullOrWhiteSpace(invoice.Notes))
                 document.Add(new Paragraph(invoice.Notes).SetFontSize(9));
 
             if (!string.IsNullOrWhiteSpace(branding?.FooterText))
-                document.Add(new Paragraph(branding.FooterText).SetFontSize(8).SetTextAlignment(TextAlignment.CENTER));
+                document.Add(new Paragraph(branding.FooterText)
+                    .SetFontSize(8)
+                    .SetTextAlignment(TextAlignment.CENTER));
 
-            // --- Watermark for free users ---
+            // =========================================================
+            // WATERMARK (UNCHANGED)
+            // =========================================================
+
             if (applyWatermark)
             {
                 var watermark = new Paragraph("Powered by Rat PDF Invoice Generator")
@@ -189,6 +287,7 @@ namespace ratpdf.Services.Invoice
                     .SetFontSize(12)
                     .SetTextAlignment(TextAlignment.CENTER)
                     .SetFixedPosition(120, 280, 350);
+
                 document.Add(watermark);
             }
 
