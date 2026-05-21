@@ -205,7 +205,7 @@
 </head>
 <body>
     <div class="pdf-notice">
-        This editor is designed for text-based PDFs such as resumes, letters, and documents. Image-based or scanned PDFs (e.g., certificates or forms) may not be fully supported. We are continuously working to expand support for advanced document types
+    📄 If you have a scanned or photo‑based PDF, click the <i class="fa fa-eye"></i> <strong>OCR Edit</strong> button in the toolbar to make the text editable.
     </div>
     <div class="top-bar">
         <label>Import PDF:</label>
@@ -225,7 +225,14 @@
 
 
     <div id="toolbar">
-
+        <div class="tb-group">
+    <button id="btnWhiteout" class="tb-btn" title="Whiteout / Erase Area" onclick="toggleMode('whiteout', this)">
+        <i class="fa fa-eraser"></i>
+    </button>
+    <button id="btnAddText" class="tb-btn" title="Add Text Box" onclick="toggleMode('addText', this)">
+        <i class="fa fa-plus-square"></i>
+    </button>
+     </div>
         <div class="tb-group">
             <select class="tb-select" id="fontFamilySelect" style="width:130px"
                     onchange="execCmd('fontName', this.value)">
@@ -332,7 +339,11 @@
                 <i class="fa fa-link"></i>
             </button>
         </div>
-
+        <div class="tb-group">
+        <button id="btnOcrEdit" class="tb-btn" title="OCR scanned text → editable" onclick="runOcrEditable()">
+        <i class="fa fa-eye"></i>
+       </button>
+            </div>
         <div class="tb-group">
             <button class="tb-btn" title="Undo (Ctrl+Z)" onclick="execCmd('undo')">
                 <i class="fa fa-undo"></i>
@@ -448,6 +459,7 @@
         </details>
 
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script type="application/ld+json">
         {
           "@@context": "https://schema.org",
@@ -480,7 +492,6 @@
           }
         }
     </script>
-
     <script type="application/ld+json">
         {
           "@@context": "https://schema.org",
@@ -530,7 +541,7 @@
         }
     </script>
     <script>
-
+        let currentMode = null;
         (function () {
             var source = document.getElementById('imported-html-source');
             if (!source) return;
@@ -727,6 +738,209 @@
                 submitWithLoader('uploadForm', 'Importing...');
             }, 5000);
         });
+        //start
+        async function runOcrEditable() {
+    const editor = document.getElementById('editor');
+    const images = editor.querySelectorAll('img');
+    if (images.length === 0) {
+        showStatus('No images found for OCR.');
+        return;
+    }
+
+    const editorWidth = editor.clientWidth;
+    showStatus('Loading OCR engine…');
+    const worker = await Tesseract.createWorker('eng');
+
+    for (let i = 0; i < images.length; i++) {
+        const img = images[i];
+        const imageUrl = img.src;
+        if (!imageUrl.startsWith('data:image')) continue;
+
+        // Skipping tiny logos / icons
+        if (img.clientWidth < editorWidth * 0.3) continue;
+
+        await img.decode().catch(() => {});
+        const displayWidth = img.clientWidth;
+        const displayHeight = img.clientHeight;
+        const naturalWidth = img.naturalWidth;
+        const naturalHeight = img.naturalHeight;
+        if (naturalWidth === 0 || naturalHeight === 0) continue;
+
+        const scaleX = displayWidth / naturalWidth;
+        const scaleY = displayHeight / naturalHeight;
+
+        showStatus(`OCR on image ${i + 1} of ${images.length}…`);
+        const { data: { words } } = await worker.recognize(imageUrl);
+
+        const confidentWords = words
+            .filter(w => w.confidence >= 40 && w.text.trim().length > 0)
+            .map(w => ({
+                text: w.text.trim(),
+                x0: w.bbox.x0 * scaleX,
+                y0: w.bbox.y0 * scaleY,
+                x1: w.bbox.x1 * scaleX,
+                y1: w.bbox.y1 * scaleY
+            }));
+
+        if (confidentWords.length < 2) continue;
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = naturalWidth;
+        canvas.height = naturalHeight;
+        const origImg = new Image();
+        origImg.src = imageUrl;
+        await origImg.decode().catch(() => {});
+        ctx.drawImage(origImg, 0, 0);
+
+        function getTextColor(natX0, natY0, natX1, natY1) {
+            const w = natX1 - natX0;
+            const h = natY1 - natY0;
+            if (w < 1 || h < 1) return '#000000';
+            const imageData = ctx.getImageData(natX0, natY0, w, h).data;
+            let rTotal = 0, gTotal = 0, bTotal = 0, count = 0;
+            for (let i = 0; i < imageData.length; i += 4) {
+                const r = imageData[i], g = imageData[i+1], b = imageData[i+2];
+                const luminance = 0.299*r + 0.587*g + 0.114*b;
+                if (luminance < 128) {
+                    rTotal += r; gTotal += g; bTotal += b;
+                    count++;
+                }
+            }
+            if (count === 0) return '#000000';  
+            const avgR = Math.round(rTotal / count);
+            const avgG = Math.round(gTotal / count);
+            const avgB = Math.round(bTotal / count);
+            return '#' + [avgR, avgG, avgB].map(v => v.toString(16).padStart(2,'0')).join('');
+        }
+
+        function isBold(natX0, natY0, natX1, natY1) {
+            
+            const midY = Math.floor((natY0 + natY1) / 2);
+            const w = natX1 - natX0;
+            if (w < 2) return false;
+            const imageData = ctx.getImageData(natX0, midY, w, 2).data;
+            let dark = 0;
+            for (let i = 0; i < imageData.length; i += 4) {
+                const r = imageData[i], g = imageData[i+1], b = imageData[i+2];
+                if (0.299*r + 0.587*g + 0.114*b < 128) dark++;
+            }
+            return dark > (w * 2 * 0.3);   
+        }
+
+        const lines = [];
+        const Y_TOLERANCE = Math.max(5, (confidentWords[0]?.y1 - confidentWords[0]?.y0) * 0.5 || 5);
+        confidentWords.forEach(word => {
+            let added = false;
+            for (let line of lines) {
+                const avgY = line.reduce((s, w) => s + w.y0, 0) / line.length;
+                if (Math.abs(word.y0 - avgY) < Y_TOLERANCE) {
+                    line.push(word);
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) lines.push([word]);
+        });
+        lines.forEach(line => line.sort((a, b) => a.x0 - b.x0));
+
+        const container = document.createElement('div');
+        container.style.position = 'relative';
+        container.style.display = 'inline-block';
+        container.style.width = displayWidth + 'px';
+        container.style.height = displayHeight + 'px';   
+        container.contentEditable = 'false';
+
+        const bgImg = document.createElement('img');
+        bgImg.src = imageUrl;
+        bgImg.style.width = '100%';
+        bgImg.style.height = '100%';
+        bgImg.style.display = 'block';
+        container.appendChild(bgImg);
+
+        lines.forEach(lineWords => {
+            const left = Math.min(...lineWords.map(w => w.x0));
+            const top = Math.min(...lineWords.map(w => w.y0));
+            const right = Math.max(...lineWords.map(w => w.x1));
+            const bottom = Math.max(...lineWords.map(w => w.y1));
+            const width = right - left;
+            const height = bottom - top;
+
+            const firstWord = lineWords[0];
+            const natX0 = firstWord.x0 / scaleX;
+            const natY0 = firstWord.y0 / scaleY;
+            const natX1 = firstWord.x1 / scaleX;
+            const natY1 = firstWord.y1 / scaleY;
+            const textColor = getTextColor(natX0, natY0, natX1, natY1);
+            const fontWeight = isBold(natX0, natY0, natX1, natY1) ? 'bold' : 'normal';
+
+            const fontSize = Math.max(10, height * 0.75);
+
+            const whiteBg = document.createElement('div');
+            whiteBg.style.position = 'absolute';
+            whiteBg.style.left = left + 'px';
+            whiteBg.style.top = top + 'px';
+            whiteBg.style.width = width + 'px';
+            whiteBg.style.height = height + 'px';
+            whiteBg.style.backgroundColor = 'white';
+            whiteBg.style.zIndex = '1';
+            container.appendChild(whiteBg);
+
+            // Editable line
+            const fullText = lineWords.map(w => w.text).join(' ');
+            const span = document.createElement('span');
+            span.textContent = fullText;
+            span.contentEditable = 'true';
+            span.setAttribute('tabindex', '0');
+            span.setAttribute('role', 'textbox');
+            span.style.position = 'absolute';
+            span.style.left = left + 'px';
+            span.style.top = top + 'px';
+            span.style.minWidth = width + 'px';
+            span.style.width = 'auto';   
+            span.style.height = height + 'px';
+            span.style.lineHeight = height + 'px';
+            span.style.fontSize = fontSize + 'px';
+            span.style.fontFamily = document.getElementById('fontFamilySelect').value || 'Arial';
+            span.style.fontWeight = fontWeight;
+            span.style.color = textColor;
+            span.style.backgroundColor = 'transparent';
+            span.style.cursor = 'text';
+            span.style.overflow = 'visible';
+            span.style.whiteSpace = 'nowrap';
+            span.style.display = 'inline-block';
+            span.style.zIndex = '2';
+            span.style.outline = 'none';
+            span.style.padding = '0 2px';
+            span.style.boxSizing = 'content-box';
+
+            span.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                span.focus();
+            });
+            span.addEventListener('keydown', (e) => {
+                e.stopPropagation();
+            });
+
+            span.addEventListener('focus', () => {
+                activeTextBox = span;
+                span.style.backgroundColor = 'rgba(255,255,0,0.3)';
+            });
+            span.addEventListener('blur', () => {
+                span.style.backgroundColor = 'transparent';
+                if (activeTextBox === span) activeTextBox = null;
+            });
+
+            container.appendChild(span);
+        });
+
+        img.parentNode.replaceChild(container, img);
+    }
+
+    await worker.terminate();
+    showStatus('OCR complete. Click any line to edit.');
+}
+        //end
     </script>
 </body>
 </html>

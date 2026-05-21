@@ -12,6 +12,12 @@
     <EmbeddedResource Remove="wwwroot\AIModels\**" />
     <None Remove="wwwroot\AIModels\**" />
   </ItemGroup>
+	<ItemGroup>
+		<Content Include="Pdf-Engine\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.27.0" />
     <PackageReference Include="Azure.Storage.Queues" Version="12.25.0" />
@@ -53,5 +59,8 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
 		</Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Pdf-Engine\" />
 	</ItemGroup>
 </Project>

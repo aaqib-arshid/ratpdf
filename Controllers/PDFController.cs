@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Parser;
+using iText.Kernel.Pdf.Canvas.Parser.Data;
+using iText.Kernel.Pdf.Canvas.Parser.Listener;
+using Microsoft.AspNetCore.Mvc;
 using ratpdf.Models;
 using ratpdf.Services;
 using System.Text;
@@ -8,10 +12,13 @@ namespace ratpdf.Controllers
     public class PDFController : Controller
     {
         private readonly PdfConversionService _pdfService;
-
-        public PDFController(PdfConversionService pdfService)
+        private readonly LayoutEngineProcessor _processor;
+        private readonly HtmlReconstructionService _reconstructionEngine;
+        public PDFController(PdfConversionService pdfService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
         {
             _pdfService = pdfService;
+            _processor = processor;
+            _reconstructionEngine = reconstructionEngine;
         }
         #region --GET METHODS--
         public IActionResult ConvertImages()
@@ -543,15 +550,130 @@ namespace ratpdf.Controllers
                     return BadRequest("The uploaded file is not a valid PDF.");
                 }
                 stream.Position = 0;
-                var html = await _pdfService.ConvertPdfToHtml(file);
+                bool hasGraphics = await PdfContainsColoredRectanglesOrImages(stream);
+
+                stream.Position = 0; // resetting again
+
+                string html;
+                if (hasGraphics)
+                {
+                    Console.WriteLine("PDF contains images – using layout extraction + OCR");
+                    string json = await _processor.ExtractLayoutJsonAsync(stream);
+                    html = _reconstructionEngine.BuildHtml(json);
+                }
+                else
+                {
+                    Console.WriteLine("No images detected – using ConvertPdfToHtml (pure text)");
+                    html = await _pdfService.ConvertPdfToHtml(file);
+                }
                 HttpContext.Session.SetString("PdfHtml", html);
                 return RedirectToAction("EditPDF", "PDF");
             }
-            catch
+            catch(Exception ex) 
             {
-                return BadRequest("Pdf file is corrupted or contains sensitive data.");
+                Console.WriteLine($"Error:{ex.Message}, {ex.StackTrace}");
+                try
+                {
+                    var html = await _pdfService.ConvertPdfToHtml(file);
+                    HttpContext.Session.SetString("PdfHtml", html);
+                    return RedirectToAction("EditPDF", "PDF");
+                }
+                catch
+                {
+                    return BadRequest("Pdf file is corrupted or contains sensitive data.");
+                }  
             }
         }
         #endregion
+        #region private
+        private async Task<bool> PdfContainsColoredRectanglesOrImages(Stream pdfStream)
+        {
+            pdfStream.Position = 0;
+
+            using var ms = new MemoryStream();
+            await pdfStream.CopyToAsync(ms);
+
+            ms.Position = 0;
+            pdfStream.Position = 0;
+
+            try
+            {
+                using var pdfReader = new PdfReader(ms);
+                using var pdfDoc = new PdfDocument(pdfReader);
+
+                for (int pageNum = 1; pageNum <= pdfDoc.GetNumberOfPages(); pageNum++)
+                {
+                    var page = pdfDoc.GetPage(pageNum);
+
+                    var listener = new GraphicsDetectionListener();
+
+                    var processor = new PdfCanvasProcessor(listener);
+
+                    processor.ProcessPageContent(page);
+
+                    if (listener.HasImages ||
+                        listener.HasColoredRectangles)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            catch
+            {
+                return true;
+            }
+        }
+        #endregion
+    }
+    public class GraphicsDetectionListener : IEventListener
+    {
+        public bool HasImages { get; private set; }
+
+        public bool HasColoredRectangles { get; private set; }
+
+        public void EventOccurred(IEventData data, EventType type)
+        {
+            switch (type)
+            {
+                case EventType.RENDER_IMAGE:
+                    HasImages = true;
+                    break;
+
+                case EventType.RENDER_PATH:
+                    {
+                        var pathData = (PathRenderInfo)data;
+
+                        bool isFilled =
+                            pathData.GetOperation() ==
+                            PathRenderInfo.FILL
+                            ||
+                            pathData.GetOperation() ==
+                            PathRenderInfo.STROKE;
+
+                        if (isFilled)
+                        {
+                            var color = pathData.GetFillColor();
+
+                            if (color != null)
+                            {
+                                HasColoredRectangles = true;
+                            }
+                        }
+
+                        break;
+                    }
+            }
+        }
+
+        public ICollection<EventType> GetSupportedEvents()
+        {
+            return new HashSet<EventType>
+        {
+            EventType.RENDER_IMAGE,
+            EventType.RENDER_PATH
+        };
+        }
     }
 }
