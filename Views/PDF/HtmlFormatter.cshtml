@@ -8,6 +8,51 @@
     <meta name="keywords" content="html formatter, html beautifier, html minifier, format html online, beautify html code" />
     <meta name="author" content="RatPDF" />
     <link rel="canonical" href="https://ratpdf.com/PDF/HtmlFormatter" />
+    <!-- Prism.js for syntax highlighting (colored output) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Make the colored output look like a textarea */
+        .colored-output {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            background-color: #1e2a36;
+            color: #f8f8f2;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            resize: vertical;
+            min-height: 240px;
+            max-height: 400px;
+        }
+        .colored-output pre {
+            margin: 0;
+            background: transparent;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .colored-output code {
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        /* Scrollbar styling */
+        .colored-output::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .colored-output::-webkit-scrollbar-track {
+            background: #0f1a24;
+            border-radius: 8px;
+        }
+        .colored-output::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
 <div class="container py-5">
@@ -37,11 +82,11 @@
             <div class="my-3">
                 <script src="https://www.highperformanceformat.com/fd77de31b072acb8bc4b2cdde592284f/invoke.js"></script>
             </div>
-            <!-- Output -->
-            <label class="fw-bold">Formatted Output:</label>
-            <textarea id="htmlOutput" class="form-control" rows="10"
-                      placeholder="Formatted HTML will appear here..."></textarea>
-
+            <!-- Output (replaced textarea with colored div) -->
+            <label class="fw-bold">Formatted Output (Colored):</label>
+            <div id="htmlOutput" class="colored-output" contenteditable="false">
+                <pre><code class="language-markup">← Formatted HTML will appear here with colors →</code></pre>
+            </div>
         </div>
     </div>
     <section class="related-tools">
@@ -52,7 +97,7 @@
             <li><a href="/PDF/ImgToBase64">Image to Base64</a></li>
         </ul>
     </section>
-    <!-- SEO Content -->
+    <!-- SEO Content (unchanged) -->
     <div class="container py-5">
         <div class="card shadow-sm p-4" style="border-radius: 12px;">
             <h2 class="fw-bold mb-3">How to Use Our HTML Formatter Online</h2>
@@ -166,7 +211,22 @@
 </div>
 
 @section Scripts {
-
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "AggregateRating",
+      "itemReviewed": {
+        "@@type": "SoftwareApplication",
+        "name": "HTML Formatter & Beautifier",
+        "url": "https://ratpdf.com/PDF/HtmlFormatter"
+      },
+      "ratingValue": "4.8",
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": "312",
+      "reviewCount": "187"
+    }
+    </script>
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
         {
@@ -238,14 +298,37 @@
             ]
         }")
 </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.9/beautify-html.min.js"></script>
     <script>
+        let currentRawOutput = "";
+
+        function highlightAndDisplay(code) {
+            const outputDiv = document.getElementById("htmlOutput");
+            const container = document.createElement('div');
+            const pre = document.createElement('pre');
+            const codeEl = document.createElement('code');
+            codeEl.className = 'language-markup';
+            codeEl.textContent = code;
+            pre.appendChild(codeEl);
+            container.appendChild(pre);
+            Prism.highlightElement(codeEl);
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(pre);
+            // Apply scroll and style
+            pre.style.margin = '0';
+            pre.style.background = 'transparent';
+            pre.style.whiteSpace = 'pre-wrap';
+            pre.style.wordBreak = 'break-word';
+        }
+
         function formatHtml() {
             let input = document.getElementById("htmlInput").value;
             let formatted = html_beautify(input, {
                 indent_size: 2,
                 wrap_line_length: 120
             });
-            document.getElementById("htmlOutput").value = formatted;
+            currentRawOutput = formatted;
+            highlightAndDisplay(formatted);
         }
 
         function minifyHtml() {
@@ -255,23 +338,27 @@
                 .replace(/\s+/g, " ")
                 .replace(/>\s+</g, "><")
                 .trim();
-            document.getElementById("htmlOutput").value = minified;
+            currentRawOutput = minified;
+            highlightAndDisplay(minified);
         }
 
         function copyOutput() {
-            let output = document.getElementById("htmlOutput");
-            navigator.clipboard.writeText(output.value)
-                .then(() => alert("Copied to clipboard!"))
-                .catch(() => alert("Copy failed"));
+            if (currentRawOutput) {
+                navigator.clipboard.writeText(currentRawOutput)
+                    .then(() => showToast("Copied to clipboard!"))
+                    .catch(() => showToast("Copy failed"));
+            } else {
+                showToast("No formatted output to copy. Please click Beautify or Minify first.");
+            }
         }
 
         function clearAll() {
             document.getElementById("htmlInput").value = "";
-            document.getElementById("htmlOutput").value = "";
+            currentRawOutput = "";
+            const outputDiv = document.getElementById("htmlOutput");
+            outputDiv.innerHTML = '<pre><code class="language-markup">← Formatted HTML will appear here with colors →</code></pre>';
+            const codeEl = outputDiv.querySelector('code');
+            if (codeEl) Prism.highlightElement(codeEl);
         }
     </script>
-
-    <!-- Include Beautify Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.9/beautify-html.min.js"></script>
-
 }

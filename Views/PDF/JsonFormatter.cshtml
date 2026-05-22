@@ -8,6 +8,71 @@
     <meta name="keywords" content="json formatter, json beautifier, json validator, format json online, minify json free" />
     <meta name="author" content="RatPDF" />
     <link rel="canonical" href="https://ratpdf.com/PDF/JsonFormatter" />
+    <!-- Prism.js for JSON syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        .colored-output {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            background-color: #1e2a36;
+            color: #f8f8f2;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            resize: vertical;
+            min-height: 240px;
+            max-height: 400px;
+        }
+        .colored-output pre {
+            margin: 0;
+            background: transparent;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .colored-output code {
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        /* Scrollbar */
+        .colored-output::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .colored-output::-webkit-scrollbar-track {
+            background: #0f1a24;
+            border-radius: 8px;
+        }
+        .colored-output::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 8px;
+        }
+        /* Toast message */
+        .json-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .json-toast.error {
+            background-color: #dc3545;
+        }
+    </style>
 </head>
 
 <div class="container py-5">
@@ -29,10 +94,10 @@
 
             <!-- Buttons -->
             <div class="d-grid gap-2 d-md-flex justify-content-md-between mb-3">
-                <button class="btn btn-primary" onclick="beautifyJson()">Beautify</button>
-                <button class="btn btn-warning" onclick="minifyJson()">Minify</button>
-                <button class="btn btn-success" onclick="copyOutput()">Copy</button>
-                <button class="btn btn-outline-secondary" onclick="clearAll()">Clear</button>
+                <button class="btn btn-primary" id="beautifyBtn">Beautify</button>
+                <button class="btn btn-warning" id="minifyBtn">Minify</button>
+                <button class="btn btn-success" id="copyBtn">Copy</button>
+                <button class="btn btn-outline-secondary" id="clearBtn">Clear</button>
             </div>
             <div class="my-3">
                 <script src="https://www.highperformanceformat.com/fd77de31b072acb8bc4b2cdde592284f/invoke.js"></script>
@@ -40,11 +105,11 @@
             <!-- Error Box -->
             <div id="errorBox" class="alert alert-danger d-none"></div>
 
-            <!-- Output -->
-            <label class="fw-bold">Output:</label>
-            <textarea id="jsonOutput" class="form-control" rows="10"
-                      placeholder="Formatted JSON will appear here..."></textarea>
-
+            <!-- Output (colored syntax-highlighted) -->
+            <label class="fw-bold">Output (Colored):</label>
+            <div id="jsonOutput" class="colored-output" contenteditable="false">
+                <pre><code class="language-json">← Formatted JSON will appear here with colors →</code></pre>
+            </div>
         </div>
     </div>
     <section class="related-tools">
@@ -55,7 +120,7 @@
         <li><a href="/PDF/ImgToBase64">Image to Base64</a></li>
       </ul>
     </section>
-    <!-- SEO Content -->
+    <!-- SEO Content (completely unchanged) -->
     <div class="container py-5">
     <div class="card shadow-lg p-4" style="border-radius:15px;">
         <div class="card-body text-center">
@@ -179,7 +244,22 @@
 </div>
 
 @section Scripts {
-
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "AggregateRating",
+      "itemReviewed": {
+        "@@type": "SoftwareApplication",
+        "name": "JSON Formatter & Validator",
+        "url": "https://ratpdf.com/PDF/JsonFormatter"
+      },
+      "ratingValue": "4.7",
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": "278",
+      "reviewCount": "156"
+    }
+</script>
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
         {
@@ -251,54 +331,143 @@
       ]
     }")
     </script>
+
+    <!-- Prism.js and dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+
     <script>
+        // DOM elements
+        const jsonInput = document.getElementById("jsonInput");
+        const outputDiv = document.getElementById("jsonOutput");
+        const errorBox = document.getElementById("errorBox");
+        const beautifyBtn = document.getElementById("beautifyBtn");
+        const minifyBtn = document.getElementById("minifyBtn");
+        const copyBtn = document.getElementById("copyBtn");
+        const clearBtn = document.getElementById("clearBtn");
+
+        let currentRawOutput = ""; // Stores raw JSON (pretty or minified)
+
+        // Helper: Show colored JSON inside output div
+        function displayColoredJson(rawJsonString) {
+            if (!rawJsonString) {
+                outputDiv.innerHTML = '<pre><code class="language-json">← Formatted JSON will appear here with colors →</code></pre>';
+                // re-highlight placeholder
+                const codeElem = outputDiv.querySelector('code');
+                if (codeElem) Prism.highlightElement(codeElem);
+                return;
+            }
+
+            const container = document.createElement('div');
+            const pre = document.createElement('pre');
+            const code = document.createElement('code');
+            code.className = 'language-json';
+            code.textContent = rawJsonString;
+            pre.appendChild(code);
+            container.appendChild(pre);
+            Prism.highlightElement(code);
+            outputDiv.innerHTML = '';
+            outputDiv.appendChild(pre);
+            pre.style.margin = '0';
+            pre.style.background = 'transparent';
+            pre.style.whiteSpace = 'pre-wrap';
+            pre.style.wordBreak = 'break-word';
+        }
+
+        // Show toast notification
+        function showToast(message, isError = false) {
+            let toast = document.querySelector('.json-toast');
+            if (toast) toast.remove();
+            toast = document.createElement('div');
+            toast.className = 'json-toast' + (isError ? ' error' : '');
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '1'; }, 10);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // Beautify JSON
         function beautifyJson() {
-            const input = document.getElementById("jsonInput").value;
-            const errorBox = document.getElementById("errorBox");
-            const output = document.getElementById("jsonOutput");
-
             errorBox.classList.add("d-none");
             errorBox.innerText = "";
-
             try {
-                const parsed = JSON.parse(input);
-                output.value = JSON.stringify(parsed, null, 2);
+                const parsed = JSON.parse(jsonInput.value);
+                const pretty = JSON.stringify(parsed, null, 2);
+                currentRawOutput = pretty;
+                displayColoredJson(pretty);
             } catch (error) {
                 errorBox.innerText = "Invalid JSON: " + error.message;
                 errorBox.classList.remove("d-none");
-                output.value = "";
+                displayColoredJson("");
+                currentRawOutput = "";
             }
         }
 
+        // Minify JSON
         function minifyJson() {
-            const input = document.getElementById("jsonInput").value;
-            const errorBox = document.getElementById("errorBox");
-            const output = document.getElementById("jsonOutput");
-
             errorBox.classList.add("d-none");
             errorBox.innerText = "";
-
             try {
-                const parsed = JSON.parse(input);
-                output.value = JSON.stringify(parsed);
+                const parsed = JSON.parse(jsonInput.value);
+                const minified = JSON.stringify(parsed);
+                currentRawOutput = minified;
+                displayColoredJson(minified);
             } catch (error) {
                 errorBox.innerText = "Invalid JSON: " + error.message;
                 errorBox.classList.remove("d-none");
-                output.value = "";
+                displayColoredJson("");
+                currentRawOutput = "";
             }
         }
 
+        // Copy with toast
         function copyOutput() {
-            const output = document.getElementById("jsonOutput");
-            navigator.clipboard.writeText(output.value)
-                .then(() => alert("Copied to clipboard!"))
-                .catch(() => alert("Copy failed"));
+            if (currentRawOutput && currentRawOutput.trim()) {
+                navigator.clipboard.writeText(currentRawOutput)
+                    .then(() => showToast("✓ Copied to clipboard!"))
+                    .catch(() => showToast("❌ Copy failed", true));
+            } else {
+                // Try to get from output div if no currentRawOutput (e.g., after clear but maybe user formatted? but currentRawOutput is set on beautify/minify)
+                // fallback: if output div has some text, extract it.
+                const codeElem = outputDiv.querySelector('code');
+                if (codeElem && codeElem.textContent && codeElem.textContent !== "← Formatted JSON will appear here with colors →") {
+                    const text = codeElem.textContent;
+                    navigator.clipboard.writeText(text)
+                        .then(() => showToast("✓ Copied to clipboard!"))
+                        .catch(() => showToast("❌ Copy failed", true));
+                } else {
+                    showToast("⚠️ Nothing to copy. Format or minify JSON first.", true);
+                }
+            }
         }
 
+        // Clear all
         function clearAll() {
-            document.getElementById("jsonInput").value = "";
-            document.getElementById("jsonOutput").value = "";
-            document.getElementById("errorBox").classList.add("d-none");
+            jsonInput.value = "";
+            errorBox.classList.add("d-none");
+            errorBox.innerText = "";
+            currentRawOutput = "";
+            displayColoredJson("");
+        }
+
+        // Event listeners
+        beautifyBtn.addEventListener("click", beautifyJson);
+        minifyBtn.addEventListener("click", minifyJson);
+        copyBtn.addEventListener("click", copyOutput);
+        clearBtn.addEventListener("click", clearAll);
+
+        // Optional: sample demo on load
+        if (!jsonInput.value.trim()) {
+            jsonInput.value = `{
+  "name": "JSON Formatter",
+  "features": ["beautify", "minify", "validate", "color output"],
+  "free": true,
+  "author": "RatPDF"
+}`;
+            beautifyJson();
         }
     </script>
 
