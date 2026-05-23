@@ -6,10 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using ratpdf.Data.AppDBContext;
 using ratpdf.Data.Entities;
 using ratpdf.Services;
+using ratpdf.Services.HtmlSeo;
 using ratpdf.Services.Invoice;
 using ratpdf.Services.Invoice.Contract;
 using ratpdf.Services.Invoice.Feature;
 using ratpdf.Services.Invoice.Implementation;
+using ratpdf.Services.JsonSeo;
+using ratpdf.Services.JwtSeo;
 using System.Threading.RateLimiting;
 
 public partial class Program
@@ -45,6 +48,15 @@ public partial class Program
         builder.Services.AddScoped<LayoutEngineProcessor>();
         builder.Services.AddScoped<HtmlReconstructionService>();
         //builder.Services.AddSingleton<PuppeteerBrowserService>();
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddSingleton<IAllowedSlugsService, AllowedSlugsService>();
+        builder.Services.AddScoped<IContentGenerator, ContentGenerator>();
+        builder.Services.AddScoped<ISchemaGenerator, SchemaGenerator>();
+        builder.Services.AddScoped<ICacheService, CacheService>();
+        builder.Services.AddSingleton<IHtmlAllowedSlugsService, HtmlAllowedSlugsService>();
+        builder.Services.AddScoped<IHtmlContentGenerator, HtmlContentGenerator>();
+        builder.Services.AddSingleton<IJsonAllowedSlugsService, JsonAllowedSlugsService>();
+        builder.Services.AddScoped<IJsonContentGenerator, JsonContentGenerator>();
         builder.Services.Configure<FormOptions>(options =>
         {
             options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB

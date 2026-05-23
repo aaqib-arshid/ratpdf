@@ -8,7 +8,7 @@
 	<!--Tools-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemaptools.xml</loc>
-    <lastmod>2026-05-14</lastmod>
+    <lastmod>2026-05-23</lastmod>
   </sitemap>
   <!--Edit PDF-->
   <sitemap>
@@ -40,6 +40,21 @@
     <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf.xml</loc>
     <lastmod>2026-04-24</lastmod>
   </sitemap>
+	<!--JWT Decoder-->
+	<sitemap>
+		<loc>https://ratpdf.com/sitemaps/jwt_sitemap.xml</loc>
+		<lastmod>2026-05-23</lastmod>
+	</sitemap>
+	<!--Html Formatter-->
+	<sitemap>
+		<loc>https://ratpdf.com/sitemaps/html_sitemap.xml</loc>
+		<lastmod>2026-05-23</lastmod>
+	</sitemap>
+	<!--Json Formatter-->
+	<sitemap>
+		<loc>https://ratpdf.com/sitemaps/json_sitemap.xml</loc>
+		<lastmod>2026-05-23</lastmod>
+	</sitemap>
   <!--What is my ip Tool-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_my_ip.xml</loc>
