@@ -13,6 +13,7 @@ using ratpdf.Services.Invoice.Feature;
 using ratpdf.Services.Invoice.Implementation;
 using ratpdf.Services.JsonSeo;
 using ratpdf.Services.JwtSeo;
+using ratpdf.Services.PaySlip;
 using System.Threading.RateLimiting;
 
 public partial class Program
@@ -47,7 +48,7 @@ public partial class Program
         builder.Services.AddScoped<PdfConversionService>();
         builder.Services.AddScoped<LayoutEngineProcessor>();
         builder.Services.AddScoped<HtmlReconstructionService>();
-        //builder.Services.AddSingleton<PuppeteerBrowserService>();
+        builder.Services.AddSingleton<PayslipPdfService>();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSingleton<IAllowedSlugsService, AllowedSlugsService>();
         builder.Services.AddScoped<IContentGenerator, ContentGenerator>();
@@ -165,6 +166,7 @@ public partial class Program
             name: "bulk_invoice",
             pattern: "invoice/bulk",
             defaults: new { controller = "BulkInvoice", action = "Index" });
+
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");

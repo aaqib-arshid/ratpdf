@@ -1,0 +1,505 @@
+﻿@model ratpdf.Models.PaySlip.PayslipModel
+
+@{
+    ViewData["Title"] = "Free Payslip Generator Online | Download Salary Slip PDF";
+    ViewData["Description"] = "Create professional payslips instantly with logo upload and PDF download. Free online payslip generator with live preview. No signup required.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <!-- SEO Meta -->
+    <meta name="description" content="Create professional payslips instantly with logo upload and PDF download. Free online payslip generator with live preview. No signup required." />
+
+    <meta name="keywords" content="free payslip generator,paystub generator,salary slip generator,payslip pdf,paystub maker,payslip template" />
+
+    <meta name="robots" content="index, follow" />
+
+    <link rel="canonical"
+          href="https://ratpdf.com/free-payslip-generator" />
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+          content="Free Payslip Generator Online" />
+
+    <meta property="og:description"
+          content="Generate professional payslips instantly with logo upload and PDF download." />
+
+    <meta property="og:url"
+          content="https://ratpdf.com/free-payslip-generator" />
+
+    <meta property="og:type"
+          content="website" />
+
+    <meta property="og:image"
+          content="https://ratpdf.com/images/payslip-generator-preview.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary_large_image" />
+
+    <meta name="twitter:title"
+          content="Free Payslip Generator Online" />
+
+    <meta name="twitter:description"
+          content="Generate payslips instantly with live preview and PDF download." />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context":"https://schema.org",
+        "@@type":"SoftwareApplication",
+        "name":"Free Payslip Generator",
+        "applicationCategory":"BusinessApplication",
+        "operatingSystem":"Web",
+        "url":"https://ratpdf.com/free-payslip-generator",
+        "description":"Create professional payslips instantly with logo upload and PDF download.",
+        "offers":{
+        "@@type":"Offer",
+        "price":"0",
+        "priceCurrency":"USD"
+        },
+        "aggregateRating":{
+        "@@type":"AggregateRating",
+        "ratingValue":"4.9",
+        "ratingCount":"2487"
+        }
+        }
+    </script>
+
+    <!-- FAQ JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@@context":"https://schema.org",
+        "@@type":"FAQPage",
+        "mainEntity":[
+        {
+        "@@type":"Question",
+        "name":"Is this payslip generator free?",
+        "acceptedAnswer":{
+        "@@type":"Answer",
+        "text":"Yes, RatPDF offers a completely free payslip generator with instant PDF download."
+        }
+        },
+        {
+        "@@type":"Question",
+        "name":"Can I upload my company logo?",
+        "acceptedAnswer":{
+        "@@type":"Answer",
+        "text":"Yes, you can upload your company logo and it will appear on the generated payslip PDF."
+        }
+        },
+        {
+        "@@type":"Question",
+        "name":"Do I need to create an account?",
+        "acceptedAnswer":{
+        "@@type":"Answer",
+        "text":"No signup or account creation is required."
+        }
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+
+    <!-- HERO -->
+    <div class="text-center mb-5">
+
+        <h1 class="display-4 fw-bold mb-3">
+            Free Payslip Generator
+        </h1>
+
+        <p class="lead text-muted">
+            Create professional salary slips instantly with live preview and PDF download.
+            No signup required.
+        </p>
+
+    </div>
+
+    <div class="row g-5">
+
+        <!-- FORM -->
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body p-4">
+
+                    <form method="post"
+                        asp-controller="PaySlip"
+                          asp-action="Generate"
+                          enctype="multipart/form-data">
+
+                        <h3 class="mb-4">
+                            Payslip Details
+                        </h3>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Company Name
+                            </label>
+
+                            <input asp-for="CompanyName"
+                                   class="form-control form-control-lg"
+                                   id="companyName" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Company Logo
+                            </label>
+
+                            <input asp-for="CompanyLogo"
+                                   type="file"
+                                   accept=".png,.jpg,.jpeg"
+                                   class="form-control"
+                                   id="companyLogo" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Employee Name
+                            </label>
+
+                            <input asp-for="EmployeeName"
+                                   class="form-control"
+                                   id="employeeName" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Employee ID
+                            </label>
+
+                            <input asp-for="EmployeeId"
+                                   class="form-control"
+                                   id="employeeId" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Designation
+                            </label>
+
+                            <input asp-for="Designation"
+                                   class="form-control"
+                                   id="designation" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Pay Period
+                            </label>
+
+                            <input asp-for="PayPeriod"
+                                   class="form-control"
+                                   placeholder="April 2026"
+                                   id="payPeriod" />
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">
+                                    Basic Salary
+                                </label>
+
+                                <input asp-for="BasicSalary"
+                                       class="form-control"
+                                       id="basicSalary"
+                                       value="50000" />
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">
+                                    Bonus
+                                </label>
+
+                                <input asp-for="Bonus"
+                                       class="form-control"
+                                       id="bonus"
+                                       value="5000" />
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">
+                                    Deductions
+                                </label>
+
+                                <input asp-for="Deductions"
+                                       class="form-control"
+                                       id="deductions"
+                                       value="2000" />
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-primary btn-lg w-100 mt-3">
+                            Download Payslip PDF
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- LIVE PREVIEW -->
+        <div class="col-lg-6">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body p-4">
+
+                    <div class="border rounded-4 p-4 bg-white">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div>
+                                <img id="logoPreview"
+                                     src=""
+                                     style="max-height:70px; display:none;" />
+                            </div>
+
+                            <div class="text-end">
+                                <h3 class="fw-bold mb-0">
+                                    PAYSLIP
+                                </h3>
+
+                                <small class="text-muted">
+                                    Live Preview
+                                </small>
+                            </div>
+
+                        </div>
+
+                        <hr />
+
+                        <table class="table table-borderless">
+
+                            <tr>
+                                <td class="fw-bold">Company</td>
+                                <td id="previewCompany">
+                                    Company Name
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="fw-bold">Employee</td>
+                                <td id="previewEmployee">
+                                    Employee Name
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="fw-bold">Employee ID</td>
+                                <td id="previewEmployeeId">
+                                    EMP001
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="fw-bold">Designation</td>
+                                <td id="previewDesignation">
+                                    Software Engineer
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="fw-bold">Pay Period</td>
+                                <td id="previewPeriod">
+                                    April 2026
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <hr />
+
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th>Earnings</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>Basic Salary</td>
+                                    <td class="text-end"
+                                        id="previewSalary">
+                                        ₹50,000
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Bonus</td>
+                                    <td class="text-end"
+                                        id="previewBonus">
+                                        ₹5,000
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Deductions</td>
+                                    <td class="text-end text-danger"
+                                        id="previewDeductions">
+                                        ₹2,000
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                            <tfoot>
+
+                                <tr class="table-light">
+
+                                    <th>Net Salary</th>
+
+                                    <th class="text-end text-success"
+                                        id="previewNet">
+                                        ₹53,000
+                                    </th>
+
+                                </tr>
+
+                            </tfoot>
+
+                        </table>
+
+                        <div class="text-center mt-4">
+
+                            <small class="text-muted">
+                                Generated with RatPDF.com
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="mt-5 pt-5">
+
+        <h2 class="fw-bold mb-4">
+            Professional Payslip Generator Online
+        </h2>
+
+        <p>
+            RatPDF offers a free online payslip generator that helps businesses,
+            freelancers, HR teams, startups, and employers create professional salary slips instantly.
+            Upload your company logo, enter employee salary details, and download a high-quality PDF payslip within seconds.
+        </p>
+
+        <p>
+            Our free pay stub generator is designed for speed, simplicity, and professional results.
+            Unlike other tools, no registration or account creation is required.
+        </p>
+
+        <h3 class="fw-bold mt-5 mb-3">
+            Features
+        </h3>
+
+        <ul>
+            <li>Free PDF payslip download</li>
+            <li>Upload company logo</li>
+            <li>Live payslip preview</li>
+            <li>Mobile-friendly generator</li>
+            <li>No signup required</li>
+            <li>Professional salary slip templates</li>
+        </ul>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+
+        function updatePreview() {
+
+        let salary =
+        parseFloat($("#basicSalary").val()) || 0;
+
+        let bonus =
+        parseFloat($("#bonus").val()) || 0;
+
+        let deductions =
+        parseFloat($("#deductions").val()) || 0;
+
+        let net =
+        salary + bonus - deductions;
+
+        $("#previewCompany")
+        .text($("#companyName").val());
+
+        $("#previewEmployee")
+        .text($("#employeeName").val());
+
+        $("#previewEmployeeId")
+        .text($("#employeeId").val());
+
+        $("#previewDesignation")
+        .text($("#designation").val());
+
+        $("#previewPeriod")
+        .text($("#payPeriod").val());
+
+        $("#previewSalary")
+        .text("₹" + salary.toLocaleString());
+
+        $("#previewBonus")
+        .text("₹" + bonus.toLocaleString());
+
+        $("#previewDeductions")
+        .text("₹" + deductions.toLocaleString());
+
+        $("#previewNet")
+        .text("₹" + net.toLocaleString());
+        }
+
+        $("input").on("keyup change", function () {
+        updatePreview();
+        });
+
+        $("#companyLogo").on("change", function (e) {
+
+        const file = e.target.files[0];
+
+        if (file) {
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+
+        $("#logoPreview")
+        .attr("src", event.target.result)
+        .show();
+
+        };
+
+        reader.readAsDataURL(file);
+        }
+        });
+
+        updatePreview();
+
+    </script>
+}
