@@ -7,7 +7,7 @@
         public string EmployeeId { get; set; } = string.Empty;
         public string Designation { get; set; } = string.Empty;
         public string PayPeriod { get; set; } = string.Empty;
-
+        public string Currency { get; set; } = "INR";
         public decimal BasicSalary { get; set; }
         public decimal Bonus { get; set; }
         public decimal Deductions { get; set; }

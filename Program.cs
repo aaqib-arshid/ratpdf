@@ -14,6 +14,7 @@ using ratpdf.Services.Invoice.Implementation;
 using ratpdf.Services.JsonSeo;
 using ratpdf.Services.JwtSeo;
 using ratpdf.Services.PaySlip;
+using ratpdf.Services.RentReceipt;
 using System.Threading.RateLimiting;
 
 public partial class Program
@@ -87,6 +88,7 @@ public partial class Program
         builder.Services.AddSingleton<GoogleOAuthService>();
         builder.Services.AddScoped<InvoicePdfService>();
         builder.Services.AddScoped<BrandingService>();
+        builder.Services.AddSingleton<RentReceiptPdfService>();
         builder.Services.AddScoped<SubscriptionManager>();
         builder.Services.AddScoped<RazorpayService>();
         builder.Services.AddScoped<UsageTracker>();
