@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Complete Your Purchase";
+    string plan = ViewBag.Plan;
+    int amount = ViewBag.Amount;
+    string planName = ViewBag.PlanName;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow rounded-4 border-0">
+                <div class="card-body p-5 text-center">
+                    <h2 class="fw-bold mb-4">Complete Your Purchase</h2>
+                    <div class="mb-4">
+                        <span class="badge bg-primary fs-6 px-3 py-2">@planName</span>
+                        <h3 class="mt-3">₹@amount</h3>
+                        <p class="text-muted">One-time payment – instant download</p>
+                    </div>
+                    <button id="rzp-button" class="btn btn-primary btn-lg px-5">Pay Now ₹@amount</button>
+                    <p class="mt-4 small text-muted">You will be redirected to the upload page after successful payment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    const plan = '@plan';
+    const amount = @amount;
+
+    document.getElementById('rzp-button').onclick = async () => {
+    const response = await fetch('/bulk-payslip-generator/initiate-order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `plan=${plan}`
+    });
+    const data = await response.json();
+
+    const options = {
+    key: data.key,
+    amount: data.amount * 100,
+    currency: 'INR',
+    name: 'Bulk Payslip Generator',
+    description: `${data.plan === 'starter' ? 'Up to 100 rows' : 'Up to 500 rows'}`,
+    order_id: data.orderId,
+    handler: async (paymentResponse) => {
+    const verifyData = new FormData();
+    verifyData.append('razorpay_payment_id', paymentResponse.razorpay_payment_id);
+    verifyData.append('razorpay_order_id', paymentResponse.razorpay_order_id);
+    verifyData.append('razorpay_signature', paymentResponse.razorpay_signature);
+    verifyData.append('plan', data.plan);
+
+    const verifyResp = await fetch('/bulk-payslip-generator/verify-payment', {
+    method: 'POST',
+    body: verifyData
+    });
+    const verifyResult = await verifyResp.json();
+    if (verifyResult.redirect) {
+    window.location.href = verifyResult.redirect;
+    } else {
+    alert('Payment verification failed.');
+    }
+    },
+    modal: {
+    ondismiss: () => { alert('Payment cancelled.'); }
+    }
+    };
+    const rzp = new Razorpay(options);
+    rzp.open();
+    };
+</script>

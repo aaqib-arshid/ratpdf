@@ -1,0 +1,396 @@
+﻿@{
+    ViewData["Title"] = "Bulk Payslip Generator | Generate 100-500 Payslips in Minutes";
+    ViewData["Description"] = "Generate up to 500 payslips from Excel instantly. ₹499 for 100 rows, ₹999 for 500 rows. Free preview, no subscription. Secure RazorPay payment.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Bulk Payslip Generator | Generate 100-500 Payslips in Minutes">
+    <meta name="description" content="Generate up to 500 professional payslips from Excel in seconds. Bulk payroll PDFs with logo, custom earnings, and deductions. Pay once, download ZIP.">
+    <meta name="keywords" content="bulk payslip generator, multiple payslip generator, payroll PDF bulk, salary slip generator for 100 employees, payslip from Excel, mass payslip creator, employee payslip batch, payroll ZIP download, payslip automation, generate 500 payslips">
+    <meta name="author" content="RatPDF">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ratpdf.com/bulk-payslip-generator">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ratpdf.com/bulk-payslip-generator">
+    <meta property="og:title" content="Bulk Payslip Generator – 100 to 500 Payslips at Once">
+    <meta property="og:description" content="Generate bulk salary slips from Excel with company logo. Pay only ₹499 for 100 rows or ₹999 for 500 rows. Instant ZIP download.">
+    <meta property="og:image" content="https://ratpdf.com/images/bulk-payslip-preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ratpdf.com/bulk-payslip-generator">
+    <meta property="twitter:title" content="Bulk Payslip Generator – Instant Payroll PDFs">
+    <meta property="twitter:description" content="Generate up to 500 payslips from Excel. Fast, secure, no subscription.">
+    <meta property="twitter:image" content="https://ratpdf.com/images/bulk-payslip-preview.jpg">
+
+    <!-- JSON‑LD: Organization + AggregateRating -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "Product",
+        "name": "Bulk Payslip Generator",
+        "description": "Generate 100 to 500 professional payslips from Excel in minutes. Includes logo, earnings, deductions, and net salary calculation.",
+        "brand": {
+        "@@type": "Brand",
+        "name": "RatPDF"
+        },
+        "offers": [
+        {
+        "@@type": "Offer",
+        "name": "Starter Plan",
+        "price": "499",
+        "priceCurrency": "INR",
+        "description": "Up to 100 employees",
+        "availability": "https://schema.org/InStock"
+        },
+        {
+        "@@type": "Offer",
+        "name": "Professional Plan",
+        "price": "999",
+        "priceCurrency": "INR",
+        "description": "Up to 500 employees",
+        "availability": "https://schema.org/InStock"
+        }
+        ],
+        "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "1247",
+        "bestRating": "5",
+        "worstRating": "1"
+        }
+        }
+    </script>
+
+    <!-- FAQ JSON‑LD -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "How many payslips can I generate in bulk?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "You can generate up to 100 payslips (₹499 plan) or up to 500 payslips (₹999 plan) in a single Excel upload."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "What Excel format do I need?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Your Excel should have columns like Employee Name, Employee ID, Basic Salary, HRA, Allowances, PF, Professional Tax, Income Tax. Any column containing 'PF', 'Tax', 'Deduction' will be treated as a deduction; others as earnings."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Can I add my company logo?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes, you can upload a logo (PNG/JPG) during the upload step. It will appear on every payslip PDF."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Is the payment secure?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "We use RazorPay – a PCI-DSS compliant payment gateway. Your card or UPI details are never stored on our servers."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Do I need to sign up or subscribe?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "No signup, no subscription. Pay once and download your ZIP instantly. No recurring fees."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <!-- HowTo Schema for step‑by‑step -->
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "HowTo",
+        "name": "How to Generate Bulk Payslips",
+        "description": "Generate 100 to 500 payslips in 4 simple steps.",
+        "step": [
+        {
+        "@@type": "HowToStep",
+        "name": "Choose your plan",
+        "text": "Select Starter (₹499 / 100 rows) or Professional (₹999 / 500 rows)."
+        },
+        {
+        "@@type": "HowToStep",
+        "name": "Pay securely",
+        "text": "Complete payment via RazorPay (UPI, Card, NetBanking)."
+        },
+        {
+        "@@type": "HowToStep",
+        "name": "Upload Excel file",
+        "text": "Upload your employee data Excel file and optional company logo."
+        },
+        {
+        "@@type": "HowToStep",
+        "name": "Download ZIP",
+        "text": "Get a ZIP file containing individual PDF payslips for all employees."
+        }
+        ]
+        }
+    </script>
+}
+
+<div class="container py-5">
+    <!-- HERO -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Bulk Payslip Generator <span class="text-primary">100–500 Payslips</span></h1>
+        <p class="lead text-muted">Convert Excel payroll data into professional PDF payslips – with company logo, earnings, and deductions.</p>
+        <p class="mb-4">✔ Instant ZIP download ✔ No subscription ✔ Secure RazorPay payment</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="#pricing" class="btn btn-primary btn-lg px-5 rounded-pill">View Plans</a>
+            <a href="#how-it-works" class="btn btn-outline-secondary btn-lg px-5 rounded-pill">How it Works</a>
+        </div>
+    </div>
+
+    <!-- PRICING SECTION (id="pricing") -->
+    <div id="pricing" class="mb-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Simple, Transparent Pricing</h2>
+            <p class="text-muted">Pay once – no hidden fees, no recurring charges</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <!-- Starter Card -->
+            <div class="col-md-5">
+                <div class="card border-0 shadow-lg rounded-4 h-100 position-relative">
+                    <div class="position-absolute top-0 start-50 translate-middle bg-primary text-white px-3 py-1 rounded-pill">Most Popular</div>
+                    <div class="card-body p-5 text-center">
+                        <h3 class="fw-bold mb-2">₹499</h3>
+                        <p class="text-muted">for up to <strong>100 employees</strong></p>
+                        <hr />
+                        <ul class="list-unstyled text-start mt-4 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Process Excel with ≤100 rows</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> 1 PDF per employee</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Company logo & branding</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Automatic earnings/deductions</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> ZIP file download</li>
+                        </ul>
+                        <button class="btn btn-primary rounded-pill px-4 w-100 select-plan" data-plan="starter">Select Plan →</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Professional Card -->
+            <div class="col-md-5">
+                <div class="card border-0 shadow-lg rounded-4 h-100">
+                    <div class="card-body p-5 text-center">
+                        <h3 class="fw-bold mb-2">₹999</h3>
+                        <p class="text-muted">for up to <strong>500 employees</strong></p>
+                        <hr />
+                        <ul class="list-unstyled text-start mt-4 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Process Excel with ≤500 rows</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> 1 PDF per employee</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Company logo & branding</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Priority email support</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Instant ZIP download</li>
+                        </ul>
+                        <button class="btn btn-outline-info rounded-pill px-4 w-100 select-plan" data-plan="pro">Select Plan →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOW IT WORKS (step‑by‑step) -->
+    <div id="how-it-works" class="mb-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">How to Generate Bulk Payslips</h2>
+            <p class="text-muted">Four simple steps from Excel to payroll ZIP</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="text-center p-4 border rounded-4 h-100 shadow-sm">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px;">1</div>
+                    <h5>Choose Plan</h5>
+                    <p class="small">Select Starter (₹499 / 100 rows) or Professional (₹999 / 500 rows).</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-4 border rounded-4 h-100 shadow-sm">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px;">2</div>
+                    <h5>Pay Securely</h5>
+                    <p class="small">RazorPay checkout – UPI, card, netbanking. No account required.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-4 border rounded-4 h-100 shadow-sm">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px;">3</div>
+                    <h5>Upload Excel</h5>
+                    <p class="small">Upload your payroll Excel file + optional company logo.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-4 border rounded-4 h-100 shadow-sm">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px;">4</div>
+                    <h5>Download ZIP</h5>
+                    <p class="small">Get a ZIP file with all payslips – ready to share or print.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEATURES SECTION (long‑tail keywords) -->
+    <div class="mb-5 bg-light rounded-4 p-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="fw-bold">Why Choose Our Bulk Payslip Generator?</h2>
+                <ul class="mt-4">
+                    <li><strong>Mass payroll processing</strong> – Generate 100, 200, even 500 payslips in minutes.</li>
+                    <li><strong>Zero manual work</strong> – Just prepare an Excel file with employee data.</li>
+                    <li><strong>Automatic calculation</strong> – Net salary = total earnings – total deductions.</li>
+                    <li><strong>Custom branding</strong> – Add your company logo to every PDF.</li>
+                    <li><strong>No subscription</strong> – Pay once, use forever.</li>
+                    <li><strong>Secure & private</strong> – Files are processed in memory, never stored.</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div class="bg-white p-4 rounded-4 shadow text-center">
+                    <i class="bi bi-file-earmark-excel-fill fs-1 text-success"></i>
+                    <i class="bi bi-arrow-right-short fs-1"></i>
+                    <i class="bi bi-file-earmark-pdf-fill fs-1 text-danger"></i>
+                    <i class="bi bi-arrow-right-short fs-1"></i>
+                    <i class="bi bi-file-zip-fill fs-1 text-warning"></i>
+                    <p class="mt-3">Excel → PDF Payslips → ZIP</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXCEL TEMPLATE EXAMPLE -->
+    <div class="mb-5">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h3 class="fw-bold mb-3">Excel Template Example</h3>
+                <p>Your Excel should have a header row. The following columns are recognised automatically (any order):</p>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Employee ID</th>
+                                <th>Department</th>
+                                <th>Basic Salary</th>
+                                <th>HRA</th>
+                                <th>Allowances</th>
+                                <th>PF</th>
+                                <th>Professional Tax</th>
+                                <th>Income Tax</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>EMP001</td>
+                                <td>Sales</td>
+                                <td>50000</td>
+                                <td>10000</td>
+                                <td>5000</td>
+                                <td>1800</td>
+                                <td>200</td>
+                                <td>3500</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="small text-muted mt-2">Columns containing "PF", "Tax", "Deduction" are treated as deductions – others are earnings. Gross and net are calculated automatically.</p>
+                <a href="#" class="btn btn-outline-primary btn-sm" id="downloadTemplateBtn">Download Sample Excel Template</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ SECTION -->
+    <div class="mb-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">How many payslips can I generate in bulk?</button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">Up to 100 payslips with the Starter plan (₹499) or up to 500 payslips with the Professional plan (₹999).</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">What Excel format is required?</button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">Any .xlsx file with a header row containing columns like "Employee Name", "Employee ID", "Basic Salary", "HRA", "Allowances", "PF", "Professional Tax", etc. Our system automatically detects earnings and deductions based on column names.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Can I add my company logo?</button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">Yes, you can upload a PNG or JPG logo during the upload step. It will appear on every generated payslip.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">Is the payment secure?</button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">Absolutely. We use RazorPay, a PCI-DSS Level 1 certified payment gateway. Your payment details never touch our servers.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">Do I need an account?</button>
+                </h2>
+                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">No. No signup, no registration. Pay, upload, download – that’s it.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">What do I get after payment?</button>
+                </h2>
+                <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">After successful payment, you’ll be redirected to the upload page. Once you upload your Excel and logo, you’ll receive a ZIP file containing individual PDF payslips for each employee.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FINAL CTA -->
+    <div class="text-center bg-primary text-white rounded-4 p-5">
+        <h2 class="fw-bold mb-3">Ready to Save Hours of Payroll Work?</h2>
+        <p class="mb-4">Generate 100 to 500 payslips in minutes – starting at just ₹499.</p>
+        <a href="#pricing" class="btn btn-light btn-lg px-5 rounded-pill">Choose Your Plan →</a>
+    </div>
+</div>
+
+
+<script>
+    document.querySelectorAll('.select-plan').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const plan = btn.dataset.plan;
+            window.location.href = `/bulk-payslip-generator/pricing?plan=${plan}`;
+        });
+    });
+
+    document.getElementById('downloadTemplateBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = '/bulk-payslip-generator/download-template';
+    });
+</script>

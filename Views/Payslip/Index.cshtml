@@ -475,7 +475,7 @@
                         <div class="text-center mt-4">
 
                             <small class="text-muted">
-                                Generated with RatPDF.com
+                                Generated with ratpdf.com
                             </small>
 
                         </div>
@@ -488,8 +488,702 @@
 
         </div>
 
+    </div><!-- BULK PAYSLIP PRICING SECTION -->
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Bulk Payslip Generator</h2>
+            <p class="lead text-muted">Generate multiple payslips at once – pay only for what you need</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <!-- Free Plan (Single payslip) -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-3">
+                            <span class="badge bg-success px-3 py-2 rounded-pill">Free</span>
+                        </div>
+                        <h3 class="fw-bold mb-2">₹0</h3>
+                        <p class="text-muted">per payslip</p>
+                        <hr />
+                        <ul class="list-unstyled text-start mt-4 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 1 employee per payslip</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Company logo upload</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Live preview</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> PDF download</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> No signup required</li>
+                        </ul>
+                        <a href="/free-payslip-generator" class="btn btn-outline-success rounded-pill px-4">Use Free Plan →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Starter Plan (Up to 100 rows) -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-lg rounded-4 h-100 border-primary border-2">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-3">
+                            <span class="badge bg-primary px-3 py-2 rounded-pill">Most Popular</span>
+                        </div>
+                        <h3 class="fw-bold mb-2">₹499</h3>
+                        <p class="text-muted">for up to 100 employees</p>
+                        <hr />
+                        <ul class="list-unstyled text-start mt-4 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Bulk Excel upload</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Up to 100 rows per file</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Company logo & branding</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Separate PDF for each employee</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> ZIP download with all payslips</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Instant delivery after payment</li>
+                        </ul>
+                        <button class="btn btn-primary rounded-pill px-5 select-plan-btn" data-plan="starter">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Plan (Up to 500 rows) -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-3">
+                            <span class="badge bg-info text-dark px-3 py-2 rounded-pill">Best Value</span>
+                        </div>
+                        <h3 class="fw-bold mb-2">₹999</h3>
+                        <p class="text-muted">for up to 500 employees</p>
+                        <hr />
+                        <ul class="list-unstyled text-start mt-4 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> All Starter features</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Up to 500 rows per file</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Priority support</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> No per-employee limits</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Bulk export as ZIP</li>
+                        </ul>
+                        <button class="btn btn-outline-info rounded-pill px-5 select-plan-btn" data-plan="pro">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <p class="text-muted">✓ Secure payment via RazorPay  ✓ Instant download  ✓ No subscription</p>
+        </div>
     </div>
 
+    <script>
+            document.querySelectorAll('.select-plan-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const plan = btn.dataset.plan;
+                    // Redirect to bulk payslip generator with selected plan
+                    window.location.href = `/bulk-payslip-generator/pricing?plan=${plan}`;
+                });
+            });
+    </script>
+    <!-- SEO CONTENT SECTION FOR PAYSLIP GENERATOR -->
+    <section class="container py-5">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <!-- INTRO -->
+                <div class="mb-5">
+
+                    <h2 class="fw-bold mb-4">
+                        Free Payslip Generator Online
+                    </h2>
+
+                    <p>
+                        Create professional salary slips instantly using our
+                        <strong>free payslip generator</strong>.
+                        Generate clean and printable
+                        <strong>payslip PDFs</strong> online for employees,
+                        freelancers, startups, HR departments, agencies,
+                        small businesses, and organizations.
+                    </p>
+
+                    <p>
+                        Our online
+                        <strong>salary slip generator</strong>
+                        helps businesses create professional employee payslips
+                        without complicated payroll software.
+                        Upload your company logo, enter employee salary details,
+                        preview the payslip live, and download a professional PDF instantly.
+                    </p>
+
+                    <p>
+                        Whether you need a
+                        <strong>paystub generator</strong>,
+                        <strong>salary slip maker</strong>,
+                        <strong>employee payslip PDF</strong>,
+                        <strong>monthly salary slip</strong>,
+                        or
+                        <strong>professional payroll payslip</strong>,
+                        this tool makes payslip creation fast and easy.
+                    </p>
+
+                </div>
+
+                <!-- FEATURES -->
+                <div class="mb-5">
+
+                    <h2 class="fw-bold mb-4">
+                        Features of Our Online Payslip Generator
+                    </h2>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <div class="border rounded-4 p-4 shadow-sm h-100">
+
+                                <h5 class="fw-bold">
+                                    Instant PDF Download
+                                </h5>
+
+                                <p class="mb-0">
+                                    Download professional salary slip PDFs instantly.
+                                </p>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="border rounded-4 p-4 shadow-sm h-100">
+
+                                <h5 class="fw-bold">
+                                    Upload Company Logo
+                                </h5>
+
+                                <p class="mb-0">
+                                    Add your company branding and logo to generated payslips.
+                                </p>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="border rounded-4 p-4 shadow-sm h-100">
+
+                                <h5 class="fw-bold">
+                                    Live Payslip Preview
+                                </h5>
+
+                                <p class="mb-0">
+                                    Preview salary slips instantly while entering payroll details.
+                                </p>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="border rounded-4 p-4 shadow-sm h-100">
+
+                                <h5 class="fw-bold">
+                                    Free Salary Slip Generator
+                                </h5>
+
+                                <p class="mb-0">
+                                    Generate unlimited payslips online without signup or fees.
+                                </p>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- HOW TO USE -->
+                <div class="mb-5">
+
+                    <h2 class="fw-bold mb-4">
+                        How to Use the Payslip Generator
+                    </h2>
+
+                    <div class="border rounded-4 p-4 shadow-sm">
+
+                        <div class="mb-4">
+
+                            <h5 class="fw-bold">
+                                Step 1: Enter Company Details
+                            </h5>
+
+                            <p class="mb-0">
+                                Add your company name and upload your business logo.
+                            </p>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <h5 class="fw-bold">
+                                Step 2: Add Employee Information
+                            </h5>
+
+                            <p class="mb-0">
+                                Enter employee name, employee ID,
+                                designation, and payroll period.
+                            </p>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <h5 class="fw-bold">
+                                Step 3: Enter Salary Details
+                            </h5>
+
+                            <p class="mb-0">
+                                Add salary, bonus, deductions,
+                                allowances, and payroll amounts.
+                            </p>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <h5 class="fw-bold">
+                                Step 4: Preview Payslip
+                            </h5>
+
+                            <p class="mb-0">
+                                Instantly preview the salary slip before downloading.
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold">
+                                Step 5: Download Payslip PDF
+                            </h5>
+
+                            <p class="mb-0">
+                                Download a clean and printable employee payslip instantly.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- WHAT IS PAYSLIP -->
+                <div class="mb-5">
+
+                    <h2 class="fw-bold mb-4">
+                        What Is a Payslip?
+                    </h2>
+
+                    <p>
+                        A payslip, also known as a salary slip or paystub,
+                        is an official payroll document issued by employers
+                        to employees showing salary payments, bonuses,
+                        deductions, taxes, and net salary details.
+                    </p>
+
+                    <p>
+                        Professional salary slips are commonly used for:
+                    </p>
+
+                    <ul>
+                        <li>Employee payroll documentation</li>
+                        <li>Income proof verification</li>
+                        <li>Bank loan applications</li>
+                        <li>Visa processing</li>
+                        <li>Tax filing and accounting</li>
+                        <li>HR payroll records</li>
+                        <li>Employment verification</li>
+                        <li>Salary payment tracking</li>
+                    </ul>
+
+                </div>
+
+                <!-- BENEFITS -->
+                <div class="mb-5">
+
+                    <h2 class="fw-bold mb-4">
+                        Benefits of Using an Online Salary Slip Generator
+                    </h2>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-4">
+
+                            <div class="border rounded-4 p-4 shadow-sm h-100">
+
+                                <h5 class="fw-bold">
+                                    Faster Payroll Documentation
+                                </h5>
+
+                                <p class="mb-0">
+                                    Generate professional employee salary slips within seconds.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="border rounded-4 p-4 shadow-sm h-100">
+
+                                <h5 class="fw-bold">
+                                    Professional Formatting
+                                </h5>
+
+                                <p class="mb-0">
+                                    Create clean, modern, and printable payroll PDFs.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="border rounded-4 p-4 shadow-sm h-100">
+
+                                <h5 class="fw-bold">
+                                    No Software Installation
+                                </h5>
+
+                                <p class="mb-0">
+                                    Use directly from desktop or mobile browsers online.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- KEYWORDS -->
+                <div class="mb-5">
+
+                    <h2 class="fw-bold mb-4">
+                        Popular Payslip Generator Searches
+                    </h2>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <ul>
+                                <li>Free payslip generator</li>
+                                <li>Salary slip generator</li>
+                                <li>Paystub generator</li>
+                                <li>Employee payslip PDF</li>
+                                <li>Payslip maker online</li>
+                                <li>Payroll payslip generator</li>
+                                <li>Monthly salary slip</li>
+                                <li>Salary slip template</li>
+                                <li>Professional payslip PDF</li>
+                                <li>Online paystub creator</li>
+                            </ul>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <ul>
+                                <li>Salary statement generator</li>
+                                <li>Employee payroll slip</li>
+                                <li>Payslip template PDF</li>
+                                <li>Free payroll generator</li>
+                                <li>Company salary slip maker</li>
+                                <li>Payroll PDF generator</li>
+                                <li>Printable payslip template</li>
+                                <li>Income proof salary slip</li>
+                                <li>Employee payment slip</li>
+                                <li>Online payroll software free</li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- FAQ -->
+                <div class="mb-5">
+
+                    <h2 class="fw-bold mb-4">
+                        Frequently Asked Questions
+                    </h2>
+
+                    <div class="accordion" id="payslipFaq">
+
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+
+                                <button class="accordion-button"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq1">
+
+                                    Is this payslip generator free?
+
+                                </button>
+
+                            </h2>
+
+                            <div id="faq1"
+                                 class="accordion-collapse collapse show"
+                                 data-bs-parent="#payslipFaq">
+
+                                <div class="accordion-body">
+                                    Yes, the payslip generator is completely free to use.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq2">
+
+                                    Can I upload my company logo?
+
+                                </button>
+
+                            </h2>
+
+                            <div id="faq2"
+                                 class="accordion-collapse collapse"
+                                 data-bs-parent="#payslipFaq">
+
+                                <div class="accordion-body">
+                                    Yes, company logos can be uploaded and displayed on payslips.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq3">
+
+                                    Can I download salary slips as PDF?
+
+                                </button>
+
+                            </h2>
+
+                            <div id="faq3"
+                                 class="accordion-collapse collapse"
+                                 data-bs-parent="#payslipFaq">
+
+                                <div class="accordion-body">
+                                    Yes, payslips can be downloaded instantly as PDF files.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq4">
+
+                                    Do I need payroll software?
+
+                                </button>
+
+                            </h2>
+
+                            <div id="faq4"
+                                 class="accordion-collapse collapse"
+                                 data-bs-parent="#payslipFaq">
+
+                                <div class="accordion-body">
+                                    No, this online salary slip generator works directly in your browser.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- INTERNAL LINKING -->
+                <div class="mb-5">
+
+                    <div class="bg-light rounded-4 p-5 border">
+
+                        <h2 class="fw-bold mb-4">
+                            Related PDF & Business Tools
+                        </h2>
+
+                        <div class="row g-4">
+
+                            <div class="col-md-4">
+
+                                <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                                    <div class="card-body">
+
+                                        <h5 class="fw-bold">
+                                            Invoice Generator
+                                        </h5>
+
+                                        <p class="text-muted">
+                                            Create professional invoices with PDF download support.
+                                        </p>
+
+                                        <a href="/Invoice/Create"
+                                               class="btn btn-outline-primary btn-sm">
+
+                                            Open Invoice Generator
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                                    <div class="card-body">
+
+                                        <h5 class="fw-bold">
+                                            GST Invoice Generator
+                                        </h5>
+
+                                        <p class="text-muted">
+                                            Generate GST invoices with automatic tax calculations.
+                                        </p>
+
+                                        <a href="/Invoice/Create"
+                                               class="btn btn-outline-primary btn-sm">
+
+                                            Open GST Invoice Tool
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                                    <div class="card-body">
+
+                                        <h5 class="fw-bold">
+                                            Rent Receipt Generator
+                                        </h5>
+
+                                        <p class="text-muted">
+                                            Generate rent receipt PDFs instantly online.
+                                        </p>
+
+                                        <a href="/rent-receipt-generator"
+                                               class="btn btn-outline-primary btn-sm">
+
+                                            Create Rent Receipt
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- TEXT LINKS -->
+                <div class="mb-5">
+
+                    <h2 class="fw-bold mb-4">
+                        Explore More Online PDF Tools
+                    </h2>
+
+                    <p>
+                        Looking for more business and payroll document generators?
+                        Try our
+                        <a href="/Invoice/Create">
+                            Invoice Generator
+                        </a>,
+                        <a href="/Invoice/Create">
+                            GST Invoice Generator
+                        </a>,
+                        <a href="/rent-receipt-generator">
+                            Rent Receipt Generator
+                        </a>
+                        to create professional PDF documents instantly online.
+                    </p>
+
+                    <p>
+                        Users searching for
+                        <strong>salary slip generator</strong>,
+                        <strong>employee payroll PDF</strong>,
+                        <strong>paystub maker</strong>,
+                        <strong>free payroll generator</strong>,
+                        and
+                        <strong>professional payslip templates</strong>
+                        often also use our invoice and receipt creation tools.
+                    </p>
+
+                </div>
+
+                <!-- CTA -->
+                <div class="text-center bg-primary text-white rounded-4 p-5">
+
+                    <h2 class="fw-bold mb-3">
+                        Generate Professional Payslips Instantly
+                    </h2>
+
+                    <p class="mb-4">
+                        Create printable salary slips online with live preview
+                        and instant PDF download support.
+                    </p>
+
+                    <a href="/free-payslip-generator"
+                           class="btn btn-light btn-lg px-5">
+
+                        Generate Payslip Now
+
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
     <!-- CONTENT -->
     <div class="mt-5 pt-5">
 

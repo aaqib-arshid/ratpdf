@@ -68,5 +68,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Pdf-Engine\" />
+	  <Folder Include="wwwroot\uploads\" />
 	</ItemGroup>
 </Project>

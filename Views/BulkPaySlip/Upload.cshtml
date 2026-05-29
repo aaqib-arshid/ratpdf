@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Bulk Payslip Generator - Upload";
+    int maxRows = ViewBag.MaxRows;
+    string planName = ViewBag.PlanName;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow rounded-4 border-0">
+                <div class="card-body p-5">
+                    <h2 class="fw-bold mb-3">Upload Employee Data</h2>
+                    <div class="alert alert-info">
+                        <strong>Your Plan:</strong> @planName (max @maxRows employees)
+                    </div>
+
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Excel File (.xlsx)</label>
+                            <input type="file" name="excel" class="form-control" accept=".xlsx" required />
+                            <div class="form-text">Required columns: Employee Name, Employee ID, Department, Basic Salary, HRA, Allowances, PF, Professional Tax, etc.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Company Name</label>
+                            <input type="text" name="companyName" class="form-control" value="My Company" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Company Logo (optional)</label>
+                            <input type="file" name="logo" class="form-control" accept="image/png,image/jpeg" />
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg w-100">Generate & Download ZIP</button>
+                    </form>
+                    <div id="loading" class="mt-3 text-center d-none">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p>Generating payslips... Large batches take few minutes, please wait.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4 shadow rounded-4">
+                <div class="card-body p-4">
+                    <h5>📄 Excel Template Format</h5>
+                    <p class="small">Your Excel should have a header row with the following columns (order doesn't matter):</p>
+                    <ul class="small">
+                        <li><strong>Employee Name</strong> (text)</li>
+                        <li><strong>Employee ID</strong> (text)</li>
+                        <li><strong>Department</strong> (text)</li>
+                        <li><strong>Designation</strong> (optional)</li>
+                        <li><strong>Basic Salary</strong> (number)</li>
+                        <li><strong>HRA</strong> (number)</li>
+                        <li><strong>Allowances</strong> (number)</li>
+                        <li><strong>PF</strong> (number, treated as deduction)</li>
+                        <li><strong>Professional Tax</strong> (number, deduction)</li>
+                        <li><strong>Income Tax</strong> (number, deduction)</li>
+                    </ul>
+                    <p class="small mb-0">Any column containing "PF", "Tax", "Deduction" will be considered a deduction; others are earnings. Gross and net are calculated automatically.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('uploadForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const loading = document.getElementById('loading');
+        loading.classList.remove('d-none');
+
+        const formData = new FormData(e.target);
+        const response = await fetch('/bulk-payslip-generator/generate', {
+            method: 'POST',
+            body: formData
+        });
+
+        loading.classList.add('d-none');
+
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Payslips.zip';
+            a.click();
+            URL.revokeObjectURL(url);
+        } else {
+            const errorText = await response.text();
+            alert('Error: ' + errorText);
+        }
+    };
+</script>
