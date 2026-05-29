@@ -1,0 +1,37 @@
+﻿@using ratpdf.Controllers
+@model PayslipSeoViewModel
+@{
+    ViewData["Title"] = Model.Content.MetaTitle;
+    ViewData["Description"] = Model.Content.MetaDescription;
+}
+@section Head {
+    <script type="application/ld+json">@Html.Raw(Model.BreadcrumbSchema)</script>
+    <script type="application/ld+json">@Html.Raw(Model.FaqSchema)</script>
+}
+
+<article>
+    <h1>@Model.Content.HeadingH1</h1>
+    @Html.Raw(Model.Content.IntroductionHtml)
+    
+    @foreach (var sec in Model.Content.Sections)
+    {
+        <h2>@sec.Heading</h2>
+        @Html.Raw(sec.Html)
+    }
+    
+    @Html.Raw(Model.Content.SamplePayslipHtml)
+    
+    @if (Model.Content.Faqs.Any())
+    {
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list">
+            @foreach (var faq in Model.Content.Faqs)
+            {
+                <div class="faq-item">
+                    <h3>@faq.Question</h3>
+                    <p>@faq.Answer</p>
+                </div>
+            }
+        </div>
+    }
+</article>

@@ -14,6 +14,7 @@ using ratpdf.Services.Invoice.Implementation;
 using ratpdf.Services.JsonSeo;
 using ratpdf.Services.JwtSeo;
 using ratpdf.Services.PaySlip;
+using ratpdf.Services.PayslipSeo;
 using ratpdf.Services.RentReceipt;
 using System.Threading.RateLimiting;
 
@@ -59,6 +60,8 @@ public partial class Program
         builder.Services.AddScoped<IHtmlContentGenerator, HtmlContentGenerator>();
         builder.Services.AddSingleton<IJsonAllowedSlugsService, JsonAllowedSlugsService>();
         builder.Services.AddScoped<IJsonContentGenerator, JsonContentGenerator>();
+        builder.Services.AddScoped<IPayslipAllowedSlugsService, PayslipAllowedSlugsService>();
+        builder.Services.AddScoped<IPayslipContentGenerator, PayslipContentGenerator>();
         builder.Services.Configure<FormOptions>(options =>
         {
             options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB

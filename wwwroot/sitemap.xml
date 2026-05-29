@@ -65,4 +65,9 @@
     <loc>https://ratpdf.com/sitemaps/sitemap_content_decay_detector.xml</loc>
     <lastmod>2026-05-04</lastmod>
   </sitemap>
+	<!--Pay Slip/Bulk Pay Slip Generator-->
+	<sitemap>
+		<loc>https://ratpdf.com/sitemaps/payslip_sitemap.xml</loc>
+		<lastmod>2026-05-29</lastmod>
+	</sitemap>
 </sitemapindex>
