@@ -3,22 +3,22 @@
 	<!--Invoice-->
 	<sitemap>
 		<loc>https://ratpdf.com/sitemaps/sitemap-invoice.xml</loc>
-		<lastmod>2026-05-17</lastmod>
+		<lastmod>2026-05-31</lastmod>
 	</sitemap>
 	<!--Tools-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemaptools.xml</loc>
-    <lastmod>2026-05-29</lastmod>
+    <lastmod>2026-05-31</lastmod>
   </sitemap>
   <!--Edit PDF-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap-editpdf.xml</loc>
-    <lastmod>2026-05-07</lastmod>
+    <lastmod>2026-05-31</lastmod>
   </sitemap>
   <!--PDF To Word-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap-pdf-to-word.xml</loc>
-    <lastmod>2026-05-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
   </sitemap>
   <!--WordCounter-->
   <sitemap>
@@ -28,46 +28,46 @@
   <!--RingSizeConverter-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_ring_converter.xml</loc>
-    <lastmod>2026-04-24</lastmod>
+    <lastmod>2026-05-31</lastmod>
   </sitemap>
   <!--Pdf to text-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_pdf_to_txt.xml</loc>
-    <lastmod>2026-04-24</lastmod>
+    <lastmod>2026-05-31</lastmod>
   </sitemap>
   <!--Compress Pdf-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_compress_pdf.xml</loc>
-    <lastmod>2026-04-24</lastmod>
+    <lastmod>2026-05-31</lastmod>
   </sitemap>
 	<!--JWT Decoder-->
 	<sitemap>
 		<loc>https://ratpdf.com/sitemaps/jwt_sitemap.xml</loc>
-		<lastmod>2026-05-23</lastmod>
+		<lastmod>2026-05-31</lastmod>
 	</sitemap>
 	<!--Html Formatter-->
 	<sitemap>
 		<loc>https://ratpdf.com/sitemaps/html_sitemap.xml</loc>
-		<lastmod>2026-05-23</lastmod>
+		<lastmod>2026-05-31</lastmod>
 	</sitemap>
 	<!--Json Formatter-->
 	<sitemap>
 		<loc>https://ratpdf.com/sitemaps/json_sitemap.xml</loc>
-		<lastmod>2026-05-23</lastmod>
+		<lastmod>2026-05-31</lastmod>
 	</sitemap>
   <!--What is my ip Tool-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_my_ip.xml</loc>
-    <lastmod>2026-04-26</lastmod>
+    <lastmod>2026-05-31</lastmod>
   </sitemap>
   <!--Content Decay Detector-->
   <sitemap>
     <loc>https://ratpdf.com/sitemaps/sitemap_content_decay_detector.xml</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-05-31</lastmod>
   </sitemap>
 	<!--Pay Slip/Bulk Pay Slip Generator-->
 	<sitemap>
 		<loc>https://ratpdf.com/sitemaps/payslip_sitemap.xml</loc>
-		<lastmod>2026-05-29</lastmod>
+		<lastmod>2026-05-31</lastmod>
 	</sitemap>
 </sitemapindex>
