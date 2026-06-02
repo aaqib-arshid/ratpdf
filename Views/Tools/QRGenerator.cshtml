@@ -1,0 +1,365 @@
+﻿@{
+    ViewData["Title"] = "QR Code Generator Online Free | Create Custom QR Codes Instantly";
+    ViewData["Description"] = "Free online QR Code Generator. Create, customize, and download high-quality QR codes for URLs, text, phone numbers, WiFi, and more. Instant browser-based tool with no ads.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="Free online QR Code Generator. Create, customize, and download high-quality QR codes for URLs, text, phone numbers, WiFi, and more. Instant browser-based tool with no ads." />
+    <meta name="keywords" content="QR code generator, create QR code, free QR code, QR code maker, online QR generator, dynamic QR code, QR for URL, QR code download, bulk QR code, QR code designer" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/qr-code-generator" />
+    <meta property="og:title" content="QR Code Generator Online Free | Instant QR Creator" />
+    <meta property="og:description" content="Generate and download QR codes for free. Supports text, URLs, contact info, and WiFi credentials. Fast, secure, no registration." />
+    <meta property="og:url" content="https://ratpdf.com/qr-code-generator" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://ratpdf.com/assets/qr-preview.png" />
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "QR Code Generator",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Web",
+            "url": "https://ratpdf.com/qr-code-generator",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "Free browser-based QR code generator with download and customization options.",
+            "featureList": "Create QR codes from text, URL, WiFi, vCard; error correction levels; PNG download; multiple size options"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@@type": "Question",
+                    "name": "How do I generate a QR code?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Enter your text, URL, or any data in the input field, select size and error correction level, then click 'Generate QR Code'. The QR code appears instantly and you can download it as PNG."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "Is this QR code generator free?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Yes, it's completely free. No watermarks, no sign-up, and unlimited usage."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "Can I generate QR codes for WiFi or vCard?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Absolutely. Just format your text accordingly: WIFI:T:WPA;S:YourSSID;P:YourPassword;; or for vCard use BEGIN:VCARD... format. Our generator works with any plain text."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        .qr-canvas-wrapper {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        canvas {
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.02);
+            border-radius: 16px;
+            background: white;
+            padding: 12px;
+        }
+        .btn-generate {
+            background: #0d6efd;
+            color: white;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn-generate:hover {
+            background: #0b5ed7;
+            transform: translateY(-2px);
+        }
+        .btn-download {
+            background: #198754;
+            color: white;
+        }
+        .card-hover {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15) !important;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">⚡ QR Code Generator</h1>
+        <p class="lead text-muted mt-2">
+            Create, customize, and download high-resolution QR codes instantly — <strong>100% free</strong>, no signup, no watermarks.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">🔗 URL / Text</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">📱 WiFi login</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">📇 vCard contact</span>
+            <span class="badge bg-info bg-opacity-10 text-dark px-3 py-2 rounded-pill">💬 SMS / Email</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4 card-hover">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">📝 Enter data (text, URL, WiFi config, etc.)</label>
+                        <input type="text" id="qrTextInput" class="form-control form-control-lg" 
+                               placeholder="Example: https://ratpdf.com  or  Hello world!  or  WIFI:T:WPA;S:MyNetwork;P:pass123;;"
+                               value="https://ratpdf.com/qr-code-generator" />
+                        <div class="form-text mt-2">💡 Supports any UTF-8 text: website URLs, plain messages, contact info, event tickets, etc.</div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">📐 QR Size (pixels)</label>
+                            <select id="qrSizeSelect" class="form-select rounded-pill">
+                                <option value="180">Small (180x180)</option>
+                                <option value="250" selected>Medium (250x250)</option>
+                                <option value="320">Large (320x320)</option>
+                                <option value="400">Extra Large (400x400)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">🛡️ Error Correction</label>
+                            <select id="qrECLevel" class="form-select rounded-pill">
+                                <option value="L">Low (7% recovery)</option>
+                                <option value="M" selected>Medium (15% recovery) – Recommended</option>
+                                <option value="Q">Quartile (25% recovery)</option>
+                                <option value="H">High (30% recovery)</option>
+                            </select>
+                            <div class="form-text">Higher correction → more robust, but slightly denser QR.</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <button id="generateBtn" class="btn btn-generate btn-lg px-5 rounded-pill shadow-sm flex-grow-1">✨ Generate QR Code</button>
+                        <button id="downloadBtn" class="btn btn-download btn-lg px-4 rounded-pill shadow-sm">⬇️ Download PNG</button>
+                    </div>
+
+                    <div class="qr-canvas-wrapper bg-light rounded-4">
+                        <div class="mb-2 text-muted small">🔲 Your QR code preview</div>
+                        <canvas id="qrCanvas" width="250" height="250" style="max-width:100%; height:auto; background:white; border-radius: 20px;"></canvas>
+                        <div id="qrStatusMsg" class="mt-3 fw-medium"></div>
+                        <p class="small text-secondary mt-2 mb-0"><i class="bi bi-info-circle"></i> Scan with any camera app or QR reader.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-12">
+            <h2 class="fw-bold mb-4">📌 QR Code Generator Online – Fast, Free & Reliable</h2>
+            <p>Our <strong>QR Code Generator</strong> helps you create scannable QR codes for any purpose: website links, Wi-Fi authentication, business cards, app downloads, payment links, event check-ins, and more. No software installation, no watermarks, and every QR code is generated directly inside your browser – your data never leaves your device.</p>
+            <p>QR (Quick Response) codes store information in a two-dimensional matrix of black and white squares. Modern smartphones can scan them instantly. Our generator uses the industry‑standard QRCode.js library, producing high-quality, printable QR codes with adjustable size and error correction.</p>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100 p-3">
+                <h3 class="h5 fw-bold">🧠 How QR Code Generation Works</h3>
+                <p>Every QR code consists of position markers, timing patterns, and encoded data. When you enter text/URL, our tool:</p>
+                <ol class="small">
+                    <li>Converts your input into a binary data stream.</li>
+                    <li>Adds error correction codewords (based on selected level: L/M/Q/H).</li>
+                    <li>Maps bits into a matrix with finder patterns and alignment blocks.</li>
+                    <li>Renders final canvas preview – ready to scan and share.</li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100 p-3">
+                <h3 class="h5 fw-bold">🚀 Popular Use Cases</h3>
+                <ul class="mb-0">
+                    <li><strong>Website / landing page</strong> – drive traffic from print or digital media.</li>
+                    <li><strong>Wi-Fi credentials</strong> – format: <code>WIFI:T:WPA;S:MySSID;P:password;;</code></li>
+                    <li><strong>vCard (digital business card)</strong> – <code>BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nTEL:12345\nEND:VCARD</code></li>
+                    <li><strong>App download links</strong> (Google Play / App Store).</li>
+                    <li><strong>Event check-in & tickets</strong> – encode unique IDs.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">📖 QR Code Examples & Conversion Guide</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+                <tr><th>Content Type</th><th>Example Input</th><th>Typical Usage</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Website URL</td><td><code>https://ratpdf.com/tools</code></td><td>Print ads, posters, email signatures</td></tr>
+                <tr><td>Plain Text</td><td><code>Hello, scan this secret message!</code></td><td>Product info, museum guides</td></tr>
+                <tr><td>Wi-Fi Login</td><td><code>WIFI:T:WPA;S:HomeNetwork;P:securePass123;;</code></td><td>Guest Wi-Fi access</td></tr>
+                <tr><td>Phone Number</td><td><code>tel:+1234567890</code></td><td>Click-to-call QR code</td></tr>
+                <tr><td>SMS Message</td><td><code>smsto:+1234567890:Hello%20from%20QR</code></td><td>Marketing campaigns</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">🔢 QR Code Data Capacity & Error Correction</h2>
+    <p>QR codes can store up to <strong>~4,296 alphanumeric characters</strong> or ~2,953 bytes (binary). Higher error correction (H level) makes the code readable even if 30% is damaged, but reduces capacity. Our generator automatically adjusts encoding based on your input length. Use the size selector to make scanning easier in different environments.</p>
+
+    <div class="alert alert-primary bg-opacity-10 border-0 rounded-4">
+        <h5 class="alert-heading fw-semibold">🎯 Pro tip: Testing & printing</h5>
+        <p class="mb-0">After generating your QR, always scan it with multiple devices before printing. For best results, use medium (M) correction and keep at least 0.5cm quiet zone around the QR image.</p>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header" id="faq1">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">Is this QR code generator really free?</button>
+            </h3>
+            <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Yes, 100% free. No hidden costs, no watermarks, no registration. You can generate unlimited QR codes and download them as PNG files. All processing is done client‑side.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header" id="faq2">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">Can I generate a QR code for a dynamic URL that I can edit later?</button>
+            </h3>
+            <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">This tool generates <strong>static QR codes</strong> that encode the exact data you enter. For editable destinations, we recommend using a URL shortener with a redirect (e.g., you can change the destination behind a short link, then generate a QR code for that short link).</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header" id="faq3">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">Does it support vCard or calendar events?</button>
+            </h3>
+            <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Absolutely. vCard: paste a standard vCard 3.0/4.0 text. For calendar events (iCalendar), use format: <code>BEGIN:VEVENT\nSUMMARY:Meeting\nDTSTART:20250602T090000\nEND:VEVENT</code>. The raw text will be encoded and smartphones will recognize it.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/decimal-to-binary" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔢 Decimal to Binary</div></a></div>
+        <div class="col-md-3 col-6"><a href="/PDF/HtmlFormatter" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🌐 HTML Formatter</div></a></div>
+        <div class="col-md-3 col-6"><a href="/PDF/JsonFormatter" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">{ } JSON Formatter</div></a></div>
+        <div class="col-md-3 col-6"><a href="/Tools/WhatIsMyIP" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🌍 What Is My IP</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        (function() {
+            const textInput = document.getElementById('qrTextInput');
+            const sizeSelect = document.getElementById('qrSizeSelect');
+            const ecLevelSelect = document.getElementById('qrECLevel');
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const canvas = document.getElementById('qrCanvas');
+            const statusDiv = document.getElementById('qrStatusMsg');
+
+            let currentQRData = '';
+            let currentSize = 250;
+            let currentECLevel = 'M';
+
+            function renderQRCode(text, size, ecLevel) {
+                return new Promise((resolve, reject) => {
+                    if (!text || text.trim() === '') {
+                        reject(new Error('Please enter some text or URL.'));
+                        return;
+                    }
+                    statusDiv.innerHTML = '';
+                    const opts = { width: size, margin: 2, errorCorrectionLevel: ecLevel.toUpperCase(), color: { dark: '#000000', light: '#FFFFFF' } };
+                    QRCode.toCanvas(canvas, text, opts, function (error) {
+                        if (error) {
+                            let msg = error.message.includes('overflow') ? 'Data too large for selected error correction. Try "Low" correction or shorter text.' : 'Invalid content or encoding limit.';
+                            reject(new Error(msg));
+                        } else { resolve(true); }
+                    });
+                });
+            }
+
+            async function generateQR() {
+                let rawText = textInput.value.trim();
+                if (rawText === '') {
+                    statusDiv.innerHTML = 'Please enter text, URL, or Wi-Fi credentials.';
+                    statusDiv.classList.add('text-danger');
+                    const ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    currentQRData = '';
+                    return;
+                }
+                const selectedSize = parseInt(sizeSelect.value, 10);
+                const selectedEC = ecLevelSelect.value;
+                currentSize = selectedSize;
+                currentECLevel = selectedEC;
+                canvas.width = selectedSize;
+                canvas.height = selectedSize;
+                canvas.style.width = `${selectedSize}px`;
+                canvas.style.height = `${selectedSize}px`;
+                statusDiv.innerHTML = '⏳ Generating QR code...';
+                statusDiv.classList.remove('text-danger');
+                try {
+                    await renderQRCode(rawText, selectedSize, selectedEC);
+                    currentQRData = rawText;
+                    statusDiv.innerHTML = '✅ QR code generated successfully! Click download to save PNG.';
+                    statusDiv.classList.add('text-success');
+                } catch (err) {
+                    statusDiv.innerHTML = `❌ ${err.message}`;
+                    statusDiv.classList.add('text-danger');
+                    currentQRData = '';
+                }
+            }
+
+            function downloadQR() {
+                if (!currentQRData) {
+                    statusDiv.innerHTML = '⚠️ No valid QR code to download. Generate one first.';
+                    statusDiv.classList.add('text-danger');
+                    return;
+                }
+                const link = document.createElement('a');
+                const timestamp = new Date().toISOString().slice(0,19).replace(/:/g, '-');
+                link.download = `QR_${timestamp}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                statusDiv.innerHTML = '📸 PNG downloaded successfully!';
+                setTimeout(() => { if (statusDiv.innerHTML.includes('downloaded')) statusDiv.innerHTML = '✅ QR code ready.'; }, 2000);
+            }
+
+            generateBtn.addEventListener('click', generateQR);
+            downloadBtn.addEventListener('click', downloadQR);
+            textInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') generateQR(); });
+
+
+            const defaultText = textInput.value.trim();
+            const defaultSize = parseInt(sizeSelect.value, 10);
+            const defaultEC = ecLevelSelect.value;
+            canvas.width = defaultSize;
+            canvas.height = defaultSize;
+            renderQRCode(defaultText, defaultSize, defaultEC).then(() => {
+                currentQRData = defaultText;
+                statusDiv.innerHTML = 'Ready! Generate new QR or download this one.';
+            }).catch(() => { statusDiv.innerHTML = 'Demo preview: adjust content.'; });
+        })();
+    </script>
+}

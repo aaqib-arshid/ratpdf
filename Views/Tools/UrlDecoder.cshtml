@@ -1,0 +1,318 @@
+﻿@{
+    ViewData["Title"] = "URL Decoder Online Free | Decode Percent-Encoded Strings Instantly";
+    ViewData["Description"] = "Free online URL Decoder tool. Decode percent-encoded URLs, query strings, and form data instantly. Supports decodeURIComponent and UTF-8 characters.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="Free online URL Decoder tool. Decode percent-encoded URLs, query strings, and form data instantly. Supports decodeURIComponent and UTF-8 characters." />
+    <meta name="keywords" content="url decoder, url decode, decode uri component, percent decoding, url unescape, decode url string, url decoding tool" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/url-decoder" />
+    <meta property="og:title" content="URL Decoder | Free Online Tool" />
+    <meta property="og:description" content="Decode percent-encoded URLs and strings instantly. Supports UTF-8 and standard percent encoding." />
+    <meta property="og:url" content="https://ratpdf.com/url-decoder" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "URL Decoder",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Web",
+            "url": "https://ratpdf.com/url-decoder",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "Decode percent-encoded URL components using JavaScript's decodeURIComponent. 100% client-side and free.",
+            "featureList": "URL decode, percent decoding, UTF-8 support, copy to clipboard, error handling"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@@type": "Question",
+                    "name": "What is URL decoding?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "URL decoding converts percent-encoded characters back to their original form. For example, %20 becomes a space, %26 becomes an ampersand (&)."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "When do I need to decode a URL?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "When you receive encoded query parameters from a web server, API, or form submission and need to read the original values."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "What happens if I try to decode invalid percent encoding?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "The tool will show a clear error message. Invalid sequences like %XX or incomplete percent signs will trigger a decoding error."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <style>
+        .result-area {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            background: #f8f9fa;
+        }
+        .example-badge {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .example-badge:hover {
+            opacity: 0.7;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🔓 URL Decoder</h1>
+        <p class="lead text-muted">
+            Decode percent‑encoded URLs, query strings, and form data instantly — <strong>free, client‑side, and privacy‑focused</strong>.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">%20 → Space</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">%26 → &amp;</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">UTF-8 Support</span>
+            <span class="badge bg-info bg-opacity-10 text-dark px-3 py-2 rounded-pill">📋 Copy Result</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📥 Encoded String (percent‑encoded URL)</label>
+                        <textarea id="encodedInput" class="form-control result-area" rows="4" placeholder="Paste your percent-encoded string here...&#10;Example: hello%20world%26co%3F%23"></textarea>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mb-4 justify-content-center">
+                        <button id="decodeBtn" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm">🔓 Decode Now</button>
+                        <button id="clearBtn" class="btn btn-outline-secondary rounded-pill px-4">🗑️ Clear</button>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">📋 Decoded Result</label>
+                        <textarea id="decodedOutput" class="form-control result-area" rows="4" readonly placeholder="Decoded text will appear here..."></textarea>
+                        <div class="mt-2 text-end">
+                            <button id="copyBtn" class="btn btn-sm btn-outline-secondary rounded-pill">📋 Copy Decoded Text</button>
+                        </div>
+                    </div>
+
+                    <div id="statusMsg" class="alert d-none mt-3 mb-0" role="alert"></div>
+
+                    <div class="mt-4 pt-3 border-top">
+                        <label class="form-label fw-semibold">💡 Try these examples:</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-secondary example-badge" data-example="hello%20world">hello%20world</span>
+                            <span class="badge bg-secondary example-badge" data-example="https%3A%2F%2Fexample.com%2Fpage%3Fid%3D123%26name%3DJohn%20Doe">URL with params</span>
+                            <span class="badge bg-secondary example-badge" data-example="%C3%BCber%20cool">UTF-8 (über cool)</span>
+                            <span class="badge bg-secondary example-badge" data-example="%24%20%26%20%3F%20%23">Special chars</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🔍 What is URL Decoding?</h2>
+            <p><strong>URL decoding</strong> is the process of converting percent‑encoded characters back to their original representation. Percent encoding replaces unsafe or reserved characters with a <code>%</code> followed by two hexadecimal digits. Decoding reverses this, allowing you to read the original text.</p>
+            <p>For example:</p>
+            <ul>
+                <li><code>hello%20world</code> → <code>hello world</code></li>
+                <li><code>https%3A%2F%2Fexample.com</code> → <code>https://example.com</code></li>
+                <li><code>%C3%A9t%C3%A9</code> → <code>été</code> (UTF‑8)</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">⚙️ How This Tool Works</h2>
+            <p>This decoder uses JavaScript's built‑in <code>decodeURIComponent()</code> function, which follows the standard RFC 3986 for percent decoding. It handles:</p>
+            <ul>
+                <li>Standard ASCII percent encoding (<code>%20</code>, <code>%26</code>, <code>%3D</code>, etc.)</li>
+                <li>UTF‑8 multi‑byte characters (e.g., <code>%C3%A9</code> for "é")</li>
+                <li>Reserved characters like <code>/</code>, <code>?</code>, <code>#</code>, <code>&</code></li>
+            </ul>
+            <p class="mb-0">All decoding happens locally in your browser — no data is ever sent to any server.</p>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">📊 Common Encoded Characters & Their Decoded Forms</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr><th>Encoded</th><th>Decoded</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>%20</td><td>space</td><td>Space</td></tr>
+                <tr><td>%21</td><td>!</td><td>Exclamation</td></tr>
+                <tr><td>%22</td><td>"</td><td>Double quote</td></tr>
+                <tr><td>%23</td><td>#</td><td>Hash</td></tr>
+                <tr><td>%24</td><td>$</td><td>Dollar</td></tr>
+                <tr><td>%25</td><td>%</td><td>Percent</td></tr>
+                <tr><td>%26</td><td>&</td><td>Ampersand</td></tr>
+                <tr><td>%27</td><td>'</td><td>Single quote</td></tr>
+                <tr><td>%28</td><td>(</td><td>Left parenthesis</td></tr>
+                <tr><td>%29</td><td>)</td><td>Right parenthesis</td></tr>
+                <tr><td>%2B</td><td>+</td><td>Plus</td></tr>
+                <tr><td>%2F</td><td>/</td><td>Forward slash</td></tr>
+                <tr><td>%3A</td><td>:</td><td>Colon</td></tr>
+                <tr><td>%3B</td><td>;</td><td>Semicolon</td></tr>
+                <tr><td>%3D</td><td>=</td><td>Equals</td></tr>
+                <tr><td>%3F</td><td>?</td><td>Question mark</td></tr>
+                <tr><td>%40</td><td>@Html.Raw("@")</td><td>At symbol</td></tr>
+                <tr><td>%C3%A9</td><td>é</td><td>e acute (UTF‑8)</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">⚠️ When to Use URL Decoding</h2>
+    <div class="alert alert-secondary border-0 rounded-4">
+        <ul class="mb-0">
+            <li><strong>Web development</strong> – decode query parameters from <code>window.location.search</code> or API responses.</li>
+            <li><strong>Data analysis</strong> – clean URL‑encoded logs or CSV fields.</li>
+            <li><strong>Form processing</strong> – decode <code>application/x-www-form-urlencoded</code> payloads.</li>
+            <li><strong>Security testing</strong> – examine encoded payloads for injection attempts.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">What's the difference between decodeURI and decodeURIComponent?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body"><code>decodeURIComponent</code> decodes a complete encoded component (like a query parameter value). <code>decodeURI</code> decodes a full URL but leaves reserved characters like <code>/ ? #</code> intact. This tool uses <code>decodeURIComponent</code> because it's the most common use case.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Why do I get an error when decoding?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">The most common error is an incomplete percent sequence (e.g., <code>%2</code>) or an invalid hex character (e.g., <code>%GG</code>). The tool will display a clear error message. Check your input for malformed encoding.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Does it support UTF-8 characters like emojis?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Yes. Emojis are encoded as multiple percent‑encoded bytes in UTF-8. For example, the smiley face 😀 becomes <code>%F0%9F%98%80</code> when encoded. Our decoder restores the original emoji.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/url-encoder" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔗 URL Encoder</div></a></div>
+        <div class="col-md-3 col-6"><a href="/binary-to-decimal" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔢 Binary to Decimal</div></a></div>
+        <div class="col-md-3 col-6"><a href="/password-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔐 Password Generator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/qr-code-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📱 QR Code Generator</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        (function() {
+            const encodedInput = document.getElementById('encodedInput');
+            const decodedOutput = document.getElementById('decodedOutput');
+            const decodeBtn = document.getElementById('decodeBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const statusMsg = document.getElementById('statusMsg');
+            const exampleBadges = document.querySelectorAll('.example-badge');
+
+            function showStatus(message, isError = false) {
+                statusMsg.textContent = message;
+                statusMsg.classList.remove('d-none', 'alert-info', 'alert-danger');
+                statusMsg.classList.add(isError ? 'alert-danger' : 'alert-info');
+                setTimeout(() => {
+                    statusMsg.classList.add('d-none');
+                }, 3000);
+            }
+
+            function decodeUrl() {
+                const encoded = encodedInput.value.trim();
+                if (encoded === '') {
+                    showStatus('Please enter an encoded string to decode.', false);
+                    decodedOutput.value = '';
+                    return;
+                }
+                try {
+                    const decoded = decodeURIComponent(encoded);
+                    decodedOutput.value = decoded;
+                    showStatus('✅ Decoded successfully!', false);
+                } catch (e) {
+                    decodedOutput.value = '';
+                    showStatus('❌ Invalid percent encoding. Check for incomplete % sequences or invalid hex digits (e.g., %XX).', true);
+                }
+            }
+
+            function clearAll() {
+                encodedInput.value = '';
+                decodedOutput.value = '';
+                showStatus('Cleared input and output.', false);
+            }
+
+            function copyDecoded() {
+                if (decodedOutput.value === '') {
+                    showStatus('Nothing to copy. Decode something first.', false);
+                    return;
+                }
+                navigator.clipboard.writeText(decodedOutput.value).then(() => {
+                    showStatus('📋 Decoded text copied to clipboard!', false);
+                }).catch(() => {
+                    showStatus('❌ Failed to copy.', true);
+                });
+            }
+
+            function setExample(exampleText) {
+                encodedInput.value = exampleText;
+                decodeUrl();
+            }
+
+            decodeBtn.addEventListener('click', decodeUrl);
+            clearBtn.addEventListener('click', clearAll);
+            copyBtn.addEventListener('click', copyDecoded);
+
+            exampleBadges.forEach(badge => {
+                badge.addEventListener('click', () => {
+                    const exampleValue = badge.getAttribute('data-example');
+                    if (exampleValue) setExample(exampleValue);
+                });
+            });
+
+            encodedInput.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    decodeUrl();
+                }
+            });
+        })();
+    </script>
+}

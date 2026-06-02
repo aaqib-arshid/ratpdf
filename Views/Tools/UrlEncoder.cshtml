@@ -1,0 +1,317 @@
+﻿@{
+    ViewData["Title"] = "URL Encoder/Decoder Online Free | Encode URL Strings Instantly";
+    ViewData["Description"] = "Free online URL Encoder and Decoder tool. Encode and decode URL components, query strings, and special characters instantly. Supports encodeURIComponent and decodeURIComponent.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="Free online URL Encoder and Decoder tool. Encode and decode URL components, query strings, and special characters instantly. Supports encodeURIComponent and decodeURIComponent." />
+    <meta name="keywords" content="url encoder, url decoder, url encode, url decode, encode uri component, decode uri component, percent encoding, url escape, url unescape" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/url-encoder" />
+    <meta property="og:title" content="URL Encoder/Decoder | Free Online Tool" />
+    <meta property="og:description" content="Encode and decode URL strings, query parameters, and form data. Fast, secure, client-side only." />
+    <meta property="og:url" content="https://ratpdf.com/url-encoder" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "URL Encoder/Decoder",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Web",
+            "url": "https://ratpdf.com/url-encoder",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "Encode or decode URL components and query strings using standard JavaScript functions. 100% client-side.",
+            "featureList": "URL encode, URL decode, percent encoding, percent decoding, clear, swap, error handling"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@@type": "Question",
+                    "name": "What is URL encoding?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "URL encoding replaces unsafe ASCII characters with a '%' followed by two hexadecimal digits. For example, space becomes %20. This ensures safe transmission over the internet."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "When should I use URL encoding?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Use URL encoding when you need to include special characters (spaces, &, ?, #, etc.) in query strings, form data, or path segments of a URL."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "Is this tool secure?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Yes. All encoding and decoding happens locally in your browser. No data is ever sent to a server."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <style>
+        .result-area {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            background: #f8f9fa;
+        }
+        .swap-icon {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .swap-icon:hover {
+            transform: scale(1.1);
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🔗 URL Encoder / Decoder</h1>
+        <p class="lead text-muted">
+            Encode and decode URL components, query strings, and form data instantly — <strong>free, client‑side, and privacy‑focused</strong>.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">🔐 Percent Encoding</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🔄 Encode / Decode</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">📋 Copy to Clipboard</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📝 Input (plain text or encoded URL)</label>
+                        <textarea id="inputText" class="form-control result-area" rows="4" placeholder="Enter text to encode OR an encoded string to decode...&#10;Example: hello world & special chars = ?#"></textarea>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mb-4 justify-content-center">
+                        <button id="encodeBtn" class="btn btn-primary rounded-pill px-4 shadow-sm">✨ Encode (encodeURIComponent)</button>
+                        <button id="decodeBtn" class="btn btn-success rounded-pill px-4 shadow-sm">🔓 Decode (decodeURIComponent)</button>
+                        <button id="clearBtn" class="btn btn-outline-secondary rounded-pill px-4">🗑️ Clear</button>
+                        <button id="swapBtn" class="btn btn-outline-info rounded-pill px-4" title="Copy output to input">🔄 Swap</button>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">📋 Result</label>
+                        <textarea id="outputText" class="form-control result-area" rows="4" readonly placeholder="Result will appear here..."></textarea>
+                        <div class="mt-2 text-end">
+                            <button id="copyOutputBtn" class="btn btn-sm btn-outline-secondary rounded-pill">📋 Copy Result</button>
+                        </div>
+                    </div>
+
+                    <div id="statusMsg" class="alert alert-info mt-3 mb-0 d-none" role="alert"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🌐 What is URL Encoding?</h2>
+            <p><strong>URL encoding</strong> (percent encoding) converts unsafe characters into a format that can be safely transmitted over the internet. URLs can only contain ASCII characters from a limited set (A-Z, a-z, 0-9, and some special symbols like <code>-_.~</code>). All other characters must be encoded.</p>
+            <p>Encoded characters are represented as <code>%</code> followed by two hexadecimal digits. For example, a space becomes <code>%20</code>, and an ampersand (<code>&</code>) becomes <code>%26</code>.</p>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">⚙️ How to Use This Tool</h2>
+            <ul>
+                <li><strong>To encode:</strong> Enter plain text (e.g., <code>hello world & co</code>) and click <strong>Encode</strong>. You'll get <code>hello%20world%20%26%20co</code>.</li>
+                <li><strong>To decode:</strong> Enter an encoded string (e.g., <code>hello%20world</code>) and click <strong>Decode</strong>.</li>
+                <li><strong>Clear</strong> resets both fields.</li>
+                <li><strong>Swap</strong> copies the output back to the input for quick round‑trip testing.</li>
+                <li>Click <strong>Copy Result</strong> to copy the output to your clipboard.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">📊 Common URL Encoding Table</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr><th>Character</th><th>Encoded Value</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td> </td><td>%20</td><td>Space</td></tr>
+                <tr><td>!</td><td>%21</td><td>Exclamation mark</td></tr>
+                <tr><td>"</td><td>%22</td><td>Double quote</td></tr>
+                <tr><td>#</td><td>%23</td><td>Hash / fragment</td></tr>
+                <tr><td>$</td><td>%24</td><td>Dollar sign</td></tr>
+                <tr><td>%</td><td>%25</td><td>Percent sign</td></tr>
+                <tr><td>&</td><td>%26</td><td>Ampersand (query separator)</td></tr>
+                <tr><td>'</td><td>%27</td><td>Single quote</td></tr>
+                <tr><td>(</td><td>%28</td><td>Left parenthesis</td></tr>
+                <tr><td>)</td><td>%29</td><td>Right parenthesis</td></tr>
+                <tr><td>+</td><td>%2B</td><td>Plus sign</td></tr>
+                <tr><td>,</td><td>%2C</td><td>Comma</td></tr>
+                <tr><td>/</td><td>%2F</td><td>Forward slash</td></tr>
+                <tr><td>:</td><td>%3A</td><td>Colon</td></tr>
+                <tr><td>;</td><td>%3B</td><td>Semicolon</td></tr>
+                <tr><td>=</td><td>%3D</td><td>Equals sign</td></tr>
+                <tr><td>?</td><td>%3F</td><td>Question mark</td></tr>
+                <tr><td>@Html.Raw("@")</td><td>%40</td><td>At symbol</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">🔧 When to Use encodeURI vs encodeURIComponent</h2>
+    <div class="alert alert-secondary border-0 rounded-4">
+        <p>This tool uses <strong>encodeURIComponent</strong> and <strong>decodeURIComponent</strong>, which are the standard JavaScript functions for encoding/decoding query parameters and form data.</p>
+        <ul>
+            <li><code>encodeURIComponent</code> encodes all characters except <code>A-Z a-z 0-9 - _ . ! ~ * ' ( )</code>. It is safe for encoding a value to be placed in a query string.</li>
+            <li><code>decodeURIComponent</code> reverses the process.</li>
+        </ul>
+        <p class="mb-0">For whole URLs (not just components), use <code>encodeURI</code> which leaves characters like <code>/ ? #</code> unencoded. But for most form/API data, <code>encodeURIComponent</code> is correct.</p>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">Why do spaces become %20 and not +?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">In <code>application/x-www-form-urlencoded</code> (form data), spaces are encoded as <code>+</code>. But in standard URL encoding, spaces become <code>%20</code>. This tool follows the RFC 3986 standard, using <code>%20</code> for spaces.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">What happens if I try to decode invalid percent encoding?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">The tool will show an error message. For example, a string like <code>%XX</code> (invalid hex) will cause a <code>URIError</code>. You'll be prompted to correct your input.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Does this tool support international characters (UTF-8)?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Yes. JavaScript's <code>encodeURIComponent</code> encodes non-ASCII characters as multiple percent-encoded bytes representing their UTF-8 sequence. For example, "ü" becomes <code>%C3%BC</code>. Decoding restores the original character.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/url-decoder" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🌐 Url Decoder</div></a></div>
+        <div class="col-md-3 col-6"><a href="/binary-to-decimal" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔢 Binary to Decimal</div></a></div>
+        <div class="col-md-3 col-6"><a href="/qr-code-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📱 QR Code Generator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/password-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔐 Password Generator</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        (function() {
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const encodeBtn = document.getElementById('encodeBtn');
+            const decodeBtn = document.getElementById('decodeBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const swapBtn = document.getElementById('swapBtn');
+            const copyOutputBtn = document.getElementById('copyOutputBtn');
+            const statusMsg = document.getElementById('statusMsg');
+
+            function showStatus(message, isError = false) {
+                statusMsg.textContent = message;
+                statusMsg.classList.remove('d-none', 'alert-info', 'alert-danger');
+                statusMsg.classList.add(isError ? 'alert-danger' : 'alert-info');
+                setTimeout(() => {
+                    statusMsg.classList.add('d-none');
+                }, 3000);
+            }
+
+            function encode() {
+                const input = inputText.value;
+                if (input === '') {
+                    showStatus('Please enter text to encode.', false);
+                    outputText.value = '';
+                    return;
+                }
+                try {
+                    const encoded = encodeURIComponent(input);
+                    outputText.value = encoded;
+                    showStatus('✅ Encoded successfully!', false);
+                } catch (e) {
+                    outputText.value = '';
+                    showStatus('❌ Encoding failed: ' + e.message, true);
+                }
+            }
+
+            function decode() {
+                const input = inputText.value;
+                if (input === '') {
+                    showStatus('Please enter an encoded string to decode.', false);
+                    outputText.value = '';
+                    return;
+                }
+                try {
+                    const decoded = decodeURIComponent(input);
+                    outputText.value = decoded;
+                    showStatus('✅ Decoded successfully!', false);
+                } catch (e) {
+                    outputText.value = '';
+                    showStatus('❌ Invalid percent encoding. Please check your input.', true);
+                }
+            }
+
+            function clearFields() {
+                inputText.value = '';
+                outputText.value = '';
+                showStatus('Cleared all fields.', false);
+            }
+
+            function swap() {
+                const currentOutput = outputText.value;
+                if (currentOutput === '') {
+                    showStatus('Nothing to swap. Please encode/decode something first.', false);
+                    return;
+                }
+                inputText.value = currentOutput;
+                outputText.value = '';
+                showStatus('Output copied to input. Click Encode or Decode again.', false);
+            }
+
+            function copyOutput() {
+                if (outputText.value === '') {
+                    showStatus('Nothing to copy. Generate output first.', false);
+                    return;
+                }
+                navigator.clipboard.writeText(outputText.value).then(() => {
+                    showStatus('📋 Copied to clipboard!', false);
+                }).catch(() => {
+                    showStatus('❌ Failed to copy.', true);
+                });
+            }
+
+            encodeBtn.addEventListener('click', encode);
+            decodeBtn.addEventListener('click', decode);
+            clearBtn.addEventListener('click', clearFields);
+            swapBtn.addEventListener('click', swap);
+            copyOutputBtn.addEventListener('click', copyOutput);
+
+        })();
+    </script>
+}

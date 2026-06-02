@@ -91,6 +91,12 @@ namespace ratpdf.Controllers
         {
             return View();
         }
+        [HttpGet("binary-to-decimal")] public IActionResult BinaryToDecimal() => View();
+        [HttpGet("decimal-to-binary")] public IActionResult DecimalToBinary() => View();
+        [HttpGet("qr-code-generator")] public IActionResult QRGenerator() => View();
+        [HttpGet("password-generator")] public IActionResult PasswordGenerator() => View();
+        [HttpGet("url-encoder")] public IActionResult UrlEncoder() => View();
+        [HttpGet("url-decoder")] public IActionResult UrlDecoder() => View();
         [HttpGet]
         public IActionResult ImgBackgroundRemove() => throw new Exception("Service unavailable!"); //View();
         [HttpGet]
