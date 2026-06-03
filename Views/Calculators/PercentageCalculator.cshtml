@@ -1,0 +1,398 @@
+﻿@{
+    ViewData["Title"] = "Percentage Calculator Online Free | Calculate Percentages Instantly";
+    ViewData["Description"] = "Free online Percentage Calculator. Calculate percentage of a number, find what percent one number is of another, and compute percentage increase/decrease. Easy and accurate.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="Free online Percentage Calculator. Calculate percentage of a number, find what percent one number is of another, and compute percentage increase/decrease. Easy and accurate." />
+    <meta name="keywords" content="percentage calculator, calculate percentage, percent of a number, percentage increase calculator, percentage decrease, what percent of, percent change" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/percentage-calculator" />
+    <meta property="og:title" content="Percentage Calculator | Free Online Tool" />
+    <meta property="og:description" content="Calculate percentages easily: find percentage of a number, percentage ratio, and percent change." />
+    <meta property="og:url" content="https://ratpdf.com/percentage-calculator" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "Percentage Calculator",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Web",
+            "url": "https://ratpdf.com/percentage-calculator",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "Three-in-one percentage calculator: find percentage of a number, ratio percentage, and percent change.",
+            "featureList": "Percentage of a number, percentage ratio, percentage increase/decrease, copy results"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@@type": "Question",
+                    "name": "How do I calculate percentage of a number?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Multiply the number by the percentage and divide by 100. Example: 20% of 500 = (20 × 500) ÷ 100 = 100."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "How to find what percent X is of Y?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Divide X by Y and multiply by 100. Example: 30 is what percent of 150? (30 ÷ 150) × 100 = 20%."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "How to calculate percentage increase?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Subtract original from new, divide by original, multiply by 100. Example: increase from 50 to 75 = ((75-50)÷50)×100 = 50% increase."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <style>
+        .result-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .result-card {
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .result-card:hover {
+            transform: translateY(-3px);
+        }
+        .nav-tabs .nav-link {
+            font-weight: 600;
+            border-radius: 40px;
+            margin-right: 0.5rem;
+            padding: 0.6rem 1.5rem;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">📊 Percentage Calculator</h1>
+        <p class="lead text-muted">
+            Calculate percentages in three different ways — <strong>fast, accurate, and free</strong>.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">% of a number</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">Ratio percentage</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">Percent change</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Tabs for three modes -->
+                    <ul class="nav nav-tabs mb-4 justify-content-center" id="percentTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">🔢 What is X% of Y?</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">❓ X is what % of Y?</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab">📈 Percentage change</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="percentTabContent">
+                        <!-- Mode 1: Percentage of a number -->
+                        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Percentage (%)</label>
+                                    <input type="number" id="pct1" class="form-control form-control-lg" value="20" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Number (Y)</label>
+                                    <input type="number" id="num1" class="form-control form-control-lg" value="500" step="1">
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div class="alert alert-primary text-center">
+                                        <div class="small text-muted">Result</div>
+                                        <div class="result-number" id="result1">100</div>
+                                        <div id="formula1" class="small text-muted mt-1">(20% of 500 = 100)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mode 2: X is what percent of Y -->
+                        <div class="tab-pane fade" id="tab2" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Number (X)</label>
+                                    <input type="number" id="num2" class="form-control form-control-lg" value="30" step="1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Total (Y)</label>
+                                    <input type="number" id="total2" class="form-control form-control-lg" value="150" step="1">
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div class="alert alert-success text-center">
+                                        <div class="small text-muted">Result</div>
+                                        <div class="result-number" id="result2">20%</div>
+                                        <div id="formula2" class="small text-muted mt-1">30 is 20% of 150</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mode 3: Percentage change -->
+                        <div class="tab-pane fade" id="tab3" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Initial value (old)</label>
+                                    <input type="number" id="oldVal" class="form-control form-control-lg" value="50" step="1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Final value (new)</label>
+                                    <input type="number" id="newVal" class="form-control form-control-lg" value="75" step="1">
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div class="alert alert-warning text-center">
+                                        <div class="small text-muted">Result</div>
+                                        <div class="result-number" id="result3">50% increase</div>
+                                        <div id="formula3" class="small text-muted mt-1">Increase of 25 (50%)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Copy Results Button -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <button id="copyResultsBtn" class="btn btn-outline-secondary rounded-pill px-4">📋 Copy Current Result</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Section -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🧮 Understanding Percentages</h2>
+            <p>A percentage is a fraction of 100. It represents a number as a part of a whole. The word "percent" means "per hundred". Percentages are used everywhere: discounts, interest rates, test scores, statistics, and more.</p>
+            <p>This calculator handles three common scenarios:</p>
+            <ul>
+                <li><strong>Percentage of a number</strong> – e.g., "What is 15% of 200?" → 30</li>
+                <li><strong>Ratio percentage</strong> – e.g., "45 is what percent of 60?" → 75%</li>
+                <li><strong>Percentage change</strong> – e.g., "Price increased from 80 to 100" → 25% increase</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📐 Percentage Formulas</h2>
+            <div class="alert alert-light border">
+                <p><strong>1. Percentage of a number:</strong><br>
+                Result = (Percentage × Number) ÷ 100</p>
+                <p><strong>2. X is what % of Y:</strong><br>
+                Percentage = (X ÷ Y) × 100%</p>
+                <p><strong>3. Percentage change:</strong><br>
+                Change % = ((New - Old) ÷ |Old|) × 100%</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">📊 Quick Examples Table</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr><th>Question</th><th>Calculation</th><th>Answer</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>What is 10% of 250?</td><td>(10 × 250) ÷ 100</td><td>25</td></tr>
+                <tr><td>15 is what % of 60?</td><td>(15 ÷ 60) × 100</td><td>25%</td></tr>
+                <tr><td>Increase from 40 to 60</td><td>((60-40)÷40)×100</td><td>50% increase</td></tr>
+                <tr><td>Decrease from 80 to 60</td><td>((60-80)÷80)×100</td><td>25% decrease</td></tr>
+                <tr><td>What is 25% of 120?</td><td>(25 × 120) ÷ 100</td><td>30</td></tr>
+                <tr><td>8 is what % of 32?</td><td>(8 ÷ 32) × 100</td><td>25%</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Real‑life Uses of Percentages</h5>
+        <ul class="mb-0">
+            <li><strong>Shopping:</strong> Calculate discounts (e.g., 20% off a $50 item = $10 off).</li>
+            <li><strong>Finance:</strong> Interest rates, loan APRs, investment returns.</li>
+            <li><strong>Statistics:</strong> Poll results, pass rates, population growth.</li>
+            <li><strong>Cooking:</strong> Adjust recipe ingredients proportionally.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">How do I calculate a percentage discount?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Multiply the original price by the discount percentage and divide by 100. Subtract that from the original price. Example: 30% off $80 → discount = (30×80)/100 = $24, final price = $80 - $24 = $56.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Can I calculate percentage increase for negative numbers?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Percentage change works best with positive numbers. For negative values, the result may be misleading. This calculator assumes positive numbers for clarity.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">What does "percentage point" mean?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">A percentage point is the arithmetic difference between two percentages. Example: if an interest rate rises from 5% to 7%, that's a 2 percentage point increase, but a 40% relative increase.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/emi-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🏦 EMI Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/age-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🎂 Age Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/bmi-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">⚖️ BMI Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/url-encoder" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔗 URL Encoder</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        (function() {
+            // Mode 1: Percentage of a number
+            const pct1 = document.getElementById('pct1');
+            const num1 = document.getElementById('num1');
+            const result1 = document.getElementById('result1');
+            const formula1 = document.getElementById('formula1');
+
+            function updateMode1() {
+                let pct = parseFloat(pct1.value);
+                let num = parseFloat(num1.value);
+                if (isNaN(pct)) pct = 0;
+                if (isNaN(num)) num = 0;
+                const result = (pct * num) / 100;
+                result1.textContent = result.toFixed(2);
+                formula1.textContent = `${pct}% of ${num} = ${result.toFixed(2)}`;
+            }
+
+            pct1.addEventListener('input', updateMode1);
+            num1.addEventListener('input', updateMode1);
+
+            // Mode 2: X is what percent of Y
+            const num2 = document.getElementById('num2');
+            const total2 = document.getElementById('total2');
+            const result2 = document.getElementById('result2');
+            const formula2 = document.getElementById('formula2');
+
+            function updateMode2() {
+                let x = parseFloat(num2.value);
+                let y = parseFloat(total2.value);
+                if (isNaN(x)) x = 0;
+                if (isNaN(y) || y === 0) {
+                    result2.textContent = '∞%';
+                    formula2.textContent = `Cannot divide by zero`;
+                    return;
+                }
+                const pct = (x / y) * 100;
+                result2.textContent = pct.toFixed(2) + '%';
+                formula2.textContent = `${x} is ${pct.toFixed(2)}% of ${y}`;
+            }
+
+            num2.addEventListener('input', updateMode2);
+            total2.addEventListener('input', updateMode2);
+
+            // Mode 3: Percentage change
+            const oldVal = document.getElementById('oldVal');
+            const newVal = document.getElementById('newVal');
+            const result3 = document.getElementById('result3');
+            const formula3 = document.getElementById('formula3');
+
+            function updateMode3() {
+                let oldV = parseFloat(oldVal.value);
+                let newV = parseFloat(newVal.value);
+                if (isNaN(oldV)) oldV = 0;
+                if (isNaN(newV)) newV = 0;
+                if (oldV === 0) {
+                    result3.textContent = 'Undefined';
+                    formula3.textContent = 'Initial value cannot be zero';
+                    return;
+                }
+                const change = newV - oldV;
+                const percent = (change / Math.abs(oldV)) * 100;
+                const absChange = Math.abs(change);
+                let direction = change >= 0 ? 'increase' : 'decrease';
+                result3.textContent = `${Math.abs(percent).toFixed(2)}% ${direction}`;
+                formula3.textContent = `${direction === 'increase' ? 'Increase' : 'Decrease'} of ${absChange.toFixed(2)} (${Math.abs(percent).toFixed(2)}%)`;
+            }
+
+            oldVal.addEventListener('input', updateMode3);
+            newVal.addEventListener('input', updateMode3);
+
+            // Copy results based on active tab
+            const copyBtn = document.getElementById('copyResultsBtn');
+            function getActiveTabResult() {
+                const activeTab = document.querySelector('.tab-pane.active');
+                if (!activeTab) return '';
+                if (activeTab.id === 'tab1') {
+                    return `Percentage of a number: ${pct1.value}% of ${num1.value} = ${result1.textContent}`;
+                } else if (activeTab.id === 'tab2') {
+                    return `Ratio percentage: ${num2.value} is ${result2.textContent} of ${total2.value}`;
+                } else if (activeTab.id === 'tab3') {
+                    return `Percentage change: from ${oldVal.value} to ${newVal.value} = ${result3.textContent}`;
+                }
+                return '';
+            }
+
+            copyBtn.addEventListener('click', () => {
+                const text = getActiveTabResult();
+                if (!text) {
+                    alert('No result to copy');
+                    return;
+                }
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '✅ Copied!';
+                    setTimeout(() => { copyBtn.innerHTML = original; }, 2000);
+                }).catch(() => alert('Could not copy.'));
+            });
+
+            // Initial calculations
+            updateMode1();
+            updateMode2();
+            updateMode3();
+        })();
+    </script>
+}

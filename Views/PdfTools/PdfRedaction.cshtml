@@ -1,0 +1,651 @@
+﻿@{
+    ViewData["Title"] = "PDF Redaction Tool Online Free | Remove Sensitive Information";
+    ViewData["Description"] = "Free online PDF Redaction Tool. Permanently remove sensitive information like SSN, credit card numbers, emails, or manually draw redaction boxes. Client-side, 100% private.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="Free online PDF Redaction Tool. Permanently remove sensitive information like SSN, credit card numbers, emails, or manually draw redaction boxes. Client-side, 100% private." />
+    <meta name="keywords" content="PDF redaction, redact PDF, remove sensitive information, PDF blackout, redact text, privacy tool, secure PDF" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/pdf-redaction" />
+    <meta property="og:title" content="PDF Redaction Tool | Remove Sensitive Info" />
+    <meta property="og:description" content="Redact sensitive information from PDFs. Draw redaction boxes or use auto-patterns. Client-side, private." />
+    <meta property="og:url" content="https://ratpdf.com/pdf-redaction" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "PDF Redaction Tool",
+            "applicationCategory": "SecurityApplication",
+            "operatingSystem": "Web",
+            "url": "https://ratpdf.com/pdf-redaction",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "Redact sensitive information from PDFs using manual drawing or automatic pattern matching. All processing stays in your browser.",
+            "featureList": "Manual redaction drawing, auto-redact patterns (SSN, credit card, email, phone), PDF preview, download redacted PDF"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@@type": "Question",
+                    "name": "What is PDF redaction?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "PDF redaction permanently removes sensitive information from a document. Unlike black highlighting, redaction deletes the underlying text and replaces it with black boxes."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "Is my data secure?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Yes. All processing happens locally in your browser. Your PDF never leaves your device – no upload to any server."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "Can I redact handwritten text?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Yes. Draw redaction boxes over any area – text, images, signatures. The tool places black rectangles over those areas."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <style>
+        .redaction-canvas {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            cursor: crosshair;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+        .page-controls {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 0.5rem;
+        }
+        .redaction-rect {
+            fill: rgba(0,0,0,0.6);
+            stroke: #ff0000;
+            stroke-width: 2;
+            cursor: move;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🖍️ PDF Redaction Tool</h1>
+        <p class="lead text-muted">
+            Permanently remove sensitive information — <strong>draw redaction boxes or use auto‑patterns</strong>. 
+            All processing stays in your browser — 100% private.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">🖱️ Draw to redact</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🤖 Auto pattern redaction</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">🔒 No file upload</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-11">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- File Upload -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📄 Upload PDF</label>
+                        <input type="file" id="pdfUpload" accept="application/pdf" class="form-control">
+                        <div class="form-text">Your PDF never leaves your browser – all redaction is local.</div>
+                    </div>
+
+                    <!-- Auto‑redaction patterns -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">🤖 Auto‑redact patterns (click to apply to current page)</label>
+                        <div class="d-flex flex-wrap gap-2 mb-2">
+                            <button type="button" class="btn btn-sm btn-outline-danger pattern-btn" data-pattern="ssn">SSN (###-##-####)</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger pattern-btn" data-pattern="creditcard">Credit Card (16 digits)</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger pattern-btn" data-pattern="email">Email Address</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger pattern-btn" data-pattern="phone">Phone Number</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger pattern-btn" data-pattern="all">All Patterns</button>
+                        </div>
+                        <div class="form-text">Auto‑redact finds matching text on the current page and adds redaction boxes. Review before downloading.</div>
+                    </div>
+
+                    <!-- Page navigation and tool -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="page-controls d-flex gap-2">
+                            <button id="prevPage" class="btn btn-secondary" disabled>◀ Previous</button>
+                            <span id="pageNum" class="align-self-center">Page 0 / 0</span>
+                            <button id="nextPage" class="btn btn-secondary" disabled>Next ▶</button>
+                        </div>
+                        <div>
+                            <button id="clearPageRedactions" class="btn btn-sm btn-outline-secondary">🗑️ Clear all boxes on this page</button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas for PDF rendering + redaction drawing -->
+                    <div class="text-center mb-3">
+                        <canvas id="pdfCanvas" class="redaction-canvas" style="max-width:100%; height:auto; background:#eee;"></canvas>
+                    </div>
+                    <div class="text-muted small mb-3">
+                        ✏️ Click and drag on the PDF to draw redaction rectangles. Drag existing rectangles to reposition.
+                    </div>
+
+                    <!-- Redaction summary -->
+                    <div class="alert alert-secondary" id="redactionSummary">
+                        No redactions added yet.
+                    </div>
+
+                    <!-- Generate Redacted PDF -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button id="generateRedactedBtn" class="btn btn-success btn-lg rounded-pill">📥 Generate & Download Redacted PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational Section -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🔒 What is PDF Redaction?</h2>
+            <p>Redaction permanently removes sensitive content from a document. Unlike black highlighting or comment boxes, redaction deletes the underlying text or image data. Once redacted, the information cannot be recovered.</p>
+            <p>Use cases:</p>
+            <ul>
+                <li>Legal documents (client names, case numbers)</li>
+                <li>Medical records (patient identifiers)</li>
+                <li>Financial statements (account numbers)</li>
+                <li>Internal memos (confidential comments)</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🛡️ How Our Redaction Works</h2>
+            <ul>
+                <li><strong>Manual drawing</strong> – click and drag over any area to redact.</li>
+                <li><strong>Auto‑pattern</strong> – detects SSN, credit card, email, phone using regex and adds redaction boxes over matched text regions.</li>
+                <li><strong>Client‑side only</strong> – your PDF never leaves your browser. The tool uses PDF.js to render and pdf‑lib to create a new PDF with black rectangles.</li>
+                <li><strong>Flattened redaction</strong> – redaction boxes are drawn as opaque black rectangles, and the original text is not copied to the output PDF.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="alert alert-warning border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">⚠️ Important – Permanent Removal</h5>
+        <p class="mb-0">Redacted information is permanently removed. Always keep an original copy of your PDF before redacting. The generated PDF contains only visual black boxes – underlying text is not preserved.</p>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">Does this tool actually remove text or just cover it?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">The tool generates a new PDF with black rectangles covering the redacted areas. The original text is not carried over – it is permanently removed from the output file. However, for absolute security, you should also consider flattening and removing metadata.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Can I redact scanned documents (image PDFs)?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Yes. For scanned/image‑based PDFs, you can manually draw redaction boxes over the sensitive areas. The auto‑pattern feature works only on selectable text; for images you must draw manually.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Is the redacted PDF searchable?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">The redacted PDF retains non‑redacted text. Only the redacted areas are covered. You can still search for text that hasn't been redacted. The tool does not remove metadata – consider using additional tools for full sanitization.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/ocr-tool" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">👁️ OCR Tool</div></a></div>
+        <div class="col-md-3 col-6"><a href="/url-encoder" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔗 URL Encoder</div></a></div>
+        <div class="col-md-3 col-6"><a href="/password-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔐 Password Generator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/bmi-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">⚖️ BMI Calculator</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        (function () {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+            const fileInput = document.getElementById('pdfUpload');
+            const canvas = document.getElementById('pdfCanvas');
+            const ctx = canvas.getContext('2d');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageNumSpan = document.getElementById('pageNum');
+            const clearPageBtn = document.getElementById('clearPageRedactions');
+            const generateBtn = document.getElementById('generateRedactedBtn');
+            const summaryDiv = document.getElementById('redactionSummary');
+            const patternBtns = document.querySelectorAll('.pattern-btn');
+
+            // Overlay canvas for live drawing (sits on top of pdf canvas)
+            const overlay = document.createElement('canvas');
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.pointerEvents = 'none';
+            overlay.style.borderRadius = '8px';
+            canvas.parentElement.style.position = 'relative';
+            canvas.parentElement.style.display = 'inline-block';
+            canvas.after(overlay);
+            const octx = overlay.getContext('2d');
+
+            let pdfDoc = null;
+            let currentPage = 1;
+            let totalPages = 0;
+            let scale = 1.5;
+            let viewport = null;
+            let redactions = {}; // pageNum -> [{x,y,width,height}] in canvas px
+
+            let isDrawing = false;
+            let startX = 0, startY = 0;
+            let tempRect = null;
+            let dragTarget = null;
+            let dragOffsetX = 0, dragOffsetY = 0;
+
+            function updateSummary() {
+                let total = 0;
+                for (let p in redactions) total += redactions[p].length;
+                summaryDiv.textContent = total === 0
+                    ? 'No redactions added yet.'
+                    : `${total} redaction rectangle(s) across ${Object.keys(redactions).length} page(s).`;
+            }
+
+            // Render PDF page only — never called mid-drag
+            async function renderPage() {
+                if (!pdfDoc) return;
+                const page = await pdfDoc.getPage(currentPage);
+                viewport = page.getViewport({ scale });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                overlay.width = viewport.width;
+                overlay.height = viewport.height;
+                canvas.style.width = viewport.width + 'px';
+                canvas.style.height = viewport.height + 'px';
+                overlay.style.width = viewport.width + 'px';
+                overlay.style.height = viewport.height + 'px';
+                await page.render({ canvasContext: ctx, viewport }).promise;
+                drawRedactions();
+            }
+
+            // Draw committed redaction boxes onto the PDF canvas
+            function drawRedactions() {
+                const rects = redactions[currentPage] || [];
+                ctx.save();
+                ctx.fillStyle = 'black';
+                for (const r of rects) ctx.fillRect(r.x, r.y, r.width, r.height);
+                ctx.strokeStyle = '#ff0000';
+                ctx.lineWidth = 1.5;
+                for (const r of rects) ctx.strokeRect(r.x, r.y, r.width, r.height);
+                ctx.restore();
+            }
+
+            // Draw the live rubber-band rectangle on the overlay canvas only
+            function drawOverlay() {
+                octx.clearRect(0, 0, overlay.width, overlay.height);
+                if (tempRect && tempRect.w > 0 && tempRect.h > 0) {
+                    octx.fillStyle = 'rgba(0,0,0,0.45)';
+                    octx.fillRect(tempRect.x, tempRect.y, tempRect.w, tempRect.h);
+                    octx.strokeStyle = '#ff0000';
+                    octx.lineWidth = 2;
+                    octx.strokeRect(tempRect.x, tempRect.y, tempRect.w, tempRect.h);
+                }
+            }
+
+            async function loadPDF(arrayBuffer) {
+                pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                totalPages = pdfDoc.numPages;
+                currentPage = 1;
+                redactions = {};
+                updateSummary();
+                prevBtn.disabled = true;
+                nextBtn.disabled = totalPages === 1;
+                pageNumSpan.textContent = `Page 1 / ${totalPages}`;
+                await renderPage();
+            }
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const sx = canvas.width / rect.width;
+                const sy = canvas.height / rect.height;
+                const src = e.touches ? e.touches[0] : e;
+                return {
+                    x: Math.min(Math.max(0, (src.clientX - rect.left) * sx), canvas.width),
+                    y: Math.min(Math.max(0, (src.clientY - rect.top) * sy), canvas.height)
+                };
+            }
+
+            function findRectAt(x, y) {
+                const rects = redactions[currentPage] || [];
+                for (let i = rects.length - 1; i >= 0; i--) {
+                    const r = rects[i];
+                    if (x >= r.x && x <= r.x + r.width && y >= r.y && y <= r.y + r.height)
+                        return { index: i, rect: r };
+                }
+                return null;
+            }
+
+            function onMouseDown(e) {
+                e.preventDefault();
+                const { x, y } = getPos(e);
+                const hit = findRectAt(x, y);
+                if (hit) {
+                    dragTarget = hit;
+                    dragOffsetX = x - hit.rect.x;
+                    dragOffsetY = y - hit.rect.y;
+                    return;
+                }
+                isDrawing = true;
+                startX = x; startY = y;
+                tempRect = { x, y, w: 0, h: 0 };
+            }
+
+            function onMouseMove(e) {
+                if (!isDrawing && !dragTarget) return;
+                const { x, y } = getPos(e);
+                if (isDrawing) {
+                    tempRect = {
+                        x: Math.min(startX, x), y: Math.min(startY, y),
+                        w: Math.abs(x - startX), h: Math.abs(y - startY)
+                    };
+                    drawOverlay(); // overlay only — PDF canvas untouched
+                } else if (dragTarget) {
+                    dragTarget.rect.x = Math.min(Math.max(0, x - dragOffsetX), canvas.width - dragTarget.rect.width);
+                    dragTarget.rect.y = Math.min(Math.max(0, y - dragOffsetY), canvas.height - dragTarget.rect.height);
+                    // Redraw committed redactions without re-rendering PDF
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    // We need the PDF pixels — re-render only the page pixels
+                    // Use a snapshot approach: keep a cached imageData of the bare PDF
+                    if (_pdfSnapshot) ctx.putImageData(_pdfSnapshot, 0, 0);
+                    drawRedactions();
+                }
+            }
+
+            function onMouseUp(e) {
+                if (isDrawing && tempRect && tempRect.w > 5 && tempRect.h > 5) {
+                    if (!redactions[currentPage]) redactions[currentPage] = [];
+                    redactions[currentPage].push({ x: tempRect.x, y: tempRect.y, width: tempRect.w, height: tempRect.h });
+                    updateSummary();
+                    drawRedactions();
+                }
+                isDrawing = false;
+                tempRect = null;
+                dragTarget = null;
+                octx.clearRect(0, 0, overlay.width, overlay.height);
+                // Refresh snapshot after committing
+                _pdfSnapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                // Remove redactions from snapshot — snapshot should be clean PDF
+                // Easiest: snapshot is taken right after PDF render, before drawRedactions
+            }
+
+            canvas.addEventListener('mousedown', onMouseDown);
+            canvas.addEventListener('touchstart', e => { e.preventDefault(); onMouseDown(e); }, { passive: false });
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('touchmove', e => { e.preventDefault(); onMouseMove(e); }, { passive: false });
+            window.addEventListener('mouseup', onMouseUp);
+            window.addEventListener('touchend', onMouseUp);
+
+            clearPageBtn.addEventListener('click', () => {
+                delete redactions[currentPage];
+                if (_pdfSnapshot) { ctx.putImageData(_pdfSnapshot, 0, 0); }
+                updateSummary();
+            });
+
+            prevBtn.addEventListener('click', async () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    prevBtn.disabled = currentPage === 1;
+                    nextBtn.disabled = false;
+                    pageNumSpan.textContent = `Page ${currentPage} / ${totalPages}`;
+                    await renderPage();
+                    _pdfSnapshot = _cleanSnapshot;
+                }
+            });
+            nextBtn.addEventListener('click', async () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    prevBtn.disabled = false;
+                    nextBtn.disabled = currentPage === totalPages;
+                    pageNumSpan.textContent = `Page ${currentPage} / ${totalPages}`;
+                    await renderPage();
+                    _pdfSnapshot = _cleanSnapshot;
+                }
+            });
+
+            // Cache a clean (no redactions) snapshot of the PDF pixels for drag redraws
+            let _pdfSnapshot = null;
+            let _cleanSnapshot = null;
+
+            const _origRenderPage = renderPage;
+            // Patch renderPage to capture snapshot after PDF render, before drawRedactions
+            async function renderPageAndSnapshot() {
+                if (!pdfDoc) return;
+                const page = await pdfDoc.getPage(currentPage);
+                viewport = page.getViewport({ scale });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                overlay.width = viewport.width;
+                overlay.height = viewport.height;
+                canvas.style.width = viewport.width + 'px';
+                canvas.style.height = viewport.height + 'px';
+                overlay.style.width = viewport.width + 'px';
+                overlay.style.height = viewport.height + 'px';
+                await page.render({ canvasContext: ctx, viewport }).promise;
+                _cleanSnapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                _pdfSnapshot = _cleanSnapshot;
+                drawRedactions();
+            }
+
+            // ---- Auto-redact with correct coordinate conversion ----
+            async function autoRedactPattern(patternType) {
+                if (!pdfDoc) { alert('Upload a PDF first.'); return; }
+                if (patternType === 'all') {
+                    for (const p of ['ssn', 'creditcard', 'email', 'phone']) await autoRedactPattern(p);
+                    return;
+                }
+                const page = await pdfDoc.getPage(currentPage);
+                // Ensure viewport is current
+                if (!viewport) viewport = page.getViewport({ scale });
+                const textContent = await page.getTextContent();
+
+                let regex;
+                switch (patternType) {
+                    case 'ssn':        regex = /\b\d{3}-\d{2}-\d{4}\b/g; break;
+                    case 'creditcard': regex = /\b(?:\d[ -]*?){13,16}\b/g; break;
+                    case 'email':      regex = /\b[A-Za-z0-9._%+\-]+@@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/g; break;
+                    case 'phone':      regex = /\b\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g; break;
+                    default: return;
+                }
+
+                let added = 0;
+                for (const item of textContent.items) {
+                    if (!item.str || !item.str.trim()) continue;
+                    regex.lastIndex = 0;
+                    let match;
+                    while ((match = regex.exec(item.str)) !== null) {
+                        const startIdx = match.index;
+                        const matchLen = match[0].length;
+                        const totalLen = item.str.length;
+                        if (totalLen === 0) continue;
+
+                        // item.transform = [scaleX, skewY, skewX, scaleY, tx, ty] in PDF user space
+                        const [a, b, c, d, tx, ty] = item.transform;
+
+                        // Fraction of the item width covered by chars before match and by match itself
+                        const fracStart = startIdx / totalLen;
+                        const fracMatch = matchLen / totalLen;
+                        const itemW = item.width;   // total width in PDF user units (with scale)
+                        const itemH = item.height;  // in PDF user units
+
+                        // PDF origin is bottom-left; compute corners of match region in PDF user space
+                        // Characters run left-to-right along the text baseline
+                        const pdfX0 = tx + fracStart * itemW;
+                        const pdfY0 = ty;                         // baseline y in PDF space
+                        const pdfX1 = pdfX0 + fracMatch * itemW;
+                        const pdfY1 = ty + itemH;                 // top of glyph
+
+                        // Convert PDF user-space points to canvas pixels using viewport
+                        // viewport.convertToViewportPoint handles scale, rotation, flip
+                        const [cvx0, cvy0] = viewport.convertToViewportPoint(pdfX0, pdfY0);
+                        const [cvx1, cvy1] = viewport.convertToViewportPoint(pdfX1, pdfY1);
+
+                        const rx = Math.min(cvx0, cvx1);
+                        const ry = Math.min(cvy0, cvy1);
+                        const rw = Math.abs(cvx1 - cvx0);
+                        const rh = Math.abs(cvy1 - cvy0);
+
+                        // Add a small vertical padding so the box fully covers ascenders/descenders
+                        const pad = 2;
+                        if (!redactions[currentPage]) redactions[currentPage] = [];
+                        redactions[currentPage].push({ x: rx - pad, y: ry - pad, width: rw + pad * 2, height: rh + pad * 2 });
+                        added++;
+                    }
+                }
+
+                if (added > 0) {
+                    if (_cleanSnapshot) ctx.putImageData(_cleanSnapshot, 0, 0);
+                    drawRedactions();
+                    _pdfSnapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    updateSummary();
+                    alert(`Added ${added} redaction box(es) for "${patternType}" on this page.`);
+                } else {
+                    alert(`No "${patternType}" pattern found on this page.`);
+                }
+            }
+
+            patternBtns.forEach(btn => btn.addEventListener('click', () => autoRedactPattern(btn.dataset.pattern)));
+
+            // ---- Generate redacted PDF ----
+            async function generateRedactedPDF() {
+                if (!pdfDoc) { alert('Upload a PDF first.'); return; }
+                if (Object.keys(redactions).length === 0) {
+                    if (!confirm('No redactions added. Download original PDF?')) return;
+                }
+                generateBtn.disabled = true;
+                generateBtn.textContent = 'Generating…';
+                try {
+                    const arrayBuffer = await fileInput.files[0].arrayBuffer();
+                    const pdfLibDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+                    const pages = pdfLibDoc.getPages();
+
+                    for (const pageNumStr in redactions) {
+                        const pageIdx = parseInt(pageNumStr) - 1;
+                        if (pageIdx < 0 || pageIdx >= pages.length) continue;
+                        const libPage = pages[pageIdx];
+                        const { width: pdfW, height: pdfH } = libPage.getSize();
+
+                        // Get viewport for this page to know the scale used
+                        const pdfJsPage = await pdfDoc.getPage(parseInt(pageNumStr));
+                        const vp = pdfJsPage.getViewport({ scale });
+
+                        for (const r of redactions[pageNumStr]) {
+                            // Canvas coords → PDF user-space coords (bottom-left origin)
+                            // canvas px / scale = PDF pts (for non-rotated pages)
+                            // Use viewport.convertToPdfPoint for correctness with rotated pages
+                            const [px0, py0] = vp.convertToPdfPoint(r.x, r.y + r.height); // bottom-left of rect
+                            const [px1, py1] = vp.convertToPdfPoint(r.x + r.width, r.y);  // top-right
+
+                            libPage.drawRectangle({
+                                x: Math.min(px0, px1),
+                                y: Math.min(py0, py1),
+                                width: Math.abs(px1 - px0),
+                                height: Math.abs(py1 - py0),
+                                color: PDFLib.rgb(0, 0, 0),
+                                opacity: 1,
+                                borderWidth: 0
+                            });
+                        }
+                    }
+
+                    const bytes = await pdfLibDoc.save();
+                    const blob = new Blob([bytes], { type: 'application/pdf' });
+                    const a = Object.assign(document.createElement('a'), {
+                        href: URL.createObjectURL(blob),
+                        download: `redacted_${Date.now()}.pdf`
+                    });
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    alert('Redacted PDF downloaded. Please verify redactions before sharing.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error: ' + err.message);
+                } finally {
+                    generateBtn.disabled = false;
+                    generateBtn.textContent = '📥 Generate & Download Redacted PDF';
+                }
+            }
+
+            generateBtn.addEventListener('click', generateRedactedPDF);
+
+            fileInput.addEventListener('change', async e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                if (file.type !== 'application/pdf') { alert('Please select a PDF file.'); return; }
+                await renderPageAndSnapshot.call({ loadPDF }); // prime the function
+                await (async () => {
+                    pdfDoc = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+                    totalPages = pdfDoc.numPages;
+                    currentPage = 1;
+                    redactions = {};
+                    updateSummary();
+                    prevBtn.disabled = true;
+                    nextBtn.disabled = totalPages === 1;
+                    pageNumSpan.textContent = `Page 1 / ${totalPages}`;
+                    await renderPageAndSnapshot();
+                })();
+            });
+
+            // Point navigation at the snapshot-capturing version
+            prevBtn.addEventListener('click', async () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    prevBtn.disabled = currentPage === 1;
+                    nextBtn.disabled = false;
+                    pageNumSpan.textContent = `Page ${currentPage} / ${totalPages}`;
+                    await renderPageAndSnapshot();
+                }
+            }, { once: false });
+            nextBtn.addEventListener('click', async () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    prevBtn.disabled = false;
+                    nextBtn.disabled = currentPage === totalPages;
+                    pageNumSpan.textContent = `Page ${currentPage} / ${totalPages}`;
+                    await renderPageAndSnapshot();
+                }
+            }, { once: false });
+
+        })();
+    </script>
+}

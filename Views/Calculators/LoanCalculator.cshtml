@@ -1,0 +1,533 @@
+﻿@{
+    ViewData["Title"] = "Loan EMI Calculator Online Free | Calculate Monthly Installments Instantly";
+    ViewData["Description"] = "Free online Loan EMI Calculator. Calculate monthly EMI, total interest, and total payment for home loans, car loans, or personal loans. Includes amortization summary.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="Free online Loan EMI Calculator. Calculate monthly EMI, total interest, and total payment for home loans, car loans, or personal loans. Includes amortization summary." />
+    <meta name="keywords" content="EMI calculator, loan calculator, monthly payment, home loan EMI, car loan EMI, personal loan EMI, amortization schedule, interest calculation" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/emi-calculator" />
+    <meta property="og:title" content="Loan EMI Calculator | Free Monthly Payment Tool" />
+    <meta property="og:description" content="Calculate EMI, total interest, and total payment for any loan. Adjust amount, interest rate, and tenure." />
+    <meta property="og:url" content="https://ratpdf.com/emi-calculator" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "Loan EMI Calculator",
+            "applicationCategory": "FinancialApplication",
+            "operatingSystem": "Web",
+            "url": "https://ratpdf.com/emi-calculator",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "Calculate monthly EMI for loans using standard formula. Outputs EMI, total interest, total payment, and amortization summary.",
+            "featureList": "Loan amount slider, interest rate input, tenure selection, amortization table, principal vs interest chart"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@@type": "Question",
+                    "name": "What is EMI?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "EMI (Equated Monthly Installment) is a fixed payment amount made by a borrower to a lender at a specified date each calendar month. It consists of principal and interest components."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "How is EMI calculated?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "EMI is calculated using the formula: EMI = P × r × (1+r)^n / ((1+r)^n - 1), where P is principal, r is monthly interest rate, and n is number of monthly installments."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "Can I prepay my loan?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Yes. Prepaying reduces outstanding principal and future interest. This calculator shows the standard EMI schedule; prepayment effects are not included."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <style>
+        .emi-result {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .result-card {
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .result-card:hover {
+            transform: translateY(-3px);
+        }
+        .principal-bar {
+            background-color: #0d6efd;
+            height: 30px;
+            border-radius: 8px;
+            transition: width 0.3s;
+        }
+        .interest-bar {
+            background-color: #ffc107;
+            height: 30px;
+            border-radius: 8px;
+            transition: width 0.3s;
+        }
+        .amortization-table {
+            font-size: 0.85rem;
+        }
+        .amortization-table td, .amortization-table th {
+            padding: 0.5rem;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🏦 Loan EMI Calculator</h1>
+        <p class="lead text-muted">
+            Calculate your monthly EMI, total interest, and total payment — <strong>free, fast, and accurate</strong>.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">💰 Loan Amount</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">📈 Interest Rate</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">⏱️ Tenure</span>
+            <span class="badge bg-info bg-opacity-10 text-dark px-3 py-2 rounded-pill">📋 Amortization</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Loan Amount -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold d-flex justify-content-between">
+                            <span>💰 Loan Amount (₹ / $ / €)</span>
+                            <span id="loanAmountDisplay" class="slider-value">₹ 5,00,000</span>
+                        </label>
+                        <input type="range" id="loanAmountSlider" class="form-range" min="10000" max="10000000" step="10000" value="500000">
+                        <div class="row mt-2">
+                            <div class="col">
+                                <input type="number" id="loanAmountInput" class="form-control" value="500000" step="10000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interest Rate -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold d-flex justify-content-between">
+                            <span>📈 Annual Interest Rate (%)</span>
+                            <span id="rateDisplay" class="slider-value">8.5%</span>
+                        </label>
+                        <input type="range" id="rateSlider" class="form-range" min="0.1" max="25" step="0.1" value="8.5">
+                        <div class="row mt-2">
+                            <div class="col">
+                                <input type="number" id="rateInput" class="form-control" value="8.5" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tenure (Years / Months) -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold d-flex justify-content-between">
+                            <span>⏱️ Loan Tenure</span>
+                            <span id="tenureDisplay" class="slider-value">5 years (60 months)</span>
+                        </label>
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <input type="range" id="tenureYearsSlider" class="form-range" min="1" max="30" step="1" value="5">
+                            </div>
+                            <div class="col-md-6">
+                                <select id="tenureUnit" class="form-select">
+                                    <option value="years">Years</option>
+                                    <option value="months">Months</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <input type="number" id="tenureValue" class="form-control" value="5" step="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Results -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="result-card card border-0 shadow-sm text-center p-3">
+                                <div class="text-muted small">Monthly EMI</div>
+                                <div class="emi-result" id="emiAmount">₹ 10,247</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="result-card card border-0 shadow-sm text-center p-3">
+                                <div class="text-muted small">Total Interest Payable</div>
+                                <div class="fs-4 fw-bold text-warning" id="totalInterest">₹ 1,14,820</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="result-card card border-0 shadow-sm text-center p-3">
+                                <div class="text-muted small">Total Payment (Principal + Interest)</div>
+                                <div class="fs-4 fw-bold text-success" id="totalPayment">₹ 6,14,820</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Principal vs Interest Visualization -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📊 Principal vs Interest Breakdown</label>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-primary">Principal</span>
+                            <span class="badge bg-warning text-dark">Interest</span>
+                        </div>
+                        <div class="d-flex" style="height: 40px; border-radius: 8px; overflow: hidden;">
+                            <div id="principalBar" class="principal-bar" style="width: 70%;"></div>
+                            <div id="interestBar" class="interest-bar" style="width: 30%;"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1 small">
+                            <span id="principalPercent">70%</span>
+                            <span id="interestPercent">30%</span>
+                        </div>
+                    </div>
+
+                    <!-- Amortization Summary -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">📋 Amortization Schedule (First 6 months + Last month)</label>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered amortization-table">
+                                <thead class="table-light">
+                                    <tr><th>Month</th><th>EMI</th><th>Principal</th><th>Interest</th><th>Balance</th></tr>
+                                </thead>
+                                <tbody id="amortizationBody">
+                                    <!-- JS will populate -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-text">* Approximate schedule. Actual values may vary slightly due to rounding.</div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-3">
+                        <button id="copyResultsBtn" class="btn btn-outline-secondary rounded-pill px-4">📋 Copy Results</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Section -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🧮 How EMI is Calculated</h2>
+            <p>The EMI (Equated Monthly Installment) is calculated using the formula:</p>
+            <div class="alert alert-light border text-center p-3">
+                <strong>EMI = P × r × (1+r)^n / ((1+r)^n - 1)</strong>
+            </div>
+            <p>Where:</p>
+            <ul>
+                <li><strong>P</strong> = Principal loan amount</li>
+                <li><strong>r</strong> = Monthly interest rate (annual rate ÷ 12 ÷ 100)</li>
+                <li><strong>n</strong> = Total number of monthly installments (tenure in months)</li>
+            </ul>
+            <p>This formula ensures that each monthly payment is equal, with the interest portion decreasing over time and the principal portion increasing.</p>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">💰 Why Use This EMI Calculator?</h2>
+            <ul>
+                <li><strong>Plan your budget</strong> – know exactly how much you need to pay each month.</li>
+                <li><strong>Compare loans</strong> – adjust interest rates and tenures to find the best option.</li>
+                <li><strong>Understand interest cost</strong> – see how much extra you pay over the loan term.</li>
+                <li><strong>Visual breakdown</strong> – principal vs interest pie/bar chart.</li>
+                <li><strong>Amortization preview</strong> – see how each payment reduces your balance.</li>
+            </ul>
+            <p>Perfect for home loans, car loans, personal loans, education loans, or any fixed-rate loan.</p>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">📊 Sample EMI Table</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr><th>Loan Amount</th><th>Interest Rate</th><th>Tenure (Years)</th><th>Monthly EMI</th><th>Total Interest</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>₹ 5,00,000</td><td>8.5%</td><td>5</td><td>₹ 10,247</td><td>₹ 1,14,820</td></tr>
+                <tr><td>₹ 10,00,000</td><td>9%</td><td>10</td><td>₹ 12,668</td><td>₹ 5,20,160</td></tr>
+                <tr><td>₹ 25,00,000</td><td>7.5%</td><td>15</td><td>₹ 23,175</td><td>₹ 16,71,500</td></tr>
+                <tr><td>₹ 50,00,000</td><td>8%</td><td>20</td><td>₹ 41,822</td><td>₹ 50,37,280</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Tips to Reduce Your EMI</h5>
+        <ul class="mb-0">
+            <li><strong>Increase down payment</strong> – lower principal reduces EMI significantly.</li>
+            <li><strong>Negotiate a lower interest rate</strong> – even 0.5% can save thousands.</li>
+            <li><strong>Choose a longer tenure</strong> – reduces EMI but increases total interest.</li>
+            <li><strong>Make prepayments</strong> – reduces outstanding principal and future interest.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">What is the difference between EMI and simple interest?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Simple interest is calculated only on the principal amount. EMI includes reducing balance interest, where interest is calculated on the outstanding principal after each payment. Most loans (home, car, personal) use reducing balance method.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Does this calculator include processing fees or taxes?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. This calculator only computes the EMI based on principal, rate, and tenure. Actual loan costs may include processing fees, GST, insurance, etc.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Can I calculate EMI for a floating interest rate loan?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">This calculator assumes a fixed interest rate. For floating rates, the EMI changes when the rate changes. Use this tool with the current rate for an estimate.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/age-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🎂 Age Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/bmi-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">⚖️ BMI Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/password-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔐 Password Generator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/qr-code-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📱 QR Code Generator</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        (function() {
+            // DOM elements
+            const loanSlider = document.getElementById('loanAmountSlider');
+            const loanInput = document.getElementById('loanAmountInput');
+            const loanDisplay = document.getElementById('loanAmountDisplay');
+            
+            const rateSlider = document.getElementById('rateSlider');
+            const rateInput = document.getElementById('rateInput');
+            const rateDisplay = document.getElementById('rateDisplay');
+            
+            const tenureYearsSlider = document.getElementById('tenureYearsSlider');
+            const tenureUnit = document.getElementById('tenureUnit');
+            const tenureValueInput = document.getElementById('tenureValue');
+            const tenureDisplaySpan = document.getElementById('tenureDisplay');
+            
+            const emiSpan = document.getElementById('emiAmount');
+            const totalInterestSpan = document.getElementById('totalInterest');
+            const totalPaymentSpan = document.getElementById('totalPayment');
+            const principalBar = document.getElementById('principalBar');
+            const interestBar = document.getElementById('interestBar');
+            const principalPercentSpan = document.getElementById('principalPercent');
+            const interestPercentSpan = document.getElementById('interestPercent');
+            const amortizationBody = document.getElementById('amortizationBody');
+            const copyBtn = document.getElementById('copyResultsBtn');
+            
+            let loanAmount = 500000;
+            let annualRate = 8.5;
+            let tenureMonths = 60; // default 5 years
+            
+            function formatCurrency(value) {
+                return '₹ ' + value.toLocaleString('en-IN', { maximumFractionDigits: 0, minimumFractionDigits: 0 });
+            }
+            
+            function formatCurrencyDec(value) {
+                return '₹ ' + value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+            
+            function calculateEMI(P, rMonthly, n) {
+                if (rMonthly === 0) return P / n;
+                const factor = Math.pow(1 + rMonthly, n);
+                return P * rMonthly * factor / (factor - 1);
+            }
+            
+            function updateAll() {
+                // Get loan amount
+                loanAmount = parseFloat(loanSlider.value);
+                loanInput.value = loanAmount;
+                loanDisplay.textContent = formatCurrency(loanAmount);
+                
+                // Get annual rate
+                annualRate = parseFloat(rateSlider.value);
+                rateInput.value = annualRate;
+                rateDisplay.textContent = annualRate + '%';
+                
+                // Get tenure in months
+                let tenureVal = parseFloat(tenureValueInput.value);
+                if (isNaN(tenureVal)) tenureVal = 5;
+                const unit = tenureUnit.value;
+                let months = unit === 'years' ? tenureVal * 12 : tenureVal;
+                if (months < 1) months = 1;
+                if (months > 600) months = 600;
+                tenureMonths = months;
+                // sync sliders and display
+                if (unit === 'years') {
+                    tenureYearsSlider.value = Math.min(30, Math.max(1, tenureVal));
+                    tenureValueInput.value = tenureVal;
+                    tenureDisplaySpan.textContent = tenureVal + ' years (' + (tenureVal * 12) + ' months)';
+                } else {
+                    let years = Math.floor(tenureVal / 12);
+                    let remMonths = tenureVal % 12;
+                    if (years === 0) tenureDisplaySpan.textContent = tenureVal + ' months';
+                    else if (remMonths === 0) tenureDisplaySpan.textContent = years + ' years (' + tenureVal + ' months)';
+                    else tenureDisplaySpan.textContent = years + ' years ' + remMonths + ' months (' + tenureVal + ' months)';
+                    tenureYearsSlider.value = Math.min(30, Math.max(1, years));
+                }
+                
+                // Calculate EMI
+                const monthlyRate = annualRate / 12 / 100;
+                let emi = calculateEMI(loanAmount, monthlyRate, tenureMonths);
+                if (isNaN(emi)) emi = 0;
+                const totalPayment = emi * tenureMonths;
+                const totalInterest = totalPayment - loanAmount;
+                
+                emiSpan.textContent = formatCurrencyDec(emi);
+                totalInterestSpan.textContent = formatCurrencyDec(totalInterest);
+                totalPaymentSpan.textContent = formatCurrencyDec(totalPayment);
+                
+                // Update bars
+                const principalPercent = (loanAmount / totalPayment) * 100;
+                const interestPercent = (totalInterest / totalPayment) * 100;
+                principalBar.style.width = principalPercent + '%';
+                interestBar.style.width = interestPercent + '%';
+                principalPercentSpan.textContent = principalPercent.toFixed(1) + '%';
+                interestPercentSpan.textContent = interestPercent.toFixed(1) + '%';
+                
+                // Generate amortization schedule (first 6 months + last month)
+                generateAmortization(loanAmount, monthlyRate, tenureMonths, emi);
+            }
+            
+            function generateAmortization(principal, monthlyRate, months, emi) {
+                let balance = principal;
+                let rows = [];
+                let displayedMonths = [1,2,3,4,5,6];
+                if (months > 6) displayedMonths.push(months);
+                else if (months < 6) {
+                    displayedMonths = [];
+                    for (let i = 1; i <= months; i++) displayedMonths.push(i);
+                }
+                
+                for (let m = 1; m <= months; m++) {
+                    const interest = balance * monthlyRate;
+                    let principalPaid = emi - interest;
+                    if (principalPaid > balance) principalPaid = balance;
+                    const newBalance = balance - principalPaid;
+                    if (displayedMonths.includes(m)) {
+                        rows.push({
+                            month: m,
+                            emi: emi,
+                            principal: principalPaid,
+                            interest: interest,
+                            balance: newBalance
+                        });
+                    }
+                    balance = newBalance;
+                    if (balance <= 0) break;
+                }
+                
+                amortizationBody.innerHTML = '';
+                for (let row of rows) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.month}</td>
+                        <td>${formatCurrencyDec(row.emi)}</td>
+                        <td>${formatCurrencyDec(row.principal)}</td>
+                        <td>${formatCurrencyDec(row.interest)}</td>
+                        <td>${formatCurrencyDec(row.balance > 0 ? row.balance : 0)}</td>
+                    `;
+                    amortizationBody.appendChild(tr);
+                }
+            }
+            
+            // Event binding with sync
+            function syncLoan() {
+                loanSlider.value = loanInput.value;
+                updateAll();
+            }
+            function syncRate() {
+                rateSlider.value = rateInput.value;
+                updateAll();
+            }
+            function syncTenure() {
+                let val = parseFloat(tenureValueInput.value);
+                if (isNaN(val)) val = 5;
+                const unit = tenureUnit.value;
+                if (unit === 'years') {
+                    if (val < 1) val = 1;
+                    if (val > 30) val = 30;
+                    tenureValueInput.value = val;
+                    tenureYearsSlider.value = val;
+                } else {
+                    if (val < 1) val = 1;
+                    if (val > 600) val = 600;
+                    tenureValueInput.value = val;
+                    let years = Math.floor(val / 12);
+                    tenureYearsSlider.value = Math.min(30, Math.max(1, years));
+                }
+                updateAll();
+            }
+            
+            loanSlider.addEventListener('input', () => { loanInput.value = loanSlider.value; updateAll(); });
+            loanInput.addEventListener('input', syncLoan);
+            rateSlider.addEventListener('input', () => { rateInput.value = rateSlider.value; updateAll(); });
+            rateInput.addEventListener('input', syncRate);
+            tenureUnit.addEventListener('change', syncTenure);
+            tenureValueInput.addEventListener('input', syncTenure);
+            tenureYearsSlider.addEventListener('input', () => {
+                if (tenureUnit.value === 'years') {
+                    tenureValueInput.value = tenureYearsSlider.value;
+                    updateAll();
+                }
+            });
+            
+            function copyResults() {
+                const emiText = emiSpan.textContent;
+                const interestText = totalInterestSpan.textContent;
+                const totalText = totalPaymentSpan.textContent;
+                const text = `Loan EMI Calculator Results:\nLoan Amount: ${loanDisplay.textContent}\nInterest Rate: ${annualRate}%\nTenure: ${tenureMonths} months\nMonthly EMI: ${emiText}\nTotal Interest: ${interestText}\nTotal Payment: ${totalText}`;
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '✅ Copied!';
+                    setTimeout(() => { copyBtn.innerHTML = original; }, 2000);
+                }).catch(() => alert('Could not copy.'));
+            }
+            copyBtn.addEventListener('click', copyResults);
+            
+
+            updateAll();
+        })();
+    </script>
+}

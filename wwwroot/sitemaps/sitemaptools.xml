@@ -251,6 +251,42 @@
 		<changefreq>weekly</changefreq>
 		<priority>1.0</priority>
 	</url>
+	<url>
+		<loc>https://ratpdf.com/bmi-calculator</loc>
+		<lastmod>2026-06-02</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://ratpdf.com/age-calculator</loc>
+		<lastmod>2026-06-02</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://ratpdf.com/emi-calculator</loc>
+		<lastmod>2026-06-02</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://ratpdf.com/percentage-calculator</loc>
+		<lastmod>2026-06-02</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://ratpdf.com/ocr-tool</loc>
+		<lastmod>2026-06-03</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://ratpdf.com/pdf-redaction</loc>
+		<lastmod>2026-06-03</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
   <!-- Legal Pages -->
   <url>
     <loc>https://ratpdf.com/Home/Terms</loc>

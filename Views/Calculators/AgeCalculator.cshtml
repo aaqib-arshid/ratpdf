@@ -1,0 +1,451 @@
+﻿@{
+    ViewData["Title"] = "Age Calculator Online Free | How Old Am I? Instant Age Calculator";
+    ViewData["Description"] = "Free online Age Calculator. Find out exactly how old you are in years, months, and days. Calculate age from birth date to any date. Answers \"How old am I?\" instantly.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="Free online Age Calculator. Find out exactly how old you are in years, months, and days. Calculate age from birth date to any date. Answers 'How old am I?' instantly." />
+    <meta name="keywords" content="age calculator, how old am I, calculate age, age from birth date, age in years months days, birthday calculator, age difference" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/age-calculator" />
+    <meta property="og:title" content="Age Calculator | How Old Am I? Free Tool" />
+    <meta property="og:description" content="Calculate your exact age in years, months, and days. Find out your next birthday countdown and total days lived." />
+    <meta property="og:url" content="https://ratpdf.com/age-calculator" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "Age Calculator",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Web",
+            "url": "https://ratpdf.com/age-calculator",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "Calculate exact age between two dates. Outputs years, months, days, total days, and next birthday.",
+            "featureList": "Age in years/months/days, as-of date selector, total days lived, next birthday countdown"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@@type": "Question",
+                    "name": "How do I calculate my age?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Enter your birth date and optionally an 'as of date' (default is today). The calculator will show your exact age in years, months, and days."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "Does the calculator account for leap years?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Yes. The calculation uses JavaScript's Date object which handles leap years correctly, so your age is precise."
+                    }
+                },
+                {
+                    "@@type": "Question",
+                    "name": "Can I calculate age between any two dates?",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "Yes. Use the 'As of date' picker to choose any date in the past or future. If the as-of date is before birth, the calculator will show a warning."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <style>
+        .age-number {
+            font-size: 2rem;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        .age-unit {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .result-card {
+            transition: transform 0.2s;
+        }
+        .result-card:hover {
+            transform: translateY(-3px);
+        }
+        .next-birthday {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🎂 Age Calculator</h1>
+        <p class="lead text-muted">
+            Find out exactly how old you are — <strong>in years, months, and days</strong>. Answers the classic question: <em>"How old am I?"</em>
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📅 Birth date</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">⏱️ Exact age</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">🎈 Next birthday</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Birth Date -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📅 Date of Birth</label>
+                        <input type="date" id="birthDate" class="form-control form-control-lg" value="1990-06-15">
+                        <div class="form-text">Select your birth date</div>
+                    </div>
+
+                    <!-- As Of Date (optional) -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📆 As of date (optional)</label>
+                        <input type="date" id="asOfDate" class="form-control form-control-lg">
+                        <div class="form-text">Leave empty to use today's date. Calculate age at a specific past or future date.</div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <button id="calculateBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">✨ Calculate Age</button>
+                        <button id="clearBtn" class="btn btn-outline-secondary rounded-pill px-4">🗑️ Clear</button>
+                        <button id="copyBtn" class="btn btn-outline-success rounded-pill px-4">📋 Copy Results</button>
+                    </div>
+
+                    <!-- Quick Examples -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">💡 Quick examples:</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-secondary example-badge" data-example="2000-01-01">Born Jan 1, 2000</span>
+                            <span class="badge bg-secondary example-badge" data-example="2010-07-20">Born July 20, 2010</span>
+                            <span class="badge bg-secondary example-badge" data-example="1985-12-31">Born Dec 31, 1985</span>
+                        </div>
+                    </div>
+
+                    <div id="resultsPanel" class="mt-3">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="result-card card border-0 shadow-sm text-center p-3">
+                                    <div class="age-number" id="yearsResult">—</div>
+                                    <div class="age-unit">Years</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="result-card card border-0 shadow-sm text-center p-3">
+                                    <div class="age-number" id="monthsResult">—</div>
+                                    <div class="age-unit">Months</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="result-card card border-0 shadow-sm text-center p-3">
+                                    <div class="age-number" id="daysResult">—</div>
+                                    <div class="age-unit">Days</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-light rounded-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>📊 Total days lived:</strong>
+                                    <span id="totalDays">—</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>🎈 Next birthday:</strong>
+                                    <span id="nextBirthday">—</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="warningMsg" class="alert alert-warning mt-3 d-none" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📖 How Does the Age Calculator Work?</h2>
+            <p>This tool calculates the exact difference between two dates: your <strong>date of birth</strong> and an optional <strong>"as of date"</strong> (defaults to today). It accounts for:</p>
+            <ul>
+                <li>Leap years (February 29)</li>
+                <li>Different month lengths (28, 29, 30, 31 days)</li>
+                <li>Precise year, month, and day difference</li>
+            </ul>
+            <p>The result shows your age in years, months, and days. For example, if you were born on June 15, 1990, and today is June 2, 2026, you would be <strong>35 years, 11 months, and 18 days</strong> old.</p>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🎯 Why Use This Age Calculator?</h2>
+            <ul>
+                <li><strong>Accurate</strong> – handles calendar complexities automatically.</li>
+                <li><strong>Flexible</strong> – calculate age at any past or future date.</li>
+                <li><strong>Fast</strong> – instant results as you change dates.</li>
+                <li><strong>Privacy friendly</strong> – all calculations done in your browser, no data sent to any server.</li>
+            </ul>
+            <p>Perfect for legal documents, birthday planning, retirement calculations, school projects, or simple curiosity.</p>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">📐 Age Calculation Formula</h2>
+    <p>The algorithm computes the difference by first calculating the year difference, then adjusting for months and days:</p>
+    <ol>
+        <li>Subtract birth year from as‑of year to get initial years.</li>
+        <li>If the current month is less than birth month, subtract one year and adjust months.</li>
+        <li>If month is equal but day is less, similarly adjust.</li>
+        <li>Days are calculated by subtracting birth day from the day in the adjusted month, accounting for month lengths and leap years.</li>
+    </ol>
+    <p>This method gives the true calendar age, not just a rough day‑count divided by 365.</p>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Did you know?</h5>
+        <p class="mb-0">The total days lived includes all days from birth date to the as‑of date (excluding the birth date if counting age). For example, someone born on January 1, 2000, has lived exactly 365 days on January 1, 2001 (age 1).</p>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">How do I calculate my age in years, months, and days manually?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Subtract the birth date from the current date. If the current day is less than the birth day, borrow a month. If the current month is less than the birth month, borrow a year. This tool automates that process precisely.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Does the age calculator consider time zones?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">The calculation is date‑based, not time‑based. It assumes midnight UTC for all dates, which is sufficient for age in days, months, and years.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">What if my birth date is February 29?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">In non‑leap years, the age calculation treats February 28 as the birthday for age purposes (common legal practice). Our calculator follows that rule.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/bmi-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">⚖️ BMI Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/url-encoder" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔗 URL Encoder</div></a></div>
+        <div class="col-md-3 col-6"><a href="/password-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔐 Password Generator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/qr-code-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📱 QR Code Generator</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        (function() {
+            const birthDateInput = document.getElementById('birthDate');
+            const asOfDateInput = document.getElementById('asOfDate');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            
+            const yearsSpan = document.getElementById('yearsResult');
+            const monthsSpan = document.getElementById('monthsResult');
+            const daysSpan = document.getElementById('daysResult');
+            const totalDaysSpan = document.getElementById('totalDays');
+            const nextBirthdaySpan = document.getElementById('nextBirthday');
+            const warningMsg = document.getElementById('warningMsg');
+            
+            const exampleBadges = document.querySelectorAll('.example-badge');
+            
+            function calculateAge(birthDate, asOfDate) {
+                if (!birthDate) return null;
+                let endDate = asOfDate ? new Date(asOfDate) : new Date();
+                let startDate = new Date(birthDate);
+                
+                if (isNaN(startDate.getTime())) return null;
+                if (isNaN(endDate.getTime())) return null;
+                
+                let isNegative = false;
+                if (startDate > endDate) {
+                    isNegative = true;
+                    let temp = startDate;
+                    startDate = endDate;
+                    endDate = temp;
+                }
+                
+                let years = endDate.getFullYear() - startDate.getFullYear();
+                let months = endDate.getMonth() - startDate.getMonth();
+                let days = endDate.getDate() - startDate.getDate();
+                
+                if (days < 0) {
+                    months--;
+                    let prevMonthDate = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+                    days += prevMonthDate.getDate();
+                }
+                
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+                
+                if (isNegative) {
+                    years = -years;
+                    months = -months;
+                    days = -days;
+                    if (days < 0) {
+                        days = -days;
+                    }
+                }
+                
+                return { years, months, days, isNegative };
+            }
+            
+            function totalDaysBetween(date1, date2) {
+                const d1 = new Date(date1);
+                const d2 = new Date(date2);
+                const diffTime = Math.abs(d2 - d1);
+                return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            }
+            
+            function getNextBirthday(birthDate, asOfDate) {
+                const birth = new Date(birthDate);
+                const asOf = asOfDate ? new Date(asOfDate) : new Date();
+                let nextBirthday = new Date(asOf.getFullYear(), birth.getMonth(), birth.getDate());
+                if (nextBirthday < asOf) {
+                    nextBirthday = new Date(asOf.getFullYear() + 1, birth.getMonth(), birth.getDate());
+                }
+
+                if (nextBirthday.getMonth() !== birth.getMonth()) {
+                    nextBirthday = new Date(nextBirthday.getFullYear(), birth.getMonth() + 1, 0);
+                }
+                return nextBirthday;
+            }
+            
+            function daysUntilNextBirthday(birthDate, asOfDate) {
+                const next = getNextBirthday(birthDate, asOfDate);
+                const asOf = asOfDate ? new Date(asOfDate) : new Date();
+                return totalDaysBetween(asOf, next);
+            }
+            
+
+            function updateAge() {
+                const birthVal = birthDateInput.value;
+                const asOfVal = asOfDateInput.value;
+                
+                if (!birthVal) {
+                    yearsSpan.textContent = '—';
+                    monthsSpan.textContent = '—';
+                    daysSpan.textContent = '—';
+                    totalDaysSpan.textContent = '—';
+                    nextBirthdaySpan.textContent = '—';
+                    warningMsg.classList.add('d-none');
+                    return;
+                }
+                
+                const age = calculateAge(birthVal, asOfVal);
+                if (!age) {
+                    yearsSpan.textContent = '?';
+                    monthsSpan.textContent = '?';
+                    daysSpan.textContent = '?';
+                    totalDaysSpan.textContent = '?';
+                    nextBirthdaySpan.textContent = '?';
+                    warningMsg.classList.remove('d-none');
+                    warningMsg.textContent = 'Invalid date. Please check your input.';
+                    return;
+                }
+                
+                if (age.isNegative) {
+                    warningMsg.classList.remove('d-none');
+                    warningMsg.textContent = '⚠️ As-of date is before birth date. Showing absolute difference.';
+                } else {
+                    warningMsg.classList.add('d-none');
+                }
+                
+                const years = age.years;
+                const months = age.months;
+                const days = age.days;
+                
+                yearsSpan.textContent = years;
+                monthsSpan.textContent = months;
+                daysSpan.textContent = days;
+                
+                const startDate = new Date(birthVal);
+                const endDate = asOfVal ? new Date(asOfVal) : new Date();
+                const totalDays = totalDaysBetween(startDate, endDate);
+                totalDaysSpan.textContent = totalDays.toLocaleString() + ' days';
+                
+                if (!age.isNegative && startDate <= endDate) {
+                    const daysUntil = daysUntilNextBirthday(birthVal, asOfVal);
+                    const nextDate = getNextBirthday(birthVal, asOfVal);
+                    const formatted = nextDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+                    nextBirthdaySpan.textContent = `${formatted} (in ${daysUntil} days)`;
+                } else {
+                    nextBirthdaySpan.textContent = '—';
+                }
+            }
+            
+            function clearAll() {
+                birthDateInput.value = '';
+                asOfDateInput.value = '';
+                updateAge();
+            }
+            
+            function copyResults() {
+                const birth = birthDateInput.value || 'Not set';
+                const asOf = asOfDateInput.value || 'Today';
+                const years = yearsSpan.textContent;
+                const months = monthsSpan.textContent;
+                const days = daysSpan.textContent;
+                const total = totalDaysSpan.textContent;
+                const next = nextBirthdaySpan.textContent;
+                const text = `Age Calculator Results:\nBirth Date: ${birth}\nAs of: ${asOf}\nAge: ${years} years, ${months} months, ${days} days\nTotal days: ${total}\nNext birthday: ${next}`;
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '✅ Copied!';
+                    setTimeout(() => { copyBtn.innerHTML = original; }, 2000);
+                }).catch(() => alert('Could not copy.'));
+            }
+            
+            function setExample(date) {
+                birthDateInput.value = date;
+                asOfDateInput.value = '';
+                updateAge();
+            }
+            
+            calculateBtn.addEventListener('click', updateAge);
+            clearBtn.addEventListener('click', clearAll);
+            copyBtn.addEventListener('click', copyResults);
+            birthDateInput.addEventListener('change', updateAge);
+            asOfDateInput.addEventListener('change', updateAge);
+            
+            exampleBadges.forEach(badge => {
+                badge.addEventListener('click', () => {
+                    const exampleDate = badge.getAttribute('data-example');
+                    if (exampleDate) setExample(exampleDate);
+                });
+            });
+            
+            asOfDateInput.value = '';
+            updateAge();
+        })();
+    </script>
+}

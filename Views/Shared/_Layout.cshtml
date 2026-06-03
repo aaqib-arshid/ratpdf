@@ -227,6 +227,8 @@
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Merge">Merge PDF</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Split">Split PDF</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Compress">Compress PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PdfTools" asp-action="OCRTextExtractor">OCR Tool</a></li>
+                        <li><a class="dropdown-item" asp-controller="PdfTools" asp-action="PdfRedaction">Pdf Redaction</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Watermark">Add Watermark</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Password">Protect PDF</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="SignText">Sign PDF</a></li>
@@ -312,7 +314,16 @@
 
                     </ul>
                 </li>
-
+                <!-- Calculator TOOLS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Calculators</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="BMICalculator">BMI Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="AgeCalculator">Age Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="LoanCalculator">EMI Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="PercentageCalculator">Percentage Calculator</a></li>
+                    </ul>
+                </li>
                 <!-- GUIDES -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Guides</a>

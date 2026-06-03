@@ -1,0 +1,579 @@
+﻿@{
+    ViewData["Title"] = "OCR Tool Online Free | Extract Text from Scanned PDFs and Images";
+    ViewData["Description"] = "Free online OCR tool. Extract text from scanned PDFs and images using Tesseract.js. Supports multiple languages, runs entirely in your browser — no upload required, 100% private.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="Free online OCR tool. Extract text from scanned PDFs and images using Tesseract.js. Supports multiple languages, runs entirely in your browser — no upload required, 100% private." />
+    <meta name="keywords" content="OCR tool, PDF text extraction, scanned PDF OCR, image to text, Tesseract.js, free OCR, browser OCR, extract text from image, PDF OCR, optical character recognition" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ratpdf.com/ocr-tool" />
+    <meta property="og:title" content="OCR Tool | Extract Text from Scanned PDFs & Images" />
+    <meta property="og:description" content="Free browser-based OCR. No upload, no server. Extract text from scanned PDFs and images with Tesseract.js." />
+    <meta property="og:url" content="https://ratpdf.com/ocr-tool" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "OCR Tool",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/ocr-tool",
+        "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+        },
+        "description": "Extract text from scanned PDFs and images using Tesseract.js. All processing happens locally in your browser.",
+        "featureList": "PDF OCR, image to text, multi-language support, copy to clipboard, download as text, client-side processing"
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "How does OCR work?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "OCR (Optical Character Recognition) analyzes images of text and converts them into machine-encoded text. This tool uses Tesseract.js, a JavaScript port of the Tesseract OCR engine, running entirely in your browser."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Is my document data safe?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Yes. All processing happens locally in your browser. Your files never leave your device — no upload to any server. This ensures complete privacy for your sensitive documents."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "What languages are supported?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "The tool supports 100+ languages including English, Spanish, French, German, Chinese, Japanese, Arabic, and more."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <!-- Tesseract.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <!-- PDF.js for PDF rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    
+    <style>
+        .result-text {
+        font-family: 'Segoe UI', 'SF Mono', monospace;
+        font-size: 0.95rem;
+        background: #f8f9fa;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        }
+        .file-zone {
+        border: 2px dashed #dee2e6;
+        border-radius: 20px;
+        transition: all 0.2s;
+        cursor: pointer;
+        }
+        .file-zone:hover {
+        border-color: #0d6efd;
+        background-color: #f8f9fa;
+        }
+        .progress-bar-custom {
+        transition: width 0.3s ease;
+        }
+        .language-badge {
+        cursor: pointer;
+        transition: all 0.2s;
+        }
+        .language-badge:hover {
+        transform: scale(1.02);
+        }
+        .processing-status {
+        font-size: 0.9rem;
+        }
+        .page-indicator {
+        background: #e9ecef;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 0.85rem;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">👁️ OCR Tool</h1>
+        <p class="lead text-muted">
+            Extract text from scanned PDFs and images — <strong>100% free, client-side, and privacy-focused</strong>.
+            No upload, no server, no data leaves your device.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📄 PDF Support</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🖼️ Image Support</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">🌍 100+ Languages</span>
+            <span class="badge bg-info bg-opacity-10 text-dark px-3 py-2 rounded-pill">🔒 Local Processing</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- File Upload Area -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📂 Select File (PDF or Image)</label>
+                        <div id="dropZone" class="file-zone text-center p-5">
+                            <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.gif" style="display:none;" />
+                            <div>
+                                <i class="bi bi-cloud-upload" style="font-size: 3rem; color: #6c757d;"></i>
+                                <p class="mt-2 mb-0">Click or drag & drop your file here</p>
+                                <small class="text-muted">Supports PDF, JPG, PNG, BMP, TIFF, GIF</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Options Row -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">🌍 OCR Language</label>
+                            <select id="languageSelect" class="form-select rounded-pill">
+                                <option value="eng">English</option>
+                                <option value="spa">Spanish</option>
+                                <option value="fra">French</option>
+                                <option value="deu">German</option>
+                                <option value="ita">Italian</option>
+                                <option value="por">Portuguese</option>
+                                <option value="chi_sim">Chinese (Simplified)</option>
+                                <option value="chi_tra">Chinese (Traditional)</option>
+                                <option value="jpn">Japanese</option>
+                                <option value="kor">Korean</option>
+                                <option value="ara">Arabic</option>
+                                <option value="rus">Russian</option>
+                                <option value="hin">Hindi</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">⚙️ Page Range (PDF only)</label>
+                            <div class="d-flex gap-2">
+                                <input type="number" id="startPage" class="form-control" placeholder="Start" value="1" min="1">
+                                <span class="align-self-center">–</span>
+                                <input type="number" id="endPage" class="form-control" placeholder="End" value="">
+                            </div>
+                            <div class="form-text">Leave end empty to process all pages</div>
+                        </div>
+                    </div>
+
+                    <!-- Process Button -->
+                    <div class="d-grid gap-2 mb-4">
+                        <button id="processBtn" class="btn btn-primary btn-lg rounded-pill shadow-sm">✨ Process & Extract Text</button>
+                    </div>
+
+                    <!-- Progress Area -->
+                    <div id="progressArea" class="mb-4 d-none">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span id="progressStatus" class="processing-status">Initializing OCR engine...</span>
+                            <span id="progressPercent" class="processing-status">0%</span>
+                        </div>
+                        <div class="progress" style="height: 10px; border-radius: 10px;">
+                            <div id="progressBar" class="progress-bar progress-bar-custom bg-success" style="width: 0%;" role="progressbar"></div>
+                        </div>
+                        <div id="pageInfo" class="text-muted small mt-2"></div>
+                    </div>
+
+                    <!-- Results Area -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold d-flex justify-content-between">
+                            <span>📝 Extracted Text</span>
+                            <div class="d-flex gap-2">
+                                <button id="copyTextBtn" class="btn btn-sm btn-outline-secondary rounded-pill">📋 Copy</button>
+                                <button id="downloadTextBtn" class="btn btn-sm btn-outline-secondary rounded-pill">💾 Download .txt</button>
+                                <button id="clearResultsBtn" class="btn btn-sm btn-outline-danger rounded-pill">🗑️ Clear</button>
+                            </div>
+                        </label>
+                        <textarea id="resultText" class="form-control result-text" rows="12" readonly placeholder="Extracted text will appear here..."></textarea>
+                    </div>
+
+                    <!-- Info Message -->
+                    <div id="infoMsg" class="alert alert-info d-none" role="alert"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Section -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🔍 What is OCR?</h2>
+            <p><strong>Optical Character Recognition (OCR)</strong> is a technology that converts different types of documents — such as scanned paper documents, PDFs, or images captured by a digital camera — into editable and searchable text.</p>
+            <p>This tool uses <strong>Tesseract.js</strong>, a JavaScript port of Google's Tesseract OCR engine, which runs entirely in your browser using WebAssembly. This means:</p>
+            <ul>
+                <li>✅ Your files never leave your device — complete privacy</li>
+                <li>✅ No file size limits (performance may vary)</li>
+                <li>✅ Works offline after the first load</li>
+                <li>✅ No registration, no API keys, no hidden costs</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🖼️ Supported File Types</h2>
+            <div class="alert alert-light border">
+                <ul class="mb-0">
+                    <li><strong>PDF documents</strong> — Scanned or image-based PDFs</li>
+                    <li><strong>JPEG / JPG</strong> — Most common image format</li>
+                    <li><strong>PNG</strong> — Lossless format with transparency support</li>
+                    <li><strong>BMP</strong> — Bitmap images</li>
+                    <li><strong>TIFF</strong> — High-quality images, often used in scanning</li>
+                    <li><strong>GIF</strong> — Animated or static images</li>
+                </ul>
+            </div>
+            <p>For best results, ensure your document has good contrast and clear text. Handwritten text may have lower accuracy.</p>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">📐 How OCR Works Under the Hood</h2>
+    <ol>
+        <li><strong>File Loading</strong> — Your file is read locally using the FileReader API.</li>
+        <li><strong>PDF Rendering</strong> — For PDFs, PDF.js renders each page to a canvas element without any external dependencies.</li>
+        <li><strong>Image Processing</strong> — The canvas image data is passed to Tesseract.js for analysis.</li>
+        <li><strong>Text Recognition</strong> — Tesseract.js identifies character shapes and converts them to machine-encoded text.</li>
+        <li><strong>Result Display</strong> — Extracted text is displayed, with page separators for multi-page PDFs.</li>
+    </ol>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Pro Tips for Better OCR Accuracy</h5>
+        <ul class="mb-0">
+            <li>Use high-resolution scans (300 DPI or higher) for better results.</li>
+            <li>Ensure the text is upright and not skewed.</li>
+            <li>Select the correct language for the document — matching the language improves accuracy significantly.</li>
+            <li>For small text, consider increasing the image resolution before scanning.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">Is my data private when using this OCR tool?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Yes, absolutely. All processing happens locally in your browser using Tesseract.js and PDF.js. No files are uploaded to any server — your documents remain on your device at all times. This makes the tool ideal for sensitive documents like contracts, invoices, or personal records.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">What languages are supported for OCR?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">The tool supports over 100 languages including English, Spanish, French, German, Italian, Portuguese, Chinese (Simplified & Traditional), Japanese, Korean, Arabic, Russian, Hindi, and many more. Select your language from the dropdown for optimal accuracy.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Can OCR extract handwriting?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Tesseract.js is optimized for printed text recognition. While it can recognize some handwriting, accuracy may be lower. For best results, use scanned documents with clean, printed text.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/url-encoder" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔗 URL Encoder</div></a></div>
+        <div class="col-md-3 col-6"><a href="/password-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔐 Password Generator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/qr-code-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📱 QR Code Generator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/bmi-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">⚖️ BMI Calculator</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        (function() {
+        // DOM elements
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const processBtn = document.getElementById('processBtn');
+        const languageSelect = document.getElementById('languageSelect');
+        const startPageInput = document.getElementById('startPage');
+        const endPageInput = document.getElementById('endPage');
+        const resultTextarea = document.getElementById('resultText');
+        const copyTextBtn = document.getElementById('copyTextBtn');
+        const downloadTextBtn = document.getElementById('downloadTextBtn');
+        const clearResultsBtn = document.getElementById('clearResultsBtn');
+        const progressArea = document.getElementById('progressArea');
+        const progressBar = document.getElementById('progressBar');
+        const progressStatus = document.getElementById('progressStatus');
+        const progressPercent = document.getElementById('progressPercent');
+        const pageInfo = document.getElementById('pageInfo');
+        const infoMsg = document.getElementById('infoMsg');
+            
+        let currentFile = null;
+        let isProcessing = false;
+        let ocrWorker = null;
+        let tesseractInitialized = false;
+            
+        // Helper: Show message
+        function showMessage(message, isError = false) {
+        infoMsg.textContent = message;
+        infoMsg.className = `alert ${isError ? 'alert-danger' : 'alert-info'} d-block`;
+        setTimeout(() => {
+        infoMsg.classList.add('d-none');
+        }, 4000);
+        }
+            
+        // Helper: Update progress
+        function updateProgress(percent, status, pageInfoText = '') {
+        progressBar.style.width = percent + '%';
+        progressPercent.textContent = Math.round(percent) + '%';
+        progressStatus.textContent = status;
+        if (pageInfoText) {
+        pageInfo.textContent = pageInfoText;
+        }
+        }
+            
+        // Initialize Tesseract Worker
+        async function initTesseractWorker() {
+        if (tesseractInitialized && ocrWorker) return ocrWorker;
+        try {
+        updateProgress(5, 'Loading OCR engine...');
+        ocrWorker = await Tesseract.createWorker();
+        updateProgress(15, 'Loading language data...');
+        const lang = languageSelect.value;
+        await ocrWorker.loadLanguage(lang);
+        updateProgress(25, 'Initializing OCR...');
+        await ocrWorker.initialize(lang);
+        tesseractInitialized = true;
+        updateProgress(30, 'OCR engine ready');
+        return ocrWorker;
+        } catch (err) {
+        console.error('Tesseract init error:', err);
+        throw new Error('Failed to initialize OCR engine: ' + err.message);
+        }
+        }
+            
+        // Process image directly (single image)
+        async function processImage(imgElement) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = imgElement.width;
+        canvas.height = imgElement.height;
+        ctx.drawImage(imgElement, 0, 0);
+        const imgData = canvas.toDataURL('image/png');
+        const { data: { text } } = await ocrWorker.recognize(imgData);
+        return text;
+        }
+            
+        // Process PDF pages using PDF.js
+        async function processPDFPages(arrayBuffer, startPage, endPage, totalPages) {
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const validEndPage = endPage && endPage <= totalPages ? endPage : totalPages;
+        let allText = '';
+                
+        for (let pageNum = startPage; pageNum <= validEndPage; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+                    
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+                    
+        const imgData = canvas.toDataURL('image/png');
+        const percent = 30 + ((pageNum - startPage + 1) / (validEndPage - startPage + 1)) * 60;
+        updateProgress(percent, `Processing page ${pageNum} of ${validEndPage}...`, `Page ${pageNum} / ${validEndPage}`);
+                    
+        const { data: { text } } = await ocrWorker.recognize(imgData);
+        allText += `[Page ${pageNum}]\n${text}\n\n`;
+        }
+        return allText;
+        }
+            
+        // Main processing function
+        async function processFile() {
+        if (!currentFile) {
+        showMessage('Please select a file first.', true);
+        return;
+        }
+        if (isProcessing) {
+        showMessage('Processing in progress. Please wait.', true);
+        return;
+        }
+                
+        isProcessing = true;
+        processBtn.disabled = true;
+        resultTextarea.value = '';
+        progressArea.classList.remove('d-none');
+        updateProgress(0, 'Starting...');
+                
+        try {
+        // Initialize Tesseract
+        await initTesseractWorker();
+                    
+        const fileType = currentFile.type;
+        const fileName = currentFile.name.toLowerCase();
+                    
+        if (fileName.endsWith('.pdf') || fileType === 'application/pdf') {
+        // Process PDF
+        updateProgress(10, 'Reading PDF file...');
+        const arrayBuffer = await currentFile.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const totalPages = pdf.numPages;
+        let startPage = parseInt(startPageInput.value) || 1;
+        let endPage = parseInt(endPageInput.value) || totalPages;
+        if (startPage < 1) startPage = 1;
+        if (endPage > totalPages) endPage = totalPages;
+        if (startPage > endPage) {
+        const temp = startPage;
+        startPage = endPage;
+        endPage = temp;
+        }
+                        
+        updateProgress(15, `PDF loaded: ${totalPages} pages. Processing pages ${startPage}-${endPage}...`);
+        const extractedText = await processPDFPages(arrayBuffer, startPage, endPage, totalPages);
+        resultTextarea.value = extractedText.trim() || 'No text extracted. Try a different page range or check image quality.';
+        showMessage('Text extraction complete!');
+        } else if (fileType.startsWith('image/')) {
+        // Process image
+        updateProgress(10, 'Loading image...');
+        const img = new Image();
+        const imageUrl = URL.createObjectURL(currentFile);
+        img.src = imageUrl;
+        await new Promise((resolve) => { img.onload = resolve; });
+        updateProgress(20, 'Processing image...');
+        const extractedText = await processImage(img);
+        resultTextarea.value = extractedText.trim() || 'No text extracted. Try a clearer image with better contrast.';
+        URL.revokeObjectURL(imageUrl);
+        showMessage('Text extraction complete!');
+        } else {
+        showMessage('Unsupported file type. Please upload a PDF or image file.', true);
+        }
+                    
+        updateProgress(100, 'Complete!');
+        setTimeout(() => {
+        progressArea.classList.add('d-none');
+        progressBar.style.width = '0%';
+        }, 1500);
+        } catch (err) {
+        console.error('Processing error:', err);
+        showMessage('Error during OCR: ' + (err.message || 'Unknown error'), true);
+        updateProgress(0, 'Error occurred');
+        setTimeout(() => {
+        progressArea.classList.add('d-none');
+        }, 2000);
+        } finally {
+        isProcessing = false;
+        processBtn.disabled = false;
+        }
+        }
+            
+      
+        function handleFile(file) {
+        if (!file) return;
+        const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/bmp', 'image/tiff', 'image/gif'];
+        if (!validTypes.includes(file.type) && !file.name.match(/\.(pdf|jpg|jpeg|png|bmp|tiff|gif)$/i)) {
+        showMessage('Invalid file type. Please upload a PDF or image file.', true);
+        return;
+        }
+        currentFile = file;
+        showMessage(`File selected: ${file.name}`);
+        
+        if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+        
+        }
+        }
+            
+     
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#0d6efd';
+        dropZone.style.backgroundColor = '#f8f9fa';
+        });
+        dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '#dee2e6';
+        dropZone.style.backgroundColor = 'transparent';
+        });
+        dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#dee2e6';
+        dropZone.style.backgroundColor = 'transparent';
+        const file = e.dataTransfer.files[0];
+        if (file) handleFile(file);
+        });
+        fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) handleFile(e.target.files[0]);
+        });
+            
+        
+        processBtn.addEventListener('click', processFile);
+            
+        
+        copyTextBtn.addEventListener('click', () => {
+        if (!resultTextarea.value) {
+        showMessage('Nothing to copy. Process a file first.', true);
+        return;
+        }
+        navigator.clipboard.writeText(resultTextarea.value).then(() => {
+        const original = copyTextBtn.innerHTML;
+        copyTextBtn.innerHTML = '✅ Copied!';
+        setTimeout(() => { copyTextBtn.innerHTML = original; }, 2000);
+        }).catch(() => showMessage('Failed to copy to clipboard.', true));
+        });
+            
+       
+        downloadTextBtn.addEventListener('click', () => {
+        if (!resultTextarea.value) {
+        showMessage('Nothing to download. Process a file first.', true);
+        return;
+        }
+        const blob = new Blob([resultTextarea.value], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ocr_result_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showMessage('Text file downloaded!');
+        });
+            
+      
+        clearResultsBtn.addEventListener('click', () => {
+        resultTextarea.value = '';
+        currentFile = null;
+        fileInput.value = '';
+        showMessage('Cleared results and file selection.');
+        });
+            
+        
+        languageSelect.addEventListener('change', async () => {
+        if (tesseractInitialized && ocrWorker) {
+        try {
+        updateProgress(5, 'Switching language...');
+        await ocrWorker.loadLanguage(languageSelect.value);
+        await ocrWorker.initialize(languageSelect.value);
+        showMessage(`Language switched to ${languageSelect.options[languageSelect.selectedIndex].text}`);
+        progressArea.classList.add('d-none');
+        } catch (err) {
+        console.warn('Language switch error:', err);
+        }
+        }
+        });
+        })();
+    </script>
+}
