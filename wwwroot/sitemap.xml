@@ -70,4 +70,9 @@
 		<loc>https://ratpdf.com/sitemaps/payslip_sitemap.xml</loc>
 		<lastmod>2026-05-31</lastmod>
 	</sitemap>
+	<!--Image Bg Remover-->
+	<sitemap>
+		<loc>https://ratpdf.com/sitemaps/sitemap_bgremove.xml</loc>
+		<lastmod>2026-06-03</lastmod>
+	</sitemap>
 </sitemapindex>

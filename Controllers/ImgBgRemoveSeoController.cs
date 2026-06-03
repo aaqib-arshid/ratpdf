@@ -2,7 +2,6 @@
 
 namespace ratpdf.Controllers
 {
-    [Route("img-background-remove")]
     public class ImgBgRemoveSeoController : Controller
     {
         [HttpGet("background-remover")] public IActionResult BackgroundRemover() => View();
