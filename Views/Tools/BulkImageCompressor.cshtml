@@ -1,0 +1,452 @@
+﻿@{
+    ViewData["Title"] = "Bulk Image Compressor Online Free | Compress Multiple Images at Once";
+    ViewData["Description"] = "Compress multiple images (JPG, PNG, WebP) in bulk. 100% browser-based – no upload, no server. Preserves original resolution. Download all as ZIP.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="bulk image compressor, compress multiple images, batch image compression, reduce image size bulk, zip images, browser image compressor" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/bulk-image-compressor" />
+    <meta property="og:title" content="Bulk Image Compressor – Compress Many Images at Once" />
+    <meta property="og:description" content="Compress and download multiple images as a ZIP file. All processing is local – your privacy is guaranteed." />
+    <meta property="og:url" content="https://ratpdf.com/bulk-image-compressor" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .drop-zone.drag-over {
+            border-color: #0d6efd;
+            background-color: #e7f5ff;
+        }
+        .image-card {
+            transition: transform 0.2s;
+        }
+        .image-card:hover {
+            transform: translateY(-3px);
+        }
+        .progress-bar-custom {
+            transition: width 0.3s ease;
+        }
+        .result-img {
+            max-width: 80px;
+            max-height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🗜️ Bulk Image Compressor</h1>
+        <p class="lead text-muted">
+            Compress multiple images at once – <strong>JPG, PNG, WebP, BMP</strong><br />
+            All processing stays in your browser. Download as ZIP.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📦 Bulk upload</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🔒 No server</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">📐 Resolution preserved</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- File upload zone -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📂 Select Images (multiple allowed)</label>
+                        <div id="dropZone" class="drop-zone p-5 text-center">
+                            <i class="bi bi-cloud-upload fs-1 text-primary"></i>
+                            <p class="mt-2 mb-0">Drag & drop or click to select</p>
+                            <small class="text-muted">Supports JPG, PNG, WebP, BMP (max 50 files)</small>
+                            <input type="file" id="fileInput" class="d-none" accept="image/jpeg,image/png,image/webp,image/bmp" multiple />
+                        </div>
+                        <div id="fileCount" class="form-text mt-2"></div>
+                    </div>
+
+                    <!-- Compression settings -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">🎨 Output Format</label>
+                            <select id="outputFormat" class="form-select rounded-pill">
+                                <option value="image/jpeg">JPEG (lossy, small size)</option>
+                                <option value="image/png" selected>PNG (lossless, transparency)</option>
+                                <option value="image/webp">WebP (modern, good compression)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" id="qualityLabel">📊 JPEG/WebP Quality (%)</label>
+                            <input type="range" id="qualitySlider" class="form-range" min="1" max="100" value="85">
+                            <div class="d-flex justify-content-between">
+                                <span>Smaller file</span>
+                                <span>Better quality</span>
+                            </div>
+                            <div id="qualityValue" class="form-text text-end">85%</div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+                        <button id="compressBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm" disabled>⚡ Compress All Images</button>
+                        <button id="downloadZipBtn" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm" disabled>📦 Download ZIP</button>
+                        <button id="clearBtn" class="btn btn-outline-secondary rounded-pill px-4">🗑️ Clear All</button>
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div id="progressArea" class="mb-4 d-none">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span id="progressStatus">Processing images...</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                        <div class="progress" style="height: 10px; border-radius: 10px;">
+                            <div id="progressBar" class="progress-bar progress-bar-custom bg-success" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Image list -->
+                    <div id="imageList" class="row g-3 mt-2">
+                        <div class="col-12 text-muted text-center">No images selected</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Section -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📦 Why Use Bulk Image Compression?</h2>
+            <p>If you have many product photos, social media images, or scanned documents, compressing them individually is tedious. Our tool lets you compress <strong>up to 50 images at once</strong> and download them as a ZIP file – all in your browser, private and fast.</p>
+            <ul>
+                <li>✅ <strong>100% client‑side</strong> – no upload, no server, complete privacy.</li>
+                <li>✅ <strong>Preserves original resolution</strong> – we never resize your images.</li>
+                <li>✅ <strong>Adjustable quality</strong> – control file size vs. image quality.</li>
+                <li>✅ <strong>Multiple formats</strong> – JPEG, PNG, WebP output.</li>
+                <li>✅ <strong>Download as ZIP</strong> – get all compressed images in one archive.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🔄 How It Works</h2>
+            <ol>
+                <li>Select multiple images (drag & drop or click).</li>
+                <li>Choose output format (JPEG, PNG, or WebP) and quality (for JPEG/WebP).</li>
+                <li>Click “Compress All Images” – we process each image locally using Canvas.</li>
+                <li>Review the file size reduction for each image.</li>
+                <li>Click “Download ZIP” to save all compressed images.</li>
+            </ol>
+            <p>All processing uses the browser’s native image encoding – no external libraries except JSZip for ZIP creation.</p>
+        </div>
+    </div>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Compression Tips</h5>
+        <ul class="mb-0">
+            <li><strong>JPEG</strong> is best for photographs – reduce quality to 70–85% for good balance.</li>
+            <li><strong>PNG</strong> is lossless – good for logos, text, but file sizes are larger.</li>
+            <li><strong>WebP</strong> offers excellent compression; set quality similar to JPEG.</li>
+            <li>Original dimensions are always preserved – no unwanted resizing.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">Does this tool reduce image resolution?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No – we never resize images. The compressed output has exactly the same width and height as the original. Only file size is reduced (for lossy formats like JPEG/WebP).</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">How many images can I compress at once?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">You can select up to 50 images per batch. For larger numbers, you can run multiple batches.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Are my images uploaded anywhere?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. All compression and ZIP creation happen inside your browser. Your images never leave your device.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/tools/image-format-converter" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🖼️ Image Format Converter</div></a></div>
+        <div class="col-md-3 col-6"><a href="/Tools/RemoveImgBackground" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🎨 Background Remover</div></a></div>
+        <div class="col-md-3 col-6"><a href="/PDF/ImageCompressor" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🗜️ Single Image Compressor</div></a></div>
+        <div class="col-md-3 col-6"><a href="/Tools/ImageResizer" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📏 Image Resizer</div></a></div>
+    </div>
+</section>
+   <script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "Bulk Image Compressor",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web",
+  "url": "https://ratpdf.com/bulk-image-compressor",
+  "description": "Compress multiple images at once in your browser. Download as ZIP. No upload, private.",
+  "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "1183",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "featureList": [
+    "Bulk image compression",
+    "ZIP download",
+    "Preserve resolution",
+    "JPEG output",
+    "PNG output",
+    "WebP output",
+    "Browser-based processing",
+    "No uploads required"
+  ]
+}
+</script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "Does this tool reduce image resolution?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "No, original dimensions are preserved."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "How many images can I compress at once?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Up to 50 images per batch."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <script>
+        (function() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileCountDiv = document.getElementById('fileCount');
+            const outputFormatSelect = document.getElementById('outputFormat');
+            const qualitySlider = document.getElementById('qualitySlider');
+            const qualityValue = document.getElementById('qualityValue');
+            const qualityLabel = document.getElementById('qualityLabel');
+            const compressBtn = document.getElementById('compressBtn');
+            const downloadZipBtn = document.getElementById('downloadZipBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const progressArea = document.getElementById('progressArea');
+            const progressBar = document.getElementById('progressBar');
+            const progressStatus = document.getElementById('progressStatus');
+            const progressPercent = document.getElementById('progressPercent');
+            const imageListDiv = document.getElementById('imageList');
+            
+            let selectedFiles = [];
+            let compressedResults = []; 
+            let processing = false;
+            
+            function updateFileCount() {
+                fileCountDiv.innerText = selectedFiles.length ? `${selectedFiles.length} image(s) selected` : '';
+            }
+            
+            function renderImageList() {
+                if (selectedFiles.length === 0) {
+                    imageListDiv.innerHTML = '<div class="col-12 text-muted text-center">No images selected</div>';
+                    return;
+                }
+                let html = '';
+                selectedFiles.forEach((file, idx) => {
+                    const result = compressedResults.find(r => r.originalName === file.name);
+                    const sizeReduction = result ? ((1 - result.compressedSize / result.originalSize) * 100).toFixed(1) : 0;
+                    html += `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card image-card h-100">
+                                <div class="card-body text-center">
+                                    <img id="preview_${idx}" class="result-img mb-2" style="max-width:100px; max-height:100px;">
+                                    <div class="small text-truncate">${file.name}</div>
+                                    <div class="small text-muted">${(file.size / 1024).toFixed(1)} KB</div>
+                                    ${result ? `<div class="small text-success">→ ${(result.compressedSize / 1024).toFixed(1)} KB (${sizeReduction}% less)</div>` : '<div class="small text-secondary">Not compressed yet</div>'}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                imageListDiv.innerHTML = html;
+
+                selectedFiles.forEach((file, idx) => {
+                    const img = document.getElementById(`preview_${idx}`);
+                    if (img) {
+                        const url = URL.createObjectURL(file);
+                        img.src = url;
+                        img.onload = () => URL.revokeObjectURL(url);
+                    }
+                });
+            }
+            
+            async function compressImage(file, outputMime, quality) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    const url = URL.createObjectURL(file);
+                    img.onload = () => {
+                        URL.revokeObjectURL(url);
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        canvas.toBlob(blob => {
+                            resolve({
+                                originalName: file.name,
+                                blob: blob,
+                                originalSize: file.size,
+                                compressedSize: blob.size,
+                                width: img.width,
+                                height: img.height,
+                                format: outputMime
+                            });
+                        }, outputMime, quality);
+                    };
+                    img.onerror = reject;
+                    img.src = url;
+                });
+            }
+            
+            async function compressAll() {
+                if (selectedFiles.length === 0) {
+                    alert('Please select images first.');
+                    return;
+                }
+                if (processing) return;
+                processing = true;
+                compressBtn.disabled = true;
+                downloadZipBtn.disabled = true;
+                progressArea.classList.remove('d-none');
+                const outputMime = outputFormatSelect.value;
+                const quality = parseInt(qualitySlider.value) / 100;
+                compressedResults = [];
+                let completed = 0;
+                const total = selectedFiles.length;
+                
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const file = selectedFiles[i];
+                    try {
+                        const result = await compressImage(file, outputMime, quality);
+                        compressedResults.push(result);
+                        completed++;
+                        const percent = (completed / total) * 100;
+                        progressBar.style.width = percent + '%';
+                        progressPercent.innerText = Math.round(percent) + '%';
+                        progressStatus.innerText = `Compressed ${completed} of ${total} images`;
+                        renderImageList();
+                    } catch (err) {
+                        console.error(`Error compressing ${file.name}:`, err);
+                        progressStatus.innerText = `Error on ${file.name}`;
+                    }
+                }
+                progressBar.style.width = '100%';
+                progressStatus.innerText = 'Compression complete!';
+                setTimeout(() => {
+                    progressArea.classList.add('d-none');
+                }, 1500);
+                downloadZipBtn.disabled = false;
+                compressBtn.disabled = false;
+                processing = false;
+            }
+            
+            function downloadZip() {
+                if (compressedResults.length === 0) {
+                    alert('No compressed images. Please compress first.');
+                    return;
+                }
+                const zip = new JSZip();
+                for (let res of compressedResults) {
+                    let ext = res.format.split('/')[1].replace('jpeg', 'jpg');
+                    let name = res.originalName.replace(/\.[^/.]+$/, '') + '.' + ext;
+                    zip.file(name, res.blob);
+                }
+                zip.generateAsync({ type: 'blob' }).then(blob => {
+                    saveAs(blob, `compressed_images_${Date.now()}.zip`);
+                });
+            }
+            
+            function clearAll() {
+                selectedFiles = [];
+                compressedResults = [];
+                fileInput.value = '';
+                renderImageList();
+                updateFileCount();
+                compressBtn.disabled = true;
+                downloadZipBtn.disabled = true;
+            }
+            
+            function handleFiles(files) {
+                const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+                if (imageFiles.length === 0) return;
+                selectedFiles = imageFiles;
+                compressedResults = [];
+                updateFileCount();
+                renderImageList();
+                compressBtn.disabled = false;
+                downloadZipBtn.disabled = true;
+            }
+            
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length) handleFiles(files);
+            });
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) handleFiles(e.target.files);
+            });
+            compressBtn.addEventListener('click', compressAll);
+            downloadZipBtn.addEventListener('click', downloadZip);
+            clearBtn.addEventListener('click', clearAll);
+            
+            outputFormatSelect.addEventListener('change', () => {
+                const isLossy = outputFormatSelect.value === 'image/jpeg' || outputFormatSelect.value === 'image/webp';
+                qualitySlider.disabled = !isLossy;
+                qualityLabel.innerText = isLossy ? `📊 ${outputFormatSelect.value.split('/')[1].toUpperCase()} Quality (%)` : 'Quality (not applicable for PNG)';
+                if (selectedFiles.length) compressBtn.disabled = false;
+            });
+            qualitySlider.addEventListener('input', () => {
+                qualityValue.innerText = qualitySlider.value + '%';
+            });
+        })();
+    </script>

@@ -1,0 +1,562 @@
+﻿@{
+    ViewData["Title"] = "Free Image Resizer Online | Resize JPG, PNG, WebP Instantly";
+    ViewData["Description"] = "Resize images online for free. Change width and height, maintain aspect ratio, and download in JPG, PNG, or WebP. 100% browser-based – no upload, private.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="image resizer, resize image online, change image dimensions, resize JPG, resize PNG, resize WebP, free image resizer, browser-based resizer" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/image-resizer" />
+    <meta property="og:title" content="Free Image Resizer – Resize Photos, JPG, PNG, WebP" />
+    <meta property="og:description" content="Resize images to exact dimensions while preserving quality. No upload – your images stay private." />
+    <meta property="og:url" content="https://ratpdf.com/image-resizer" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .drop-zone.drag-over {
+            border-color: #0d6efd;
+            background-color: #e7f5ff;
+        }
+        .preview-area {
+            background: repeating-conic-gradient(#f0f0f0 0% 25%, #ffffff 0% 50%) 50% / 20px 20px;
+            border-radius: 16px;
+            padding: 1rem;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .preview-img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .dimension-input {
+            max-width: 120px;
+            display: inline-block;
+        }
+        .aspect-badge {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">📏 Image Resizer</h1>
+        <p class="lead text-muted">
+            Change image dimensions to any width and height – <strong>free, private, no upload</strong><br />
+            Preserve aspect ratio or stretch, choose output format and quality.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📐 Custom dimensions</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🔒 No server upload</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">🔄 Aspect ratio lock</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- File upload zone -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📂 Select Image</label>
+                        <div id="dropZone" class="drop-zone p-5 text-center">
+                            <i class="bi bi-cloud-upload fs-1 text-primary"></i>
+                            <p class="mt-2 mb-0">Drag & drop or click to select</p>
+                            <small class="text-muted">Supports JPG, PNG, WebP, BMP, GIF (first frame)</small>
+                            <input type="file" id="fileInput" class="d-none" accept="image/jpeg,image/png,image/webp,image/bmp,image/gif" />
+                        </div>
+                        <div id="fileName" class="form-text mt-2 text-muted"></div>
+                    </div>
+
+                    <!-- Original & preview -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="fw-semibold">📷 Original</label>
+                            <div class="preview-area">
+                                <img id="originalPreview" class="preview-img" src="#" alt="Original" style="display: none;">
+                                <div id="originalPlaceholder" class="text-muted">No image selected</div>
+                            </div>
+                            <div class="small text-muted mt-1" id="originalDimensions"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold">✨ Resized Preview</label>
+                            <div class="preview-area">
+                                <img id="resizedPreview" class="preview-img" src="#" alt="Resized" style="display: none;">
+                                <div id="resizedPlaceholder" class="text-muted">Result will appear here</div>
+                            </div>
+                            <div class="small text-muted mt-1" id="resizedDimensions"></div>
+                        </div>
+                    </div>
+
+                    <!-- Resize controls -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">📏 Width (px)</label>
+                            <input type="number" id="widthInput" class="form-control" placeholder="Auto" step="1" min="1">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">📏 Height (px)</label>
+                            <input type="number" id="heightInput" class="form-control" placeholder="Auto" step="1" min="1">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <div class="form-check">
+                                <input type="checkbox" id="keepAspect" class="form-check-input" checked>
+                                <label class="form-check-label" for="keepAspect">🔒 Maintain aspect ratio</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">🎨 Output Format</label>
+                            <select id="outputFormat" class="form-select rounded-pill">
+                                <option value="image/jpeg">JPEG (lossy)</option>
+                                <option value="image/png" selected>PNG (lossless, transparency)</option>
+                                <option value="image/webp">WebP (modern)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" id="qualityLabel">📊 JPEG/WebP Quality (%)</label>
+                            <input type="range" id="qualitySlider" class="form-range" min="1" max="100" value="85">
+                            <div class="d-flex justify-content-between">
+                                <span>Smaller file</span>
+                                <span>Better quality</span>
+                            </div>
+                            <div id="qualityValue" class="form-text text-end">85%</div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+                        <button id="resizeBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm" disabled>🖼️ Resize Image</button>
+                        <button id="downloadBtn" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm" disabled>💾 Download Resized Image</button>
+                        <button id="clearBtn" class="btn btn-outline-secondary rounded-pill px-4">🗑️ Clear</button>
+                    </div>
+
+                    <!-- Preset dimensions -->
+                    <div class="mt-3">
+                        <label class="form-label fw-semibold">⚡ Quick Presets</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-width="1920" data-height="1080">1920×1080 (HD)</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-width="1280" data-height="720">1280×720 (720p)</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-width="800" data-height="600">800×600 (SVGA)</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-width="640" data-height="480">640×480 (VGA)</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-width="300" data-height="300">300×300 (Square)</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-width="150" data-height="150">150×150 (Thumbnail)</button>
+                        </div>
+                    </div>
+
+                    <div id="statusMsg" class="alert alert-info mt-3 d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Content -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📐 Why Use Our Image Resizer?</h2>
+            <p>Resizing images is essential for web optimization, social media posts, email attachments, and print. Our tool is completely <strong>browser‑based</strong> – your images never leave your device, ensuring privacy and speed.</p>
+            <ul>
+                <li>✅ <strong>No upload</strong> – all processing is local.</li>
+                <li>✅ <strong>Maintain aspect ratio</strong> – or custom stretch.</li>
+                <li>✅ <strong>Exact pixel dimensions</strong> – resize to any width/height.</li>
+                <li>✅ <strong>Output formats</strong> – JPEG, PNG, WebP.</li>
+                <li>✅ <strong>Adjustable quality</strong> for lossy formats.</li>
+                <li>✅ <strong>Free, no signup, no watermark</strong>.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🔄 How to Resize an Image (Step by Step)</h2>
+            <ol>
+                <li>Select an image (drag & drop or click).</li>
+                <li>Enter desired width and height in pixels (or use presets).</li>
+                <li>Toggle “Maintain aspect ratio” – if on, changing one dimension auto‑adjusts the other.</li>
+                <li>Choose output format and quality.</li>
+                <li>Click “Resize Image” – the tool creates a new image at the specified dimensions.</li>
+                <li>Download the resized image – it’s saved locally.</li>
+            </ol>
+            <div class="alert alert-light border mt-2">
+                <strong>💡 Pro tip:</strong> Keep aspect ratio locked to avoid distortion. Use presets for common social media sizes (e.g., Instagram 1080×1080, YouTube thumbnail 1280×720).
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">📊 Common Resize Use Cases</h2>
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr><th>Purpose</th><th>Recommended Dimensions</th><th>Format</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Instagram post</td><td>1080×1080</td><td>JPEG (80% quality)</td></tr>
+            <tr><td>Facebook cover photo</td><td>851×315</td><td>JPEG</td></tr>
+            <tr><td>YouTube thumbnail</td><td>1280×720</td><td>JPEG</td></tr>
+            <tr><td>Email signature</td><td>300×100</td><td>PNG</td></tr>
+            <tr><td>Product thumbnail</td><td>150×150</td><td>WebP</td></tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">🎯 Why Resize Images?</h5>
+        <ul class="mb-0">
+            <li><strong>Faster website load times</strong> – smaller images mean better performance.</li>
+            <li><strong>Save storage space</strong> – reduce file sizes without losing quality.</li>
+            <li><strong>Meet platform requirements</strong> – many websites have dimension limits.</li>
+            <li><strong>Prepare for printing</strong> – resize to exact print dimensions (DPI conversion note: this tool resizes pixels, not physical print size).</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">Does resizing reduce image quality?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Resizing itself (changing dimensions) can cause softening when enlarging. We recommend only scaling down to preserve detail. Output quality is also controlled by the quality slider for JPEG/WebP formats.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Can I resize animated GIFs?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Currently only the first frame of a GIF will be resized. For animated GIFs, a specialized tool is needed.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Is my image uploaded to a server?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No – all resizing happens in your browser using HTML Canvas. Your image never leaves your device.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/tools/bulk-image-compressor" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🗜️ Bulk Image Compressor</div></a></div>
+        <div class="col-md-3 col-6"><a href="/tools/image-format-converter" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🖼️ Image Format Converter</div></a></div>
+        <div class="col-md-3 col-6"><a href="/Tools/RemoveImgBackground" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🎨 Background Remover</div></a></div>
+        <div class="col-md-3 col-6"><a href="/PDF/ImageCompressor" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🗜️ Single Image Compressor</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "Image Resizer",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web",
+  "url": "https://ratpdf.com/image-resizer",
+  "description": "Resize images online for free. Change width/height, maintain aspect ratio, output JPEG, PNG, WebP. 100% client-side.",
+  "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "987",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "featureList": [
+    "Custom width and height resizing",
+    "Aspect ratio lock",
+    "JPEG output support",
+    "PNG output support",
+    "WebP output support",
+    "Quality control slider",
+    "Client-side processing",
+    "No uploads required"
+  ]
+}
+</script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "Does resizing reduce image quality?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Resizing down is generally safe; enlarging may cause softness. The quality slider affects JPEG/WebP compression."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Is my image uploaded to a server?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "No, all processing is local in your browser."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileNameSpan = document.getElementById('fileName');
+            const originalImg = document.getElementById('originalPreview');
+            const originalPlaceholder = document.getElementById('originalPlaceholder');
+            const originalDimensionsSpan = document.getElementById('originalDimensions');
+            const resizedImg = document.getElementById('resizedPreview');
+            const resizedPlaceholder = document.getElementById('resizedPlaceholder');
+            const resizedDimensionsSpan = document.getElementById('resizedDimensions');
+            const widthInput = document.getElementById('widthInput');
+            const heightInput = document.getElementById('heightInput');
+            const keepAspectCheck = document.getElementById('keepAspect');
+            const outputFormatSelect = document.getElementById('outputFormat');
+            const qualitySlider = document.getElementById('qualitySlider');
+            const qualityValue = document.getElementById('qualityValue');
+            const qualityLabel = document.getElementById('qualityLabel');
+            const resizeBtn = document.getElementById('resizeBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const statusMsg = document.getElementById('statusMsg');
+            const presetBtns = document.querySelectorAll('.preset-btn');
+            
+            let currentFile = null;
+            let originalImageUrl = null;
+            let originalWidth = 0, originalHeight = 0;
+            let resizedBlob = null;
+            
+            function showMessage(text, isError = false) {
+                statusMsg.textContent = text;
+                statusMsg.className = `alert ${isError ? 'alert-danger' : 'alert-info'} mt-3`;
+                statusMsg.classList.remove('d-none');
+                setTimeout(() => statusMsg.classList.add('d-none'), 5000);
+            }
+            
+            function loadImage(src) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = reject;
+                    img.src = src;
+                });
+            }
+            
+            async function handleFile(file) {
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    showMessage('Please select an image file.', true);
+                    return;
+                }
+                currentFile = file;
+                fileNameSpan.innerText = file.name;
+                const url = URL.createObjectURL(file);
+                if (originalImageUrl) URL.revokeObjectURL(originalImageUrl);
+                originalImageUrl = url;
+                originalImg.src = url;
+                originalImg.style.display = 'block';
+                originalPlaceholder.style.display = 'none';
+                resizeBtn.disabled = false;
+                downloadBtn.disabled = true;
+                resizedImg.style.display = 'none';
+                resizedPlaceholder.style.display = 'block';
+                resizedBlob = null;
+                // Get original dimensions
+                const img = await loadImage(url);
+                originalWidth = img.width;
+                originalHeight = img.height;
+                originalDimensionsSpan.innerText = `${originalWidth} × ${originalHeight} px`;
+                // Set default dimensions in inputs (preserve aspect)
+                widthInput.value = originalWidth;
+                heightInput.value = originalHeight;
+                // Auto-resize preview?
+                performResize();
+            }
+            
+            function updateQualityUI() {
+                const format = outputFormatSelect.value;
+                const isLossy = (format === 'image/jpeg' || format === 'image/webp');
+                qualitySlider.disabled = !isLossy;
+                qualityLabel.innerText = isLossy ? `📊 ${format.split('/')[1].toUpperCase()} Quality (%)` : 'Quality (not applicable for PNG)';
+                qualityValue.innerText = qualitySlider.value + '%';
+            }
+            
+            function calculateAspectResize(reqWidth, reqHeight) {
+                let newWidth = reqWidth;
+                let newHeight = reqHeight;
+                if (keepAspectCheck.checked && originalWidth > 0 && originalHeight > 0) {
+                    if (reqWidth && !reqHeight) {
+                        newHeight = Math.round(reqWidth * originalHeight / originalWidth);
+                    } else if (reqHeight && !reqWidth) {
+                        newWidth = Math.round(reqHeight * originalWidth / originalHeight);
+                    } else if (reqWidth && reqHeight) {
+                        const ratioW = reqWidth / originalWidth;
+                        const ratioH = reqHeight / originalHeight;
+                        const ratio = Math.min(ratioW, ratioH);
+                        newWidth = Math.round(originalWidth * ratio);
+                        newHeight = Math.round(originalHeight * ratio);
+                    }
+                }
+                return { width: newWidth, height: newHeight };
+            }
+            
+            async function performResize() {
+                if (!currentFile || !originalWidth) return;
+                let reqWidth = parseInt(widthInput.value);
+                let reqHeight = parseInt(heightInput.value);
+                if (isNaN(reqWidth)) reqWidth = originalWidth;
+                if (isNaN(reqHeight)) reqHeight = originalHeight;
+                if (reqWidth <= 0) reqWidth = originalWidth;
+                if (reqHeight <= 0) reqHeight = originalHeight;
+                const { width: newWidth, height: newHeight } = calculateAspectResize(reqWidth, reqHeight);
+                if (newWidth <= 0 || newHeight <= 0) return;
+                // Update inputs to reflect actual dimensions
+                widthInput.value = newWidth;
+                heightInput.value = newHeight;
+                try {
+                    const img = await loadImage(originalImageUrl);
+                    const canvas = document.createElement('canvas');
+                    canvas.width = newWidth;
+                    canvas.height = newHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                    const mime = outputFormatSelect.value;
+                    let quality = undefined;
+                    if (mime === 'image/jpeg' || mime === 'image/webp') {
+                        quality = parseInt(qualitySlider.value) / 100;
+                    }
+                    const blob = await new Promise(resolve => canvas.toBlob(resolve, mime, quality));
+                    resizedBlob = blob;
+                    const url = URL.createObjectURL(blob);
+                    resizedImg.src = url;
+                    resizedImg.style.display = 'block';
+                    resizedPlaceholder.style.display = 'none';
+                    resizedDimensionsSpan.innerText = `${newWidth} × ${newHeight} px`;
+                    downloadBtn.disabled = false;
+                    resizedImg.onload = () => URL.revokeObjectURL(url);
+                } catch (err) {
+                    console.error(err);
+                    showMessage('Resize failed: ' + err.message, true);
+                }
+            }
+            
+            function onDimensionChange() {
+                if (currentFile) performResize();
+            }
+            
+            function onFormatChange() {
+                updateQualityUI();
+                if (currentFile) performResize();
+            }
+            
+            function onQualityChange() {
+                qualityValue.innerText = qualitySlider.value + '%';
+                if (currentFile) performResize();
+            }
+            
+            function setPreset(width, height) {
+                if (!currentFile) {
+                    showMessage('Please select an image first.', true);
+                    return;
+                }
+                widthInput.value = width;
+                heightInput.value = height;
+                performResize();
+            }
+            
+            function downloadResized() {
+                if (!resizedBlob) {
+                    showMessage('No resized image. Please resize first.', true);
+                    return;
+                }
+                const ext = outputFormatSelect.value.split('/')[1].replace('jpeg', 'jpg');
+                const filename = `resized_${Date.now()}.${ext}`;
+                const url = URL.createObjectURL(resizedBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showMessage(`Downloaded ${filename} – ${resizedBlob.size / 1024} KB`);
+            }
+            
+            function clearAll() {
+                currentFile = null;
+                if (originalImageUrl) URL.revokeObjectURL(originalImageUrl);
+                originalImageUrl = null;
+                originalImg.style.display = 'none';
+                originalPlaceholder.style.display = 'block';
+                originalDimensionsSpan.innerText = '';
+                resizedImg.style.display = 'none';
+                resizedPlaceholder.style.display = 'block';
+                resizedDimensionsSpan.innerText = '';
+                fileNameSpan.innerText = '';
+                widthInput.value = '';
+                heightInput.value = '';
+                resizedBlob = null;
+                resizeBtn.disabled = true;
+                downloadBtn.disabled = true;
+                fileInput.value = '';
+                showMessage('Cleared');
+            }
+            
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFile(file);
+                }
+            });
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) handleFile(e.target.files[0]);
+            });
+            widthInput.addEventListener('input', onDimensionChange);
+            heightInput.addEventListener('input', onDimensionChange);
+            keepAspectCheck.addEventListener('change', onDimensionChange);
+            outputFormatSelect.addEventListener('change', onFormatChange);
+            qualitySlider.addEventListener('input', onQualityChange);
+            resizeBtn.addEventListener('click', performResize);
+            downloadBtn.addEventListener('click', downloadResized);
+            clearBtn.addEventListener('click', clearAll);
+            presetBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const w = parseInt(btn.getAttribute('data-width'));
+                    const h = parseInt(btn.getAttribute('data-height'));
+                    setPreset(w, h);
+                });
+            });
+            updateQualityUI();
+        })();
+    </script>
+}

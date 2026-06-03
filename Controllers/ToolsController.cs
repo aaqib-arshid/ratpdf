@@ -98,6 +98,8 @@ namespace ratpdf.Controllers
         [HttpGet("url-encoder")] public IActionResult UrlEncoder() => View();
         [HttpGet("url-decoder")] public IActionResult UrlDecoder() => View();
         [HttpGet("image-format-converter")] public IActionResult ImageFormatConverter() => View();
+        [HttpGet("bulk-image-compressor")] public IActionResult BulkImageCompressor() => View();
+        [HttpGet("image-resizer")] public IActionResult ImageResizer() => View();
         [HttpGet] public IActionResult ImgBackgroundRemove() => View();
         [HttpGet]
         public IActionResult IpLookup() => View();
