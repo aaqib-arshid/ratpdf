@@ -98,7 +98,7 @@ namespace ratpdf.Controllers
         [HttpGet("url-encoder")] public IActionResult UrlEncoder() => View();
         [HttpGet("url-decoder")] public IActionResult UrlDecoder() => View();
         [HttpGet]
-        public IActionResult ImgBackgroundRemove() => throw new Exception("Service unavailable!"); //View();
+        public IActionResult ImgBackgroundRemove() => View();
         [HttpGet]
         public IActionResult IpLookup() => View();
         [HttpGet]

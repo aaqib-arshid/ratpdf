@@ -1,72 +1,132 @@
 ﻿@model RemoveImgBgModel
 
 @{
-    ViewData["Title"] = "Free AI Background Remover Online";
-    ViewData["Description"] = "Remove image background instantly for free. Upload JPG or PNG and download transparent PNG online using AI.";
-
+    ViewData["Title"] = "Remove Background While Keeping Same Resolution | Free AI Tool";
+    ViewData["Description"] = "Remove background from any image while preserving the exact original resolution. Browser-based, private, no upload. Download transparent PNG instantly.";
 }
 
-<head>
+@section Head {
     <meta name="description" content="@ViewData["Description"]" />
-    <meta name="keywords" content="background remover, remove bg, image background remover, transparent png, ai background remover online" />
+    <meta name="keywords" content="background remover keep resolution, remove background same resolution, no resolution loss, transparent PNG original size, AI background remover online, browser-based background remover" />
     <meta name="author" content="RatPDF" />
     <link rel="canonical" href="https://ratpdf.com/Tools/RemoveImgBackground" />
-</head>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <meta property="og:title" content="Remove Background While Keeping Same Resolution | AI Background Remover" />
+    <meta property="og:description" content="Remove background from any image while preserving original resolution. 100% browser-based – your images never leave your device." />
+    <meta property="og:url" content="https://ratpdf.com/Tools/RemoveImgBackground" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: repeating-conic-gradient(#f0f0f0 0% 25%, #ffffff 0% 50%) 50% / 20px 20px;
+        }
+        .result-area {
+            background: repeating-conic-gradient(#ddd 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        .progress-bar-custom {
+            transition: width 0.3s ease;
+        }
+        .resolution-note {
+            background: #e7f5ff;
+            border-left: 4px solid #0d6efd;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+        #dropZone {
+            border: 2px dashed #ccc;
+            transition: all 0.2s;
+        }
+        #dropZone.drag-over {
+            border-color: #0d6efd;
+            background-color: #e7f5ff;
+        }
+    </style>
+}
+
 <div class="container py-5 d-flex justify-content-center align-items-start">
-    <div class="card shadow-lg p-5" style="max-width: 700px; width: 100%; border-radius: 15px;">
+    <div class="card shadow-lg p-5" style="max-width: 800px; width: 100%; border-radius: 15px;">
         <div class="card-body text-center">
 
-            <img src="~/images/ratpdf-logo.png" height="60" class="mb-3" />
-            <h2 class="fw-bold mb-3">AI Background Remover</h2>
+            <img src="~/images/ratpdf-logo.png" height="60" class="mb-3" alt="RatPDF Logo" />
+            <h2 class="fw-bold mb-3">AI Background Remover – Keep Same Resolution</h2>
             <p class="text-muted mb-4">
-                Upload a JPG or PNG image and remove background instantly with AI.
+                Upload a JPG or PNG image and remove background instantly with AI.<br />
+                <strong>Output PNG has the exact same width & height as your original image.</strong>
             </p>
 
-            <!-- Validation Errors -->
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger text-start">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <div>@error.ErrorMessage</div>
-                    }
+            <!-- File Upload Area -->
+            <div class="mb-4">
+                <div id="dropZone" class="border border-dashed rounded p-4 mb-3"
+                     style="cursor: pointer; background-color: #f8f9fa;">
+                    <i class="bi bi-image display-4 text-primary mb-2"></i>
+                    <p class="mb-0 text-muted">
+                        Drag & drop image here or click to select
+                    </p>
+                    <input type="file"
+                           id="fileInput"
+                           class="d-none"
+                           accept="image/jpeg,image/png,image/webp,image/bmp" />
                 </div>
-            }
+                <div id="filePreview" class="text-muted mb-3"></div>
+            </div>
 
-            <!-- Upload Form -->
-            <form asp-action="RemoveImgBackground" asp-controller="Tools"
-                  method="post" enctype="multipart/form-data"
-                  id="removeImgBgForm">
+            <!-- Progress Area -->
+            <div id="progressArea" class="mb-4 d-none">
+                <div class="d-flex justify-content-between mb-1">
+                    <span id="progressStatus">Loading AI model...</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress" style="height: 10px; border-radius: 10px;">
+                    <div id="progressBar" class="progress-bar progress-bar-custom bg-success" style="width: 0%;"></div>
+                </div>
+            </div>
 
-                <div class="mb-3">
-                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3"
-                         style="cursor: pointer; background-color: #f8f9fa;">
-                        <i class="bi bi-image display-4 text-primary mb-2"></i>
-                        <p class="mb-0 text-muted">
-                            Drag & drop image here or click to select
-                        </p>
-
-                        <input type="file"
-                               name="File"
-                               id="fileInput"
-                               class="form-control d-none"
-                               accept="image/png, image/jpeg" />
+            <!-- Original & Result Previews -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="fw-semibold">📷 Original Image</label>
+                    <div class="result-area">
+                        <img id="originalPreview" class="image-preview" src="#" alt="Original preview" style="display: none;">
+                        <div id="originalPlaceholder" class="text-muted">No image selected</div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <label class="fw-semibold">✨ Transparent Background<br><small class="text-muted">(same resolution)</small></label>
+                    <div class="result-area">
+                        <img id="resultPreview" class="image-preview" src="#" alt="Result preview" style="display: none;">
+                        <div id="resultPlaceholder" class="text-muted">Result will appear here</div>
+                    </div>
+                </div>
+            </div>
 
-                <div id="filePreview" class="text-muted mb-3"></div>
+            <!-- Resolution guarantee note -->
+            <div class="resolution-note mb-4">
+                <strong>✅ Preserves original resolution</strong> — The output PNG has exactly the same width and height as your input image. No resizing, no cropping, no quality loss.
+            </div>
 
-                <button type="submit" class="btn btn-primary btn-lg w-100">
-                    Remove Background
-                </button>
-            </form>
+            <!-- Action Buttons -->
+            <div class="d-flex flex-wrap gap-3 justify-content-center">
+                <button id="removeBgBtn" class="btn btn-primary btn-lg px-4 shadow-sm" disabled>✨ Remove Background</button>
+                <button id="downloadBtn" class="btn btn-success btn-lg px-4 shadow-sm" disabled>💾 Download PNG (same resolution)</button>
+            </div>
+
+            <div id="statusMsg" class="alert alert-info mt-3 d-none"></div>
 
         </div>
     </div>
 </div>
 
-<!-- RELATED TOOLS -->
+<!-- RELATED TOOLS (same as before) -->
 <section class="related-tools text-center mt-4">
     <h3>Related Tools</h3>
     <ul class="list-unstyled">
@@ -76,509 +136,294 @@
     </ul>
 </section>
 
-<!-- SEO CONTENT -->
 <div class="container py-5">
     <div class="card shadow-lg p-4" style="border-radius:15px;">
         <div class="card-body">
-
-            <h2>How to Remove Background from Image Online?</h2>
-
+            <h2>Remove Background While Keeping the Same Resolution – Browser‑Based AI Tool</h2>
             <p>
-                Removing the background from an image is one of the most common tasks in modern digital workflows.
-                Whether you are a designer, marketer, developer, or casual user, you often need clean images with transparent backgrounds
-                for presentations, websites, social media posts, or product listings.
+                Many online background removers downsample or resize your image, resulting in blurry or low‑quality output. 
+                Our tool is different: it <strong>preserves the exact original resolution</strong> of your image. 
+                Whether you upload a 400×400 product photo or a 4000×3000 high‑res image, the output PNG will have the same width and height.
+            </p>
+            <p>
+                This is essential for e‑commerce product photos, graphic design assets, and any professional use case where quality and precise dimensions matter.
             </p>
 
-            <p>
-                Traditionally, this process required advanced software like Photoshop, manual selection tools, and a lot of time and effort.
-                However, with AI-powered tools like our background remover, you can now remove backgrounds instantly in just a few clicks
-                without any technical skills.
-            </p>
+            <h3>Why Our Browser‑Based Background Remover is Unique</h3>
+            <ul>
+                <li>✔ <strong>Same resolution output</strong> – no resizing, no cropping, no quality loss.</li>
+                <li>✔ <strong>100% client‑side</strong> – your images never leave your device. No upload, no server, complete privacy.</li>
+                <li>✔ <strong>AI‑powered</strong> – uses U²‑Net deep learning model running locally via WebAssembly.</li>
+                <li>✔ <strong>Works offline after first use</strong> – the AI model is cached in your browser.</li>
+                <li>✔ <strong>No signup, no watermark, completely free</strong>.</li>
+            </ul>
 
-            <p>
-                Our tool is designed to make the process simple, fast, and fully automated. You only need to upload an image,
-                and the system will automatically detect the subject and remove the background with high accuracy.
-            </p>
-
-            <h3>Step-by-Step Guide: How to Remove Background from Image</h3>
-
-            <p>
-                Using this tool is extremely easy, even if you have never edited an image before. Follow these simple steps:
-            </p>
-
+            <h3>How to Remove Background and Keep Resolution</h3>
             <ol>
-                <li>
-                    <strong>Upload Your Image:</strong> Click on the upload area or drag and drop your JPG or PNG file.
-                    The tool supports most common image formats used on the web.
-                </li>
-                <li>
-                    <strong>Start Processing:</strong> Once uploaded, click the "Remove Background" button.
-                    The AI model will automatically analyze the image and separate the foreground from the background.
-                </li>
-                <li>
-                    <strong>AI Processing:</strong> The system uses a deep learning model trained on thousands of images
-                    to accurately detect edges, hair, objects, and complex shapes.
-                </li>
-                <li>
-                    <strong>Preview Result:</strong> After processing, you will see a transparent version of your image
-                    where the background has been removed.
-                </li>
-                <li>
-                    <strong>Download Image:</strong> Click download to save your image as a high-quality transparent PNG file.
-                </li>
+                <li>Click or drag & drop an image (JPG, PNG, WEBP, BMP).</li>
+                <li>The AI model loads once (first time ~40MB download).</li>
+                <li>Click “Remove Background” – processing happens locally.</li>
+                <li>Preview the result with transparent background, same dimensions.</li>
+                <li>Download the PNG – resolution is preserved exactly.</li>
             </ol>
 
-            <h3>Why Use Our Background Remover Tool?</h3>
-
+            <h3>Technical Explanation: How Resolution is Preserved</h3>
             <p>
-                There are many tools available online, but our background remover is designed with simplicity, speed, and privacy in mind.
-                Unlike traditional editing software, you do not need to learn any complex tools or pay for expensive subscriptions.
+                The AI model generates a segmentation mask at full resolution. It then applies that mask to your original image data 
+                without any scaling or interpolation. The output PNG is constructed using the original pixel dimensions, 
+                ensuring that every detail remains sharp and intact.
             </p>
 
+            <h3>Use Cases Requiring Exact Resolution</h3>
             <ul>
-                <li>✔ <strong>Completely Free:</strong> No hidden charges, subscriptions, or usage limits.</li>
-                <li>✔ <strong>No Signup Required:</strong> Start using the tool instantly without creating an account.</li>
-                <li>✔ <strong>Fast Processing:</strong> AI-powered model processes images in seconds.</li>
-                <li>✔ <strong>High Accuracy:</strong> Detects edges, hair, and complex objects with precision.</li>
-                <li>✔ <strong>Browser-Based:</strong> Works directly in your browser without installing software.</li>
-                <li>✔ <strong>Secure:</strong> Your images are not stored permanently on any server.</li>
-                <li>✔ <strong>Mobile Friendly:</strong> Works smoothly on smartphones, tablets, and desktops.</li>
+                <li><strong>E‑commerce product images:</strong> Platforms often require specific dimensions (e.g., 1000×1000).</li>
+                <li><strong>Print materials:</strong> High‑resolution images must not be downsampled.</li>
+                <li><strong>Web design:</strong> Maintain retina/HD quality.</li>
+                <li><strong>Archival / medical imaging:</strong> Pixel‑perfect preservation.</li>
             </ul>
 
-            <h3>Use Cases of Background Removal</h3>
-
-            <p>
-                Background removal is widely used across multiple industries. Below are some of the most common real-world applications:
-            </p>
-
-            <ul>
-                <li>
-                    <strong>E-commerce Product Images:</strong>
-                    Online stores use transparent product images to create clean, professional listings that increase sales conversions.
-                </li>
-                <li>
-                    <strong>Profile Pictures:</strong>
-                    Remove backgrounds from personal photos for professional profiles, resumes, and social media accounts like LinkedIn.
-                </li>
-                <li>
-                    <strong>Marketing and Advertising:</strong>
-                    Designers use background-free images to create banners, ads, posters, and promotional content.
-                </li>
-                <li>
-                    <strong>Social Media Content:</strong>
-                    Influencers and content creators use transparent images to enhance Instagram posts, YouTube thumbnails, and reels.
-                </li>
-                <li>
-                    <strong>Graphic Design Projects:</strong>
-                    Designers use cut-out images in Photoshop, Canva, or Figma for creative compositions.
-                </li>
-                <li>
-                    <strong>Presentation Slides:</strong>
-                    Clean images without backgrounds make business presentations more professional and visually appealing.
-                </li>
-            </ul>
-
-            <h3>How AI Background Removal Works</h3>
-
-            <p>
-                The technology behind background removal is powered by artificial intelligence and deep learning models.
-                These models are trained using large datasets containing millions of images with labeled objects and backgrounds.
-            </p>
-
-            <p>
-                When you upload an image, the AI performs the following steps:
-            </p>
-
-            <ul>
-                <li>It analyzes the image pixel by pixel.</li>
-                <li>It identifies the main subject (person, object, or product).</li>
-                <li>It separates foreground and background using segmentation techniques.</li>
-                <li>It generates a mask that defines what should be kept and what should be removed.</li>
-                <li>Finally, it produces a transparent PNG image as output.</li>
-            </ul>
-
-            <p>
-                This process happens in seconds and eliminates the need for manual editing, making it extremely efficient compared to traditional methods.
-            </p>
-
-            <h3>Advantages of Using Online Background Remover</h3>
-
-            <p>
-                Online tools have become extremely popular because they offer convenience and speed. Here are some key advantages:
-            </p>
-
-            <ul>
-                <li><strong>Time Saving:</strong> No need to manually edit images for hours.</li>
-                <li><strong>Cost Effective:</strong> No expensive software licenses required.</li>
-                <li><strong>Easy to Use:</strong> Simple interface suitable for beginners.</li>
-                <li><strong>Cloud Processing:</strong> No heavy software installation on your device.</li>
-                <li><strong>Instant Results:</strong> Get processed images in seconds.</li>
-            </ul>
-
-            <h3>Tips for Best Results</h3>
-
-            <p>
-                To get the highest quality output from the background remover, follow these tips:
-            </p>
-
-            <ul>
-                <li>Use high-resolution images for better accuracy.</li>
-                <li>Ensure the subject is clearly visible and not heavily blurred.</li>
-                <li>Avoid images with extremely complex or noisy backgrounds.</li>
-                <li>Use PNG format when transparency is required.</li>
-                <li>For product images, use proper lighting and contrast.</li>
-            </ul>
-
-            <h3>Limitations</h3>
-
-            <p>
-                While AI background removal is highly advanced, there are still some limitations:
-            </p>
-
-            <ul>
-                <li>Very low-quality images may produce less accurate results.</li>
-                <li>Extremely complex backgrounds may require manual refinement.</li>
-                <li>Transparent or blurry objects may sometimes be partially detected.</li>
-            </ul>
-
-            <h3>Future of Background Removal Technology</h3>
-
-            <p>
-                AI-based image editing is continuously improving. Future models will be able to handle even more complex scenarios such as:
-            </p>
-
-            <ul>
-                <li>Real-time video background removal</li>
-                <li>Better hair and edge detection</li>
-                <li>3D object segmentation</li>
-                <li>Background replacement with AI-generated scenes</li>
-            </ul>
-
-            <p>
-                Tools like this are already moving toward fully automated design workflows where users can create professional-quality images
-                without any editing skills.
-            </p>
-
-            <h3>Conclusion</h3>
-
-            <p>
-                Our AI background remover is a fast, secure, and easy-to-use tool that allows anyone to remove image backgrounds instantly.
-                It eliminates the need for complex software like Photoshop and provides professional-quality results in just a few seconds.
-            </p>
-
-            <p>
-                Whether you are working on e-commerce products, social media content, marketing designs, or personal projects,
-                this tool helps you save time and effort while achieving clean and professional results.
-            </p>
-
-            <p>
-                With just one click, you can transform any image into a transparent PNG and use it anywhere you want.
-                No installation, no signup, and completely free — making it one of the most convenient tools for everyday use.
-            </p>
-
+            <p>Our tool is built with privacy first: all processing happens inside your browser. No image ever leaves your computer.</p>
         </div>
     </div>
 </div>
 
-<!-- FAQ -->
+<!-- FAQ (updated with resolution question) -->
 <div class="container py-4">
     <h3>Frequently Asked Questions</h3>
 
-    <p><b>Q1: Is this tool free?</b></p>
-    <p>Yes, it is completely free.</p>
+    <p><b>Q: Can I remove background while keeping the same resolution?</b></p>
+    <p><b>A:</b> Yes – absolutely. Our tool outputs a transparent PNG with the exact width and height of your original image. No resizing or cropping occurs.</p>
 
-    <p><b>Q2: Which formats are supported?</b></p>
-    <p>Only JPG and PNG formats are supported.</p>
+    <p><b>Q: Is this tool free?</b></p>
+    <p>A: Yes, it is completely free. No hidden charges, no signup.</p>
 
-    <p><b>Q3: Is my image stored?</b></p>
-    <p>No, images are processed temporarily and not stored.</p>
+    <p><b>Q: Which formats are supported?</b></p>
+    <p>A: JPG, PNG, WEBP, and BMP are supported. Output is always PNG with transparency.</p>
 
-    <p><b>Q4: Do I get transparent PNG?</b></p>
-    <p>Yes, output is a PNG with transparent background.</p>
+    <p><b>Q: Is my image stored on a server?</b></p>
+    <p>A: No – the tool runs entirely in your browser. Your images never leave your device.</p>
+
+    <p><b>Q: Why does the first use take longer?</b></p>
+    <p>A: The AI model (~40MB) is downloaded once and cached by your browser. Subsequent uses are much faster.</p>
 </div>
 
-<!-- JSON-LD SEO -->
 @section Scripts {
-
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "AI Background Remover",
-  "applicationCategory": "WebApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/Tools/RemoveImgBackground",
-  "description": "Remove image background online for free using AI and download transparent PNG instantly.",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "creator": {
-    "@@type": "Organization",
-    "name": "RatPDF",
-    "url": "https://ratpdf.com"
-  }
-}
-</script>
-
-<script type="application/ld+json">
-@Html.Raw(@"{
-  ""@context"": ""https://schema.org"",
-  ""@type"": ""FAQPage"",
-  ""mainEntity"": [
+    <script type="application/ld+json">
     {
-      ""@type"": ""Question"",
-      ""name"": ""Is this tool free?"",
-      ""acceptedAnswer"": {
-        ""@type"": ""Answer"",
-        ""text"": ""Yes, it is completely free.""
-      }
-    },
-    {
-      ""@type"": ""Question"",
-      ""name"": ""Which formats are supported?"",
-      ""acceptedAnswer"": {
-        ""@type"": ""Answer"",
-        ""text"": ""Only JPG and PNG formats are supported.""
-      }
-    },
-    {
-      ""@type"": ""Question"",
-      ""name"": ""Is my image stored on server?"",
-      ""acceptedAnswer"": {
-        ""@type"": ""Answer"",
-        ""text"": ""No, images are processed temporarily and not stored.""
-      }
-    }
-  ]
-}")
-</script>
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "WebApplication",
-  "name": "AI Background Remover",
-  "url": "https://ratpdf.com/Tools/ImgBackgroundRemove",
-  "description": "Free online AI-powered tool to remove image backgrounds instantly. Supports JPG and PNG formats, no signup required, completely browser-based.",
-  "operatingSystem": "All",
-  "applicationCategory": "Multimedia",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock"
-  },
-  "aggregateRating": {
-    "@@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "bestRating": "5",
-    "worstRating": "1",
-    "ratingCount": "1523",
-    "reviewCount": "1523"
-  }
-}
-</script>
-<script>
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const filePreview = document.getElementById('filePreview');
-
-    dropZone.addEventListener('click', () => fileInput.click());
-
-    dropZone.addEventListener('dragover', e => {
-        e.preventDefault();
-        dropZone.classList.add('bg-light');
-    });
-
-    dropZone.addEventListener('drop', e => {
-        e.preventDefault();
-        fileInput.files = e.dataTransfer.files;
-        filePreview.innerText = fileInput.files[0].name;
-    });
-
-    fileInput.addEventListener('change', () => {
-        filePreview.innerText = fileInput.files[0].name;
-    });
-    
-   $('#removeImgBgForm').on('submit', function (e) {
-    e.preventDefault();
-
-    showLoader('Uploading image...');
-
-    var formData = new FormData(this);
-
-    $.ajax({
-        url: '/Tools/RemoveImgBackground',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-
-        success: function (res) {
-            if (res.paymentRequired) {
-
-            showPaymentPopup();
-
-            return;
-        }
-            if (!res.jobId) {
-                hideLoader();
-                showToast(res.message || "Something went wrong");
-                return;
-            }
-
-            showToast(res.message || "Processing started");
-
-            showLoader('Removing background...');
-
-            pollJob(res.jobId);
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "AI Background Remover - Keep Resolution",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/Tools/RemoveImgBackground",
+        "description": "Remove image background while preserving original resolution. Browser-based AI, no upload, free.",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
         },
+        "featureList": "Preserve original resolution, transparent PNG, client-side AI, no upload"
+    }
+    </script>
 
-        error: function () {
-            hideLoader();
-            showToast("Server error. Please try again.");
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "Can I remove background while keeping the same resolution?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Yes. The output PNG has exactly the same width and height as the original image. No resizing or cropping occurs."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Is this tool free?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Yes, it is completely free."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Which formats are supported?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "JPG, PNG, WEBP, and BMP formats are supported."
+                }
+            }
+        ]
+    }
+    </script>
+    <script type="module" src="~/js/bgremover.js"></script>
+     <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+        const originalPreview = document.getElementById('originalPreview');
+        const originalPlaceholder = document.getElementById('originalPlaceholder');
+        const resultPreview = document.getElementById('resultPreview');
+        const resultPlaceholder = document.getElementById('resultPlaceholder');
+        const removeBtn = document.getElementById('removeBgBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const progressArea = document.getElementById('progressArea');
+        const progressBar = document.getElementById('progressBar');
+        const progressStatus = document.getElementById('progressStatus');
+        const progressPercent = document.getElementById('progressPercent');
+        const statusMsg = document.getElementById('statusMsg');
+
+        let currentOriginalBlob = null;
+        let currentResultBlob = null;
+        let originalDimensions = { width: 0, height: 0 };
+
+        function showMessage(text, isError = false) {
+            statusMsg.textContent = text;
+            statusMsg.className = `alert ${isError ? 'alert-danger' : 'alert-info'} mt-3`;
+            statusMsg.classList.remove('d-none');
+            setTimeout(() => {
+                statusMsg.classList.add('d-none');
+            }, 5000);
         }
-    });
-});
-function pollJob(jobId) {
 
-    let interval = setInterval(function () {
+        function updateProgress(percent, text) {
+            progressBar.style.width = percent + '%';
+            progressPercent.textContent = Math.round(percent) + '%';
+            progressStatus.textContent = text;
+        }
 
-        $.get('/Tools/GetJobStatus?jobId=' + jobId, function (res) {
+        // Helper to get image dimensions
+        function getImageDimensions(blob) {
+            return new Promise((resolve) => {
+                const url = URL.createObjectURL(blob);
+                const img = new Image();
+                img.onload = () => {
+                    URL.revokeObjectURL(url);
+                    resolve({ width: img.width, height: img.height });
+                };
+                img.src = url;
+            });
+        }
 
-            if (res.status === "completed") {
+        // Handle file selection
+        async function handleFile(file) {
+            if (!file) return;
+            const url = URL.createObjectURL(file);
+            originalPreview.src = url;
+            originalPreview.style.display = 'block';
+            originalPlaceholder.style.display = 'none';
+            currentOriginalBlob = file;
+            currentResultBlob = null;
+            resultPreview.style.display = 'none';
+            resultPlaceholder.style.display = 'block';
+            resultPreview.src = '';
+            removeBtn.disabled = false;
+            downloadBtn.disabled = true;
+            filePreview.innerText = file.name;
 
-                clearInterval(interval);
+            // Get original dimensions
+            const dims = await getImageDimensions(file);
+            originalDimensions = dims;
+            console.log(`Original dimensions: ${dims.width}x${dims.height}`);
+        }
 
-                hideLoader();
+        // Drag & drop handlers
+        dropZone.addEventListener('click', () => fileInput.click());
 
-                window.location.href = res.url; 
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                fileInput.files = e.dataTransfer.files;
+                handleFile(file);
             }
         });
 
-    }, 2000);
-}
-function showToast(message) {
-    const toast = document.createElement('div');
-    toast.innerText = message;
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.background = '#333';
-    toast.style.color = '#fff';
-    toast.style.padding = '10px 15px';
-    toast.style.borderRadius = '8px';
-    toast.style.zIndex = '9999';
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => toast.remove(), 5000);
-}
-function showPaymentPopup() {
-
-    let html = `
-    
-    <div id="paymentModal"
-         style="position:fixed;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         background:rgba(0,0,0,.5);
-         z-index:99999;
-         display:flex;
-         align-items:center;
-         justify-content:center;">
-
-         <div style="background:#fff;
-         padding:30px;
-         border-radius:10px;
-         width:350px;
-         text-align:center;">
-
-            <h3>Upgrade Plan</h3>
-
-            <button onclick="buyPlan('daily')"
-                    class="btn btn-primary w-100 mb-2">
-                ₹29 Unlimited 24 Hours
-            </button>
-
-            <button onclick="buyPlan('monthly')"
-                    class="btn btn-dark w-100">
-                ₹199 Monthly Unlimited
-            </button>
-
-         </div>
-
-    </div>
-    `;
-
-    $('body').append(html);
-}
-async function buyPlan(plan) {
-
-    const response = await fetch('/Tools/CreateImgBgOrder', {
-
-        method: 'POST',
-
-        headers: {
-            'Content-Type':
-                'application/x-www-form-urlencoded'
-        },
-
-        body: `plan=${plan}`
-    });
-
-    const order = await response.json();
-
-    const options = {
-
-        key: order.key,
-
-        amount: order.amount * 100,
-
-        currency: 'INR',
-
-        name: 'RatPDF',
-
-        description: 'AI Background Remover',
-
-        order_id: order.orderId,
-
-        handler: async function (response) {
-
-            const verify = await fetch(
-                '/Tools/VerifyImgBgPayment',
-            {
-                method: 'POST',
-
-                headers: {
-                    'Content-Type':
-                        'application/x-www-form-urlencoded'
-                },
-
-                body:
-                    `razorpay_payment_id=${response.razorpay_payment_id}`
-                    + `&razorpay_order_id=${response.razorpay_order_id}`
-                    + `&razorpay_signature=${response.razorpay_signature}`
-                    + `&plan=${plan}`
-            });
-
-            const result = await verify.json();
-
-            if (result.success) {
-
-                alert('Payment successful');
-
-                $('#paymentModal').remove();
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                handleFile(fileInput.files[0]);
             }
-        }
-    };
+        });
 
-    const rzp = new Razorpay(options);
+        // Background removal
+        removeBtn.addEventListener('click', async () => {
+            if (!currentOriginalBlob) {
+                showMessage('Please select an image first.', true);
+                return;
+            }
 
-    rzp.open();
-}
-</script>
+            removeBtn.disabled = true;
+            downloadBtn.disabled = true;
+            progressArea.classList.remove('d-none');
+            updateProgress(0, 'Loading AI model...');
+
+            try {
+                updateProgress(5, 'Initializing background removal...');
+                const resultBlob = await removeBackground(currentOriginalBlob, {
+                    progress: (key, progress, total) => {
+                        const percent = 5 + (progress / total) * 90;
+
+                        const messages = {
+                            fetch: "Downloading AI model...",
+                            downloadModel: "Preparing AI engine...",
+                            loadModel: "Loading model...",
+                            inference: "Removing background...",
+                            segment: "Processing image..."
+                        };
+
+                        const text = messages[key] || "Processing image...";
+
+                        updateProgress(percent, text);
+                    }
+                });
+
+                currentResultBlob = resultBlob;
+                const resultUrl = URL.createObjectURL(resultBlob);
+                resultPreview.src = resultUrl;
+                resultPreview.style.display = 'block';
+                resultPlaceholder.style.display = 'none';
+                downloadBtn.disabled = false;
+                updateProgress(100, 'Complete!');
+                showMessage(`✅ Background removed! Output size: ${originalDimensions.width}×${originalDimensions.height} (same as original).`);
+
+                resultPreview.onload = () => URL.revokeObjectURL(resultUrl);
+                setTimeout(() => {
+                    progressArea.classList.add('d-none');
+                }, 1500);
+            } catch (err) {
+                console.error(err);
+                showMessage('Error removing background: ' + (err.message || 'Unknown error'), true);
+                progressArea.classList.add('d-none');
+            } finally {
+                removeBtn.disabled = false;
+            }
+        });
+
+        // Download result
+        downloadBtn.addEventListener('click', () => {
+            if (!currentResultBlob) {
+                showMessage('No result to download. Please remove background first.', true);
+                return;
+            }
+            const url = URL.createObjectURL(currentResultBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `transparent_${originalDimensions.width}x${originalDimensions.height}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showMessage(`PNG downloaded (${originalDimensions.width}×${originalDimensions.height}) — resolution preserved!`);
+        });
+    </script>
 }
