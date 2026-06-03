@@ -97,8 +97,8 @@ namespace ratpdf.Controllers
         [HttpGet("password-generator")] public IActionResult PasswordGenerator() => View();
         [HttpGet("url-encoder")] public IActionResult UrlEncoder() => View();
         [HttpGet("url-decoder")] public IActionResult UrlDecoder() => View();
-        [HttpGet]
-        public IActionResult ImgBackgroundRemove() => View();
+        [HttpGet("image-format-converter")] public IActionResult ImageFormatConverter() => View();
+        [HttpGet] public IActionResult ImgBackgroundRemove() => View();
         [HttpGet]
         public IActionResult IpLookup() => View();
         [HttpGet]

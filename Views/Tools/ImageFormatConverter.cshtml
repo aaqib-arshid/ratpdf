@@ -1,0 +1,451 @@
+﻿@{
+    ViewData["Title"] = "Free Image Format Converter Online | Convert JPG, PNG, WebP, BMP Instantly";
+    ViewData["Description"] = "Convert images to JPG, PNG, WebP, or BMP online for free. 100% browser-based – no upload, no server. Preserves original resolution and quality.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="image format converter, convert jpg to png, png to jpg, webp converter, bmp converter, image converter online, browser-based image conversion" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/image-format-converter" />
+    <meta property="og:title" content="Free Image Format Converter – JPG, PNG, WebP, BMP" />
+    <meta property="og:description" content="Convert images instantly in your browser. No upload, no server – your privacy is guaranteed." />
+    <meta property="og:url" content="https://ratpdf.com/image-format-converter" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .preview-area {
+            background: repeating-conic-gradient(#f0f0f0 0% 25%, #ffffff 0% 50%) 50% / 20px 20px;
+            border-radius: 16px;
+            padding: 1rem;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .preview-img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .quality-slider {
+            width: 100%;
+        }
+        .format-badge {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .format-badge.active {
+            background-color: #0d6efd !important;
+            color: white !important;
+        }
+        .drop-zone {
+            border: 2px dashed #ccc;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .drop-zone.drag-over {
+            border-color: #0d6efd;
+            background-color: #e7f5ff;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🖼️ Image Format Converter</h1>
+        <p class="lead text-muted">
+            Convert any image to JPG, PNG, WebP, or BMP – <strong>100% browser‑based, no upload, private</strong>.<br />
+            Preserves original resolution and quality.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">🔄 JPG ⇄ PNG ⇄ WebP</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🔒 No server upload</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">📐 Original resolution</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📂 Select Image</label>
+                        <div id="dropZone" class="drop-zone border border-dashed rounded p-4 text-center">
+                            <i class="bi bi-image display-4 text-primary mb-2"></i>
+                            <p class="mb-0 text-muted">Drag & drop or click to select</p>
+                            <input type="file" id="fileInput" class="d-none" accept="image/jpeg,image/png,image/webp,image/bmp,image/gif" />
+                        </div>
+                        <div id="fileName" class="form-text mt-2 text-muted"></div>
+                    </div>
+
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="fw-semibold">📷 Original</label>
+                            <div class="preview-area">
+                                <img id="originalPreview" class="preview-img" src="#" alt="Preview" style="display: none;">
+                                <div id="originalPlaceholder" class="text-muted">No image selected</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold">✨ Converted Preview</label>
+                            <div class="preview-area">
+                                <img id="convertedPreview" class="preview-img" src="#" alt="Converted" style="display: none;">
+                                <div id="convertedPlaceholder" class="text-muted">Result will appear here</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">🎨 Output Format</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-secondary format-badge p-3" data-format="image/png">PNG (lossless, transparency)</span>
+                            <span class="badge bg-secondary format-badge p-3" data-format="image/jpeg">JPEG / JPG (lossy, small size)</span>
+                            <span class="badge bg-secondary format-badge p-3" data-format="image/webp">WebP (modern, good quality)</span>
+                            <span class="badge bg-secondary format-badge p-3" data-format="image/bmp">BMP (uncompressed, large)</span>
+                        </div>
+                        <div class="form-text mt-2">Choose the format that best fits your needs.</div>
+                    </div>
+
+
+                    <div id="qualityControl" class="mb-4 d-none">
+                        <label class="form-label fw-semibold">📊 Quality (1–100)</label>
+                        <input type="range" id="qualitySlider" class="form-range" min="1" max="100" value="92">
+                        <div class="d-flex justify-content-between">
+                            <span>Lower quality, smaller file</span>
+                            <span>Best quality, larger file</span>
+                        </div>
+                        <div class="form-text">Higher quality = better image but larger file size.</div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 justify-content-center mt-3">
+                        <button id="convertBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm" disabled>🔄 Convert</button>
+                        <button id="downloadBtn" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm" disabled>💾 Download Converted Image</button>
+                    </div>
+
+                    <div id="statusMsg" class="alert alert-info mt-3 d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ Why Use Our Image Format Converter?</h2>
+            <p>This tool is completely <strong>browser‑based</strong> – your images never leave your device. Unlike online converters that upload your photos to a server, we respect your privacy and ensure fast, local conversion.</p>
+            <ul>
+                <li>✅ <strong>No upload, no server</strong> – everything runs locally.</li>
+                <li>✅ <strong>Preserves original resolution</strong> – output dimensions match input exactly.</li>
+                <li>✅ <strong>Supports all major formats</strong> – JPG, PNG, WebP, BMP.</li>
+                <li>✅ <strong>Adjustable quality</strong> for JPEG/WebP (balance size vs. quality).</li>
+                <li>✅ <strong>Free, no signup, no watermark</strong>.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📐 Supported Format Features</h2>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr><th>Format</th><th>Best For</th><th>Transparency</th><th>Compression</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>PNG</td><td>Logos, icons, screenshots</td><td>✔️ Yes</td><td>Lossless</td></tr>
+                    <tr><td>JPEG</td><td>Photos, web images</td><td>❌ No</td><td>Lossy</td></tr>
+                    <tr><td>WebP</td><td>Modern web (small files)</td><td>✔️ Yes</td><td>Lossy/Lossless</td></tr>
+                    <tr><td>BMP</td><td>Legacy/archival</td><td>❌ No</td><td>Uncompressed</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-3">🔄 How to Convert an Image Online (No Upload)</h2>
+    <ol>
+        <li>Select or drag & drop an image (JPG, PNG, WebP, BMP, or GIF).</li>
+        <li>Choose your desired output format.</li>
+        <li>(Optional) Adjust quality for JPEG/WebP.</li>
+        <li>Click “Convert” – the tool instantly creates a new image in your browser.</li>
+        <li>Download the converted image – it’s saved with the original resolution.</li>
+    </ol>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Pro Tip: When to Use Each Format</h5>
+        <ul class="mb-0">
+            <li><strong>PNG</strong> – perfect for images with text, sharp edges, or transparency.</li>
+            <li><strong>JPEG</strong> – best for photographs where small file size matters.</li>
+            <li><strong>WebP</strong> – offers better compression than JPEG/PNG; ideal for modern websites.</li>
+            <li><strong>BMP</strong> – use only if you need an uncompressed, high‑fidelity format.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">Does this tool reduce image resolution?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No – the output image has exactly the same width and height as the original. We do not resize or crop unless you choose a different format that inherently changes dimensions (like WebP doesn’t change dimensions).</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Is my image uploaded to a server?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. All conversion happens locally in your browser using HTML5 Canvas and JavaScript. Your image never leaves your device.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Can I convert animated GIFs?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Currently, only the first frame of an animated GIF will be converted. For full animation support, a more complex library would be needed.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/Tools/RemoveImgBackground" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🎨 Background Remover</div></a></div>
+        <div class="col-md-3 col-6"><a href="/PDF/ImageCompressor" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🗜️ Image Compressor</div></a></div>
+        <div class="col-md-3 col-6"><a href="/PDF/ImgToBase64" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📐 Image to Base64</div></a></div>
+        <div class="col-md-3 col-6"><a href="/Tools/ImageResizer" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📏 Image Resizer</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Image Format Converter",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/image-format-converter",
+        "description": "Convert images to JPG, PNG, WebP, or BMP locally in your browser. No upload, private, free.",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "Convert JPG, PNG, WebP, BMP, preserve resolution, quality slider, client-side"
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "Does this tool reduce image resolution?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "No, the output image retains the original width and height exactly."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Is my image uploaded to a server?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "No, all conversion happens locally in your browser."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileNameDiv = document.getElementById('fileName');
+            const originalImg = document.getElementById('originalPreview');
+            const originalPlaceholder = document.getElementById('originalPlaceholder');
+            const convertedImg = document.getElementById('convertedPreview');
+            const convertedPlaceholder = document.getElementById('convertedPlaceholder');
+            const convertBtn = document.getElementById('convertBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const qualityControl = document.getElementById('qualityControl');
+            const qualitySlider = document.getElementById('qualitySlider');
+            const statusMsg = document.getElementById('statusMsg');
+            const formatBadges = document.querySelectorAll('.format-badge');
+            
+            let currentFile = null;
+            let originalImageUrl = null;
+            let convertedBlob = null;
+            let selectedFormat = 'image/png';      // default PNG
+            let originalWidth = 0, originalHeight = 0;
+            
+            function showMessage(text, isError = false) {
+                statusMsg.textContent = text;
+                statusMsg.className = `alert ${isError ? 'alert-danger' : 'alert-info'} mt-3`;
+                statusMsg.classList.remove('d-none');
+                setTimeout(() => statusMsg.classList.add('d-none'), 5000);
+            }
+            
+            function setActiveFormat(format) {
+                selectedFormat = format;
+                formatBadges.forEach(badge => {
+                    const fmt = badge.getAttribute('data-format');
+                    if (fmt === format) {
+                        badge.classList.add('active');
+                    } else {
+                        badge.classList.remove('active');
+                    }
+                });
+
+                if (format === 'image/jpeg' || format === 'image/webp') {
+                    qualityControl.classList.remove('d-none');
+                } else {
+                    qualityControl.classList.add('d-none');
+                }
+
+                if (currentFile && originalImageUrl) {
+                    convertImage();
+                }
+            }
+            
+
+            function handleFile(file) {
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    showMessage('Please select an image file.', true);
+                    return;
+                }
+                currentFile = file;
+                fileNameDiv.innerText = file.name;
+                const url = URL.createObjectURL(file);
+                if (originalImageUrl) URL.revokeObjectURL(originalImageUrl);
+                originalImageUrl = url;
+                originalImg.src = url;
+                originalImg.style.display = 'block';
+                originalPlaceholder.style.display = 'none';
+                convertBtn.disabled = false;
+                downloadBtn.disabled = true;
+                convertedImg.style.display = 'none';
+                convertedPlaceholder.style.display = 'block';
+                convertedBlob = null;
+                
+
+                const img = new Image();
+                img.onload = () => {
+                    originalWidth = img.width;
+                    originalHeight = img.height;
+                    console.log(`Original dimensions: ${originalWidth}x${originalHeight}`);
+                };
+                img.src = url;
+            }
+            
+
+            async function convertImage() {
+                if (!currentFile) {
+                    showMessage('No image selected.', true);
+                    return;
+                }
+                convertBtn.disabled = true;
+                showMessage('Converting...', false);
+                
+                try {
+                    const img = await loadImage(originalImageUrl);
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    
+                    let mimeType = selectedFormat;
+                    let quality = undefined;
+                    if (selectedFormat === 'image/jpeg' || selectedFormat === 'image/webp') {
+                        quality = parseInt(qualitySlider.value) / 100;
+                    }
+                    const blob = await new Promise(resolve => {
+                        canvas.toBlob(resolve, mimeType, quality);
+                    });
+                    convertedBlob = blob;
+                    const url = URL.createObjectURL(blob);
+                    convertedImg.src = url;
+                    convertedImg.style.display = 'block';
+                    convertedPlaceholder.style.display = 'none';
+                    downloadBtn.disabled = false;
+                    showMessage('Conversion complete! You can now download.');
+                } catch (err) {
+                    console.error(err);
+                    showMessage('Conversion failed: ' + err.message, true);
+                } finally {
+                    convertBtn.disabled = false;
+                }
+            }
+            
+            function loadImage(src) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = reject;
+                    img.src = src;
+                });
+            }
+            
+            function downloadConverted() {
+                if (!convertedBlob) {
+                    showMessage('No converted image. Please convert first.', true);
+                    return;
+                }
+                const extension = selectedFormat.split('/')[1].replace('jpeg', 'jpg');
+                const filename = `converted_${Date.now()}.${extension}`;
+                const url = URL.createObjectURL(convertedBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showMessage(`Downloaded as ${extension.toUpperCase()} – resolution preserved (${originalWidth}x${originalHeight}).`);
+            }
+            
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFile(file);
+                }
+            });
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
+            });
+            
+            formatBadges.forEach(badge => {
+                badge.addEventListener('click', () => {
+                    const format = badge.getAttribute('data-format');
+                    setActiveFormat(format);
+                });
+            });
+            
+            convertBtn.addEventListener('click', convertImage);
+            downloadBtn.addEventListener('click', downloadConverted);
+            qualitySlider.addEventListener('input', () => {
+                if (currentFile && originalImageUrl) convertImage();
+            });
+            
+            setActiveFormat('image/png');
+        })();
+    </script>
+}

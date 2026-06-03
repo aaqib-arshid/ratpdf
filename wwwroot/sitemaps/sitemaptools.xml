@@ -292,6 +292,12 @@
 		<changefreq>weekly</changefreq>
 		<priority>1.0</priority>
 	</url>
+	<url>
+		<loc>https://ratpdf.com/image-format-converter</loc>
+		<lastmod>2026-06-03</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
   <!-- Legal Pages -->
   <url>
     <loc>https://ratpdf.com/Home/Terms</loc>
