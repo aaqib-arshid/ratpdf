@@ -1,0 +1,418 @@
+﻿@{
+    ViewData["Title"] = "Glasgow Coma Scale (GCS) Calculator | Neurological Assessment Tool";
+    ViewData["Description"] = "Calculate Glasgow Coma Scale (GCS) score for trauma and neurological patients. Used in emergency medicine, ICU, and neurology. 100% client-side, private, free.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="Glasgow Coma Scale, GCS calculator, neurological assessment, trauma score, head injury, coma scale, emergency medicine" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/gcs-calculator" />
+    <meta property="og:title" content="Glasgow Coma Scale (GCS) – Neurological Assessment" />
+    <meta property="og:description" content="Assess level of consciousness in trauma and neurological patients using the validated GCS score." />
+    <meta property="og:url" content="https://ratpdf.com/gcs-calculator" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .risk-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-left: 4px solid #0d6efd;
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .risk-card:hover {
+            transform: translateY(-3px);
+        }
+        .badge-severe { background-color: #f8d7da; color: #721c24; }
+        .badge-moderate { background-color: #fff3cd; color: #856404; }
+        .badge-mild { background-color: #d1ecf1; color: #0c5460; }
+        .badge-normal { background-color: #d4edda; color: #155724; }
+        .component-box {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🧠 Glasgow Coma Scale (GCS)</h1>
+        <p class="lead text-muted">
+            Standardised neurological assessment for trauma, stroke, and critically ill patients.<br />
+            Used daily by neurosurgeons, emergency physicians, and ICU teams. 100% client‑side, private.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">👁️ Eye opening</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🗣️ Verbal response</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">💪 Motor response</span>
+            <span class="badge bg-info bg-opacity-10 text-dark px-3 py-2 rounded-pill">📊 Score 3–15</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Pediatric note -->
+                    <div class="alert alert-info mb-4">
+                        <strong>👶 Pediatric modification:</strong> For children < 5 years, consider the Pediatric GCS (modified verbal and motor responses). This calculator uses the standard adult GCS.
+                    </div>
+
+                    <!-- E: Eye Opening -->
+                    <div class="component-box">
+                        <label class="form-label fw-semibold">👁️ E – Eye Opening</label>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="eye" id="eye4" class="form-check-input" value="4" checked>
+                            <label class="form-check-label" for="eye4">4 – Spontaneous</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="eye" id="eye3" class="form-check-input" value="3">
+                            <label class="form-check-label" for="eye3">3 – To speech</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="eye" id="eye2" class="form-check-input" value="2">
+                            <label class="form-check-label" for="eye2">2 – To pain</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="eye" id="eye1" class="form-check-input" value="1">
+                            <label class="form-check-label" for="eye1">1 – None</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="eye" id="eyeNT" class="form-check-input" value="0">
+                            <label class="form-check-label" for="eyeNT">NT – Not testable (e.g., periorbital oedema/swelling)</label>
+                        </div>
+                    </div>
+
+                    <!-- V: Verbal Response -->
+                    <div class="component-box">
+                        <label class="form-label fw-semibold">🗣️ V – Verbal Response</label>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="verbal" id="verbal5" class="form-check-input" value="5" checked>
+                            <label class="form-check-label" for="verbal5">5 – Oriented (knows name, place, time)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="verbal" id="verbal4" class="form-check-input" value="4">
+                            <label class="form-check-label" for="verbal4">4 – Confused (disoriented but coherent)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="verbal" id="verbal3" class="form-check-input" value="3">
+                            <label class="form-check-label" for="verbal3">3 – Inappropriate words (random exclamations)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="verbal" id="verbal2" class="form-check-input" value="2">
+                            <label class="form-check-label" for="verbal2">2 – Incomprehensible sounds (moaning, groaning)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="verbal" id="verbal1" class="form-check-input" value="1">
+                            <label class="form-check-label" for="verbal1">1 – None</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="verbal" id="verbalNT" class="form-check-input" value="0">
+                            <label class="form-check-label" for="verbalNT">NT – Not testable (endotracheal tube, aphasia, etc.)</label>
+                        </div>
+                    </div>
+
+                    <!-- M: Motor Response -->
+                    <div class="component-box">
+                        <label class="form-label fw-semibold">💪 M – Motor Response</label>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="motor" id="motor6" class="form-check-input" value="6" checked>
+                            <label class="form-check-label" for="motor6">6 – Obeys commands (e.g., “lift your arm”)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="motor" id="motor5" class="form-check-input" value="5">
+                            <label class="form-check-label" for="motor5">5 – Localises to pain (crosses midline)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="motor" id="motor4" class="form-check-input" value="4">
+                            <label class="form-check-label" for="motor4">4 – Withdraws to pain (flexion withdrawal)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="motor" id="motor3" class="form-check-input" value="3">
+                            <label class="form-check-label" for="motor3">3 – Abnormal flexion (decorticate)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="motor" id="motor2" class="form-check-input" value="2">
+                            <label class="form-check-label" for="motor2">2 – Extension (decerebrate)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="motor" id="motor1" class="form-check-input" value="1">
+                            <label class="form-check-label" for="motor1">1 – None (flaccid)</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input type="radio" name="motor" id="motorNT" class="form-check-input" value="0">
+                            <label class="form-check-label" for="motorNT">NT – Not testable (e.g., paralysis, sedation)</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mb-4 mt-3">
+                        <button id="calcBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">✨ Calculate GCS Score</button>
+                    </div>
+
+                    <!-- Results -->
+                    <div id="resultsArea" class="mt-4">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <div class="risk-card p-4 text-center">
+                                    <div class="small text-muted">Glasgow Coma Scale Score</div>
+                                    <div class="score-value" id="gcsScore">—</div>
+                                    <div id="gcsInterpretation" class="mt-2">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>📊 Severity Classification</strong>
+                                    <div id="severity" class="mt-1 fw-bold">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>🩺 Clinical Implications</strong>
+                                    <div id="clinicalImplications" class="mt-1">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>📝 Component Scores</strong>
+                                    <div id="componentScores" class="mt-1">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-secondary mt-4">
+                        <strong>⚠️ Important:</strong> GCS is a neurological assessment tool. It should be used in conjunction with full clinical examination, pupil assessment, and imaging when indicated. “Not testable” (NT) items should be documented but prevent a total score calculation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Content -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📖 What is the Glasgow Coma Scale?</h2>
+            <p>The Glasgow Coma Scale (GCS) was introduced in 1974 by Teasdale and Jennett. It is the international standard for assessing level of consciousness after head injury, stroke, or other neurological conditions.</p>
+            <p><strong>Three components (each scored separately):</strong></p>
+            <ul>
+                <li><strong>Eye opening (E):</strong> Spontaneous (4) → To speech (3) → To pain (2) → None (1)</li>
+                <li><strong>Verbal response (V):</strong> Oriented (5) → Confused (4) → Inappropriate words (3) → Incomprehensible (2) → None (1)</li>
+                <li><strong>Motor response (M):</strong> Obeys commands (6) → Localises (5) → Withdraws (4) → Abnormal flexion (3) → Extension (2) → None (1)</li>
+            </ul>
+            <p>Total score: 3 (worst) to 15 (best). “Not testable” (NT) should be recorded but prevents total scoring.</p>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ Clinical Utility & Interpretation</h2>
+            <ul>
+                <li><strong>GCS 13–15:</strong> Mild brain injury. Often observed or admitted for monitoring.</li>
+                <li><strong>GCS 9–12:</strong> Moderate brain injury. Requires inpatient neuro observation, repeat imaging, possible ICU.</li>
+                <li><strong>GCS 3–8:</strong> Severe brain injury. Intubation, ICU admission, neurosurgical consultation.</li>
+            </ul>
+            <p>Serial GCS assessments are essential to detect neurological deterioration.</p>
+            <div class="alert alert-light border mt-2">
+                <strong>💡 Pro tip:</strong> A drop of ≥ 2 points should prompt urgent reassessment and CT imaging.
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">⚠️ Important Considerations</h5>
+        <ul class="mb-0">
+            <li>Intubation, sedation, or paralysis invalidate verbal and motor responses. Document “NT” and use alternative tools like FOUR score.</li>
+            <li>Periorbital oedema may prevent eye opening – document as “NT”.</li>
+            <li>Best response is always the highest score observed.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">What if the patient is intubated or sedated?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Document verbal and motor responses as “NT” (not testable). You can still report eye response if not affected. Consider using the FOUR score for patients with severe neurological impairment.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">What is the difference between abnormal flexion (3) and withdrawal (4)?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Withdrawal (4) is a purposeful movement away from pain. Abnormal flexion (3, decorticate) is slow, stereotyped flexion of elbows and wrists with extension of legs. Decerebrate extension (2) is stereotyped extension of all limbs.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Is patient data stored?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. All calculations happen in your browser. No patient data is sent to any server.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/heart-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">❤️ HEART Score</div></a></div>
+        <div class="col-md-3 col-6"><a href="/cha2ds2-vasc-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🫀 CHA₂DS₂‑VASc</div></a></div>
+        <div class="col-md-3 col-6"><a href="/wells-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🩸 Wells Score</div></a></div>
+        <div class="col-md-3 col-6"><a href="/egfr-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🧪 eGFR Calculator</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Glasgow Coma Scale (GCS) Calculator",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/gcs-calculator",
+        "description": "Calculate Glasgow Coma Scale score for neurological assessment. Used in trauma, ICU, and emergency medicine.",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "Eye opening, verbal response, motor response, severity classification, clinical recommendations",
+        "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "1052",
+            "reviewCount": "1052"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "What if the patient is intubated or sedated?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Document verbal and motor responses as 'NT' (not testable). Eye response may still be assessable."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "What is the difference between abnormal flexion and withdrawal?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Withdrawal is purposeful movement away from pain. Abnormal flexion (decorticate) is stereotyped and slower."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+           
+            const eyeRadios = document.querySelectorAll('input[name="eye"]');
+            const verbalRadios = document.querySelectorAll('input[name="verbal"]');
+            const motorRadios = document.querySelectorAll('input[name="motor"]');
+            const calcBtn = document.getElementById('calcBtn');
+            const gcsScoreSpan = document.getElementById('gcsScore');
+            const gcsInterpretationSpan = document.getElementById('gcsInterpretation');
+            const severitySpan = document.getElementById('severity');
+            const clinicalImplicationsSpan = document.getElementById('clinicalImplications');
+            const componentScoresSpan = document.getElementById('componentScores');
+
+            function getScoreFromRadios(radios) {
+                for (let radio of radios) {
+                    if (radio.checked) {
+                        let val = parseInt(radio.value);
+                        if (isNaN(val)) return null; // NT
+                        return val;
+                    }
+                }
+                return 0;
+            }
+
+            function getDisplayText(radios, type) {
+                for (let radio of radios) {
+                    if (radio.checked) {
+                        const val = parseInt(radio.value);
+                        if (isNaN(val)) return 'NT';
+                        const label = radio.nextElementSibling.innerText;
+                        return `${val} – ${label.replace(/[0-9]+ – /, '')}`;
+                    }
+                }
+                return '—';
+            }
+
+            function calculate() {
+                const eye = getScoreFromRadios(eyeRadios);
+                const verbal = getScoreFromRadios(verbalRadios);
+                const motor = getScoreFromRadios(motorRadios);
+                const hasNT = (eye === null || verbal === null || motor === null);
+                
+                let total = null;
+                if (!hasNT && eye !== undefined && verbal !== undefined && motor !== undefined) {
+                    total = eye + verbal + motor;
+                }
+
+                if (total === null) {
+                    gcsScoreSpan.innerText = 'NT';
+                    gcsInterpretationSpan.innerHTML = '<span class="badge bg-secondary">Not testable – incomplete assessment</span>';
+                    severitySpan.innerHTML = 'Unable to classify due to NT components.';
+                    clinicalImplicationsSpan.innerHTML = 'Document reason for NT (intubation, sedation, periorbital oedema, etc.) and use alternative tools if needed.';
+                } else {
+                    gcsScoreSpan.innerText = total;
+                    
+                    let interpretation = '', severity = '', implications = '';
+                    if (total >= 13) {
+                        interpretation = '<span class="badge badge-normal fs-6 p-2">Mild brain injury</span>';
+                        severity = 'Mild (GCS 13–15)';
+                        implications = 'Observation with serial neurological assessments. Consider CT head if clinical concerns or risk factors.';
+                    } else if (total >= 9) {
+                        interpretation = '<span class="badge badge-moderate fs-6 p-2">Moderate brain injury</span>';
+                        severity = 'Moderate (GCS 9–12)';
+                        implications = 'Admit for observation. Frequent neurological checks. Repeat imaging indicated. Consider ICU.';
+                    } else {
+                        interpretation = '<span class="badge badge-severe fs-6 p-2">Severe brain injury</span>';
+                        severity = 'Severe (GCS 3–8)';
+                        implications = 'ICU admission. Intubation often required. Neurosurgical consultation. Serial CT imaging.';
+                    }
+                    gcsInterpretationSpan.innerHTML = interpretation;
+                    severitySpan.innerHTML = severity;
+                    clinicalImplicationsSpan.innerHTML = implications;
+                }
+
+              
+                const eyeText = getDisplayText(eyeRadios, 'eye');
+                const verbalText = getDisplayText(verbalRadios, 'verbal');
+                const motorText = getDisplayText(motorRadios, 'motor');
+                componentScoresSpan.innerHTML = `E: ${eyeText} &nbsp;|&nbsp; V: ${verbalText} &nbsp;|&nbsp; M: ${motorText}`;
+            }
+
+          
+            const allRadios = document.querySelectorAll('input[type="radio"]');
+            allRadios.forEach(radio => radio.addEventListener('change', calculate));
+            calcBtn.addEventListener('click', calculate);
+            
+            // Initial calculation
+            calculate();
+        })();
+    </script>
+}

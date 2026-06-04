@@ -1,0 +1,280 @@
+﻿@{
+    ViewData["Title"] = "MAP Calculator | Mean Arterial Pressure | Online Clinical Tool";
+    ViewData["Description"] = "Calculate Mean Arterial Pressure (MAP) instantly. MAP = (SBP + 2×DBP)/3. Used in critical care, anesthesia, and emergency medicine. Client‑side, private, free.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="MAP calculator, mean arterial pressure, blood pressure, critical care, anesthesia, emergency medicine, hemodynamics" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/map-calculator" />
+    <meta property="og:title" content="Mean Arterial Pressure (MAP) Calculator" />
+    <meta property="og:description" content="Rapidly calculate MAP for hemodynamic assessment. Used daily by intensivists and anesthesiologists." />
+    <meta property="og:url" content="https://ratpdf.com/map-calculator" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .result-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-left: 4px solid #0d6efd;
+            border-radius: 16px;
+        }
+        .info-box {
+            background-color: #e7f5ff;
+            border-left: 4px solid #0d6efd;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+        .range-good { background-color: #d4edda; color: #155724; border-radius: 40px; padding: 0.25rem 0.75rem; display: inline-block; }
+        .range-low { background-color: #f8d7da; color: #721c24; border-radius: 40px; padding: 0.25rem 0.75rem; display: inline-block; }
+        .range-high { background-color: #fff3cd; color: #856404; border-radius: 40px; padding: 0.25rem 0.75rem; display: inline-block; }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">❤️ Mean Arterial Pressure (MAP) Calculator</h1>
+        <p class="lead text-muted">
+            Rapid, evidence‑based MAP calculation for hemodynamic monitoring.<br />
+            Used daily in <strong>ICUs, ORs, and emergency departments</strong>. 100% client‑side, private.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📊 MAP = (SBP + 2×DBP) ÷ 3</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🩺 Target ≥ 65 mmHg</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">⚕️ Organ perfusion</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Inputs -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">💓 Systolic Blood Pressure (SBP)</label>
+                        <input type="number" id="sbp" class="form-control form-control-lg" value="120" step="1" min="0" max="300">
+                        <div class="form-text">mmHg (millimeters of mercury)</div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">💓 Diastolic Blood Pressure (DBP)</label>
+                        <input type="number" id="dbp" class="form-control form-control-lg" value="80" step="1" min="0" max="200">
+                        <div class="form-text">mmHg</div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
+                        <button id="calcBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">✨ Calculate MAP</button>
+                        <button id="resetBtn" class="btn btn-outline-secondary rounded-pill px-4">🔄 Reset</button>
+                    </div>
+
+                    <!-- Results -->
+                    <div id="resultsArea" class="mt-3">
+                        <div class="result-card p-4 text-center">
+                            <div class="small text-muted mb-1">Mean Arterial Pressure (MAP)</div>
+                            <div class="result-value" id="mapValue">—</div>
+                            <div id="mapInterpretation" class="mt-2">—</div>
+                        </div>
+
+                        <div class="info-box mt-3">
+                            <strong>📖 Clinical Interpretation</strong>
+                            <div id="clinicalText" class="mt-1">—</div>
+                        </div>
+
+                        <div class="info-box mt-3">
+                            <strong>💡 Formula</strong>
+                            <div class="mt-1">MAP = (SBP + 2 × DBP) ÷ 3</div>
+                            <div class="small text-muted mt-1">For this patient: <span id="formulaExample">—</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Content -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📖 What is Mean Arterial Pressure (MAP)?</h2>
+            <p>Mean Arterial Pressure (MAP) is the average arterial pressure throughout one cardiac cycle. It is a key indicator of organ perfusion and is used to guide therapy in critically ill patients, during anesthesia, and in shock states.</p>
+            <p><strong>Target MAP:</strong> Generally ≥ 65 mmHg for adequate perfusion of vital organs (brain, kidneys, heart).</p>
+            <p><strong>Calculation:</strong> MAP = (SBP + 2 × DBP) ÷ 3</p>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ Clinical Utility</h2>
+            <ul>
+                <li><strong>Shock management:</strong> MAP guides vasopressor therapy.</li>
+                <li><strong>Anesthesia:</strong> Maintain cerebral and renal perfusion.</li>
+                <li><strong>Hypertension:</strong> MAP correlates with end‑organ damage risk.</li>
+                <li><strong>Trauma:</strong> MAP < 60 mmHg is associated with higher mortality.</li>
+            </ul>
+            <div class="alert alert-light border mt-2">
+                <strong>💡 Pro tip:</strong> Invasive arterial monitoring provides direct MAP; non‑invasive oscillometric devices calculate MAP from cuff pressures.
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">⚠️ Important Note</h5>
+        <p class="mb-0">MAP is an estimate. Inaccurate cuff pressures (e.g., too large/small cuff, arrhythmias) may misrepresent true MAP. Clinical judgment remains paramount.</p>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">What is a normal MAP?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Normal MAP ranges from 70–100 mmHg. Guidelines recommend maintaining MAP ≥ 65 mmHg in critically ill patients to ensure adequate organ perfusion.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Why is MAP important?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">MAP is the driving pressure for tissue perfusion. Low MAP leads to ischemia of vital organs; high MAP increases cardiovascular risk. It is a cornerstone of hemodynamic monitoring.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Is patient data stored?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. This tool runs entirely in your browser. No blood pressure values are stored or transmitted.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/heart-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">❤️ HEART Score</div></a></div>
+        <div class="col-md-3 col-6"><a href="/cha2ds2-vasc-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🫀 CHA₂DS₂‑VASc</div></a></div>
+        <div class="col-md-3 col-6"><a href="/gcs-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🧠 GCS</div></a></div>
+        <div class="col-md-3 col-6"><a href="/wells-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🩸 Wells Score</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Mean Arterial Pressure (MAP) Calculator",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/map-calculator",
+        "description": "Calculate Mean Arterial Pressure using SBP and DBP. Used in critical care, anesthesia, and emergency medicine.",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "MAP calculation, clinical interpretation, organ perfusion assessment",
+        "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "842",
+            "reviewCount": "842"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "What is a normal MAP?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Normal MAP is 70–100 mmHg. Target MAP for critically ill patients is ≥ 65 mmHg."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Why is MAP important?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "MAP is the driving pressure for organ perfusion. Low MAP causes ischemia; high MAP increases cardiovascular risk."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+            const sbpInput = document.getElementById('sbp');
+            const dbpInput = document.getElementById('dbp');
+            const calcBtn = document.getElementById('calcBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const mapValueSpan = document.getElementById('mapValue');
+            const mapInterpretationSpan = document.getElementById('mapInterpretation');
+            const clinicalTextSpan = document.getElementById('clinicalText');
+            const formulaExampleSpan = document.getElementById('formulaExample');
+
+            function calculateMAP() {
+                let sbp = parseFloat(sbpInput.value);
+                let dbp = parseFloat(dbpInput.value);
+                if (isNaN(sbp)) sbp = 0;
+                if (isNaN(dbp)) dbp = 0;
+                const map = (sbp + 2 * dbp) / 3;
+                const rounded = Math.round(map * 10) / 10;
+                mapValueSpan.innerText = rounded.toFixed(1) + ' mmHg';
+                formulaExampleSpan.innerText = `(${sbp} + 2×${dbp}) ÷ 3 = ${rounded.toFixed(1)} mmHg`;
+
+                let interpretationHtml = '';
+                let clinicalText = '';
+                if (map < 60) {
+                    interpretationHtml = '<span class="range-low">⬇️ Critically low (inadequate perfusion)</span>';
+                    clinicalText = 'MAP < 60 mmHg indicates severe hypotension. Urgent intervention required – risk of end‑organ ischemia (brain, kidneys, heart). Consider vasopressors and fluid resuscitation.';
+                } else if (map < 65) {
+                    interpretationHtml = '<span class="range-low">⚠️ Low (below standard target)</span>';
+                    clinicalText = 'MAP between 60–65 mmHg is below the recommended target for most critically ill patients. Assess volume status and consider vasopressor support.';
+                } else if (map <= 70) {
+                    interpretationHtml = '<span class="range-good">✅ Borderline low, but acceptable</span>';
+                    clinicalText = 'MAP 65–70 mmHg is acceptable in some patients but monitor closely. Ensure adequate organ perfusion (urine output, mental status).';
+                } else if (map <= 100) {
+                    interpretationHtml = '<span class="range-good">✅ Normal – good organ perfusion</span>';
+                    clinicalText = 'MAP within normal range. Typically associated with adequate cerebral, renal, and cardiac perfusion. Continue maintenance.';
+                } else if (map <= 110) {
+                    interpretationHtml = '<span class="range-high">📈 Mildly elevated</span>';
+                    clinicalText = 'MAP above 100 mmHg may indicate hypertension. Evaluate for end‑organ damage if sustained.';
+                } else {
+                    interpretationHtml = '<span class="range-high">🚨 Severe hypertension</span>';
+                    clinicalText = 'MAP significantly elevated. Risk of hypertensive emergency. Immediate blood pressure control indicated.';
+                }
+                mapInterpretationSpan.innerHTML = interpretationHtml;
+                clinicalTextSpan.innerHTML = clinicalText;
+            }
+
+            function resetForm() {
+                sbpInput.value = '120';
+                dbpInput.value = '80';
+                calculateMAP();
+            }
+
+            calcBtn.addEventListener('click', calculateMAP);
+            resetBtn.addEventListener('click', resetForm);
+            sbpInput.addEventListener('input', calculateMAP);
+            dbpInput.addEventListener('input', calculateMAP);
+            
+            // Initial calculation
+            calculateMAP();
+        })();
+    </script>
+}

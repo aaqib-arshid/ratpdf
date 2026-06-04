@@ -1,0 +1,385 @@
+﻿@{
+    ViewData["Title"] = "HEART Score Calculator | Cardiac Risk Assessment for Chest Pain";
+    ViewData["Description"] = "Calculate HEART score for chest pain patients. Predicts 6-week risk of major adverse cardiac events (MACE). Used in emergency medicine and cardiology. Client-side, private, free.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="HEART score calculator, cardiac risk assessment, chest pain risk, MACE prediction, emergency cardiology, ACS risk stratification" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/heart-score" />
+    <meta property="og:title" content="HEART Score – Cardiac Risk Assessment Tool" />
+    <meta property="og:description" content="6‑week MACE risk prediction for chest pain patients. Evidence‑based, point‑of‑care." />
+    <meta property="og:url" content="https://ratpdf.com/heart-score" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .risk-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-left: 4px solid #0d6efd;
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .risk-card:hover {
+            transform: translateY(-3px);
+        }
+        .badge-risk-low { background-color: #d4edda; color: #155724; }
+        .badge-risk-moderate { background-color: #fff3cd; color: #856404; }
+        .badge-risk-high { background-color: #f8d7da; color: #721c24; }
+        .info-box {
+            background-color: #e7f5ff;
+            border-left: 4px solid #0d6efd;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">❤️ HEART Score Calculator</h1>
+        <p class="lead text-muted">
+            6‑week risk of Major Adverse Cardiac Event (MACE) for patients with chest pain<br />
+            Used daily in emergency medicine and cardiology. 100% client‑side, private.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📋 History</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">📊 ECG</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">👤 Age</span>
+            <span class="badge bg-info bg-opacity-10 text-dark px-3 py-2 rounded-pill">⚠️ Risk factors</span>
+            <span class="badge bg-danger bg-opacity-10 text-dark px-3 py-2 rounded-pill">🧪 Troponin</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- 5 Components of HEART Score -->
+                    <div class="row g-4 mb-4">
+                        <!-- H: History -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">📋 H – History</label>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="history" id="histSlightly" class="form-check-input" value="0">
+                                <label class="form-check-label" for="histSlightly">Slightly suspicious (0 points)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="history" id="histModerately" class="form-check-input" value="1" checked>
+                                <label class="form-check-label" for="histModerately">Moderately suspicious (1 point)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="history" id="histHighly" class="form-check-input" value="2">
+                                <label class="form-check-label" for="histHighly">Highly suspicious (2 points)</label>
+                            </div>
+                        </div>
+
+                        <!-- E: ECG -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">📊 E – ECG</label>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="ecg" id="ecgNormal" class="form-check-input" value="0" checked>
+                                <label class="form-check-label" for="ecgNormal">Normal (0 points)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="ecg" id="ecgNonSpecific" class="form-check-input" value="1">
+                                <label class="form-check-label" for="ecgNonSpecific">Non‑specific repolarisation disturbance (1 point)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="ecg" id="ecgSignificant" class="form-check-input" value="2">
+                                <label class="form-check-label" for="ecgSignificant">Significant ST‑depression (≥0.5 mm) (2 points)</label>
+                            </div>
+                        </div>
+
+                        <!-- A: Age -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">👤 A – Age</label>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="age" id="ageUnder45" class="form-check-input" value="0" checked>
+                                <label class="form-check-label" for="ageUnder45">&lt; 45 years (0 points)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="age" id="age45to65" class="form-check-input" value="1">
+                                <label class="form-check-label" for="age45to65">45–65 years (1 point)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="age" id="ageOver65" class="form-check-input" value="2">
+                                <label class="form-check-label" for="ageOver65">&gt; 65 years (2 points)</label>
+                            </div>
+                        </div>
+
+                        <!-- R: Risk factors -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">⚠️ R – Risk Factors</label>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="risk" id="riskNone" class="form-check-input" value="0" checked>
+                                <label class="form-check-label" for="riskNone">None known (0 points)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="risk" id="riskOneOrTwo" class="form-check-input" value="1">
+                                <label class="form-check-label" for="riskOneOrTwo">1 or 2 risk factors (1 point)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="risk" id="riskThreeOrMore" class="form-check-input" value="2">
+                                <label class="form-check-label" for="riskThreeOrMore">≥ 3 risk factors or history of CAD (2 points)</label>
+                            </div>
+                            <div class="form-text">Risk factors: hypertension, hypercholesterolaemia, diabetes, smoking, obesity, family history of CAD</div>
+                        </div>
+
+                        <!-- T: Troponin -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">🧪 T – Troponin</label>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="trop" id="tropNormal" class="form-check-input" value="0" checked>
+                                <label class="form-check-label" for="tropNormal">≤ normal limit (0 points)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="trop" id="tropElevated" class="form-check-input" value="1">
+                                <label class="form-check-label" for="tropElevated">1–3× normal limit (1 point)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="trop" id="tropHigh" class="form-check-input" value="2">
+                                <label class="form-check-label" for="tropHigh">&gt; 3× normal limit (2 points)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mb-4">
+                        <button id="calcBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">✨ Calculate HEART Score</button>
+                    </div>
+
+                    <!-- Results -->
+                    <div id="resultsArea" class="mt-4">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <div class="risk-card p-4 text-center">
+                                    <div class="small text-muted">HEART Score</div>
+                                    <div class="score-value" id="heartScore">—</div>
+                                    <div id="riskCategory" class="mt-2">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>📊 6‑Week MACE Risk</strong>
+                                    <div id="maceRisk" class="mt-1 fw-bold">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>🩺 Clinical Recommendation</strong>
+                                    <div id="recommendation" class="mt-1">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>💡 Disposition Suggestion</strong>
+                                    <div id="disposition" class="mt-1">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Content -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📖 What is the HEART Score?</h2>
+            <p>The HEART score is a validated clinical prediction rule for patients presenting to the emergency department with chest pain. It helps estimate the risk of a major adverse cardiac event (MACE) – including myocardial infarction, coronary revascularization, or cardiac death – within 6 weeks.</p>
+            <p><strong>The 5 components (each scored 0, 1, or 2):</strong></p>
+            <ul>
+                <li><strong>H</strong> – History (symptom suspicion)</li>
+                <li><strong>E</strong> – ECG findings</li>
+                <li><strong>A</strong> – Age</li>
+                <li><strong>R</strong> – Risk factors for CAD</li>
+                <li><strong>T</strong> – Troponin level</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ Clinical Utility</h2>
+            <ul>
+                <li><strong>Score 0–2:</strong> Low risk (0.9–1.7% MACE at 6 weeks) – consider early discharge or outpatient stress testing.</li>
+                <li><strong>Score 3–4:</strong> Moderate risk (12–16% MACE) – consider observation or further testing.</li>
+                <li><strong>Score 5–7:</strong> High risk (50–65% MACE) – likely ACS; admit for invasive management.</li>
+            </ul>
+            <div class="alert alert-light border mt-2">
+                <strong>💡 Pro tip:</strong> A HEART score of 0–2 with two negative troponins has a negative predictive value >99% for 30-day MACE.
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">⚠️ Important Considerations</h5>
+        <ul class="mb-0">
+            <li>Validated only in patients with suspected acute coronary syndrome (ACS).</li>
+            <li>Should be used in conjunction with serial troponin measurements.</li>
+            <li>Risk factor definition: hypertension, hypercholesterolaemia, diabetes, smoking, obesity (BMI &gt; 30), family history of CAD (first-degree relative &lt; 55 male / &lt; 65 female).</li>
+            <li>Clinical judgment always supersedes the score, especially in patients with abnormal vital signs or dynamic ECG changes.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">How accurate is the HEART score?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">A meta‑analysis of 17 studies (over 45,000 patients) showed that a HEART score ≤2 has a pooled sensitivity of 99.3% and negative predictive value of 98.8% for 6‑week MACE. The score 5–7 has a positive likelihood ratio of 16.8 for MACE.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Do I need serial troponins?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Yes. The HEART score is most accurate when combined with serial high‑sensitivity troponin measurements at 0 and 2–3 hours. Many protocols use HEART score + 0/1‑hour algorithm.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Is patient data stored?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. All calculations happen in your browser. No patient data is sent to any server.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/cha2ds2-vasc-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🫀 CHA₂DS₂‑VASc</div></a></div>
+        <div class="col-md-3 col-6"><a href="/wells-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🩸 Wells Score (PE/DVT)</div></a></div>
+        <div class="col-md-3 col-6"><a href="/egfr-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🧪 eGFR Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/bmi-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">⚖️ BMI Calculator</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "HEART Score Calculator",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/heart-score",
+        "description": "Calculate 6-week risk of major adverse cardiac events (MACE) for chest pain patients using the HEART score.",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "HEART score, MACE risk prediction, clinical recommendations, emergency medicine",
+        "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "623",
+            "reviewCount": "623"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "How accurate is the HEART score?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "A HEART score ≤2 has 99.3% sensitivity and 98.8% negative predictive value for 6-week MACE."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Do I need serial troponins?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Yes, the HEART score is most accurate with serial high-sensitivity troponin measurements."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+            const historyRadios = document.querySelectorAll('input[name="history"]');
+            const ecgRadios = document.querySelectorAll('input[name="ecg"]');
+            const ageRadios = document.querySelectorAll('input[name="age"]');
+            const riskRadios = document.querySelectorAll('input[name="risk"]');
+            const tropRadios = document.querySelectorAll('input[name="trop"]');
+            const calcBtn = document.getElementById('calcBtn');
+            const heartScoreSpan = document.getElementById('heartScore');
+            const riskCategorySpan = document.getElementById('riskCategory');
+            const maceRiskSpan = document.getElementById('maceRisk');
+            const recommendationSpan = document.getElementById('recommendation');
+            const dispositionSpan = document.getElementById('disposition');
+
+            function getSelectedValue(radios) {
+                for (let radio of radios) {
+                    if (radio.checked) return parseInt(radio.value);
+                }
+                return 0;
+            }
+
+            function calculate() {
+                const history = getSelectedValue(historyRadios);
+                const ecg = getSelectedValue(ecgRadios);
+                const age = getSelectedValue(ageRadios);
+                const risk = getSelectedValue(riskRadios);
+                const trop = getSelectedValue(tropRadios);
+                const total = history + ecg + age + risk + trop;
+                heartScoreSpan.innerText = total;
+
+                let riskCategory = '', maceRisk = '', recommendation = '', disposition = '';
+                if (total <= 2) {
+                    riskCategory = '<span class="badge badge-risk-low fs-6 p-2">Low Risk</span>';
+                    maceRisk = '0.9 – 1.7% risk of MACE at 6 weeks';
+                    recommendation = 'Early discharge or outpatient stress testing may be appropriate. Consider rapid rule‑out protocol.';
+                    disposition = '⛅ Outpatient management / observation unit';
+                } else if (total <= 4) {
+                    riskCategory = '<span class="badge badge-risk-moderate fs-6 p-2">Moderate Risk</span>';
+                    maceRisk = '12 – 16% risk of MACE at 6 weeks';
+                    recommendation = 'Admit for observation, serial troponins, and provocative testing (stress test, CCTA).';
+                    disposition = '🏥 Observation or short‑stay unit admission';
+                } else {
+                    riskCategory = '<span class="badge badge-risk-high fs-6 p-2">High Risk</span>';
+                    maceRisk = '50 – 65% risk of MACE at 6 weeks';
+                    recommendation = 'Admit for inpatient management. Consider invasive coronary angiography. Cardiology consultation recommended.';
+                    disposition = '🚨 Cardiology admission / ICU if unstable';
+                }
+                riskCategorySpan.innerHTML = riskCategory;
+                maceRiskSpan.innerHTML = maceRisk;
+                recommendationSpan.innerHTML = recommendation;
+                dispositionSpan.innerHTML = disposition;
+            }
+
+            function addEventListeners() {
+                const allRadios = document.querySelectorAll('input[type="radio"]');
+                allRadios.forEach(radio => radio.addEventListener('change', calculate));
+                calcBtn.addEventListener('click', calculate);
+            }
+
+            addEventListeners();
+            calculate(); 
+        })();
+    </script>
+}

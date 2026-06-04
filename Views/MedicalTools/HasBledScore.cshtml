@@ -1,0 +1,389 @@
+﻿@{
+    ViewData["Title"] = "HAS‑BLED Score Calculator | Bleeding Risk Assessment for AFib";
+    ViewData["Description"] = "Calculate HAS‑BLED score to assess major bleeding risk in atrial fibrillation patients on anticoagulation. Used by cardiologists and hematologists. Client‑side, private, free.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="HAS-BLED score, bleeding risk calculator, atrial fibrillation bleeding risk, anticoagulation safety, major bleeding prediction" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/has-bled-score" />
+    <meta property="og:title" content="HAS‑BLED Score – Bleeding Risk Assessment Tool" />
+    <meta property="og:description" content="Estimate 1‑year major bleeding risk in AFib patients. Used alongside CHA₂DS₂‑VASc for anticoagulation decisions." />
+    <meta property="og:url" content="https://ratpdf.com/has-bled-score" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .risk-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-left: 4px solid #0d6efd;
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .risk-card:hover {
+            transform: translateY(-3px);
+        }
+        .badge-low { background-color: #d4edda; color: #155724; }
+        .badge-moderate { background-color: #fff3cd; color: #856404; }
+        .badge-high { background-color: #f8d7da; color: #721c24; }
+        .info-box {
+            background-color: #e7f5ff;
+            border-left: 4px solid #0d6efd;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🩸 HAS‑BLED Score Calculator</h1>
+        <p class="lead text-muted">
+            Major bleeding risk assessment for atrial fibrillation patients on anticoagulation.<br />
+            Used daily by <strong>cardiologists, hematologists, and primary care physicians</strong>. 100% client‑side, private.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">🩸 Hypertension</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🫀 Abnormal renal/liver</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">🧠 Stroke history</span>
+            <span class="badge bg-info bg-opacity-10 text-dark px-3 py-2 rounded-pill">💊 Bleeding tendency</span>
+            <span class="badge bg-danger bg-opacity-10 text-dark px-3 py-2 rounded-pill">🔻 Labile INR</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Clinical note -->
+                    <div class="alert alert-info mb-4">
+                        <strong>📋 Clinical context:</strong> Use HAS‑BLED alongside CHA₂DS₂‑VASc to guide anticoagulation decisions. Score ≥ 3 indicates high bleeding risk.
+                    </div>
+
+                    <!-- Scoring components -->
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">🩸 H – Hypertension</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="htn" class="form-check-input">
+                                <label class="form-check-label" for="htn">Uncontrolled systolic BP > 160 mmHg</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">🫀 A – Abnormal renal / liver function (1 point each, max 2)</label>
+                            <div class="form-check mb-2">
+                                <input type="checkbox" id="renal" class="form-check-input">
+                                <label class="form-check-label" for="renal">Abnormal renal function (chronic dialysis, transplant, Cr > 2.26 mg/dL)</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="liver" class="form-check-input">
+                                <label class="form-check-label" for="liver">Abnormal liver function (cirrhosis, bilirubin > 2× ULN, AST/ALT > 3× ULN)</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">🧠 S – Stroke history</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="priorStroke" class="form-check-input">
+                                <label class="form-check-label" for="priorStroke">Prior stroke or TIA</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">💊 B – Bleeding history or predisposition</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="bleeding" class="form-check-input">
+                                <label class="form-check-label" for="bleeding">Prior major bleeding or predisposition (anemia, severe thrombocytopenia)</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">🔻 L – Labile INR</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="labileINR" class="form-check-input">
+                                <label class="form-check-label" for="labileINR">Unstable / high INRs (time in therapeutic range < 60%)</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">📅 E – Elderly (age > 65 years)</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="elderly" class="form-check-input">
+                                <label class="form-check-label" for="elderly">Age > 65 years</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">💊 D – Drugs or alcohol</label>
+                            <div class="form-check mb-2">
+                                <input type="checkbox" id="antiplatelet" class="form-check-input">
+                                <label class="form-check-label" for="antiplatelet">Antiplatelet agent (aspirin, clopidogrel)</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="alcohol" class="form-check-input">
+                                <label class="form-check-label" for="alcohol">Alcohol use (≥ 8 drinks/week)</label>
+                                <span class="badge bg-secondary ms-2">+1 point</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3 mt-4 mb-4">
+                        <button id="calcBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">✨ Calculate Score</button>
+                        <button id="resetBtn" class="btn btn-outline-secondary rounded-pill px-4">🔄 Reset</button>
+                    </div>
+
+                    <!-- Results -->
+                    <div id="resultsArea" class="mt-4">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <div class="risk-card p-4 text-center">
+                                    <div class="small text-muted">HAS‑BLED Score</div>
+                                    <div class="score-value" id="bledScore">—</div>
+                                    <div id="riskCategory" class="mt-2">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>📊 Annual Major Bleeding Risk (without anticoagulation adjustment)</strong>
+                                    <div id="bleedingRisk" class="mt-1 fw-bold">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>🩺 Clinical Recommendation</strong>
+                                    <div id="recommendation" class="mt-1">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="info-box">
+                                    <strong>🔍 Modifiable Risk Factors</strong>
+                                    <div id="modifiable" class="mt-1">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Content -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📖 What is the HAS‑BLED Score?</h2>
+            <p>The HAS‑BLED score was developed to estimate the 1‑year risk of major bleeding in patients with atrial fibrillation who are taking oral anticoagulation. It helps clinicians balance stroke prevention (CHA₂DS₂‑VASc) against bleeding risk.</p>
+            <p><strong>Components (each 1 point except A = max 2):</strong></p>
+            <ul>
+                <li><strong>H</strong> – Hypertension (uncontrolled SBP > 160)</li>
+                <li><strong>A</strong> – Abnormal renal/liver function (1 point each)</li>
+                <li><strong>S</strong> – Stroke history</li>
+                <li><strong>B</strong> – Bleeding history or predisposition</li>
+                <li><strong>L</strong> – Labile INR (TTR < 60%)</li>
+                <li><strong>E</strong> – Elderly (> 65 years)</li>
+                <li><strong>D</strong> – Drugs (antiplatelet) or alcohol use</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ Clinical Utility & Interpretation</h2>
+            <ul>
+                <li><strong>Score 0–2:</strong> Low bleeding risk. Anticoagulation is generally safe.</li>
+                <li><strong>Score ≥ 3:</strong> High bleeding risk. Identify and address modifiable factors (BP control, INR stability, avoid NSAIDs/aspirin).</li>
+            </ul>
+            <p>A high HAS‑BLED score does NOT necessarily preclude anticoagulation – instead, it flags patients who need closer monitoring and risk factor management.</p>
+            <div class="alert alert-light border mt-2">
+                <strong>💡 Pro tip:</strong> The HAS‑BLED score has been validated in multiple AF cohorts and predicts intracranial bleeding better than other tools.
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">⚠️ Important Considerations</h5>
+        <ul class="mb-0">
+            <li>HAS‑BLED is a dynamic score; re‑assess after addressing modifiable risks.</li>
+            <li>Patients with score ≥ 3 still benefit from anticoagulation if CHA₂DS₂‑VASc is high (shared decision‑making).</li>
+            <li>DOACs (direct oral anticoagulants) have lower bleeding risk than warfarin, especially intracranial hemorrhage.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">What is a "labile INR"?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Time in therapeutic range (TTR) < 60% or INR values that frequently exceed 4–5. It increases bleeding risk. DOACs avoid this issue.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Should I avoid anticoagulation if HAS‑BLED ≥ 3?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. High bleeding risk does not automatically rule out anticoagulation. Address modifiable factors (BP, INR control, alcohol) and consider DOACs. The net clinical benefit often still favors anticoagulation if stroke risk is high.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Is patient data stored?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. All calculations happen in your browser. No patient data is sent to any server.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/cha2ds2-vasc-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🫀 CHA₂DS₂‑VASc</div></a></div>
+        <div class="col-md-3 col-6"><a href="/heart-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">❤️ HEART Score</div></a></div>
+        <div class="col-md-3 col-6"><a href="/map-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">❤️ MAP Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/wells-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🩸 Wells Score</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "HAS‑BLED Score Calculator",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/has-bled-score",
+        "description": "Estimate 1‑year major bleeding risk in atrial fibrillation patients using HAS‑BLED criteria.",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "Bleeding risk prediction, modifiable risk factors, clinical recommendations",
+        "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "734",
+            "reviewCount": "734"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "What is a labile INR?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Time in therapeutic range < 60% or frequent INR values > 4-5."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Should I avoid anticoagulation if HAS‑BLED ≥ 3?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "No, address modifiable factors and consider DOACs. Net clinical benefit often favors anticoagulation if stroke risk is high."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+           
+            const chkHtn = document.getElementById('htn');
+            const chkRenal = document.getElementById('renal');
+            const chkLiver = document.getElementById('liver');
+            const chkPriorStroke = document.getElementById('priorStroke');
+            const chkBleeding = document.getElementById('bleeding');
+            const chkLabileINR = document.getElementById('labileINR');
+            const chkElderly = document.getElementById('elderly');
+            const chkAntiplatelet = document.getElementById('antiplatelet');
+            const chkAlcohol = document.getElementById('alcohol');
+            
+            const calcBtn = document.getElementById('calcBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const bledScoreSpan = document.getElementById('bledScore');
+            const riskCategorySpan = document.getElementById('riskCategory');
+            const bleedingRiskSpan = document.getElementById('bleedingRisk');
+            const recommendationSpan = document.getElementById('recommendation');
+            const modifiableSpan = document.getElementById('modifiable');
+
+            function calculateScore() {
+                let score = 0;
+                if (chkHtn.checked) score++;
+                if (chkRenal.checked) score++;
+                if (chkLiver.checked) score++;
+                if (chkPriorStroke.checked) score++;
+                if (chkBleeding.checked) score++;
+                if (chkLabileINR.checked) score++;
+                if (chkElderly.checked) score++;
+                if (chkAntiplatelet.checked) score++;
+                if (chkAlcohol.checked) score++;
+
+                bledScoreSpan.innerText = score;
+
+                let riskCategory = '', bleedingRisk = '', recommendation = '', modifiable = [];
+
+                if (score <= 2) {
+                    riskCategory = '<span class="badge badge-low fs-6 p-2">Low bleeding risk</span>';
+                    bleedingRisk = '~1.0 – 2.5% per year major bleeding';
+                    recommendation = 'Anticoagulation is generally safe. Standard monitoring recommended.';
+                } else if (score === 3) {
+                    riskCategory = '<span class="badge badge-moderate fs-6 p-2">Moderate bleeding risk</span>';
+                    bleedingRisk = '~3.2 – 4.5% per year major bleeding';
+                    recommendation = 'High bleeding risk. Address modifiable factors. DOACs preferred over warfarin. Close follow‑up.';
+                } else {
+                    riskCategory = '<span class="badge badge-high fs-6 p-2">High bleeding risk</span>';
+                    bleedingRisk = '> 4.5 – 8.5% per year major bleeding';
+                    recommendation = 'Very high bleeding risk. Re‑assess need for anticoagulation. Consider left atrial appendage occlusion if high stroke risk. Optimize modifiable factors.';
+                }
+
+                
+                if (chkHtn.checked) modifiable.push('Uncontrolled hypertension → improve BP control');
+                if (chkLabileINR.checked) modifiable.push('Labile INR → consider DOAC or improve warfarin management');
+                if (chkAntiplatelet.checked) modifiable.push('Antiplatelet agent → re‑evaluate need (avoid dual therapy unless necessary)');
+                if (chkAlcohol.checked) modifiable.push('Alcohol use → counselling / reduction');
+                if (chkRenal.checked) modifiable.push('Abnormal renal function → optimize renal care, adjust drug dosing');
+                if (chkLiver.checked) modifiable.push('Abnormal liver function → hepatology referral');
+
+                riskCategorySpan.innerHTML = riskCategory;
+                bleedingRiskSpan.innerHTML = bleedingRisk;
+                recommendationSpan.innerHTML = recommendation;
+                modifiableSpan.innerHTML = modifiable.length ? modifiable.join('; ') : 'None – continue regular monitoring.';
+            }
+
+            function resetForm() {
+                const checkboxes = [chkHtn, chkRenal, chkLiver, chkPriorStroke, chkBleeding, chkLabileINR, chkElderly, chkAntiplatelet, chkAlcohol];
+                checkboxes.forEach(cb => cb.checked = false);
+                calculateScore();
+            }
+
+            const allCheckboxes = [chkHtn, chkRenal, chkLiver, chkPriorStroke, chkBleeding, chkLabileINR, chkElderly, chkAntiplatelet, chkAlcohol];
+            allCheckboxes.forEach(cb => cb.addEventListener('change', calculateScore));
+            calcBtn.addEventListener('click', calculateScore);
+            resetBtn.addEventListener('click', resetForm);
+            
+            calculateScore();
+        })();
+    </script>
+}

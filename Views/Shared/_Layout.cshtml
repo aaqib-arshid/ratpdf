@@ -259,16 +259,21 @@
                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImageResizer">Image Resizer</a></li>
                    </ul>
                 </li>
-                 <!-- TOOLS -->
+                 <!--Medical TOOLS -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Tools</a>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Medical Tools</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="PaySlip" asp-action="Index">Pay Slip Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="BulkPaySlip" asp-action="Index">Bulk Pay Slip Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="RentReceipt" asp-action="Index">Rent Receipt Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="PasswordGenerator">Password Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="UrlEncoder">Url Encoder</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="UrlDecoder">Url Decoder</a></li>
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="BMICalculator">BMI Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="PeriodCalculator">Periods Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="MapCalculator">Map Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="HeartScore">Heart Score</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="GcsCalculator">Glasgow Coma Scale (GCS) Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="NIHSScalculator">NIHSS calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="Cha2ds2VascScore">Stroke Risk Assessment</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="EgfrCalculator">eGFR calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="WellsScoreCalculator">Wells Score</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="HasBledScore">Has Bled Score</a></li>
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="ParkLandFormula">Parkland Formula Calculator</a></li>
                     </ul>
                 </li>
                 <!-- DEV TOOLS -->
@@ -281,6 +286,8 @@
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="DecimalToBinary">Decimal To Binary</a></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="BinaryToDecimal">Binary To Decimal</a></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="FavIconGenerator">Fav Icon Generator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="UrlEncoder">Url Encoder</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="UrlDecoder">Url Decoder</a></li>
                     </ul>
                 </li>
 
@@ -294,6 +301,10 @@
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="WordCounter">Word Counter</a></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="TextComparer">Text Comparer</a></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="QRGenerator">QR Code Generator</a></li>
+                        <li><a class="dropdown-item" asp-controller="PaySlip" asp-action="Index">Pay Slip Generator</a></li>
+                        <li><a class="dropdown-item" asp-controller="BulkPaySlip" asp-action="Index">Bulk Pay Slip Generator</a></li>
+                        <li><a class="dropdown-item" asp-controller="RentReceipt" asp-action="Index">Rent Receipt Generator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="PasswordGenerator">Password Generator</a></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="RingSizeConverter">Ring Size Converter</a></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="GSCIndex">Decay SEO Tool</a></li>
                     </ul>
@@ -323,8 +334,6 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Calculators</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="BMICalculator">BMI Calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="PeriodCalculator">Periods Calculator</a></li>
                         <li><a class="dropdown-item" asp-controller="Calculators" asp-action="AgeCalculator">Age Calculator</a></li>
                         <li><a class="dropdown-item" asp-controller="Calculators" asp-action="LoanCalculator">EMI Calculator</a></li>
                         <li><a class="dropdown-item" asp-controller="Calculators" asp-action="PercentageCalculator">Percentage Calculator</a></li>

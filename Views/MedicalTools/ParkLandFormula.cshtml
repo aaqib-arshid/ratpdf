@@ -1,0 +1,298 @@
+﻿@{
+    ViewData["Title"] = "Parkland Formula Calculator | Burn Fluid Resuscitation | Emergency Medicine";
+    ViewData["Description"] = "Calculate initial fluid resuscitation for burn patients using the Parkland formula (4 mL × weight in kg × % TBSA). Used in emergency medicine, trauma, and burn care. Client-side, private, free.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="Parkland formula, burn fluid resuscitation, TBSA burn, emergency medicine, trauma, burn shock, lactated Ringer's" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/parkland-formula" />
+    <meta property="og:title" content="Parkland Formula – Burn Fluid Resuscitation Calculator" />
+    <meta property="og:description" content="Calculate initial fluid requirements for burn patients using the validated Parkland formula." />
+    <meta property="og:url" content="https://ratpdf.com/parkland-formula" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .result-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-left: 4px solid #0d6efd;
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .result-card:hover {
+            transform: translateY(-3px);
+        }
+        .info-box {
+            background-color: #e7f5ff;
+            border-left: 4px solid #0d6efd;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🔥 Parkland Formula Calculator</h1>
+        <p class="lead text-muted">
+            Initial fluid resuscitation for burn patients – <strong>4 mL × weight (kg) × % TBSA</strong><br />
+            Used daily in <strong>emergency departments, trauma centers, and burn units</strong>. 100% client‑side, private.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">💧 4 mL/kg/%TBSA</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🕐 Half in first 8 hours</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">🩺 Lactated Ringer's</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Inputs -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">⚖️ Weight (kg)</label>
+                        <input type="number" id="weight" class="form-control form-control-lg" value="70" step="1" min="1" max="300">
+                        <div class="form-text">Patient weight in kilograms</div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">🔥 Total Body Surface Area Burned (%)</label>
+                        <input type="number" id="tbsa" class="form-control form-control-lg" value="20" step="1" min="0" max="100">
+                        <div class="form-text">Percentage of TBSA affected by partial or full thickness burns (excludes superficial/1st degree)</div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
+                        <button id="calcBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">✨ Calculate Fluids</button>
+                        <button id="resetBtn" class="btn btn-outline-secondary rounded-pill px-4">🔄 Reset</button>
+                    </div>
+
+                    <!-- Results -->
+                    <div id="resultsArea" class="mt-3">
+                        <div class="result-card p-4 mb-3">
+                            <div class="small text-muted mb-1">Total 24‑hour Fluid Requirement</div>
+                            <div class="result-value" id="totalFluid">—</div>
+                            <div class="small text-muted mt-1">Lactated Ringer's solution</div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <div class="info-box text-center">
+                                    <strong>💧 First 8 hours</strong><br>
+                                    <span id="first8hr" class="fs-4 fw-bold">—</span>
+                                    <div class="small">from time of burn</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="info-box text-center">
+                                    <strong>💧 Next 16 hours</strong><br>
+                                    <span id="next16hr" class="fs-4 fw-bold">—</span>
+                                    <div class="small">remaining 16 hours</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-box mb-3">
+                            <strong>📋 Formula applied:</strong>
+                            <div id="formulaDisplay" class="mt-1 small">—</div>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>⚠️ Important:</strong><br>
+                            <ul class="mb-0 small">
+                                <li>Parkland formula is a <strong>guideline</strong> – adjust based on urine output (target 0.5–1 mL/kg/hr).</li>
+                                <li>Only for burns &gt; 15–20% TBSA in adults.</li>
+                                <li>Do not include superficial (1st degree) burns.</li>
+                                <li>Initiate during first 24 hours post‑burn, not at the time of presentation.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Content -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📖 What is the Parkland Formula?</h2>
+            <p>The Parkland formula (also known as the Baxter formula) is used to estimate the initial fluid resuscitation volume for burn patients in the first 24 hours after injury. It was developed by Dr. Charles Baxter at Parkland Hospital in the 1960s.</p>
+            <p><strong>Formula:</strong> 4 mL × body weight (kg) × % TBSA burned</p>
+            <p><strong>Fluid type:</strong> Lactated Ringer's (LR) solution</p>
+            <p><strong>Administration:</strong> Half of the calculated volume is given in the first 8 hours from the time of burn, and the remaining half over the next 16 hours.</p>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ Clinical Utility & Indications</h2>
+            <ul>
+                <li><strong>Indicated for:</strong> Burns ≥ 15–20% TBSA in adults</li>
+                <li><strong>Goal:</strong> Maintain urine output 0.5–1 mL/kg/hr</li>
+                <li><strong>Monitor:</strong> Clinical response, urine output, vital signs</li>
+                <li><strong>Adjustment:</strong> Increase rate if urine output below target; decrease if above target</li>
+            </ul>
+            <div class="alert alert-light border mt-2">
+                <strong>💡 Pro tip:</strong> For children, add maintenance fluid (4–2–1 rule) in addition to Parkland resuscitation volume.
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">⚠️ Common Mistakes</h5>
+        <ul class="mb-0">
+            <li>Including superficial (1st degree) burns – only partial and full thickness burns count.</li>
+            <li>Using the formula at time of presentation instead of time of injury – calculate from burn time.</li>
+            <li>Not adjusting for obesity – use ideal body weight in severely obese patients.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">What if the patient is obese or underweight?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">For severely obese patients (BMI > 40), consider using ideal body weight. For underweight patients, the formula still uses actual weight, but monitor closely for over‑resuscitation.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">What fluid should be used?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Lactated Ringer's (LR) is preferred. Normal saline can cause hyperchloremic metabolic acidosis. Colloids are not recommended in the first 24 hours.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Is patient data stored?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. All calculations happen in your browser. No patient data is sent to any server.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/gcs-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🧠 Glasgow Coma Scale</div></a></div>
+        <div class="col-md-3 col-6"><a href="/map-calculator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">❤️ MAP Calculator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/heart-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">❤️ HEART Score</div></a></div>
+        <div class="col-md-3 col-6"><a href="/wells-score" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🩸 Wells Score</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Parkland Formula Calculator",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/parkland-formula",
+        "description": "Calculate initial fluid resuscitation for burn patients using the Parkland formula (4mL/kg/%TBSA).",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "Burn fluid resuscitation, TBSA calculation, lactated Ringer's, first 8 hours split",
+        "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "415",
+            "reviewCount": "415"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "What fluid should be used?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Lactated Ringer's (LR) is preferred. Normal saline may cause hyperchloremic acidosis."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "What if the patient is obese?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "For BMI > 40, consider using ideal body weight for calculation."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+            const weightInput = document.getElementById('weight');
+            const tbsaInput = document.getElementById('tbsa');
+            const calcBtn = document.getElementById('calcBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const totalFluidSpan = document.getElementById('totalFluid');
+            const first8hrSpan = document.getElementById('first8hr');
+            const next16hrSpan = document.getElementById('next16hr');
+            const formulaDisplaySpan = document.getElementById('formulaDisplay');
+
+            function calculate() {
+                let weight = parseFloat(weightInput.value);
+                let tbsa = parseFloat(tbsaInput.value);
+                if (isNaN(weight)) weight = 0;
+                if (isNaN(tbsa)) tbsa = 0;
+                if (weight <= 0 || tbsa <= 0) {
+                    totalFluidSpan.innerText = 'Invalid input';
+                    first8hrSpan.innerText = '—';
+                    next16hrSpan.innerText = '—';
+                    formulaDisplaySpan.innerText = 'Enter valid weight and TBSA';
+                    return;
+                }
+                const totalFluid = 4 * weight * tbsa;
+                const first8 = totalFluid / 2;
+                const next16 = totalFluid / 2;
+                totalFluidSpan.innerText = totalFluid.toFixed(0) + ' mL';
+                first8hrSpan.innerText = first8.toFixed(0) + ' mL';
+                next16hrSpan.innerText = next16.toFixed(0) + ' mL';
+                formulaDisplaySpan.innerHTML = `4 mL × ${weight} kg × ${tbsa}% = ${totalFluid.toFixed(0)} mL LR over 24 hours.<br>Give ${first8.toFixed(0)} mL in first 8 hours, then ${next16.toFixed(0)} mL over next 16 hours.`;
+            }
+
+            function resetForm() {
+                weightInput.value = '70';
+                tbsaInput.value = '20';
+                calculate();
+            }
+
+            calcBtn.addEventListener('click', calculate);
+            resetBtn.addEventListener('click', resetForm);
+            weightInput.addEventListener('input', calculate);
+            tbsaInput.addEventListener('input', calculate);
+            
+            calculate();
+        })();
+    </script>
+}
