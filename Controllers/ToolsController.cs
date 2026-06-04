@@ -100,6 +100,8 @@ namespace ratpdf.Controllers
         [HttpGet("image-format-converter")] public IActionResult ImageFormatConverter() => View();
         [HttpGet("bulk-image-compressor")] public IActionResult BulkImageCompressor() => View();
         [HttpGet("image-resizer")] public IActionResult ImageResizer() => View();
+        [HttpGet("text-comparer")] public IActionResult TextComparer() => View();
+        [HttpGet("favicon-generator")] public IActionResult FavIconGenerator() => View();
         [HttpGet] public IActionResult ImgBackgroundRemove() => View();
         [HttpGet]
         public IActionResult IpLookup() => View();

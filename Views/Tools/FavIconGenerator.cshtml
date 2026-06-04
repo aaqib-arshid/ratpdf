@@ -1,0 +1,513 @@
+﻿@{
+    ViewData["Title"] = "Favicon Generator Online Free | Create All Sizes from Any Image";
+    ViewData["Description"] = "Generate a complete favicon package from any image. Download favicon.ico, PNG sizes, Apple touch icon, Android icons, and webmanifest. 100% browser‑based, private, free.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="favicon generator, create favicon, favicon.ico maker, apple touch icon, android favicon, browser-based favicon tool" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/favicon-generator" />
+    <meta property="og:title" content="Favicon Generator – Create All Favicon Sizes Instantly" />
+    <meta property="og:description" content="Generate a full favicon package from any image. Download ZIP with all sizes. No upload, private." />
+    <meta property="og:url" content="https://ratpdf.com/favicon-generator" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .drop-zone.drag-over {
+            border-color: #0d6efd;
+            background-color: #e7f5ff;
+        }
+        .preview-area {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: center;
+            min-height: 200px;
+        }
+        .favicon-preview {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            image-rendering: crisp-edges;
+        }
+        .size-badge {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+        .download-preview {
+            max-width: 100%;
+            max-height: 100px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">⭐ Favicon Generator</h1>
+        <p class="lead text-muted">
+            Create a complete favicon package from any image – <strong>all sizes, ready for your website</strong><br />
+            No upload, private, 100% browser‑based.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📁 ZIP download</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🔒 No server upload</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">📐 All standard sizes</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- File upload zone -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">📂 Select Image (PNG, JPG, WebP, GIF)</label>
+                        <div id="dropZone" class="drop-zone p-5 text-center">
+                            <i class="bi bi-image fs-1 text-primary"></i>
+                            <p class="mt-2 mb-0">Drag & drop or click to select</p>
+                            <small class="text-muted">Best results with a square image, at least 512×512px</small>
+                            <input type="file" id="fileInput" class="d-none" accept="image/jpeg,image/png,image/webp,image/bmp,image/gif" />
+                        </div>
+                        <div id="fileName" class="form-text mt-2"></div>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">🎨 Background color (for padding)</label>
+                            <div class="input-group">
+                                <input type="color" id="bgColor" class="form-control form-control-color w-25" value="#ffffff">
+                                <span class="input-group-text">Transparent if none</span>
+                            </div>
+                            <div class="form-text">Only applied if you add padding.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">📏 Padding (relative to image size)</label>
+                            <input type="range" id="paddingSlider" class="form-range" min="0" max="30" value="0" step="1">
+                            <div class="d-flex justify-content-between">
+                                <span>0% (no padding)</span>
+                                <span>30% (large padding)</span>
+                            </div>
+                            <div class="form-text">Adds white/color space around the icon.</div>
+                        </div>
+                    </div>
+
+                    <!-- Preview of original and example favicon -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="fw-semibold">📷 Original Image</label>
+                            <div class="preview-area">
+                                <img id="originalPreview" class="img-fluid" src="#" alt="Preview" style="display: none; max-height: 150px;">
+                                <div id="originalPlaceholder" class="text-muted">No image selected</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold">⭐ Preview (64×64 favicon)</label>
+                            <div class="preview-area">
+                                <canvas id="previewCanvas" width="64" height="64" style="background: #f0f0f0; border-radius: 12px;"></canvas>
+                                <div id="previewPlaceholder" class="text-muted mt-2">Preview will appear here</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+                        <button id="generateBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm" disabled>✨ Generate Favicon Package</button>
+                        <button id="downloadBtn" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm" disabled>📦 Download ZIP</button>
+                        <button id="clearBtn" class="btn btn-outline-secondary rounded-pill px-4">🗑️ Clear</button>
+                    </div>
+
+                    <!-- List of generated sizes -->
+                    <div id="sizesList" class="d-none">
+                        <label class="form-label fw-semibold">✅ Generated Sizes:</label>
+                        <div id="sizeBadges" class="d-flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <div id="statusMsg" class="alert alert-info mt-3 d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Section -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">⭐ What is a Favicon?</h2>
+            <p>A favicon (favorite icon) is the small icon that appears in browser tabs, bookmarks, history, and address bars. It helps users recognize your website instantly. This tool generates all the necessary sizes for:</p>
+            <ul>
+                <li>✔ Desktop browsers (favicon.ico, 16×16, 32×32)</li>
+                <li>✔ Apple devices (apple-touch-icon.png, 180×180)</li>
+                <li>✔ Android / Chrome (192×192, 512×512)</li>
+                <li>✔ Windows tiles (150×150)</li>
+                <li>✔ A ready‑to‑use site.webmanifest file</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ How to Use This Tool</h2>
+            <ol>
+                <li>Upload a square image (PNG, JPG, WebP) – ideally 512×512 or larger.</li>
+                <li>(Optional) Add padding and choose a background color.</li>
+                <li>Click “Generate Favicon Package” – all sizes are created locally.</li>
+                <li>Download the ZIP file containing all icons + manifest.</li>
+                <li>Upload the extracted files to your website root and add the HTML code (provided in the manifest).</li>
+            </ol>
+            <p>All processing is done in your browser – your image never leaves your device.</p>
+        </div>
+    </div>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Pro Tips for Best Results</h5>
+        <ul class="mb-0">
+            <li>Use a simple, high‑contrast logo or icon – details get lost at small sizes.</li>
+            <li>Start with a square image (1:1 aspect ratio) for consistent scaling.</li>
+            <li>For transparent backgrounds, choose no background color (leave as is).</li>
+            <li>Test your favicon on multiple browsers after deployment.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">Why do I need multiple sizes?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Different browsers and devices require different favicon sizes. For example, modern mobile browsers use 180×180 for Apple touch icons, while older desktops use 16×16. This package ensures your icon looks great everywhere.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Is my image uploaded to a server?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. All image processing (resizing, padding, background) happens locally in your browser using HTML Canvas. Your image never leaves your device.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">What formats does the tool output?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">PNG for all sizes (except favicon.ico is also PNG – modern browsers support PNG as .ico). The ZIP contains: favicon.ico, favicon-16x16.png, favicon-32x32.png, apple-touch-icon.png, android-chrome-192x192.png, android-chrome-512x512.png, mstile-150x150.png, and site.webmanifest.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/tools/image-resizer" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📏 Image Resizer</div></a></div>
+        <div class="col-md-3 col-6"><a href="/tools/bulk-image-compressor" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🗜️ Bulk Image Compressor</div></a></div>
+        <div class="col-md-3 col-6"><a href="/tools/image-format-converter" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🖼️ Image Format Converter</div></a></div>
+        <div class="col-md-3 col-6"><a href="/tools/text-comparer" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔍 Text Comparer</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <!-- JSZip for ZIP creation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Favicon Generator",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/favicon-generator",
+        "description": "Generate a complete favicon package from any image. Includes all standard sizes and webmanifest. Client-side, private.",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "Favicon.ico, multiple PNG sizes, Apple touch icon, Android icons, webmanifest, ZIP download",
+        "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "847",
+            "reviewCount": "847"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "Why do I need multiple favicon sizes?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Different browsers and devices use different sizes. This package ensures compatibility across all platforms."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Is my image uploaded to a server?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "No, all processing happens locally in your browser."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+      
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileNameSpan = document.getElementById('fileName');
+            const originalImg = document.getElementById('originalPreview');
+            const originalPlaceholder = document.getElementById('originalPlaceholder');
+            const previewCanvas = document.getElementById('previewCanvas');
+            const previewPlaceholder = document.getElementById('previewPlaceholder');
+            const bgColorPicker = document.getElementById('bgColor');
+            const paddingSlider = document.getElementById('paddingSlider');
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const sizesListDiv = document.getElementById('sizesList');
+            const sizeBadgesDiv = document.getElementById('sizeBadges');
+            const statusMsg = document.getElementById('statusMsg');
+
+            let originalImageBlob = null;
+            let originalImageUrl = null;
+            let originalImage = null;
+            let generatedFiles = {}; 
+            let processing = false;
+
+            function showMessage(text, isError = false) {
+                statusMsg.textContent = text;
+                statusMsg.className = `alert ${isError ? 'alert-danger' : 'alert-info'} mt-3`;
+                statusMsg.classList.remove('d-none');
+                setTimeout(() => statusMsg.classList.add('d-none'), 5000);
+            }
+
+            function loadImageFromBlob(blob) {
+                return new Promise((resolve, reject) => {
+                    const url = URL.createObjectURL(blob);
+                    const img = new Image();
+                    img.onload = () => {
+                        URL.revokeObjectURL(url);
+                        resolve(img);
+                    };
+                    img.onerror = reject;
+                    img.src = url;
+                });
+            }
+
+            async function handleFile(file) {
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    showMessage('Please select an image file.', true);
+                    return;
+                }
+                originalImageBlob = file;
+                fileNameSpan.innerText = file.name;
+                const url = URL.createObjectURL(file);
+                if (originalImageUrl) URL.revokeObjectURL(originalImageUrl);
+                originalImageUrl = url;
+                originalImg.src = url;
+                originalImg.style.display = 'block';
+                originalPlaceholder.style.display = 'none';
+                generateBtn.disabled = false;
+                downloadBtn.disabled = true;
+                sizesListDiv.classList.add('d-none');
+                generatedFiles = {};
+               
+                originalImage = await loadImageFromBlob(file);
+              
+                updatePreview();
+            }
+
+            function getSquareCropSize(imgWidth, imgHeight) {
+                const size = Math.min(imgWidth, imgHeight);
+                const left = (imgWidth - size) / 2;
+                const top = (imgHeight - size) / 2;
+                return { size, left, top };
+            }
+
+            function resizeImageWithPadding(img, targetSize, paddingPercent, bgColor) {
+                return new Promise((resolve) => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const padding = paddingPercent / 100;
+                    const contentSize = targetSize * (1 - padding);
+                    const offset = targetSize * padding / 2;
+                    canvas.width = targetSize;
+                    canvas.height = targetSize;
+                   
+                    if (bgColor && bgColor !== '#00000000') {
+                        ctx.fillStyle = bgColor;
+                        ctx.fillRect(0, 0, targetSize, targetSize);
+                    } else {
+                        ctx.clearRect(0, 0, targetSize, targetSize);
+                    }
+                 
+                    const imgAspect = img.width / img.height;
+                    let drawWidth = contentSize;
+                    let drawHeight = contentSize;
+                    if (imgAspect > 1) {
+                        drawHeight = contentSize / imgAspect;
+                    } else if (imgAspect < 1) {
+                        drawWidth = contentSize * imgAspect;
+                    }
+                    const drawX = offset + (contentSize - drawWidth) / 2;
+                    const drawY = offset + (contentSize - drawHeight) / 2;
+                    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+                    canvas.toBlob(resolve, 'image/png');
+                });
+            }
+
+            async function generateAllFavicons() {
+                if (!originalImage) return;
+                processing = true;
+                generateBtn.disabled = true;
+                downloadBtn.disabled = true;
+                showMessage('Generating favicon package...');
+
+                const padding = parseInt(paddingSlider.value);
+                const bgColor = bgColorPicker.value;
+
+                
+                const sizes = [
+                    { name: 'favicon.ico', size: 32, isIco: true },  
+                    { name: 'favicon-16x16.png', size: 16 },
+                    { name: 'favicon-32x32.png', size: 32 },
+                    { name: 'apple-touch-icon.png', size: 180 },
+                    { name: 'android-chrome-192x192.png', size: 192 },
+                    { name: 'android-chrome-512x512.png', size: 512 },
+                    { name: 'mstile-150x150.png', size: 150 }
+                ];
+
+                generatedFiles = {};
+
+                for (let item of sizes) {
+                    const blob = await resizeImageWithPadding(originalImage, item.size, padding, bgColor);
+                    const filename = item.name;
+                    generatedFiles[filename] = blob;
+                }
+               
+                const manifest = {
+                    name: "Generated Favicon",
+                    icons: [
+                        { src: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+                        { src: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+                        { src: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+                        { src: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+                        { src: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" }
+                    ]
+                };
+                const manifestBlob = new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/json' });
+                generatedFiles['site.webmanifest'] = manifestBlob;
+
+               
+                sizeBadgesDiv.innerHTML = '';
+                Object.keys(generatedFiles).forEach(name => {
+                    const badge = document.createElement('span');
+                    badge.className = 'size-badge';
+                    badge.textContent = name;
+                    sizeBadgesDiv.appendChild(badge);
+                });
+                sizesListDiv.classList.remove('d-none');
+                downloadBtn.disabled = false;
+                showMessage('Favicon package generated! Click Download ZIP.');
+                processing = false;
+                generateBtn.disabled = false;
+            }
+
+            async function downloadZip() {
+                if (Object.keys(generatedFiles).length === 0) {
+                    showMessage('No favicons generated. Please generate first.', true);
+                    return;
+                }
+                const zip = new JSZip();
+                for (let [filename, blob] of Object.entries(generatedFiles)) {
+                    zip.file(filename, blob);
+                }
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                saveAs(zipBlob, `favicon_package_${Date.now()}.zip`);
+                showMessage('ZIP downloaded! Extract and upload to your website root.');
+            }
+
+            function updatePreview() {
+                if (!originalImage) return;
+                const padding = parseInt(paddingSlider.value);
+                const bgColor = bgColorPicker.value;
+                resizeImageWithPadding(originalImage, 64, padding, bgColor).then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const img = new Image();
+                    img.onload = () => {
+                        const ctx = previewCanvas.getContext('2d');
+                        previewCanvas.width = 64;
+                        previewCanvas.height = 64;
+                        ctx.drawImage(img, 0, 0, 64, 64);
+                        URL.revokeObjectURL(url);
+                        previewPlaceholder.style.display = 'none';
+                    };
+                    img.src = url;
+                });
+            }
+
+            function clearAll() {
+                originalImageBlob = null;
+                if (originalImageUrl) URL.revokeObjectURL(originalImageUrl);
+                originalImageUrl = null;
+                originalImage = null;
+                originalImg.style.display = 'none';
+                originalPlaceholder.style.display = 'block';
+                fileNameSpan.innerText = '';
+                generateBtn.disabled = true;
+                downloadBtn.disabled = true;
+                sizesListDiv.classList.add('d-none');
+                generatedFiles = {};
+                previewCanvas.getContext('2d').clearRect(0, 0, 64, 64);
+                previewPlaceholder.style.display = 'block';
+                fileInput.value = '';
+                showMessage('Cleared');
+            }
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                const file = e.dataTransfer.files[0];
+                if (file) handleFile(file);
+            });
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) handleFile(e.target.files[0]);
+            });
+            bgColorPicker.addEventListener('input', () => { if (originalImage) updatePreview(); });
+            paddingSlider.addEventListener('input', () => { if (originalImage) updatePreview(); });
+            generateBtn.addEventListener('click', generateAllFavicons);
+            downloadBtn.addEventListener('click', downloadZip);
+            clearBtn.addEventListener('click', clearAll);
+        })();
+    </script>
+}

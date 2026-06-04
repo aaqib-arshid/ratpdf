@@ -8,5 +8,6 @@ namespace ratpdf.Controllers
         [HttpGet("age-calculator")] public IActionResult AgeCalculator() => View();
         [HttpGet("emi-calculator")] public IActionResult LoanCalculator() => View();
         [HttpGet("percentage-calculator")] public IActionResult PercentageCalculator() => View();
+        [HttpGet("period-calculator")] public IActionResult PeriodCalculator() => View();
     }
 }

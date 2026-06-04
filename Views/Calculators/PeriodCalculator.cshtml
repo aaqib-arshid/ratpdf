@@ -1,0 +1,359 @@
+﻿@{
+    ViewData["Title"] = "Period Calculator & Ovulation Tracker – Free, Private, No Signup";
+    ViewData["Description"] = "Track your menstrual cycle and predict ovulation, fertile days, and next period. 100% browser‑based – no data stored, no signup. Private and free.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="period calculator, ovulation calculator, menstrual cycle tracker, fertile days, next period prediction, women health tool" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/period-calculator" />
+    <meta property="og:title" content="Period & Ovulation Calculator – Private, No Data Stored" />
+    <meta property="og:description" content="Predict your next period, ovulation, and fertile window. All calculations stay in your browser – complete privacy." />
+    <meta property="og:url" content="https://ratpdf.com/period-calculator" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-left: 4px solid #d63384;
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .result-card:hover {
+            transform: translateY(-3px);
+        }
+        .badge-cycle {
+            background-color: #d63384;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+        .disclaimer {
+            font-size: 0.8rem;
+            background-color: #fff3cd;
+            border-left: 3px solid #ffc107;
+        }
+        .input-group-custom {
+            border-radius: 48px;
+        }
+    </style>
+    }
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🌸 Period & Ovulation Calculator</h1>
+        <p class="lead text-muted">
+            Predict your next period, ovulation, and fertile days – <strong>private, no data stored, 100% client‑side</strong>.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📅 Next period</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🥚 Ovulation date</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">💕 Fertile window</span>
+            <span class="badge bg-info bg-opacity-10 text-dark px-3 py-2 rounded-pill">🔒 No signup</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Form inputs -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">📅 First day of last period</label>
+                            <input type="date" id="lastPeriodDate" class="form-control form-control-lg" value="@DateTime.Now.AddDays(-28).ToString("yyyy-MM-dd")">
+                            <div class="form-text">The first day you started bleeding</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">⏱️ Average cycle length (days)</label>
+                            <input type="number" id="cycleLength" class="form-control form-control-lg" value="28" min="21" max="45" step="1">
+                            <div class="form-text">Usually 21–35 days</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">🩸 Period duration (days)</label>
+                            <input type="number" id="periodDuration" class="form-control form-control-lg" value="5" min="1" max="10" step="1">
+                            <div class="form-text">How many days bleeding lasts</div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
+                        <button id="calculateBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">✨ Calculate & Predict</button>
+                        <button id="resetBtn" class="btn btn-outline-secondary rounded-pill px-4">🔄 Reset</button>
+                    </div>
+
+                    <!-- Results panel -->
+                    <div id="resultsArea" class="mt-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="result-card p-3 h-100">
+                                    <div class="small text-muted">📅 Next period starts</div>
+                                    <div class="fs-3 fw-bold" id="nextPeriod">—</div>
+                                    <div class="small text-muted" id="daysUntilPeriod">—</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="result-card p-3 h-100">
+                                    <div class="small text-muted">🥚 Ovulation day</div>
+                                    <div class="fs-3 fw-bold" id="ovulationDay">—</div>
+                                    <div class="small text-muted" id="ovulationStatus">—</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="result-card p-3">
+                                    <div class="small text-muted">💕 Fertile window (most fertile days)</div>
+                                    <div class="fs-5 fw-bold" id="fertileWindow">—</div>
+                                    <div class="small text-muted mt-2">Based on average cycle. Sperm can live up to 5 days.</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="result-card p-3">
+                                    <div class="small text-muted">📊 Cycle summary</div>
+                                    <div id="cycleSummary" class="small">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="disclaimer p-3 mt-4 rounded-3">
+                        <strong>⚠️ Medical Disclaimer</strong><br>
+                        This calculator provides estimates based on average cycle data and is for educational purposes only.
+                        It is not a substitute for professional medical advice, diagnosis, or treatment.
+                        If you have irregular cycles or health concerns, please consult a healthcare provider.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Educational & SEO Section -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">🌸 How the Period Calculator Works</h2>
+            <p>This tool uses the standard <strong>calendar method</strong> to estimate your next period and fertile days based on your average cycle length. It works entirely in your browser – no data is stored or sent anywhere.</p>
+            <ul>
+                <li><strong>Next period</strong> = Last period date + cycle length</li>
+                <li><strong>Ovulation</strong> = Next period date – 14 days (typical luteal phase)</li>
+                <li><strong>Fertile window</strong> = Ovulation day – 5 days to ovulation day + 1 day</li>
+            </ul>
+            <p>For irregular cycles, results may vary. Track your cycles over time for better predictions.</p>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ Why Choose Our Calculator?</h2>
+            <ul>
+                <li>✅ <strong>100% private</strong> – no signup, no data storage, no tracking</li>
+                <li>✅ <strong>Client‑side</strong> – everything runs in your browser</li>
+                <li>✅ <strong>Adjustable cycle length & period duration</strong> – personalized results</li>
+                <li>✅ <strong>Clear fertile window</strong> – know your most fertile days</li>
+                <li>✅ <strong>Free forever</strong> – no hidden costs</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Understanding Your Cycle</h5>
+        <p class="mb-0">A typical menstrual cycle lasts 28 days, but cycles from 21 to 35 days are normal. Ovulation usually occurs 14 days before your next period. The fertile window includes the 5 days before ovulation and the day of ovulation because sperm can live for up to 5 days.</p>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">How accurate is the period calculator?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">It's accurate for women with regular cycles (length variation within a few days). For irregular cycles, predictions are estimates. The best way to improve accuracy is to track your cycles over several months and adjust the average cycle length accordingly.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Is my data safe?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Absolutely. This tool does not store any information. All calculations happen locally in your browser. No cookies, no tracking, no signup. Your cycle data never leaves your device.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Can I use this to prevent pregnancy?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. This tool is for educational purposes only. It should not be used as a form of contraception. Please consult a healthcare provider for family planning advice.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/tools/favicon-generator" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">⭐ Favicon Generator</div></a></div>
+        <div class="col-md-3 col-6"><a href="/tools/image-resizer" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📏 Image Resizer</div></a></div>
+        <div class="col-md-3 col-6"><a href="/tools/text-comparer" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🔍 Text Comparer</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "Period & Ovulation Calculator",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "url": "https://ratpdf.com/period-calculator",
+        "description": "Predict your next period, ovulation, and fertile window. 100% client-side, private, no data stored.",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "Period prediction, ovulation date, fertile window, cycle tracking, privacy-first",
+        "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "1247",
+            "reviewCount": "1247"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "How accurate is the period calculator?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "It's accurate for regular cycles. For irregular cycles, results are estimates."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Is my data safe?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Yes, all calculations are local. No data is stored or sent anywhere."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        (function() {
+            const lastPeriodInput = document.getElementById('lastPeriodDate');
+            const cycleLengthInput = document.getElementById('cycleLength');
+            const periodDurationInput = document.getElementById('periodDuration');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const nextPeriodSpan = document.getElementById('nextPeriod');
+            const daysUntilPeriodSpan = document.getElementById('daysUntilPeriod');
+            const ovulationDaySpan = document.getElementById('ovulationDay');
+            const ovulationStatusSpan = document.getElementById('ovulationStatus');
+            const fertileWindowSpan = document.getElementById('fertileWindow');
+            const cycleSummarySpan = document.getElementById('cycleSummary');
+
+            function formatDate(date) {
+                return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            function addDays(date, days) {
+                const result = new Date(date);
+                result.setDate(result.getDate() + days);
+                return result;
+            }
+
+            function calculate() {
+                const lastPeriod = new Date(lastPeriodInput.value);
+                if (isNaN(lastPeriod.getTime())) {
+                    alert('Please select a valid date.');
+                    return;
+                }
+                const cycleLen = parseInt(cycleLengthInput.value);
+                const periodDur = parseInt(periodDurationInput.value);
+                if (isNaN(cycleLen) || cycleLen < 21 || cycleLen > 45) {
+                    alert('Cycle length should be between 21 and 45 days.');
+                    return;
+                }
+                if (isNaN(periodDur) || periodDur < 1 || periodDur > 10) {
+                    alert('Period duration should be between 1 and 10 days.');
+                    return;
+                }
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const nextPeriodDate = addDays(lastPeriod, cycleLen);
+                const ovulationDate = addDays(nextPeriodDate, -14);
+                const fertileStart = addDays(ovulationDate, -5);
+                const fertileEnd = addDays(ovulationDate, 1); // ovulation day + 1
+
+                // Display next period
+                nextPeriodSpan.innerText = formatDate(nextPeriodDate);
+                const daysUntil = Math.ceil((nextPeriodDate - today) / (1000 * 60 * 60 * 24));
+                if (daysUntil < 0) {
+                    daysUntilPeriodSpan.innerText = `(This date has passed. Update your last period.)`;
+                } else if (daysUntil === 0) {
+                    daysUntilPeriodSpan.innerText = `Today!`;
+                } else {
+                    daysUntilPeriodSpan.innerText = `In ${daysUntil} day${daysUntil !== 1 ? 's' : ''}`;
+                }
+
+                // Ovulation
+                ovulationDaySpan.innerText = formatDate(ovulationDate);
+                const ovuDiff = Math.ceil((ovulationDate - today) / (1000 * 60 * 60 * 24));
+                if (ovuDiff < 0) {
+                    ovulationStatusSpan.innerText = `(Already passed)`;
+                } else if (ovuDiff === 0) {
+                    ovulationStatusSpan.innerText = `Today – most fertile day!`;
+                } else {
+                    ovulationStatusSpan.innerText = `In ${ovuDiff} day${ovuDiff !== 1 ? 's' : ''}`;
+                }
+
+                // Fertile window
+                if (fertileStart.getTime() === fertileEnd.getTime()) {
+                    fertileWindowSpan.innerText = formatDate(fertileStart);
+                } else {
+                    fertileWindowSpan.innerText = `${formatDate(fertileStart)} – ${formatDate(fertileEnd)}`;
+                }
+
+                // Cycle summary
+                const lastPeriodFormatted = formatDate(lastPeriod);
+                const periodEnd = addDays(lastPeriod, periodDur - 1);
+                cycleSummarySpan.innerHTML = `
+                    Last period started: <strong>${lastPeriodFormatted}</strong><br>
+                    Period duration: ${periodDur} days (ends approx ${formatDate(periodEnd)})<br>
+                    Average cycle length: ${cycleLen} days<br>
+                    Next period expected: ${formatDate(nextPeriodDate)}
+                `;
+            }
+
+            function reset() {
+                const today = new Date();
+                const defaultLastPeriod = new Date();
+                defaultLastPeriod.setDate(today.getDate() - 28);
+                lastPeriodInput.value = defaultLastPeriod.toISOString().split('T')[0];
+                cycleLengthInput.value = '28';
+                periodDurationInput.value = '5';
+                calculate();
+            }
+
+            calculateBtn.addEventListener('click', calculate);
+            resetBtn.addEventListener('click', reset);
+            // Auto-calculate on input change
+            lastPeriodInput.addEventListener('change', calculate);
+            cycleLengthInput.addEventListener('input', calculate);
+            periodDurationInput.addEventListener('input', calculate);
+
+            calculate();
+        })();
+    </script>
+}

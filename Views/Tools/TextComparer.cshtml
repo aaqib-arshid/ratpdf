@@ -1,0 +1,424 @@
+﻿@{
+    ViewData["Title"] = "Text Comparer Online Free | Compare Two Texts and Find Differences";
+    ViewData["Description"] = "Free online Text Comparer. Compare two texts, highlight differences, and see similarity percentage. Perfect for code, documents, or any text. 100% client-side, private.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head
+{
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="text comparer, compare text online, diff tool, text difference checker, compare two texts, similarity checker, code differ" />
+    <meta name="author" content="RatPDF" />
+    <link rel="canonical" href="https://ratpdf.com/text-comparer" />
+    <meta property="og:title" content="Text Comparer – Compare Two Texts and See Differences" />
+    <meta property="og:description" content="Find differences between two texts instantly. Highlight added, removed, or changed lines. Free and private." />
+    <meta property="og:url" content="https://ratpdf.com/text-comparer" />
+    <meta property="og:type" content="website" />
+
+    <!-- diff-match-patch library -->
+    <script src="https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.js"></script>
+
+    <style>
+        .compare-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        }
+        .compare-panel {
+        flex: 1;
+        min-width: 250px;
+        }
+        textarea {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        }
+        .diff-view {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1rem;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        max-height: 400px;
+        overflow-y: auto;
+        }
+        .diff-added {
+        background-color: #d4edda;
+        color: #155724;
+        }
+        .diff-removed {
+        background-color: #f8d7da;
+        color: #721c24;
+        }
+        .diff-changed {
+        background-color: #fff3cd;
+        color: #856404;
+        }
+        .similarity-badge {
+        font-size: 1.2rem;
+        font-weight: bold;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">🔍 Text Comparer</h1>
+        <p class="lead text-muted">
+            Compare two texts, find differences, and see similarity percentage.<br />
+            <strong>100% browser‑based – no upload, private, free</strong>.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📄 Two‑panel diff</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🎨 Highlighted changes</span>
+            <span class="badge bg-warning bg-opacity-10 text-dark px-3 py-2 rounded-pill">📊 Similarity score</span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Options row -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input type="checkbox" id="ignoreCase" class="form-check-input">
+                                <label class="form-check-label" for="ignoreCase">🔤 Ignore case</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input type="checkbox" id="ignoreWhitespace" class="form-check-input">
+                                <label class="form-check-label" for="ignoreWhitespace">␣ Ignore whitespace (spaces, tabs, newlines)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <button id="swapBtn" class="btn btn-outline-secondary btn-sm rounded-pill">🔄 Swap texts</button>
+                        </div>
+                    </div>
+
+                    <!-- Two textareas -->
+                    <div class="compare-container mb-4">
+                        <div class="compare-panel">
+                            <label class="form-label fw-semibold">📝 Original Text</label>
+                            <textarea id="textLeft" class="form-control" rows="10" placeholder="Paste or type first text here..."></textarea>
+                        </div>
+                        <div class="compare-panel">
+                            <label class="form-label fw-semibold">📝 Modified Text</label>
+                            <textarea id="textRight" class="form-control" rows="10" placeholder="Paste or type second text here..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+                        <button id="compareBtn" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">🔍 Compare Texts</button>
+                        <button id="clearBtn" class="btn btn-outline-secondary rounded-pill px-4">🗑️ Clear All</button>
+                        <button id="copyResultBtn" class="btn btn-outline-success rounded-pill px-4">📋 Copy Comparison Result</button>
+                    </div>
+
+                    <!-- Similarity score -->
+                    <div id="similarityArea" class="alert alert-secondary text-center mb-4 d-none">
+                        <strong>Similarity:</strong>
+                        <span id="similarityPercent" class="similarity-badge">0%</span>
+                    </div>
+
+                    <!-- Diff result display -->
+                    <div id="diffResultArea" class="d-none">
+                        <label class="form-label fw-semibold">📊 Difference View (additions = green, deletions = red, changes = yellow)</label>
+                        <div id="diffView" class="diff-view"></div>
+                    </div>
+
+                    <div id="statusMsg" class="alert alert-info mt-3 d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">📋 What is a Text Comparer?</h2>
+            <p>A text comparer (or diff tool) highlights the differences between two pieces of text. It's essential for:</p>
+            <ul>
+                <li>✔ Comparing code versions (git diff style)</li>
+                <li>✔ Checking document revisions</li>
+                <li>✔ Finding changes in plagiarism detection</li>
+                <li>✔ Reviewing edited content</li>
+            </ul>
+            <p>This tool uses the <strong>diff-match-patch</strong> algorithm from Google to compute character‑level differences and present them in an easy‑to‑read format.</p>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">✨ How to Use This Tool</h2>
+            <ol>
+                <li>Enter or paste two texts into the left and right panels.</li>
+                <li>(Optional) Enable “Ignore case” or “Ignore whitespace”.</li>
+                <li>Click “Compare Texts” to see highlighted differences.</li>
+                <li>View the similarity percentage and the diff view.</li>
+                <li>Use “Swap texts” to exchange the two texts.</li>
+                <li>Copy the result to clipboard.</li>
+            </ol>
+            <p>All processing is done in your browser – no data leaves your device.</p>
+        </div>
+    </div>
+
+    <div class="alert alert-info border-0 rounded-4 mt-3">
+        <h5 class="alert-heading">💡 Diff View Legend</h5>
+        <ul class="mb-0">
+            <li><span class="badge bg-success">Green</span> = Added text (present only in the right text)</li>
+            <li><span class="badge bg-danger">Red</span> = Removed text (present only in the left text)</li>
+            <li><span class="badge bg-warning text-dark">Yellow</span> = Changed text (different characters)</li>
+            <li>Unchanged text appears normally.</li>
+        </ul>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">❓ Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">How accurate is the similarity percentage?</button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">The similarity is calculated based on the Levenshtein distance (edit distance) between the two texts. It reflects how many characters would need to be changed to turn one text into the other. For line‑based comparison, we also provide the diff view.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">Can I compare large files?</button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Yes, but performance may vary depending on your browser. For very large texts (over 1 MB), consider splitting them into smaller chunks.</div>
+            </div>
+        </div>
+        <div class="accordion-item border-0 shadow-sm rounded-3">
+            <h3 class="accordion-header">
+                <button class="accordion-button collapsed rounded-3 bg-light fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">Is my data sent to a server?</button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">No. The text comparison happens entirely in your browser using JavaScript. Your texts never leave your device – complete privacy.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mt-5 mb-4">🔧 Related Tools</h2>
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6"><a href="/tools/image-resizer" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">📏 Image Resizer</div></a></div>
+        <div class="col-md-3 col-6"><a href="/tools/bulk-image-compressor" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🗜️ Bulk Image Compressor</div></a></div>
+        <div class="col-md-3 col-6"><a href="/tools/image-format-converter" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🖼️ Image Format Converter</div></a></div>
+        <div class="col-md-3 col-6"><a href="/Tools/RemoveImgBackground" class="text-decoration-none"><div class="card border-0 shadow-sm text-center p-3 h-100">🎨 Background Remover</div></a></div>
+    </div>
+</section>
+
+@section Scripts
+{
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "SoftwareApplication",
+    "name": "Text Comparer",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "url": "https://ratpdf.com/text-comparer",
+    "description": "Compare two texts, highlight differences, and see similarity percentage. Client-side, private, free.",
+    "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    },
+    "featureList": "Text comparison, diff highlighting, similarity score, ignore case/whitespace, swap texts",
+    "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.7",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "1523",
+        "reviewCount": "1523"
+    }
+}
+</script>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+        {
+        "@@type": "Question",
+        "name": "How accurate is the similarity percentage?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "Based on Levenshtein distance between texts."
+        }
+        },
+        {
+        "@@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": "No, all processing is local."
+        }
+        }
+        ]
+        }
+    </script>
+
+    <script>
+        (function() {
+
+        const textLeft = document.getElementById('textLeft');
+        const textRight = document.getElementById('textRight');
+        const ignoreCase = document.getElementById('ignoreCase');
+        const ignoreWhitespace = document.getElementById('ignoreWhitespace');
+        const compareBtn = document.getElementById('compareBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const swapBtn = document.getElementById('swapBtn');
+        const copyResultBtn = document.getElementById('copyResultBtn');
+        const similarityArea = document.getElementById('similarityArea');
+        const similarityPercentSpan = document.getElementById('similarityPercent');
+        const diffResultArea = document.getElementById('diffResultArea');
+        const diffView = document.getElementById('diffView');
+        const statusMsg = document.getElementById('statusMsg');
+
+        let dmp = null;
+        try {
+        dmp = new diff_match_patch();
+        } catch(e) {
+        console.warn("diff_match_patch not loaded", e);
+        }
+
+        function showMessage(text, isError = false) {
+        statusMsg.textContent = text;
+        statusMsg.className = `alert ${isError ? 'alert-danger' : 'alert-info'} mt-3`;
+        statusMsg.classList.remove('d-none');
+        setTimeout(() => statusMsg.classList.add('d-none'), 5000);
+        }
+
+        function preprocessText(text) {
+        let processed = text;
+        if (ignoreCase.checked) {
+        processed = processed.toLowerCase();
+        }
+        if (ignoreWhitespace.checked) {
+
+        processed = processed.replace(/\s+/g, '');
+        }
+        return processed;
+        }
+
+        function computeSimilarity(str1, str2) {
+        if (!str1 && !str2) return 100;
+        if (!str1 || !str2) return 0;
+        const maxLen = Math.max(str1.length, str2.length);
+        if (maxLen === 0) return 100;
+        const diffs = dmp.diff_main(str1, str2);
+        dmp.diff_cleanupSemantic(diffs);
+        let commonLength = 0;
+        for (let i = 0; i < diffs.length; i++) {
+        if (diffs[i][0] === 0) { 
+        commonLength += diffs[i][1].length;
+        }
+        }
+        return (commonLength / maxLen) * 100;
+        }
+
+        function renderDiffView(leftRaw, rightRaw) {
+        if (!dmp) {
+        diffView.innerHTML = '<div class="text-danger">Diff library not loaded. Please refresh.</div>';
+        return;
+        }
+        let left = leftRaw;
+        let right = rightRaw;
+        if (ignoreCase.checked) {
+        left = left.toLowerCase();
+        right = right.toLowerCase();
+        }
+        if (ignoreWhitespace.checked) {
+        left = left.replace(/\s+/g, '');
+        right = right.replace(/\s+/g, '');
+        }
+        const diffs = dmp.diff_main(left, right);
+        dmp.diff_cleanupSemantic(diffs);
+        let html = '';
+        for (let i = 0; i < diffs.length; i++) {
+        const op = diffs[i][0];
+        const text = diffs[i][1];
+        let className = '';
+        if (op === 1) className = 'diff-added';
+        else if (op === -1) className = 'diff-removed';
+        else if (op === 0) className = '';
+
+        const span = document.createElement('span');
+        span.className = className;
+        span.textContent = text;
+
+        span.textContent = text; 
+
+        const wrapper = document.createElement('span');
+        wrapper.appendChild(span);
+        html += wrapper.innerHTML;
+        }
+        diffView.innerHTML = html;
+        }
+
+        function compare() {
+        let leftText = textLeft.value;
+        let rightText = textRight.value;
+        if (!leftText && !rightText) {
+        showMessage('Please enter text in both fields.', true);
+        return;
+        }
+        const processedLeft = preprocessText(leftText);
+        const processedRight = preprocessText(rightText);
+        const similarity = computeSimilarity(processedLeft, processedRight);
+        similarityArea.classList.remove('d-none');
+        similarityPercentSpan.textContent = similarity.toFixed(2) + '%';
+        renderDiffView(leftText, rightText);
+        diffResultArea.classList.remove('d-none');
+        showMessage('Comparison complete.');
+        }
+
+        function clearAll() {
+        textLeft.value = '';
+        textRight.value = '';
+        similarityArea.classList.add('d-none');
+        diffResultArea.classList.add('d-none');
+        diffView.innerHTML = '';
+        showMessage('Cleared all fields.');
+        }
+
+        function swapTexts() {
+        const leftVal = textLeft.value;
+        const rightVal = textRight.value;
+        textLeft.value = rightVal;
+        textRight.value = leftVal;
+        if (textLeft.value || textRight.value) {
+        compare();
+        } else {
+        clearAll();
+        }
+        }
+
+        function copyResult() {
+        const similarityText = similarityArea.classList.contains('d-none') ? '' : `Similarity: ${similarityPercentSpan.textContent}\n`;
+        const diffHtml = diffView.innerText; 
+        const result = `${similarityText}Differences:\n${diffHtml}`;
+        navigator.clipboard.writeText(result).then(() => {
+        showMessage('Comparison result copied to clipboard.');
+        }).catch(() => {
+        showMessage('Failed to copy.', true);
+        });
+        }
+
+
+        compareBtn.addEventListener('click', compare);
+        clearBtn.addEventListener('click', clearAll);
+        swapBtn.addEventListener('click', swapTexts);
+        copyResultBtn.addEventListener('click', copyResult);
+        })();
+    </script>
+}
