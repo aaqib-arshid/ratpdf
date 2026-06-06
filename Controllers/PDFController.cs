@@ -5,6 +5,7 @@ using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using Microsoft.AspNetCore.Mvc;
 using ratpdf.Models;
 using ratpdf.Services;
+using ratpdf.Services.CompressPDF;
 using System.Text;
 
 namespace ratpdf.Controllers
@@ -14,11 +15,14 @@ namespace ratpdf.Controllers
         private readonly PdfConversionService _pdfService;
         private readonly LayoutEngineProcessor _processor;
         private readonly HtmlReconstructionService _reconstructionEngine;
-        public PDFController(PdfConversionService pdfService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
+        private readonly PdfCompressionService _compressionService;
+        private const long MaxFileSizeBytes = 50 * 1024 * 1024;
+        public PDFController(PdfConversionService pdfService, PdfCompressionService compressionService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
         {
             _pdfService = pdfService;
             _processor = processor;
             _reconstructionEngine = reconstructionEngine;
+            _compressionService = compressionService;
         }
         #region --GET METHODS--
         public IActionResult ConvertImages()
@@ -123,28 +127,54 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Compress(IFormFile file)
+        [RequestSizeLimit(MaxFileSizeBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSizeBytes)]
+        public async Task<IActionResult> Compress(
+        IFormFile? file,
+        [FromForm] string? compressionLevel,
+        CancellationToken ct)
         {
-            if (file == null)
+            if (file is null || file.Length == 0)
+                return BadRequest(new { error = "No file uploaded." });
+
+            if (!string.Equals(file.ContentType, "application/pdf", StringComparison.OrdinalIgnoreCase)
+                && !file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                return BadRequest(new { error = "Only PDF files are accepted." });
+
+            if (file.Length > MaxFileSizeBytes)
+                return BadRequest(new { error = $"File exceeds the {MaxFileSizeBytes / 1024 / 1024} MB limit." });
+
+            var level = compressionLevel?.ToLowerInvariant() switch
             {
-                ModelState.AddModelError("File", "Please upload a PDF file to compress.");
-                return View();
-            }
-            Response.Cookies.Append("downloadReady", "1", new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddMinutes(1),
-                Path = "/"
-            });
+                "extreme" => CompressionLevel.Extreme,
+                "less" => CompressionLevel.Less,
+                _ => CompressionLevel.Recommended,
+            };
+
+            CompressionResult result;
             try
             {
-                var compressedPdf = _pdfService.CompressPdf(file);
-                return File(compressedPdf, "application/pdf", "compressed.pdf");
+                await using var stream = file.OpenReadStream();
+                result = await _compressionService.CompressAsync(stream, level, ct);
+            }
+            catch (OperationCanceledException)
+            {
+                return StatusCode(499, new { error = "Request cancelled." });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Error compressing PDF: " + ex.Message);
-                return View();
+                return StatusCode(500, new { error = "Compression failed. Please try again." });
             }
+
+            var baseName = Path.GetFileNameWithoutExtension(file.FileName);
+            Response.Headers.Append("X-Original-Size", result.OriginalSize.ToString());
+            Response.Headers.Append("X-Compressed-Size", result.CompressedSize.ToString());
+            Response.Headers.Append("X-Reduction-Pct", result.ReductionPct.ToString("F1"));
+            Response.Headers.Append("X-Compression-Method", result.Method);
+            Response.Headers.Append("Access-Control-Expose-Headers",
+                "X-Original-Size, X-Compressed-Size, X-Reduction-Pct, X-Compression-Method");
+
+            return File(result.Data, "application/pdf", $"{baseName}_compressed.pdf");
         }
         [HttpPost]
         public IActionResult TextToPdf(IFormFile file, string typedText)
@@ -569,7 +599,7 @@ namespace ratpdf.Controllers
                 HttpContext.Session.SetString("PdfHtml", html);
                 return RedirectToAction("EditPDF", "PDF");
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error:{ex.Message}, {ex.StackTrace}");
                 try
@@ -581,7 +611,7 @@ namespace ratpdf.Controllers
                 catch
                 {
                     return BadRequest("Pdf file is corrupted or contains sensitive data.");
-                }  
+                }
             }
         }
         #endregion

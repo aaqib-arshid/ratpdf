@@ -4,38 +4,36 @@
   <!-- Home -->
   <url>
     <loc>https://ratpdf.com/</loc>
-    <lastmod>2026-05-31</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
+	<url>
+		<loc>https://ratpdf.com/PDF/Compress</loc>
+		<lastmod>2026-06-06</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
   <!-- Core PDF Tools -->
   <url>
     <loc>https://ratpdf.com/PDF/Merge</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/Split</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://ratpdf.com/PDF/Compress</loc>
-    <lastmod>2026-05-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/ConvertImages</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <!-- Other Tools -->
@@ -43,14 +41,14 @@
     <loc>https://ratpdf.com/PDF/TextToPdf</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/PdfToText</loc>
     <lastmod>2026-04-18</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
@@ -71,69 +69,69 @@
     <loc>https://ratpdf.com/PDF/DocToPdf</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/PdfToDoc</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/PdfToExcel</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/ExcelToPdf</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/ImgToBase64</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/HtmlFormatter</loc>
     <lastmod>2026-05-22</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/JsonFormatter</loc>
     <lastmod>2026-05-22</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/JwtDecoder</loc>
     <lastmod>2026-05-22</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://ratpdf.com/PDF/ImageCompressor</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 	<url>
 		<loc>https://ratpdf.com/Tools/ImgBackgroundRemove</loc>
 		<lastmod>2026-06-03</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
   <url>
     <loc>https://ratpdf.com/PDF/SignText</loc>
@@ -152,19 +150,19 @@
     <loc>https://ratpdf.com/Tools/RingSizeConverter</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ratpdf.com/Tools/WordCounter</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ratpdf.com/Tools/WhatIsMyIP</loc>
     <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ratpdf.com/Tools/IpLookup</loc>
@@ -182,205 +180,205 @@
     <loc>https://ratpdf.com/PDF/EditPDF</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ratpdf.com/tools/gscindex</loc>
     <lastmod>2026-05-04</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 	 <url>
     <loc>https://ratpdf.com/InvoiceHome/Index</loc>
     <lastmod>2026-05-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
 	<url>
 		<loc>https://ratpdf.com/Invoice/Create</loc>
 		<lastmod>2026-05-15</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/free-payslip-generator</loc>
 		<lastmod>2026-05-28</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/rent-receipt-generator</loc>
 		<lastmod>2026-05-28</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/bulk-payslip-generator</loc>
 		<lastmod>2026-05-29</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/binary-to-decimal</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/decimal-to-binary</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/qr-code-generator</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/password-generator</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/url-encoder</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/url-decoder</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/bmi-calculator</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/age-calculator</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/emi-calculator</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/percentage-calculator</loc>
 		<lastmod>2026-06-02</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/ocr-tool</loc>
 		<lastmod>2026-06-03</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/pdf-redaction</loc>
 		<lastmod>2026-06-03</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/image-format-converter</loc>
 		<lastmod>2026-06-03</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/bulk-image-compressor</loc>
 		<lastmod>2026-06-03</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/image-resizer</loc>
 		<lastmod>2026-06-03</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/text-comparer</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/favicon-generator</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/period-calculator</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/cha2ds2-vasc-score</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/egfr-calculator</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/wells-score</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/heart-score</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/gcs-calculator</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/map-calculator</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/has-bled-score</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/parkland-formula</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
 	<url>
 		<loc>https://ratpdf.com/nihss-calculator</loc>
 		<lastmod>2026-06-04</lastmod>
 		<changefreq>weekly</changefreq>
-		<priority>1.0</priority>
+		<priority>0.8</priority>
 	</url>
   <!-- Legal Pages -->
   <url>

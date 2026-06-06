@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ratpdf.Data.AppDBContext;
 using ratpdf.Data.Entities;
+using ratpdf.Models.CompressPdfSeo;
 using ratpdf.Services;
+using ratpdf.Services.CompressPDF;
 using ratpdf.Services.HtmlSeo;
 using ratpdf.Services.Invoice;
 using ratpdf.Services.Invoice.Contract;
@@ -97,7 +99,9 @@ public partial class Program
         builder.Services.AddScoped<UsageTracker>();
         builder.Services.AddScoped<TemplateService>();
         builder.Services.AddScoped<FeatureAccessor>();
+        builder.Services.AddSingleton<Organization>();
         builder.Services.AddScoped<ILogoStorageService, AzureLogoStorageService>();
+        builder.Services.AddScoped<PdfCompressionService>();
         builder.WebHost.ConfigureKestrel(options =>
         {
             options.Limits.MaxRequestBodySize = 50 * 1024 * 1024; // 50 MB

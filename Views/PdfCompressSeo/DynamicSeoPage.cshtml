@@ -1,0 +1,95 @@
+﻿@using ratpdf.Helpers
+@model ratpdf.Models.CompressPdfSeo.SeoPageModel
+
+@{
+    ViewData["CanonicalUrl"] = Model.CanonicalUrl;
+    ViewData["Title"] = Model.Title;
+    ViewData["MetaDescription"] = Model.MetaDescription;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@Model.Title - ratpdf.com</title>
+    <meta name="description" content="@Model.MetaDescription" />
+    <link rel="canonical" href="@Model.CanonicalUrl" />
+
+    @if (Model.Rating != null)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildRatingLdJson(Model.Rating, Model.Title, Model.CanonicalUrl))
+        </script>
+    }
+    @if (Model.Organization != null)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildOrganizationLdJson(Model.Organization))
+        </script>
+    }
+
+    @if (Model.WebSite != null)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildWebSiteLdJson(Model.WebSite))
+        </script>
+    }
+
+    @if (Model.Breadcrumbs != null && Model.Breadcrumbs.Count > 1)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildBreadcrumbLdJson(Model.Breadcrumbs))
+        </script>
+    }
+    @if (Model.FaqItems != null && Model.FaqItems.Any())
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildFaqLdJson(Model.FaqItems))
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.LdJson))
+    {
+        <script type="application/ld+json">
+            @Html.Raw(Model.LdJson)
+        </script>
+    }
+</head>
+<body>
+    <h1>@Model.Title</h1>
+    @Html.Raw(Model.ContentHtml)
+
+    @if (Model.FaqItems != null && Model.FaqItems.Any())
+    {
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            @foreach (var faq in Model.FaqItems)
+            {
+                <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <h3 itemprop="name">@faq.Question</h3>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <div itemprop="text">@Html.Raw(faq.Answer)</div>
+                    </div>
+                </div>
+            }
+        </section>
+    }
+    @if (Model.Breadcrumbs != null && Model.Breadcrumbs.Any())
+    {
+        <nav aria-label="Breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                @foreach (var bc in Model.Breadcrumbs.Select((item, idx) => (item, idx)))
+                {
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a itemprop="item" href="@bc.item.Url">
+                            <span itemprop="name">@bc.item.Name</span>
+                        </a>
+                        <meta itemprop="position" content="@(bc.idx + 1)" />
+                    </li>
+                }
+            </ol>
+        </nav>
+    }
+</body>
+</html>

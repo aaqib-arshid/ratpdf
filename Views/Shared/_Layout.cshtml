@@ -14,6 +14,8 @@
     <!-- Prism core + markup language support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    @* pdf-lib *@
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
    <script type="application/ld+json">
         {
           "@@context": "https://schema.org",
@@ -168,6 +170,20 @@
                 transform: rotate(360deg);
             }
         }
+.navbar .nav-link.btn-compress-nav {
+    background: #ffdd59;
+    color: #1e293b !important;
+    border-radius: 30px;
+    padding: 6px 18px;
+    margin-left: 10px;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+.navbar .nav-link.btn-compress-nav:hover {
+    background: #ffcd38;
+    transform: translateY(-2px);
+    color: #0f172a !important;
+}
     </style>
 </head>
 <body>
@@ -218,7 +234,9 @@
 
             <!-- LEFT MENU -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
+                <li class="nav-item">
+                    <a class="nav-link btn-compress-nav" asp-controller="PDF" asp-action="Compress">Compress PDF</a>
+                </li>
                 <!-- PDF TOOLS -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">PDF Tools</a>
@@ -307,6 +325,9 @@
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="PasswordGenerator">Password Generator</a></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="RingSizeConverter">Ring Size Converter</a></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="GSCIndex">Decay SEO Tool</a></li>
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="AgeCalculator">Age Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="LoanCalculator">EMI Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="PercentageCalculator">Percentage Calculator</a></li>
                     </ul>
                 </li>
 
@@ -330,15 +351,7 @@
 
                     </ul>
                 </li>
-                <!-- Calculator TOOLS -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Calculators</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="AgeCalculator">Age Calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="LoanCalculator">EMI Calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="PercentageCalculator">Percentage Calculator</a></li>
-                    </ul>
-                </li>
+
                 <!-- GUIDES -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Guides</a>

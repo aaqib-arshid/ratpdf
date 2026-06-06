@@ -1,261 +1,873 @@
 ﻿@{
     ViewData["Title"] = "Compress PDF size online free";
     ViewData["Description"] = "Compress pdf size online for free. Fast and secure PDF compressor.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container py-5 d-flex justify-content-center align-items-start">
-    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+    <div class="card shadow-lg p-5" style="max-width: 650px; width: 100%; border-radius: 15px;">
         <div class="card-body text-center">
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
-            <h2 class="fw-bold mb-3">Compress PDF</h2>
-            <p class="text-muted mb-4">Upload a PDF to reduce its file size while keeping content quality.</p>
+                <h2 class="fw-bold mb-3">Compress PDF</h2>
+                <p class="text-muted mb-4">Upload a PDF to reduce its file size. Choose your compression level below.</p>
 
-            <!-- Validation Errors -->
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger text-start" role="alert">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <div>@error.ErrorMessage</div>
-                    }
-                </div>
-            }
+                <div>
 
-            <form asp-action="Compress" method="post" enctype="multipart/form-data" id="compressForm">
-                <div class="mb-3">
-                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
-                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
-                        <p class="mb-0 text-muted">Drag & drop PDF here or click to select</p>
-                        <input type="file" name="file" class="form-control form-control-lg d-none" id="fileInput" accept="application/pdf">
+                    <div class="mb-3">
+                        <div id="dropZone" class="border border-dashed rounded p-4 mb-3"
+                             style="cursor: pointer; background-color: #f8f9fa; transition: background 0.2s, border-color 0.2s;">
+                            <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
+                            <p class="mb-0 text-muted">Drag & drop PDF here or click to select</p>
+                            <input type="file" id="fileInput" class="d-none" accept="application/pdf">
+                        </div>
+                    </div>
+
+                    <div id="filePreviewCard" class="d-none mb-3 text-start">
+                        <div class="card border" style="border-radius: 10px; background: #f8f9fa;">
+                            <div class="card-body py-3 px-3 d-flex align-items-center gap-3">
+
+                                <div id="pdfThumbWrap"
+                                     style="width: 56px; height: 72px; flex-shrink: 0; border-radius: 6px;
+                                    overflow: hidden; background: #fff; border: 1px solid #dee2e6;
+                                    display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 1.8rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <p id="previewName" class="mb-1 fw-semibold text-truncate"
+                                       style="font-size: 0.9rem;"></p>
+                                    <p id="previewMeta" class="mb-0 text-muted"
+                                       style="font-size: 0.78rem;"></p>
+                                </div>
+                                <button type="button" id="clearFileBtn"
+                                        class="btn btn-sm btn-outline-secondary ms-2"
+                                        style="border-radius: 50%; width: 30px; height: 30px;
+                                    padding: 0; flex-shrink: 0;" title="Remove file">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-start mb-4">
+                        <label class="form-label fw-bold">Compression Level</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="compressionLevel"
+                                       id="levelExtreme" value="extreme">
+                                <label class="form-check-label" for="levelExtreme">
+                                    <strong>🚀 Extreme Compression</strong><br>
+                                    <span class="text-muted small">Low quality, highest file size reduction (up to 90%)</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="compressionLevel"
+                                       id="levelRecommended" value="recommended" checked>
+                                <label class="form-check-label" for="levelRecommended">
+                                    <strong>⚖️ Recommended Compression</strong><br>
+                                    <span class="text-muted small">Good quality, good compression (best balance)</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="compressionLevel"
+                                       id="levelLess" value="less">
+                                <label class="form-check-label" for="levelLess">
+                                    <strong>🛡️ Less Compression</strong><br>
+                                    <span class="text-muted small">High quality, minimal size reduction</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-lg w-100"
+                            id="compressBtn" disabled>
+                        <i class="bi bi-speedometer2 me-2"></i>Compress PDF
+                    </button>
+
+
+                    <div id="progressArea" class="mt-3" style="display: none;">
+                        <div class="progress mb-2" style="height: 6px;">
+                            <div id="progressBar"
+                                 class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width: 0%;"></div>
+                        </div>
+                        <div id="progressMsg" class="text-muted small text-center">Uploading…</div>
+                    </div>
+
+
+                    <div id="downloadContainer" class="mt-3" style="display: none;">
+                        <div class="alert alert-success py-2 mb-2 d-flex align-items-center gap-2"
+                             role="alert" style="font-size: 0.875rem;">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span id="sizeReport"></span>
+                        </div>
+                        <a id="downloadLink" class="btn btn-success btn-lg w-100" download>
+                            <i class="bi bi-download me-2"></i>Download Compressed PDF
+                        </a>
+                    </div>
+
+
+                    <div id="errorArea" class="mt-3 alert alert-danger d-none" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <span id="errorMsg"></span>
                     </div>
                 </div>
-
-                <!-- File Preview -->
-                <div id="filePreview" class="text-muted mb-3"></div>
-
-                <button type="submit" class="btn btn-primary btn-lg w-100">
-                    <i class="bi bi-speedometer2 me-2"></i> Compress PDF
-                </button>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-<section class="related-tools">
-  <h3>Related Tools</h3>
-  <ul>
-    <li><a href="/PDF/Merge">Merge PDF</a></li>
-    <li><a href="/PDF/Split">Split PDF</a></li>
-    <li><a href="/PDF/Password">Protect PDF</a></li>
-    <li><a href="/PDF/PdfToText">PDF to Text</a></li>
-  </ul>
-</section>
-<div class="container py-5">
-    <div class="card shadow-sm p-4" style="border-radius: 12px;">
-        <h2 class="fw-bold mb-3">How to Compress a PDF File Online</h2>
 
+    <div class="container py-5">
+        <div class="card shadow-sm p-4" style="border-radius: 12px;">
+        
+            <h2 class="fw-bold mb-3">How to Compress a PDF File Online – The Complete Guide</h2>
+            <p>
+                Large PDF files are one of the most common friction points in modern digital workflows.
+                Whether you’re trying to send a report to a colleague, upload a portfolio to a job portal,
+                or attach a scanned contract to an email, an oversized PDF can stop you in your tracks.
+                Email servers reject attachments over 25 MB, cloud storage quotas fill up faster than expected,
+                and recipients on slow connections may struggle to download your file.
+            </p>
+            <p>
+                Our free online PDF compressor solves this problem instantly. Unlike browser‑only tools that
+                simply re‑render pages as images (often making files larger), our service uses
+                <strong>browser‑side compression</strong> – the same industry‑standard engine
+                behind professional PDF software. It intelligently downsamples images, subsets fonts,
+                strips redundant metadata, and optimises the internal object structure, delivering
+                <strong>real, meaningful size reduction</strong> for every kind of PDF: text‑heavy documents,
+                vector drawings, scanned images, and everything in between.
+            </p>
+            <p>
+                No registration, no software to install, and absolutely free. In this comprehensive guide,
+                you’ll learn exactly how the compression works, how to choose the right compression level,
+                and how to get the best results for your specific document.
+            </p>
+
+            <h3 class="fw-semibold mt-4">Why PDF File Size Matters</h3>
+            <p>
+                A PDF’s file size directly affects how easily you can share, store, and work with it.
+                Here’s why reducing that size can make a huge difference:
+            </p>
+            <ul>
+                <li>
+                    <strong>Email deliverability</strong> – Most email providers cap attachments at 20‑25 MB.
+                    A compressed PDF ensures your message reaches the recipient’s inbox instead of bouncing.
+                </li>
+                <li>
+                    <strong>Website uploads & portals</strong> – Job boards, government portals, and grant
+                    application systems often enforce strict file size limits (2‑10 MB). Compression keeps you
+                    compliant.
+                </li>
+                <li>
+                    <strong>Cloud storage & backup costs</strong> – Services like Google Drive, Dropbox, and
+                    OneDrive charge by the gigabyte. Every megabyte you save reduces long‑term storage expenses.
+                </li>
+                <li>
+                    <strong>Collaboration speed</strong> – Smaller files upload and download faster, keeping
+                    team workflows smooth – especially for remote workers or contributors on mobile connections.
+                </li>
+                <li>
+                    <strong>Archiving & record keeping</strong> – Legal and financial archives grow quickly.
+                    Compressed PDFs save terabytes when scaled across an organisation.
+                </li>
+                <li>
+                    <strong>Customer experience</strong> – If you share PDFs with clients (catalogues, proposals,
+                    menus), a smaller file loads quicker on their device, showing respect for their time and bandwidth.
+                </li>
+            </ul>
+
+            <h3 class="fw-semibold mt-4">How Our Online PDF Compressor Works</h3>
+            <p>
+                Many free online tools rely on browser‑based JavaScript rasterisation: each page is converted to
+                a JPEG and embedded into a brand‑new PDF. While convenient, that approach often increases the file
+                size for text‑heavy or vector documents, and it can degrade quality significantly.
+            </p>
+            <p>
+                Our compressor is fundamentally different. It employs <strong>
+                server‑side processing
+            </strong>, a mature, battle‑tested PostScript and PDF interpreter. Rat Pdf
+            analyses the PDF at the object level and applies these optimisations:
+        </p>
+        <ul>
+            <li>
+                <strong>Image downsampling</strong> – Embedded photos and scans are resampled to a lower
+                resolution (e.g., 150 dpi or 72 dpi) and re‑compressed with efficient JPEG or JPEG‑2000 encoding.
+                This slashes image‑heavy file sizes while preserving acceptable visual quality.
+            </li>
+            <li>
+                <strong>Lossless object pruning</strong> – Redundant metadata, unused named destinations,
+                private application data, and duplicate objects are removed. This often shrinks text‑heavy PDFs
+                by 10‑30% without any visual change.
+            </li>
+            <li>
+                <strong>Font subsetting</strong> – Only the characters actually used in the document are
+                embedded. If your PDF includes full font sets, subsetting can trim megabytes from the file.
+            </li>
+            <li>
+                <strong>Content stream optimisation</strong> – Inefficient operators and
+                white‑space in the page descriptions are cleaned up, making the file parse faster and slightly smaller.
+            </li>
+            <li>
+                <strong>Colour space conversion</strong> – Images stored in unnecessary high‑depth colour spaces
+                can be converted to device‑RGB or grayscale, reducing data without obvious loss.
+            </li>
+        </ul>
         <p>
-            In today’s digital world, PDF files are widely used for sharing documents due to their portability and universal compatibility. However, large PDF files can slow down email delivery, consume unnecessary storage, or make uploading to websites cumbersome. 
-            Our free online PDF compressor is designed to help you reduce PDF file size efficiently while maintaining high-quality content. Whether it’s for business reports, resumes, e-books, or presentations, our tool makes PDF compression simple and fast.
+            Because all processing happens on our high‑performance servers, there’s no burden on your device’s
+            CPU or memory. The result: a truly optimised PDF that is <strong>always smaller or equal</strong>
+            to the original, never larger.
         </p>
 
-        <h3 class="fw-semibold mt-4">Step-by-Step Guide to Using Our PDF Compressor</h3>
-        <p>
-            Compressing a PDF file has never been easier. Follow these straightforward steps to shrink your PDFs in seconds:
-        </p>
+
+        <h3 class="fw-semibold mt-4">Step‑by‑Step Guide to Compressing Your PDF</h3>
+        <p>Follow these five simple steps to shrink your PDF in under a minute:</p>
         <ol class="mb-4">
             <li>
-                <strong>Upload your PDF file</strong> – Drag and drop your PDF into the upload area or click the upload box to select a file from your device. Our tool supports multiple PDF formats and ensures secure handling of your files.
+                <strong>Upload your PDF</strong><br>
+                You can drag & drop the file directly onto the upload area, or click to browse your device.
+                The tool accepts any standard PDF, regardless of how many pages it has. A file preview will
+                appear instantly, showing the file name, original size, and a thumbnail of the first page –
+                so you know exactly which document you’re about to compress.
             </li>
             <li>
-                <strong>Click the “Compress PDF” button</strong> – Once your file is uploaded, hit the compress button to start the process. The compression engine will optimize images, fonts, and objects to reduce file size without losing clarity.
+                <strong>Choose a compression level</strong><br>
+                Three distinct levels give you full control over the trade‑off between size and quality:
+                <ul>
+                    <li>
+                        <em>Extreme Compression</em> – maximum shrinkage (70‑90% reduction) for thumbnails,
+                        quick previews, or when file size is everything.
+                    </li>
+                    <li>
+                        <em>Recommended Compression</em> – the sweet spot between quality and size (40‑65%
+                        reduction), ideal for email and everyday sharing.
+                    </li>
+                    <li>
+                        <em>Less Compression</em> – high visual fidelity (10‑30% reduction) for professional
+                        printing, legal documents, and archival copies where quality matters most.
+                    </li>
+                </ul>
+                A detailed comparison table appears later in this guide.
             </li>
             <li>
-                <strong>Download your compressed PDF</strong> – After a few seconds, your reduced PDF will be ready for download. You can instantly save it to your computer, smartphone, or cloud storage.
+                <strong>Click “Compress PDF”</strong><br>
+                The file is transmitted securely over HTTPS to our server. Rat Pdf immediately begins
+                processing. A progress indicator shows the status, though most files complete within 5‑15
+                seconds depending on size and complexity.
+            </li>
+            <li>
+                <strong>Review the size report</strong><br>
+                Once compression finishes, you’ll see exactly how much was saved: original size vs.
+                compressed size, along with the percentage reduction. This transparency helps you decide
+                whether to use the compressed version or try a different level.
+            </li>
+            <li>
+                <strong>Download your compressed PDF</strong><br>
+                Click the download button to save the optimised file to your computer or phone. The
+                original file on your device is never overwritten – you keep both. After download, the
+                file is automatically deleted from our server; no copy is retained.
             </li>
         </ol>
 
-        <h3 class="fw-semibold mt-4">Key Features and Benefits of Using Our PDF Compressor</h3>
+
+        <h3 class="fw-semibold mt-4">Compression Levels in Detail</h3>
+        <p>
+            Selecting the right compression level depends on how you intend to use the PDF. Below is an
+            in‑depth look at each preset, including the underlying Rat Pdf parameters and real‑world
+            trade‑offs.
+        </p>
+
+        <table class="table table-bordered table-sm mt-2">
+            <thead class="table-light">
+                <tr>
+                    <th>Level</th>
+                    <th>Image DPI</th>
+                    <th>JPEG Quality</th>
+                    <th>Typical Reduction</th>
+                    <th>Best For</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🚀 Extreme Compression</td>
+                    <td>72 dpi</td>
+                    <td>Low (40)</td>
+                    <td>70 – 90%</td>
+                    <td>Internal previews, web thumbnails, reducing file size at any cost</td>
+                </tr>
+                <tr>
+                    <td>⚖️ Recommended Compression</td>
+                    <td>150 dpi</td>
+                    <td>Good (72)</td>
+                    <td>40 – 65%</td>
+                    <td>Email attachments, everyday sharing, online forms</td>
+                </tr>
+                <tr>
+                    <td>🛡️ Less Compression</td>
+                    <td>300 dpi</td>
+                    <td>High (92)</td>
+                    <td>10 – 30%</td>
+                    <td>Printing, legal documents, archival copies, photography portfolios</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            <strong>Extreme Compression (72 dpi, low JPEG quality):</strong>
+            RatPdf resamples all images to 72 dots per inch – the standard for on‑screen viewing – and
+            compresses them with a low JPEG quality factor. Fonts are subsetted aggressively, and metadata is
+            stripped. The visual result may show mild pixelation in photos and some loss of fine detail in
+            diagrams, but text remains readable. Use this level when you need to squeeze a 20 MB catalogue
+            down to 2 MB for a quick web upload.
+        </p>
+
+        <p>
+            <strong>Recommended Compression (150 dpi, good JPEG quality):</strong>
+            This is the default and most balanced preset. Images are downsampled to 150 dpi, which is more than
+            enough for screen viewing and standard office printing. JPEG compression is set to a quality that
+            preserves the overall look of photographs without noticeable artefacts. Font subsetting and object
+            cleanup are applied at moderate intensity. Most users will be completely satisfied with the result –
+            a file that is nearly indistinguishable from the original at half the size or less.
+        </p>
+
+        <p>
+            <strong>Less Compression (300 dpi, high JPEG quality):</strong>
+            Aimed at professionals, this level retains 300 dpi images – the minimum standard for high‑quality
+            printing. JPEG quality is kept high to avoid any visible compression artefacts. Fonts are lightly
+            subsetted, and only the most aggressive metadata stripping is disabled. The size reduction may be
+            modest (10‑30%), but the PDF remains virtually identical to the original. Perfect for legal contracts,
+            engineering drawings, and documents destined for a commercial printer.
+        </p>
+
+
+        <h3 class="fw-semibold mt-4">Why Server‑Side Compression Outperforms Browser Tools</h3>
+        <p>
+            Most free PDF compressors process the file entirely inside your web browser using JavaScript
+            libraries like pdf‑lib or PDF.js. They convert each page to a low‑resolution image and wrap those
+            images into a new PDF. While convenient, this method has serious drawbacks:
+        </p>
         <ul>
-            <li>✔ <strong>100% free online PDF compression</strong> – No hidden charges, subscription fees, or trial limits.</li>
-            <li>✔ <strong>No registration or installation required</strong> – Compress PDFs directly from your browser without downloading software.</li>
-            <li>✔ <strong>Secure and private</strong> – Your files are processed with high-level encryption, and all uploads are deleted from our servers after compression.</li>
-            <li>✔ <strong>Fast and efficient</strong> – Reduce large PDFs in seconds with minimal impact on quality.</li>
-            <li>✔ <strong>Cross-platform compatibility</strong> – Works on Windows, Mac, Android, and iOS devices seamlessly.</li>
-            <li>✔ <strong>Multiple file handling</strong> – Compress multiple PDFs at once without compromising speed.</li>
+            <li>
+                <strong>File size increase risk</strong> – Text and vector graphics, which are stored very
+                efficiently as mathematical instructions, get replaced by bulky pixel data. A 1 MB text report
+                can balloon to 5‑10 MB after rasterisation.
+            </li>
+            <li>
+                <strong>Loss of text searchability</strong> – The output PDF contains only images, so
+                Ctrl+F, copy/paste, and screen readers stop working. Our server‑side compression preserves
+                text as text.
+            </li>
+            <li>
+                <strong>No font optimisation</strong> – Browser tools can’t subset fonts or remove unused
+                glyphs, leaving megabytes of unnecessary font data in the file.
+            </li>
+            <li>
+                <strong>Performance limits</strong> – Rendering 200 pages in a browser tab can freeze the
+                UI or crash on mobile devices. Our server handles heavy lifting without affecting your device.
+            </li>
+        </ul>
+        <p>
+            By relying on rat pdf on the server, we deliver a PDF that retains all text, links,
+            bookmarks, and structure while actually shrinking the file. The result is a real PDF, not a
+            picture of a PDF.
+        </p>
+
+
+        <h3 class="fw-semibold mt-4">Common Use Cases for Online PDF Compression</h3>
+        <p>
+            People from every industry rely on fast PDF compression. Here are the most frequent scenarios
+            our users encounter:
+        </p>
+        <ul>
+            <li>
+                <strong>Email attachments</strong> – HR professionals sending offer letters, invoices, or
+                employee handbooks; students emailing assignments; freelancers delivering project files.
+                Recommended compression works best.
+            </li>
+            <li>
+                <strong>Online applications</strong> – Job portals (LinkedIn, Indeed), university admission
+                systems, and government service websites often reject PDFs above 2 MB. Extreme compression
+                guarantees compliance.
+            </li>
+            <li>
+                <strong>E‑commerce product catalogues</strong> – Image‑heavy catalogues can exceed 50 MB.
+                Compressing them to a few megabytes allows customers to download them quickly on mobile data.
+            </li>
+            <li>
+                <strong>Legal and medical records</strong> – Scanning large case files at high resolution
+                produces unwieldy PDFs. Less Compression preserves detail while making the files manageable
+                for digital archiving.
+            </li>
+            <li>
+                <strong>Creative portfolios</strong> – Photographers and designers want to showcase their
+                work online without sacrificing visual quality. Less Compression ensures that colours and
+                details remain crisp.
+            </li>
+            <li>
+                <strong>Print‑ready documents</strong> – Commercial printers often require PDFs under a
+                certain size for their upload portals. Using our tool before submission avoids upload errors
+                while keeping print resolution intact.
+            </li>
         </ul>
 
-        <p class="mt-3">
-            Using a PDF compressor is essential for anyone who deals with digital documents regularly. Large files can hinder workflow, cause email errors, and create storage challenges. By compressing PDFs, you streamline communication and optimize storage, making document management easier.
-        </p>
 
-        <h3 class="fw-semibold mt-4">Common Use Cases for PDF Compression</h3>
+        <h3 class="fw-semibold mt-4">Tips to Get Even Smaller PDFs (Before Compression)</h3>
         <p>
-            Our PDF compression tool is versatile and caters to a variety of personal, academic, and professional needs:
+            While our compressor automatically handles the heavy lifting, a few document‑preparation steps
+            can lead to even better results:
+        </p>
+        <ol>
+            <li>
+                <strong>Remove unnecessary pages</strong> – Delete blank pages, duplicate content, or
+                instruction sheets you no longer need. Every page you remove is direct size savings.
+            </li>
+            <li>
+                <strong>Avoid full‑color scans when black‑and‑white will do</strong> – Grayscale images
+                are much smaller than colour. If your document doesn’t require colour, scan in grayscale or
+                convert before uploading.
+            </li>
+            <li>
+                <strong>Use ‘Save As’ instead of ‘Print to PDF’</strong> – Printing to PDF often embeds
+                full printer fonts and high‑resolution raster overlays. Saving directly from your application
+                (Word, PowerPoint, etc.) creates a cleaner original PDF that compresses better.
+            </li>
+            <li>
+                <strong>Check embedded fonts</strong> – If you’re creating a PDF from a design tool,
+                choose “subset fonts” if available. That alone can cut several megabytes.
+            </li>
+            <li>
+                <strong>Resize large images before importing</strong> – A 5000×5000 pixel photo scaled
+                down to a 2‑inch slot in the PDF still carries the full original image data. Use image‑editing
+                software to reduce the resolution to the intended display size before placing it in your
+                document.
+            </li>
+        </ol>
+
+        <h3 class="fw-semibold mt-4">Is Your PDF Safe? Security & Privacy Explained</h3>
+        <p>
+            We take document security extremely seriously. The entire transfer between your browser and
+            our servers is encrypted with TLS (HTTPS), ensuring no one can intercept the file in transit.
+            Once the file arrives:
         </p>
         <ul>
-            <li><strong>Email Attachments:</strong> Many email servers have file size limits. Compressing PDFs ensures your files are under the limit and delivered without issues.</li>
-            <li><strong>Website Uploads:</strong> Reduce file sizes for faster website loading times and improved SEO performance when uploading PDFs to blogs, portfolios, or online resources.</li>
-            <li><strong>Job Applications:</strong> Submit resumes or portfolios that meet file size requirements while maintaining professional quality.</li>
-            <li><strong>Document Sharing:</strong> Easily share PDFs via messaging apps, cloud storage, or file-sharing services without worrying about slow downloads.</li>
-            <li><strong>Archiving:</strong> Store large PDF libraries efficiently, saving disk space and improving retrieval times.</li>
+            <li>
+                <strong>Immediate processing, immediate deletion</strong> – The file is queued, compressed
+                by Rat PDF, and the compressed version is sent back to you. Within seconds of the download
+                starting, the original and the compressed file are permanently erased from our temporary storage.
+                No human ever views your document.
+            </li>
+            <li>
+                <strong>No backups, no logs of content</strong> – Our logging systems record only anonymous
+                metrics (e.g., how many compressions were performed) – never the file contents or even the
+                original filename.
+            </li>
+            <li>
+                <strong>Compliance</strong> – This infrastructure is designed with privacy in mind and is
+                suitable for sensitive documents, including those covered by NDAs, medical records (subject to
+                local regulations), and financial reports.
+            </li>
         </ul>
-
-        <h3 class="fw-semibold mt-4">Why Our PDF Compressor Stands Out</h3>
         <p>
-            Unlike many PDF compression tools, our solution focuses on simplicity, speed, and security. You don’t need any technical expertise to reduce your PDF file size. Whether you’re a student, professional, or casual user, our online tool provides a hassle-free experience.
+            For users handling extremely confidential data (e.g., classified government documents), we
+            recommend always verifying your organisation’s IT policy; but for the vast majority of
+            personal and business needs, the service is fully secure.
         </p>
-        <p>
-            Additionally, the compression process is optimized to preserve the readability of text, clarity of images, and formatting of tables and charts. This ensures that your compressed PDF looks professional and maintains the integrity of your original document.
-        </p>
-
-        <h3 class="fw-semibold mt-4">Tips for Effective PDF Compression</h3>
-        <ul>
-            <li>Check if your PDF contains high-resolution images; compressing images can significantly reduce the file size.</li>
-            <li>Remove unnecessary elements such as unused fonts, annotations, or embedded media before compression.</li>
-            <li>If you have multiple PDFs, try compressing them individually to ensure the best quality for each document.</li>
-        </ul>
 
         <h3 class="fw-semibold mt-4">Frequently Asked Questions (FAQ)</h3>
-        <p><strong>Q1: Is it safe to upload my PDF files to this tool?</strong></p>
+
+        <p><strong>Q: Is it really free? Are there any hidden fees?</strong></p>
         <p>
-            Absolutely. All uploads are encrypted, processed securely, and automatically deleted from our servers after compression. Your privacy is our top priority.
+            Yes, it’s completely free. We don’t ask for credit card information, and there is no
+            “freemium” upsell. You can compress as many PDFs as you need without paying anything. The
+            service is supported by non‑intrusive advertising on the website.
         </p>
 
-        <p><strong>Q2: Will compressing my PDF reduce its quality?</strong></p>
+        <p><strong>Q: Do I need to create an account?</strong></p>
         <p>
-            Our compressor is designed to maintain high-quality output while reducing file size. Text, images, and formatting remain intact in most cases. For documents requiring maximum fidelity, we recommend reviewing the compressed file before sharing.
+            No registration or login is required. Just visit the page, upload your file, and compress.
+            Your privacy is better protected because we don’t even know who you are.
         </p>
 
-        <p><strong>Q3: Can I compress multiple PDFs at once?</strong></p>
+        <p><strong>Q: Will the compression reduce the quality of my text?</strong></p>
         <p>
-            Yes, our tool supports batch processing, allowing you to upload and compress several PDFs simultaneously for convenience.
+            No. Because we process the PDF natively with Rat Pdf, text remains vector‑based and
+            fully searchable. Only embedded images are downsampled. Even at Extreme compression, the
+            text itself remains sharp and selectable.
         </p>
 
-        <p><strong>Q4: What devices and browsers are compatible?</strong></p>
+        <p><strong>Q: What happens to bookmarks, hyperlinks, and form fields?</strong></p>
         <p>
-            The PDF compressor works on all major operating systems including Windows, Mac, Android, and iOS. It is compatible with modern browsers like Chrome, Firefox, Safari, and Edge.
+            All interactive elements – hyperlinks, internal document links, bookmarks, and form fields –
+            are preserved through the compression process. You won’t lose any document functionality.
         </p>
 
-        <p><strong>Q5: Do I need to download any software?</strong></p>
+        <p><strong>Q: Why didn’t my PDF shrink much?</strong></p>
         <p>
-            No. This is a fully online tool that requires no installation. Simply upload your PDF, compress it, and download the optimized version directly from your browser.
+            If the PDF contains mostly text and vector graphics (no high‑resolution images), there is
+            less “fat” to trim. Rat Pdf will still remove metadata and optimise the object stream,
+            but the reduction may be only 10‑15%. That is normal and indicates your PDF was already
+            well‑optimised. For larger gains, check if there are embedded fonts or hidden data that
+            can be subsetted.
         </p>
 
-        <p><strong>Q6: Are there file size limitations?</strong></p>
+        <p><strong>Q: What’s the maximum file size I can upload?</strong></p>
         <p>
-            While our tool supports most standard PDF sizes, extremely large files may take longer to process. For very large PDFs, we recommend splitting the document into smaller sections before compression for faster results.
+            You can upload PDFs up to 50 MB. For larger files, consider splitting the document into
+            smaller parts using a PDF splitter, then compressing each part individually. If you
+            routinely need to compress files larger than 50 MB, feel free to contact us for
+            enterprise solutions.
         </p>
 
-        <h3 class="fw-semibold mt-4">Conclusion</h3>
+        <p><strong>Q: Does it work on mobile devices?</strong></p>
         <p>
-            Reducing PDF file size has never been easier. Our free online PDF compressor is a reliable, secure, and fast solution for anyone looking to optimize documents without sacrificing quality. Whether it’s for personal use, business communication, or educational purposes, compressing PDFs helps save time, storage, and bandwidth. 
+            Absolutely. The upload and download interface is responsive and works on iOS, Android,
+            and any modern mobile browser. You can compress a PDF directly from your phone’s file
+            manager or email attachment.
+        </p>
+
+        <p><strong>Q: What types of PDFs benefit the most?</strong></p>
+        <p>
+            PDFs with many high‑resolution images or scanned documents show the most dramatic reductions.
+            Text‑only PDFs with full embedded font sets also shrink noticeably. Even mixed documents
+            with both text and images will compress well with the Recommended level.
+        </p>
+
+        <p><strong>Q: Can I compress multiple PDFs at once?</strong></p>
+        <p>
+            Currently, the tool processes one file at a time. If you have several documents, simply
+            repeat the process. Many users keep the page open and quickly drag & drop the next file
+            after downloading the previous one. Batch compression may be added in a future update.
+        </p>
+
+        <h3 class="fw-semibold mt-4">Start Compressing Your PDFs Today</h3>
+        <p>
+            Large PDFs don’t have to slow you down. With our free, server‑powered PDF compressor, you
+            can instantly reduce file sizes while retaining text, links, and overall quality. Whether
+            you need to meet a strict attachment limit, free up cloud storage, or simply deliver a
+            better experience to your recipients, our tool is ready to help – no registration, no
+            software, and no cost.
         </p>
         <p>
-            Try our PDF compression tool today and experience seamless, high-quality file optimization. Say goodbye to oversized PDFs and enjoy faster sharing, easier storage, and better workflow efficiency.
+            Give it a try: drag your PDF into the upload area above, pick a compression level that
+            fits your needs, and download a perfectly compressed file in seconds. Join thousands of
+            users who trust us every day to keep their documents small and their workflows fast.
         </p>
     </div>
 </div>
-@section Scripts {
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "Compress PDF File Online",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/PDF/Compress",
-  "description": "Reduce PDF file size online without losing quality. Fast, safe, and free PDF compression.",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
-    <!-- FAQ JSON-LD -->
-    <script type="application/ld+json">
-@Html.Raw(@"{
+
+    @section Scripts {
+
+        <script type="application/ld+json">
+            {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "Compress PDF File Online",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Web",
+            "url": "https://ratpdf.com/PDF/Compress",
+            "description": "Reduce PDF file size online without losing quality. Browser-side rat pdf compression.",
+            "offers": { "@@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+        </script>
+
+        <script type="application/ld+json">
+            @Html.Raw(@"{
   ""@context"": ""https://schema.org"",
   ""@type"": ""FAQPage"",
   ""mainEntity"": [
     {
       ""@type"": ""Question"",
       ""name"": ""How do I compress a PDF file online?"",
-      ""acceptedAnswer"": {
-        ""@type"": ""Answer"",
-        ""text"": ""Drag and drop your PDF into the upload area or click to select a file, then click 'Compress PDF' to reduce the file size instantly.""
-      }
+      ""acceptedAnswer"": { ""@type"": ""Answer"",
+        ""text"": ""Drag and drop your PDF into the upload area, choose a compression level, and click Compress PDF. The compressed file downloads automatically."" }
     },
     {
       ""@type"": ""Question"",
-      ""name"": ""Is my PDF file secure when uploaded?"",
-      ""acceptedAnswer"": {
-        ""@type"": ""Answer"",
-        ""text"": ""Yes, all files are processed securely and deleted from our servers after compression.""
-      }
+      ""name"": ""Is my PDF file secure?"",
+      ""acceptedAnswer"": { ""@type"": ""Answer"",
+        ""text"": ""Yes. Files are sent over HTTPS, compressed immediately, returned to you, and then deleted from our servers."" }
     },
     {
       ""@type"": ""Question"",
-      ""name"": ""Can I use this tool on mobile devices?"",
-      ""acceptedAnswer"": {
-        ""@type"": ""Answer"",
-        ""text"": ""Yes, the PDF compressor works on all devices including Windows, Mac, Android, and iOS.""
-      }
+      ""name"": ""Can I use this on mobile?"",
+      ""acceptedAnswer"": { ""@type"": ""Answer"",
+        ""text"": ""Yes, the tool works on all devices including Windows, Mac, Android, and iOS."" }
     },
     {
       ""@type"": ""Question"",
-      ""name"": ""Do I need to register to use the PDF compressor?"",
-      ""acceptedAnswer"": {
-        ""@type"": ""Answer"",
-        ""text"": ""No registration or installation is required; the tool is completely free to use.""
-      }
+      ""name"": ""Do I need to register?"",
+      ""acceptedAnswer"": { ""@type"": ""Answer"",
+        ""text"": ""No registration or installation required."" }
     }
   ]
 }")
-</script>
-    <script>
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const filePreview = document.getElementById('filePreview');
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-        function updatePreview() {
-            if (fileInput.files.length === 0) {
-                filePreview.textContent = '';
-                return;
+        <script>
+            (function () {
+            'use strict';
+
+            pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+
+            const dropZone          = document.getElementById('dropZone');
+            const fileInput         = document.getElementById('fileInput');
+            const filePreviewCard   = document.getElementById('filePreviewCard');
+            const pdfThumbWrap      = document.getElementById('pdfThumbWrap');
+            const previewName       = document.getElementById('previewName');
+            const previewMeta       = document.getElementById('previewMeta');
+            const clearFileBtn      = document.getElementById('clearFileBtn');
+            const compressBtn       = document.getElementById('compressBtn');
+            const progressArea      = document.getElementById('progressArea');
+            const progressBar       = document.getElementById('progressBar');
+            const progressMsg       = document.getElementById('progressMsg');
+            const downloadContainer = document.getElementById('downloadContainer');
+            const downloadLink      = document.getElementById('downloadLink');
+            const sizeReport        = document.getElementById('sizeReport');
+            const errorArea         = document.getElementById('errorArea');
+            const errorMsgEl        = document.getElementById('errorMsg');
+
+            let currentFile    = null;
+            let pdfJsDoc       = null;
+            let activeBlobUrl  = null;
+            let abortCtrl      = null;   
+
+
+            const fmtBytes = b =>
+            b < 1024           ? b + ' B'
+            : b < 1024 * 1024  ? (b / 1024).toFixed(1) + ' KB'
+            :                    (b / (1024 * 1024)).toFixed(2) + ' MB';
+
+            function setProgress(pct, msg) {
+            progressBar.style.width = pct + '%';
+            if (msg) progressMsg.textContent = msg;
+            progressArea.style.display = 'block';
             }
-            filePreview.textContent = 'Selected file: ' + fileInput.files[0].name;
-        }
 
-        dropZone.addEventListener('click', () => fileInput.click());
+            function hideProgress()  { progressArea.style.display = 'none'; progressBar.style.width = '0%'; }
+            function clearError()    { errorArea.classList.add('d-none'); }
+            function showError(msg)  { errorMsgEl.textContent = msg; errorArea.classList.remove('d-none'); }
 
-        dropZone.addEventListener('dragover', (e) => {
+            async function generateThumbnail(pdfDoc) {
+            try {
+            const page     = await pdfDoc.getPage(1);
+            const viewport = page.getViewport({ scale: 0.35 });
+            const canvas   = document.createElement('canvas');
+            canvas.width   = Math.floor(viewport.width);
+            canvas.height  = Math.floor(viewport.height);
+            await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+            const img      = document.createElement('img');
+            img.src        = canvas.toDataURL('image/jpeg', 0.75);
+            img.alt        = 'PDF preview';
+            img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+            pdfThumbWrap.innerHTML = '';
+            pdfThumbWrap.appendChild(img);
+            } catch {
+
+            }
+            }
+
+
+            async function loadFile(file) {
+            if (!file) return;
+            if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+            showError('Please select a valid PDF file.');
+            return;
+            }
+            const maxBytes = 50 * 1024 * 1024;
+            if (file.size > maxBytes) {
+            showError('File exceeds the 50 MB limit.');
+            return;
+            }
+
+            clearError();
+            hideProgress();
+            downloadContainer.style.display = 'none';
+            if (activeBlobUrl) { URL.revokeObjectURL(activeBlobUrl); activeBlobUrl = null; }
+
+            currentFile = file;
+            previewName.textContent = file.name;
+            previewMeta.textContent = fmtBytes(file.size) + ' · loading…';
+            pdfThumbWrap.innerHTML  =
+            '<div class="spinner-border spinner-border-sm text-secondary" role="status" aria-label="Loading"></div>';
+            filePreviewCard.classList.remove('d-none');
+            compressBtn.disabled = true;
+
+            try {
+            const ab = await file.arrayBuffer();
+            pdfJsDoc = await pdfjsLib.getDocument({ data: ab }).promise;
+            const n  = pdfJsDoc.numPages;
+            previewMeta.textContent = fmtBytes(file.size) + ' · ' + n + ' page' + (n !== 1 ? 's' : '');
+            await generateThumbnail(pdfJsDoc);
+            compressBtn.disabled = false;
+            } catch (e) {
+            showError('Could not read PDF: ' + e.message);
+            filePreviewCard.classList.add('d-none');
+            currentFile = null;
+            pdfJsDoc    = null;
+            }
+            }
+
+
+            function clearFile() {
+            if (abortCtrl) { abortCtrl.abort(); abortCtrl = null; }
+            currentFile = null;
+            pdfJsDoc    = null;
+            fileInput.value = '';
+            filePreviewCard.classList.add('d-none');
+            pdfThumbWrap.innerHTML =
+            '<i class="bi bi-file-earmark-pdf text-danger" style="font-size:1.8rem;"></i>';
+            compressBtn.disabled = true;
+            hideProgress();
+            downloadContainer.style.display = 'none';
+            clearError();
+            if (activeBlobUrl) { URL.revokeObjectURL(activeBlobUrl); activeBlobUrl = null; }
+            }
+
+
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            dropZone.addEventListener('dragover', e => {
             e.preventDefault();
-            dropZone.classList.add('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
+            dropZone.style.backgroundColor = '#e9ecef';
+            dropZone.style.borderColor     = '#0d6efd';
+            });
+            dropZone.addEventListener('dragleave', () => {
+            dropZone.style.backgroundColor = '#f8f9fa';
+            dropZone.style.borderColor     = '';
+            });
+            dropZone.addEventListener('drop', e => {
             e.preventDefault();
-            dropZone.classList.remove('border-primary', 'bg-light');
-            fileInput.files = e.dataTransfer.files;
-            updatePreview();
-        });
+            dropZone.style.backgroundColor = '#f8f9fa';
+            dropZone.style.borderColor     = '';
+            if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+            });
 
-        fileInput.addEventListener('change', updatePreview);
+            fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); });
+            clearFileBtn.addEventListener('click', clearFile);
 
-        $('#compressForm').on('submit', function (e) {
-         e.preventDefault();
-         showLoader('Getting Ready...');
-         setTimeout(function () {
-                 showLoader('Processing...');;
-         }, 3000);
-         setTimeout(function () {
-                submitWithLoader('compressForm', 'Downloading...');
-         }, 5000);
-        });
-    </script>
-}
+
+            compressBtn.addEventListener('click', async () => {
+            if (!currentFile) { showError('Please select a PDF file first.'); return; }
+
+            clearError();
+            downloadContainer.style.display = 'none';
+            if (activeBlobUrl) { URL.revokeObjectURL(activeBlobUrl); activeBlobUrl = null; }
+
+
+            compressBtn.disabled = true;
+            compressBtn.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Compressing…';
+            setProgress(10, 'Uploading PDF to server…');
+
+            const level = document.querySelector('input[name="compressionLevel"]:checked').value;
+
+
+            const formData = new FormData();
+            formData.append('file', currentFile);
+            formData.append('compressionLevel', level);
+
+            abortCtrl = new AbortController();
+
+            try {
+
+            const compressedBytes = await uploadWithProgress(formData, abortCtrl.signal);
+
+
+
+            } catch (err) {
+            if (err.name === 'AbortError') return;   
+            showError(err.message || 'Compression failed. Please try again.');
+            hideProgress();
+            } finally {
+            abortCtrl    = null;
+            compressBtn.disabled = false;
+            compressBtn.innerHTML = '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
+            }
+            });
+
+
+            function uploadWithProgress(formData, signal) {
+            return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+
+
+            signal.addEventListener('abort', () => xhr.abort(), { once: true });
+
+
+            xhr.upload.addEventListener('progress', e => {
+            if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 60);
+            setProgress(pct, `Uploading… ${fmtBytes(e.loaded)} / ${fmtBytes(e.total)}`);
+            }
+            });
+
+            xhr.addEventListener('load', () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+            setProgress(90, 'Processing on server…');
+
+
+            const origSize   = parseInt(xhr.getResponseHeader('X-Original-Size')   || '0', 10);
+            const compSize   = parseInt(xhr.getResponseHeader('X-Compressed-Size') || '0', 10);
+            const reduction  = parseFloat(xhr.getResponseHeader('X-Reduction-Pct') || '0');
+            const method     = xhr.getResponseHeader('X-Compression-Method')        || '';
+
+
+            const blob      = new Blob([xhr.response], { type: 'application/pdf' });
+            activeBlobUrl   = URL.createObjectURL(blob);
+
+            const baseName  = currentFile.name.replace(/\.pdf$/i, '');
+            downloadLink.href     = activeBlobUrl;
+            downloadLink.download = baseName + '_compressed.pdf';
+
+            if (origSize && compSize) {
+            if (reduction > 0) {
+            sizeReport.textContent =
+            `Reduced from ${fmtBytes(origSize)} → ${fmtBytes(compSize)} ` +
+            `(${reduction.toFixed(1)}% smaller)`;
+            } else {
+            sizeReport.textContent =
+            `${fmtBytes(origSize)} → ${fmtBytes(compSize)} ` +
+            `(PDF is already well-optimised)`;
+            }
+            } else {
+            sizeReport.textContent = 'Compression complete — click below to download.';
+            }
+
+            setProgress(100, 'Done!');
+            downloadContainer.style.display = 'block';
+
+
+            setTimeout(() => {
+            if (activeBlobUrl) { URL.revokeObjectURL(activeBlobUrl); activeBlobUrl = null; }
+            }, 600_000);
+
+            resolve();
+            } else {
+
+            let msg = `Server error (${xhr.status})`;
+            try {
+            const json = JSON.parse(xhr.responseText);
+            if (json.error) msg = json.error;
+            } catch { }
+            reject(new Error(msg));
+            }
+            });
+
+            xhr.addEventListener('error',  () => reject(new Error('Network error — please check your connection.')));
+            xhr.addEventListener('abort',  () => reject(Object.assign(new Error('Aborted'), { name: 'AbortError' })));
+            xhr.addEventListener('timeout',() => reject(new Error('Request timed out.')));
+
+            xhr.open('POST', '/PDF/Compress');
+            xhr.responseType = 'arraybuffer';
+            xhr.timeout      = 5 * 60 * 1000;  
+
+
+
+            xhr.send(formData);
+            });
+            }
+
+            })();
+        </script>
+    }
