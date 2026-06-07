@@ -30,9 +30,13 @@ namespace ratpdf.Helpers
             var schema = new
             {
                 @context = "https://schema.org",
-                @type = "Product",
+                @type = "SoftwareApplication",
                 name = productName,
+                applicationCategory = "UtilityApplication",
+                operatingSystem = "Web",
+                url = canonicalUrl,
                 image = "https://ratpdf.com/images/ratpdf-logo.png",
+
                 aggregateRating = new
                 {
                     @type = "AggregateRating",
@@ -40,9 +44,9 @@ namespace ratpdf.Helpers
                     reviewCount = rating.ReviewCount,
                     bestRating = "5",
                     worstRating = "1"
-                },
-                url = canonicalUrl
+                }
             };
+
             return JsonSerializer.Serialize(schema);
         }
         public static string BuildBreadcrumbLdJson(List<BreadcrumbItem> breadcrumbs)
