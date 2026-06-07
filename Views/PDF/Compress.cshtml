@@ -78,7 +78,9 @@
                             </div>
                         </div>
                     </div>
-
+                    <div id="fileSizeWarning" class="alert alert-warning py-2 mb-3 d-none text-start"
+                         role="alert" style="font-size: 0.85rem;">
+                    </div>
                     <button type="button" class="btn btn-primary btn-lg w-100"
                             id="compressBtn" disabled>
                         <i class="bi bi-speedometer2 me-2"></i>Compress PDF
@@ -681,9 +683,9 @@
             showError('Please select a valid PDF file.');
             return;
             }
-            const maxBytes = 50 * 1024 * 1024;
+            const maxBytes = 1024 * 1024 * 1024; // 1 GB
             if (file.size > maxBytes) {
-            showError('File exceeds the 50 MB limit.');
+            showError('File exceeds the 1 GB limit.');
             return;
             }
 
@@ -707,6 +709,16 @@
             previewMeta.textContent = fmtBytes(file.size) + ' · ' + n + ' page' + (n !== 1 ? 's' : '');
             await generateThumbnail(pdfJsDoc);
             compressBtn.disabled = false;
+            const warningEl = document.getElementById('fileSizeWarning');
+            if (file.size > 200 * 1024 * 1024) {
+                warningEl.textContent = 'Files above 200 MB may take 3–10 minutes to compress. Please keep this tab open.';
+                warningEl.classList.remove('d-none');
+            } else if (file.size > 50 * 1024 * 1024) {
+                warningEl.textContent = '⏳ Large file detected. Compression may take 1–5 minutes.';
+                warningEl.classList.remove('d-none');
+            } else {
+                warningEl.classList.add('d-none');
+            }
             } catch (e) {
             showError('Could not read PDF: ' + e.message);
             filePreviewCard.classList.add('d-none');
@@ -729,6 +741,7 @@
             downloadContainer.style.display = 'none';
             clearError();
             if (activeBlobUrl) { URL.revokeObjectURL(activeBlobUrl); activeBlobUrl = null; }
+        document.getElementById('fileSizeWarning').classList.add('d-none');
             }
 
 
@@ -777,20 +790,39 @@
             abortCtrl = new AbortController();
 
             try {
+                    let elapsedSeconds = 0;
+                    const elapsedTimer = setInterval(() => {
+                        elapsedSeconds++;
+                        const mins = Math.floor(elapsedSeconds / 60);
+                        const secs = elapsedSeconds % 60;
+                        const timeStr = mins > 0
+                            ? `${mins}m ${secs}s`
+                            : `${secs}s`;
 
-            const compressedBytes = await uploadWithProgress(formData, abortCtrl.signal);
+                        if (elapsedSeconds < 10) {
+                            progressMsg.textContent = 'Uploading to server…';
+                        } else {
+                            progressMsg.textContent = `Compressing on server… ${timeStr} elapsed`;
+                            const bar = Math.min(90, 65 + Math.floor(elapsedSeconds / 10) * 3);
+                            progressBar.style.width = bar + '%';
+                        }
+                    }, 1000);
 
+                    try {
+                        await uploadWithProgress(formData, abortCtrl.signal);
+                    } finally {
+                        clearInterval(elapsedTimer);
+                    }
 
-
-            } catch (err) {
-            if (err.name === 'AbortError') return;   
-            showError(err.message || 'Compression failed. Please try again.');
-            hideProgress();
-            } finally {
-            abortCtrl    = null;
-            compressBtn.disabled = false;
-            compressBtn.innerHTML = '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
-            }
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    showError(err.message || 'Compression failed. Please try again.');
+                    hideProgress();
+                } finally {
+                    abortCtrl    = null;
+                    compressBtn.disabled = false;
+                    compressBtn.innerHTML = '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
+                }
             });
 
 
@@ -867,7 +899,7 @@
 
             xhr.open('POST', '/PDF/Compress');
             xhr.responseType = 'arraybuffer';
-            xhr.timeout      = 5 * 60 * 1000;  
+            xhr.timeout = 30 * 60 * 1000; // 30 minutes for up to 1 GB files
 
 
 

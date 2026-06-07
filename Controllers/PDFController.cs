@@ -1,4 +1,5 @@
-﻿using iText.Kernel.Pdf;
+﻿using DnsClient.Internal;
+using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Data;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
@@ -16,13 +17,15 @@ namespace ratpdf.Controllers
         private readonly LayoutEngineProcessor _processor;
         private readonly HtmlReconstructionService _reconstructionEngine;
         private readonly PdfCompressionService _compressionService;
-        private const long MaxFileSizeBytes = 50 * 1024 * 1024;
-        public PDFController(PdfConversionService pdfService, PdfCompressionService compressionService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
+        private readonly IConfiguration _config;
+        private const long MaxFileSizeBytes = 1024L * 1024 * 1024; // 1 GB
+        public PDFController(IConfiguration config,PdfConversionService pdfService, PdfCompressionService compressionService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
         {
             _pdfService = pdfService;
             _processor = processor;
             _reconstructionEngine = reconstructionEngine;
             _compressionService = compressionService;
+            _config = config;
         }
         #region --GET METHODS--
         public IActionResult ConvertImages()
@@ -127,8 +130,8 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        [RequestSizeLimit(MaxFileSizeBytes)]
-        [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSizeBytes)]
+        [RequestSizeLimit(1_073_741_824)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 1_073_741_824)]
         public async Task<IActionResult> Compress(
         IFormFile? file,
         [FromForm] string? compressionLevel,
@@ -174,7 +177,100 @@ namespace ratpdf.Controllers
             Response.Headers.Append("Access-Control-Expose-Headers",
                 "X-Original-Size, X-Compressed-Size, X-Reduction-Pct, X-Compression-Method");
 
-            return File(result.Data, "application/pdf", $"{baseName}_compressed.pdf");
+            var inPath = result.TempInputPath;
+            var outPath = result.ResultFilePath;
+
+            Response.OnCompleted(() =>
+            {
+                try { if (System.IO.File.Exists(inPath)) System.IO.File.Delete(inPath); } catch { }
+                try { if (System.IO.File.Exists(outPath)) System.IO.File.Delete(outPath); } catch { }
+                return Task.CompletedTask;
+            });
+            return PhysicalFile(outPath, "application/pdf", $"{baseName}_compressed.pdf");
+        }
+
+        [HttpGet("cleanup-temp")]
+        public IActionResult CleanupTemp([FromQuery] string key)
+        {
+            var expectedKey = _config["AdminCleanupSecretKey"];
+            if (string.IsNullOrEmpty(key) || key != expectedKey)
+                return NotFound();
+
+            var tmpDir = Path.GetTempPath();
+            var maxAge = TimeSpan.FromMinutes(30);
+            var now = DateTime.UtcNow;
+            int deleted = 0;
+            int failed = 0;
+            int skipped = 0;
+            long bytesFreed = 0;
+            var details = new List<string>();
+
+            try
+            {
+                var files = Directory.GetFiles(tmpDir, "ratpdf_*.pdf");
+
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        var info = new FileInfo(file);
+                        var age = now - info.LastWriteTimeUtc;
+
+                        if (age > maxAge)
+                        {
+                            var sizeMb = info.Length / 1024.0 / 1024.0;
+                            bytesFreed += info.Length;
+                            info.Delete();
+                            deleted++;
+                            details.Add($"✅ Deleted: {info.Name} " +
+                                        $"({sizeMb:F2} MB, {age.TotalMinutes:F0} mins old)");
+                        }
+                        else
+                        {
+                            skipped++;
+                            details.Add($"⏭ Skipped: {Path.GetFileName(file)} " +
+                                        $"({age.TotalMinutes:F1} mins old — still fresh)");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        failed++;
+                        details.Add($"❌ Failed:  {Path.GetFileName(file)} — {ex.Message}");
+                    }
+                }
+
+                var html = $"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>RatPDF Temp Cleanup</title>
+            </head>
+            <body>
+                <h2>🧹 RatPDF Temp Cleanup Report</h2>
+                <div class="box">
+                    <p class="stat">✅ Deleted : {deleted} files</p>
+                    <p class="stat">⏭ Skipped : {skipped} files (under 30 mins old)</p>
+                    <p class="stat">❌ Failed  : {failed} files</p>
+                    <p class="stat">💾 Freed   : {bytesFreed / 1024.0 / 1024.0:F2} MB</p>
+                    <p class="stat">🕐 Run at  : {now:yyyy-MM-dd HH:mm:ss} UTC</p>
+                </div>
+                <hr class="sep" />
+                <div class="box">
+                    <strong>File Details:</strong><br/><br/>
+                    {(details.Count == 0
+                                ? "<span style='color:#8b949e'>No ratpdf_*.pdf files found in temp folder.</span>"
+                        : string.Join("<br/>", details.Select(d => $"<p class='line'>{d}</p>")))}
+                </div>
+            </body>
+            </html>
+            """;
+
+                return Content(html, "text/html");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Cleanup failed: {ex.Message}");
+            }
         }
         [HttpPost]
         public IActionResult TextToPdf(IFormFile file, string typedText)

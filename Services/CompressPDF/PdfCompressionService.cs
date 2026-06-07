@@ -12,23 +12,24 @@ namespace ratpdf.Services.CompressPDF
 
     public class CompressionResult
     {
-        public byte[] Data { get; init; } = [];
+        public string ResultFilePath { get; init; } = ""; 
+        public string TempInputPath { get; init; } = "";   
         public long OriginalSize { get; init; }
         public long CompressedSize { get; init; }
         public double ReductionPct { get; init; }
         public string Method { get; init; } = "";
     }
+
     public class PdfCompressionService
     {
         private readonly ILogger<PdfCompressionService> _logger;
         private readonly IWebHostEnvironment _env;
 
-        // Ghostscript PDF settings strings per level
         private static readonly Dictionary<CompressionLevel, string> GsSettings = new()
         {
-            [CompressionLevel.Extreme] = "/screen",     // 72 dpi — maximum compression
-            [CompressionLevel.Recommended] = "/ebook",      // 150 dpi — good balance
-            [CompressionLevel.Less] = "/printer",    // 300 dpi — near-print quality
+            [CompressionLevel.Extreme] = "/screen",
+            [CompressionLevel.Recommended] = "/ebook",
+            [CompressionLevel.Less] = "/printer",
         };
 
         public PdfCompressionService(ILogger<PdfCompressionService> logger, IWebHostEnvironment env)
@@ -37,47 +38,74 @@ namespace ratpdf.Services.CompressPDF
             _env = env;
         }
 
-        /// <summary>
-        /// Compresses a PDF. Tries Ghostscript first (best results), falls back to iText7.
-        /// </summary>
         public async Task<CompressionResult> CompressAsync(
             Stream inputStream,
             CompressionLevel level,
             CancellationToken ct = default)
         {
-            // Read input into memory once
-            using var ms = new MemoryStream();
-            await inputStream.CopyToAsync(ms, ct);
-            var inputBytes = ms.ToArray();
-            long originalSize = inputBytes.Length;
+            var inFile = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{Guid.NewGuid():N}.pdf");
+            var outFile = Path.Combine(Path.GetTempPath(), $"ratpdf_out_{Guid.NewGuid():N}.pdf");
 
-            // --- Attempt Ghostscript ---
-            if (IsGhostscriptAvailable())
+            try
             {
-                try
+                long originalSize;
+                await using (var fs = new FileStream(
+                    inFile, FileMode.Create, FileAccess.Write,
+                    FileShare.None, bufferSize: 81920, useAsync: true))
                 {
-                    var gsResult = await CompressWithGhostscriptAsync(inputBytes, level, ct);
-                    if (gsResult is not null && gsResult.Length < originalSize)
+                    await inputStream.CopyToAsync(fs, bufferSize: 81920, ct);
+                    originalSize = fs.Length;
+                }
+
+                _logger.LogInformation("PDF received: {Size} bytes, level: {Level}",
+                    originalSize, level);
+
+                if (IsGhostscriptAvailable())
+                {
+                    try
                     {
-                        return BuildResult(inputBytes, gsResult, "Ghostscript");
+                        bool gsSuccess = await CompressWithGhostscriptFileAsync(
+                            inFile, outFile, level, ct);
+
+                        if (gsSuccess && File.Exists(outFile))
+                        {
+                            var outInfo = new FileInfo(outFile);
+                            if (outInfo.Length < originalSize)
+                            {
+                                return BuildResult(inFile, outFile, originalSize,
+                                    outInfo.Length, "Ghostscript");
+                            }
+                            TryDelete(outFile);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
                     }
                 }
-                catch (Exception ex)
+                else
                 {
+
                 }
+
+                await CompressWithIText7FileAsync(inFile, outFile, level, ct);
+
+                var fallbackInfo = new FileInfo(outFile);
+                return BuildResult(inFile, outFile, originalSize,
+                    fallbackInfo.Length, "iText7");
             }
-            else
+            catch
             {
+                TryDelete(inFile);
+                TryDelete(outFile);
+                throw;
             }
-
-            var iTextResult = CompressWithIText7(inputBytes, level);
-            return BuildResult(inputBytes, iTextResult, "iText7");
         }
-
 
         private static bool IsGhostscriptAvailable()
         {
-            foreach (var bin in new[] { "gs", "gswin64c", "gswin32c" })
+            foreach (var bin in new[] { "gs", "gswin64c", "gswin32c" }) // Uncomment For Production
+            //foreach (var bin in new[] { "gswin64c", "gswin32c", "gs" }) // Uncomment For Development
             {
                 try
                 {
@@ -93,7 +121,7 @@ namespace ratpdf.Services.CompressPDF
                     p?.WaitForExit(2000);
                     if (p?.ExitCode == 0) return true;
                 }
-                catch {  }
+                catch { }
             }
             return false;
         }
@@ -103,7 +131,8 @@ namespace ratpdf.Services.CompressPDF
             var bundled = Path.Combine(AppContext.BaseDirectory, "gs");
             if (File.Exists(bundled)) return bundled;
 
-            foreach (var bin in new[] { "gs", "gswin64c" })
+            foreach (var bin in new[] { "gs", "gswin64c" }) // Uncomment For Production
+            //foreach (var bin in new[] { "gswin64c", "gswin32c", "gs" }) // Uncomment For Development
             {
                 try
                 {
@@ -124,78 +153,57 @@ namespace ratpdf.Services.CompressPDF
             throw new InvalidOperationException("Ghostscript not found.");
         }
 
-        private async Task<byte[]?> CompressWithGhostscriptAsync(
-            byte[] inputBytes,
+
+        private async Task<bool> CompressWithGhostscriptFileAsync(
+            string inFile,
+            string outFile,
             CompressionLevel level,
             CancellationToken ct)
         {
-            var tmpDir = Path.GetTempPath();
-            var inFile = Path.Combine(tmpDir, $"ratpdf_in_{Guid.NewGuid():N}.pdf");
-            var outFile = Path.Combine(tmpDir, $"ratpdf_out_{Guid.NewGuid():N}.pdf");
+            var settings = GsSettings[level];
 
-            try
+            var gsArgs =
+                $"-sDEVICE=pdfwrite " +
+                $"-dCompatibilityLevel=1.5 " +
+                $"-dPDFSETTINGS={settings} " +
+                $"-dNOPAUSE -dQUIET -dBATCH " +
+                $"-dCompressPages=true " +
+                $"-dOptimize=true " +
+                $"-dEmbedAllFonts=true " +
+                $"-dSubsetFonts=true " +
+                $"-dColorImageDownsampleType=/Bicubic " +
+                $"-dGrayImageDownsampleType=/Bicubic " +
+                $"-dMonoImageDownsampleType=/Bicubic " +
+                $"-sOutputFile=\"{outFile}\" " +
+                $"\"{inFile}\"";              
+
+            using var process = new Process
             {
-                await File.WriteAllBytesAsync(inFile, inputBytes, ct);
-
-                var settings = GsSettings[level];
-                var gsArgs =
-                    $"-sDEVICE=pdfwrite " +
-                    $"-dCompatibilityLevel=1.5 " +
-                    $"-dPDFSETTINGS={settings} " +
-                    $"-dNOPAUSE -dQUIET -dBATCH " +
-                    $"-dCompressPages=true " +
-                    $"-dOptimize=true " +
-                    $"-dEmbedAllFonts=true " +
-                    $"-dSubsetFonts=true " +
-                    $"-dColorImageDownsampleType=/Bicubic " +
-                    $"-dGrayImageDownsampleType=/Bicubic " +
-                    $"-dMonoImageDownsampleType=/Bicubic " +
-                    $"-sOutputFile=\"{outFile}\" " +
-                    $"\"{inFile}\"";
-
-                using var process = new Process
+                StartInfo = new ProcessStartInfo
                 {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = GhostscriptBinary(),
-                        Arguments = gsArgs,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                    }
-                };
-
-                process.Start();
-
-                // Read stderr for diagnostics
-                var stderr = await process.StandardError.ReadToEndAsync(ct);
-
-                await process.WaitForExitAsync(ct);
-
-                if (process.ExitCode != 0)
-                {
-                    return null;
+                    FileName = GhostscriptBinary(),
+                    Arguments = gsArgs,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = false, 
+                    RedirectStandardInput = false, 
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
                 }
+            };
 
-                if (!File.Exists(outFile))
-                {
-                    return null;
-                }
+            process.Start();
 
-                return await File.ReadAllBytesAsync(outFile, ct);
-            }
-            finally
+            var stderr = await process.StandardError.ReadToEndAsync(ct);
+            await process.WaitForExitAsync(ct);
+
+            if (process.ExitCode != 0)
             {
-                try { if (File.Exists(inFile)) File.Delete(inFile); } catch { }
-                try { if (File.Exists(outFile)) File.Delete(outFile); } catch { }
+                return false;
             }
+
+            return true;
         }
 
-        // ────────────────────────────────────────────────────────────────────────
-        // iText7 fallback
-        // Recompresses image XObjects, enables object streams, removes metadata bloat
-        // ────────────────────────────────────────────────────────────────────────
 
         private static readonly Dictionary<CompressionLevel, (int DpiTarget, long JpegQuality)> ITextParams = new()
         {
@@ -204,41 +212,50 @@ namespace ratpdf.Services.CompressPDF
             [CompressionLevel.Less] = (300, 88),
         };
 
-        private byte[] CompressWithIText7(byte[] inputBytes, CompressionLevel level)
+        private async Task CompressWithIText7FileAsync(
+            string inFile,
+            string outFile,
+            CompressionLevel level,
+            CancellationToken ct)
         {
-            var (dpiTarget, jpegQuality) = ITextParams[level];
-
-            using var input = new MemoryStream(inputBytes);
-            using var output = new MemoryStream();
-
-            var readerProps = new ReaderProperties();
-            var writerProps = new WriterProperties()
-                .SetFullCompressionMode(true)          
-                .SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
-
-            using var reader = new PdfReader(input, readerProps);
-            using var writer = new PdfWriter(output, writerProps);
-            using var pdfDoc = new PdfDocument(reader, writer);
-
-            pdfDoc.GetDocumentInfo().SetMoreInfo("Producer", "RatPdf");
-            pdfDoc.GetDocumentInfo().SetMoreInfo("Creator", "");
-
-            var catalog = pdfDoc.GetCatalog();
-
-            catalog.Remove(PdfName.Metadata);
-
-            int numPages = pdfDoc.GetNumberOfPages();
-            for (int i = 1; i <= numPages; i++)
+            await Task.Run(() =>
             {
-                var page = pdfDoc.GetPage(i);
+                var fileSize = new FileInfo(inFile).Length;
 
-                page.GetPdfObject().Remove(PdfName.Thumb);
+                bool recompressImages = fileSize < 100 * 1024 * 1024;
 
-                RecompressPageImages(page, jpegQuality);
-            }
+                if (!recompressImages)
+                    _logger.LogInformation(
+                        "File > 100 MB — skipping GDI+ image recompression, using object optimisation only");
 
-            pdfDoc.Close();
-            return output.ToArray();
+                var (_, jpegQuality) = ITextParams[level];
+
+                var writerProps = new WriterProperties()
+                    .SetFullCompressionMode(true)
+                    .SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+
+                using var reader = new PdfReader(inFile);
+                using var writer = new PdfWriter(outFile, writerProps);
+                using var pdfDoc = new PdfDocument(reader, writer);
+
+                pdfDoc.GetDocumentInfo().SetMoreInfo("Producer", "RatPdf");
+                pdfDoc.GetDocumentInfo().SetMoreInfo("Creator", "");
+                pdfDoc.GetCatalog().Remove(PdfName.Metadata);
+
+                for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
+                {
+                    ct.ThrowIfCancellationRequested();
+
+                    var page = pdfDoc.GetPage(i);
+                    page.GetPdfObject().Remove(PdfName.Thumb);
+
+                    if (recompressImages)
+                        RecompressPageImages(page, jpegQuality);
+                }
+
+                pdfDoc.Close();
+
+            }, ct);
         }
 
         private void RecompressPageImages(PdfPage page, long jpegQuality)
@@ -262,34 +279,29 @@ namespace ratpdf.Services.CompressPDF
 
                 var colorSpace = stream.Get(PdfName.ColorSpace);
                 var bitsPerComp = stream.GetAsNumber(PdfName.BitsPerComponent);
-
-                // Skip masks, CMYK, 1-bit images — recompressing these causes artifacts
                 var isMask = stream.GetAsBoolean(PdfName.ImageMask);
+
                 if (isMask != null && isMask.GetValue()) continue;
                 if (PdfName.DeviceCMYK.Equals(colorSpace)) continue;
                 if (bitsPerComp != null && bitsPerComp.IntValue() == 1) continue;
 
                 try
                 {
-                    // Decode the image bytes using iText7's built-in decoder
-                    var rawBytes = stream.GetBytes(true); // true = decode filters
+                    var rawBytes = stream.GetBytes(true);
                     if (rawBytes == null || rawBytes.Length == 0) continue;
 
                     int width = stream.GetAsNumber(PdfName.Width)?.IntValue() ?? 0;
                     int height = stream.GetAsNumber(PdfName.Height)?.IntValue() ?? 0;
                     if (width == 0 || height == 0) continue;
 
-                    // Re-encode as JPEG using System.Drawing
                     var reencoded = ReencodeAsJpeg(rawBytes, width, height, jpegQuality);
                     if (reencoded == null || reencoded.Length >= rawBytes.Length) continue;
 
-                    // Replace the stream with the re-encoded JPEG bytes
                     stream.SetData(reencoded, false);
                     stream.Put(PdfName.Filter, PdfName.DCTDecode);
                     stream.Remove(PdfName.DecodeParms);
 
-                    _logger.LogDebug(
-                        "Image recompressed: {Before} → {After} bytes",
+                    _logger.LogDebug("Image recompressed: {Before} → {After} bytes",
                         rawBytes.Length, reencoded.Length);
                 }
                 catch (Exception ex)
@@ -299,10 +311,6 @@ namespace ratpdf.Services.CompressPDF
             }
         }
 
-        /// <summary>
-        /// Re-encodes raw RGB/RGBA pixel bytes as JPEG.
-        /// Returns null if re-encoding is not possible or wouldn't help.
-        /// </summary>
         private static byte[]? ReencodeAsJpeg(byte[] rawBytes, int width, int height, long quality)
         {
             try
@@ -321,10 +329,7 @@ namespace ratpdf.Services.CompressPDF
                 bmp.Save(outMs, encoder, encoderParams);
                 return outMs.ToArray();
             }
-            catch
-            {
-                return null;
-            }
+            catch { return null; }
         }
 
         private static System.Drawing.Bitmap? RawBytesToBitmap(byte[] raw, int width, int height)
@@ -340,8 +345,7 @@ namespace ratpdf.Services.CompressPDF
             var bmp = new System.Drawing.Bitmap(width, height, fmt);
             var data = bmp.LockBits(
                 new System.Drawing.Rectangle(0, 0, width, height),
-                System.Drawing.Imaging.ImageLockMode.WriteOnly,
-                fmt);
+                System.Drawing.Imaging.ImageLockMode.WriteOnly, fmt);
             System.Runtime.InteropServices.Marshal.Copy(raw, 0, data.Scan0, raw.Length);
             bmp.UnlockBits(data);
             return bmp;
@@ -352,20 +356,29 @@ namespace ratpdf.Services.CompressPDF
                 .GetImageEncoders()
                 .FirstOrDefault(e => e.FormatID == System.Drawing.Imaging.ImageFormat.Jpeg.Guid);
 
-
-        private static CompressionResult BuildResult(byte[] input, byte[] output, string method)
+        private static CompressionResult BuildResult(
+            string inFile, string outFile,
+            long originalSize, long compressedSize,
+            string method)
         {
-            long orig = input.Length;
-            long compressed = output.Length;
-            double pct = orig > 0 ? (orig - compressed) / (double)orig * 100.0 : 0;
+            double pct = originalSize > 0
+                ? (originalSize - compressedSize) / (double)originalSize * 100.0
+                : 0;
+
             return new CompressionResult
             {
-                Data = output,
-                OriginalSize = orig,
-                CompressedSize = compressed,
+                ResultFilePath = outFile,
+                TempInputPath = inFile,
+                OriginalSize = originalSize,
+                CompressedSize = compressedSize,
                 ReductionPct = Math.Round(pct, 1),
                 Method = method,
             };
+        }
+
+        private static void TryDelete(string path)
+        {
+            try { if (File.Exists(path)) File.Delete(path); } catch { }
         }
     }
 }

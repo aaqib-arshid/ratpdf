@@ -64,9 +64,20 @@ public partial class Program
         builder.Services.AddScoped<IJsonContentGenerator, JsonContentGenerator>();
         builder.Services.AddScoped<IPayslipAllowedSlugsService, PayslipAllowedSlugsService>();
         builder.Services.AddScoped<IPayslipContentGenerator, PayslipContentGenerator>();
-        builder.Services.Configure<FormOptions>(options =>
+        //builder.Services.Configure<FormOptions>(options =>
+        //{
+        //    options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB
+        //});
+        builder.Services.Configure<FormOptions>(o =>
         {
-            options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB
+            o.MultipartBodyLengthLimit = 1_073_741_824; 
+        });
+
+        builder.WebHost.ConfigureKestrel(k =>
+        {
+            k.Limits.MaxRequestBodySize = 1_073_741_824; 
+            k.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(30);
+            k.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(30);
         });
         builder.Services.AddSession();
         builder.Services.AddMemoryCache();
@@ -104,7 +115,7 @@ public partial class Program
         builder.Services.AddScoped<PdfCompressionService>();
         builder.WebHost.ConfigureKestrel(options =>
         {
-            options.Limits.MaxRequestBodySize = 50 * 1024 * 1024; // 50 MB
+            options.Limits.MaxRequestBodySize = 1024L * 1024 * 1024; // 1 GB
         });
         builder.Services.AddAuthentication(options =>
         {
@@ -142,7 +153,7 @@ public partial class Program
         {
             if (context.Request.ContentLength.HasValue)
             {
-                const long maxBytes = 50L * 1024 * 1024; // 50 MB
+                const long maxBytes = 1024L * 1024 * 1024; // 50 MB
 
                 if (context.Request.ContentLength.Value > maxBytes)
                 {
