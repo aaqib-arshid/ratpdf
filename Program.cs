@@ -64,6 +64,9 @@ public partial class Program
         builder.Services.AddScoped<IJsonContentGenerator, JsonContentGenerator>();
         builder.Services.AddScoped<IPayslipAllowedSlugsService, PayslipAllowedSlugsService>();
         builder.Services.AddScoped<IPayslipContentGenerator, PayslipContentGenerator>();
+        builder.Services.AddSingleton<IJobQueue, JobQueue>();
+        builder.Services.AddSingleton<IJobResultStore, JobResultStore>();
+        builder.Services.AddHostedService<BackgroundJobProcessor>();
         //builder.Services.Configure<FormOptions>(options =>
         //{
         //    options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB
@@ -139,9 +142,14 @@ public partial class Program
         builder.Logging.AddConsole();
         builder.Logging.AddDebug();
         var app = builder.Build();
+        // In Program.cs, after app.Build()
+        var cleanupTimer = new Timer(_ =>
+        {
+            using var scope = app.Services.CreateScope();
+            var store = scope.ServiceProvider.GetRequiredService<IJobResultStore>();
+            store.CleanupOldJobs(TimeSpan.FromHours(1));
+        }, null, TimeSpan.FromMinutes(30), TimeSpan.FromMinutes(30));
         app.UseRateLimiter();
-        //var browserService = app.Services.GetRequiredService<PuppeteerBrowserService>();
-        //await browserService.InitializeAsync();
         //if (!app.Environment.IsDevelopment())
         //{
         app.UseExceptionHandler("/Home/Error");

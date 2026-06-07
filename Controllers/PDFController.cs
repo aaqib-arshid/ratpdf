@@ -18,14 +18,20 @@ namespace ratpdf.Controllers
         private readonly HtmlReconstructionService _reconstructionEngine;
         private readonly PdfCompressionService _compressionService;
         private readonly IConfiguration _config;
+        private readonly IJobQueue _jobQueue;
+        private readonly IJobResultStore _jobResultStore;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         private const long MaxFileSizeBytes = 1024L * 1024 * 1024; // 1 GB
-        public PDFController(IConfiguration config,PdfConversionService pdfService, PdfCompressionService compressionService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
+        public PDFController(IConfiguration config, IJobQueue jobQueue,IJobResultStore jobResultStore,IServiceScopeFactory serviceScopeFactory,PdfConversionService pdfService, PdfCompressionService compressionService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
         {
             _pdfService = pdfService;
             _processor = processor;
             _reconstructionEngine = reconstructionEngine;
             _compressionService = compressionService;
             _config = config;
+            _jobQueue = jobQueue;
+            _jobResultStore = jobResultStore;
+            _serviceScopeFactory = serviceScopeFactory;
         }
         #region --GET METHODS--
         public IActionResult ConvertImages()
@@ -132,10 +138,9 @@ namespace ratpdf.Controllers
         [HttpPost]
         [RequestSizeLimit(1_073_741_824)]
         [RequestFormLimits(MultipartBodyLengthLimit = 1_073_741_824)]
-        public async Task<IActionResult> Compress(
+        public IActionResult Compress(
         IFormFile? file,
-        [FromForm] string? compressionLevel,
-        CancellationToken ct)
+        [FromForm] string? compressionLevel)
         {
             if (file is null || file.Length == 0)
                 return BadRequest(new { error = "No file uploaded." });
@@ -144,8 +149,16 @@ namespace ratpdf.Controllers
                 && !file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
                 return BadRequest(new { error = "Only PDF files are accepted." });
 
-            if (file.Length > MaxFileSizeBytes)
-                return BadRequest(new { error = $"File exceeds the {MaxFileSizeBytes / 1024 / 1024} MB limit." });
+            if (file.Length > 1_073_741_824)
+                return BadRequest(new { error = "File exceeds the 1 GB limit." });
+
+            var jobId = Guid.NewGuid().ToString();
+            var tempInputPath = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{jobId}.pdf");
+
+            using (var stream = new FileStream(tempInputPath, FileMode.Create, FileAccess.Write))
+            {
+                file.CopyTo(stream);
+            }
 
             var level = compressionLevel?.ToLowerInvariant() switch
             {
@@ -153,42 +166,67 @@ namespace ratpdf.Controllers
                 "less" => CompressionLevel.Less,
                 _ => CompressionLevel.Recommended,
             };
+            _jobResultStore.CreateJob(jobId);
 
-            CompressionResult result;
-            try
+            _jobQueue.Queue(async ct =>
             {
-                await using var stream = file.OpenReadStream();
-                result = await _compressionService.CompressAsync(stream, level, ct);
-            }
-            catch (OperationCanceledException)
-            {
-                return StatusCode(499, new { error = "Request cancelled." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = "Compression failed. Please try again." });
-            }
+                using var scope = _serviceScopeFactory.CreateScope();
+                var compressionService = scope.ServiceProvider.GetRequiredService<PdfCompressionService>();
+                var resultStore = scope.ServiceProvider.GetRequiredService<IJobResultStore>();
 
-            var baseName = Path.GetFileNameWithoutExtension(file.FileName);
-            Response.Headers.Append("X-Original-Size", result.OriginalSize.ToString());
-            Response.Headers.Append("X-Compressed-Size", result.CompressedSize.ToString());
-            Response.Headers.Append("X-Reduction-Pct", result.ReductionPct.ToString("F1"));
-            Response.Headers.Append("X-Compression-Method", result.Method);
-            Response.Headers.Append("Access-Control-Expose-Headers",
-                "X-Original-Size, X-Compressed-Size, X-Reduction-Pct, X-Compression-Method");
+                try
+                {
+                    await using var inputStream = new FileStream(tempInputPath, FileMode.Open, FileAccess.Read);
+                    var result = await compressionService.CompressAsync(inputStream, level, ct);
 
-            var inPath = result.TempInputPath;
-            var outPath = result.ResultFilePath;
-
-            Response.OnCompleted(() =>
-            {
-                try { if (System.IO.File.Exists(inPath)) System.IO.File.Delete(inPath); } catch { }
-                try { if (System.IO.File.Exists(outPath)) System.IO.File.Delete(outPath); } catch { }
-                return Task.CompletedTask;
+                    resultStore.SetCompleted(jobId, result.ResultFilePath, result.OriginalSize, result.CompressedSize, result.ReductionPct);
+                }
+                catch (Exception ex)
+                {
+                    resultStore.SetFailed(jobId, ex.Message);
+                }
+                finally
+                {
+                    try { if (System.IO.File.Exists(tempInputPath)) System.IO.File.Delete(tempInputPath); } catch { }
+                }
             });
-            return PhysicalFile(outPath, "application/pdf", $"{baseName}_compressed.pdf");
+
+            return Accepted(new
+            {
+                jobId,
+                statusUrl = Url.Action(nameof(GetJobStatus), new { jobId }),
+                downloadUrl = Url.Action(nameof(DownloadResult), new { jobId })
+            });
+        }
+        [HttpGet("status/{jobId}")]
+        public IActionResult GetJobStatus(string jobId)
+        {
+            var job = _jobResultStore.GetJob(jobId);
+            if (job == null) return NotFound(new { error = "Job not found" });
+
+            return Ok(new
+            {
+                jobId,
+                status = job.Status,
+                originalSize = job.OriginalSize,
+                compressedSize = job.CompressedSize,
+                reductionPercent = job.ReductionPercent,
+                error = job.ErrorMessage
+            });
         }
 
+        [HttpGet("download/{jobId}")]
+        public IActionResult DownloadResult(string jobId)
+        {
+            var job = _jobResultStore.GetJob(jobId);
+            if (job == null) return NotFound();
+            if (job.Status != "Completed") return BadRequest(new { error = "Compression not completed yet" });
+            if (string.IsNullOrEmpty(job.FilePath) || !System.IO.File.Exists(job.FilePath))
+                return NotFound(new { error = "Result file not found" });
+
+            var originalName = "compressed.pdf"; 
+            return PhysicalFile(job.FilePath, "application/pdf", originalName);
+        }
         [HttpGet("cleanup-temp")]
         public IActionResult CleanupTemp([FromQuery] string key)
         {
