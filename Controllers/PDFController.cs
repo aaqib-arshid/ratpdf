@@ -151,8 +151,8 @@ namespace ratpdf.Controllers
                 && !file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
                 return BadRequest(new { error = "Only PDF files are accepted." });
 
-            if (file.Length > 200 * 1024 * 1024)
-                return BadRequest(new { error = "File exceeds the 200 MB limit." });
+            if (file.Length > 300 * 1024 * 1024)
+                return BadRequest(new { error = "File exceeds the 300 MB limit." });
 
             var jobId = Guid.NewGuid().ToString();
             var tempInputPath = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{jobId}.pdf");
