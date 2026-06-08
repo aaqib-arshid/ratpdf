@@ -431,9 +431,10 @@
 </html>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const maxSize = 1024 * 1024 * 1024; // 1 GB
-
+        //const maxSize = 1024 * 1024 * 1024; // 1 GB
+         const maxSize = 50 * 1024 * 1024; // 50MB
         document.querySelectorAll('input[type="file"]').forEach(input => {
+            if (input.id === 'compressFileInput') return;
             let errorMsg = document.createElement('div');
             errorMsg.style.color = 'red';
             errorMsg.style.fontSize = '0.9em';

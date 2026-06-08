@@ -5,7 +5,7 @@ namespace ratpdf.Services
     public class JobResult
     {
         public string Status { get; set; } = "Pending"; // Pending, Completed, Failed
-        public string? FilePath { get; set; }
+        public string? BlobName { get; set; }
         public string? OriginalFileName { get; set; }
         public long? OriginalSize { get; set; }
         public long? CompressedSize { get; set; }
@@ -17,7 +17,7 @@ namespace ratpdf.Services
     public interface IJobResultStore
     {
         void CreateJob(string jobId);
-        void SetCompleted(string jobId, string filePath, long originalSize, long compressedSize, double reductionPercent);
+        void SetCompleted(string jobId, string BlobName, long originalSize, long compressedSize, double reductionPercent);
         void SetFailed(string jobId, string error);
         JobResult? GetJob(string jobId);
         void CleanupOldJobs(TimeSpan maxAge);
@@ -38,12 +38,12 @@ namespace ratpdf.Services
             _jobs[jobId] = new JobResult { Status = "Pending" };
         }
 
-        public void SetCompleted(string jobId, string filePath, long originalSize, long compressedSize, double reductionPercent)
+        public void SetCompleted(string jobId, string blobName, long originalSize, long compressedSize, double reductionPercent)
         {
             if (_jobs.TryGetValue(jobId, out var job))
             {
                 job.Status = "Completed";
-                job.FilePath = filePath;
+                job.BlobName = blobName;
                 job.OriginalSize = originalSize;
                 job.CompressedSize = compressedSize;
                 job.ReductionPercent = reductionPercent;
@@ -74,8 +74,6 @@ namespace ratpdf.Services
             {
                 if (kv.Value.LastUpdated < cutoff && kv.Value.Status != "Pending")
                 {
-                    if (!string.IsNullOrEmpty(kv.Value.FilePath) && File.Exists(kv.Value.FilePath))
-                        try { File.Delete(kv.Value.FilePath); } catch { }
                     _jobs.TryRemove(kv.Key, out _);
                 }
             }

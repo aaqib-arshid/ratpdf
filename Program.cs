@@ -64,6 +64,7 @@ public partial class Program
         builder.Services.AddScoped<IJsonContentGenerator, JsonContentGenerator>();
         builder.Services.AddScoped<IPayslipAllowedSlugsService, PayslipAllowedSlugsService>();
         builder.Services.AddScoped<IPayslipContentGenerator, PayslipContentGenerator>();
+        builder.Services.AddSingleton<AzureBlobService>();
         builder.Services.AddSingleton<IJobQueue, JobQueue>();
         builder.Services.AddSingleton<IJobResultStore, JobResultStore>();
         builder.Services.AddHostedService<BackgroundJobProcessor>();
@@ -143,12 +144,12 @@ public partial class Program
         builder.Logging.AddDebug();
         var app = builder.Build();
         // In Program.cs, after app.Build()
-        var cleanupTimer = new Timer(_ =>
-        {
-            using var scope = app.Services.CreateScope();
-            var store = scope.ServiceProvider.GetRequiredService<IJobResultStore>();
-            store.CleanupOldJobs(TimeSpan.FromHours(1));
-        }, null, TimeSpan.FromMinutes(30), TimeSpan.FromMinutes(30));
+        //var cleanupTimer = new Timer(_ =>
+        //{
+        //    using var scope = app.Services.CreateScope();
+        //    var store = scope.ServiceProvider.GetRequiredService<IJobResultStore>();
+        //    store.CleanupOldJobs(TimeSpan.FromHours(1));
+        //}, null, TimeSpan.FromMinutes(30), TimeSpan.FromMinutes(30));
         app.UseRateLimiter();
         //if (!app.Environment.IsDevelopment())
         //{

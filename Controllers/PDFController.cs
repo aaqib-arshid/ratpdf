@@ -21,8 +21,9 @@ namespace ratpdf.Controllers
         private readonly IJobQueue _jobQueue;
         private readonly IJobResultStore _jobResultStore;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly AzureBlobService _blobService;
         private const long MaxFileSizeBytes = 1024L * 1024 * 1024; // 1 GB
-        public PDFController(IConfiguration config, IJobQueue jobQueue,IJobResultStore jobResultStore,IServiceScopeFactory serviceScopeFactory,PdfConversionService pdfService, PdfCompressionService compressionService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
+        public PDFController(IConfiguration config,AzureBlobService azureBlobService, IJobQueue jobQueue,IJobResultStore jobResultStore,IServiceScopeFactory serviceScopeFactory,PdfConversionService pdfService, PdfCompressionService compressionService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
         {
             _pdfService = pdfService;
             _processor = processor;
@@ -32,6 +33,7 @@ namespace ratpdf.Controllers
             _jobQueue = jobQueue;
             _jobResultStore = jobResultStore;
             _serviceScopeFactory = serviceScopeFactory;
+            _blobService = azureBlobService;
         }
         #region --GET METHODS--
         public IActionResult ConvertImages()
@@ -149,8 +151,8 @@ namespace ratpdf.Controllers
                 && !file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
                 return BadRequest(new { error = "Only PDF files are accepted." });
 
-            if (file.Length > 1_073_741_824)
-                return BadRequest(new { error = "File exceeds the 1 GB limit." });
+            if (file.Length > 200 * 1024 * 1024)
+                return BadRequest(new { error = "File exceeds the 200 MB limit." });
 
             var jobId = Guid.NewGuid().ToString();
             var tempInputPath = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{jobId}.pdf");
@@ -171,15 +173,23 @@ namespace ratpdf.Controllers
             _jobQueue.Queue(async ct =>
             {
                 using var scope = _serviceScopeFactory.CreateScope();
-                var compressionService = scope.ServiceProvider.GetRequiredService<PdfCompressionService>();
-                var resultStore = scope.ServiceProvider.GetRequiredService<IJobResultStore>();
+                var compressionService = scope.ServiceProvider
+                    .GetRequiredService<PdfCompressionService>();
+                var resultStore = scope.ServiceProvider
+                    .GetRequiredService<IJobResultStore>();
+                var blobService = scope.ServiceProvider       
+                    .GetRequiredService<AzureBlobService>();
 
                 try
                 {
-                    await using var inputStream = new FileStream(tempInputPath, FileMode.Open, FileAccess.Read);
-                    var result = await compressionService.CompressAsync(inputStream, level, ct);
+                    await using var inputStream = new FileStream(
+                        tempInputPath, FileMode.Open, FileAccess.Read);
 
-                    resultStore.SetCompleted(jobId, result.ResultFilePath, result.OriginalSize, result.CompressedSize, result.ReductionPct);
+                    var result = await compressionService.CompressAsync(
+                        inputStream, level, blobService, jobId, ct);   
+
+                    resultStore.SetCompleted(jobId, result.BlobName,
+                        result.OriginalSize, result.CompressedSize, result.ReductionPct);
                 }
                 catch (Exception ex)
                 {
@@ -216,99 +226,54 @@ namespace ratpdf.Controllers
         }
 
         [HttpGet("download/{jobId}")]
-        public IActionResult DownloadResult(string jobId)
+        public async Task<IActionResult> DownloadResult(string jobId)
         {
             var job = _jobResultStore.GetJob(jobId);
             if (job == null) return NotFound();
-            if (job.Status != "Completed") return BadRequest(new { error = "Compression not completed yet" });
-            if (string.IsNullOrEmpty(job.FilePath) || !System.IO.File.Exists(job.FilePath))
-                return NotFound(new { error = "Result file not found" });
+            if (job.Status != "Completed")
+                return BadRequest(new { error = "Compression not completed yet" });
+            if (string.IsNullOrEmpty(job.BlobName))
+                return NotFound(new { error = "Result blob not found" });
 
-            var originalName = "compressed.pdf"; 
-            return PhysicalFile(job.FilePath, "application/pdf", originalName);
+            try
+            {
+                var stream = await _blobService.DownloadAsync(job.BlobName);
+
+                _ = _blobService.DeleteAsync(job.BlobName);
+
+                return File(stream, "application/pdf", "compressed.pdf");
+            }
+            catch
+            {
+                return NotFound(new { error = "Result file could not be retrieved from storage" });
+            }
         }
         [HttpGet("cleanup-temp")]
-        public IActionResult CleanupTemp([FromQuery] string key)
+        public async Task<IActionResult> CleanupTemp([FromQuery] string key)
         {
             var expectedKey = _config["AdminCleanupSecretKey"];
             if (string.IsNullOrEmpty(key) || key != expectedKey)
                 return NotFound();
 
-            var tmpDir = Path.GetTempPath();
             var maxAge = TimeSpan.FromMinutes(30);
-            var now = DateTime.UtcNow;
-            int deleted = 0;
-            int failed = 0;
-            int skipped = 0;
-            long bytesFreed = 0;
-            var details = new List<string>();
+            var (deleted, failed, bytesFreed) = await _blobService
+                .CleanupOldBlobsAsync(maxAge);
 
-            try
-            {
-                var files = Directory.GetFiles(tmpDir, "ratpdf_*.pdf");
+            var html = $"""
+        <!DOCTYPE html>
+        <html>
+        <head><title>RatPDF Blob Cleanup</title></head>
+        <body>
+            <h2>🧹 RatPDF Blob Storage Cleanup</h2>
+            <p>✅ Deleted : {deleted} blobs</p>
+            <p>❌ Failed  : {failed} blobs</p>
+            <p>💾 Freed   : {bytesFreed / 1024.0 / 1024.0:F2} MB</p>
+            <p>🕐 Run at  : {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC</p>
+        </body>
+        </html>
+        """;
 
-                foreach (var file in files)
-                {
-                    try
-                    {
-                        var info = new FileInfo(file);
-                        var age = now - info.LastWriteTimeUtc;
-
-                        if (age > maxAge)
-                        {
-                            var sizeMb = info.Length / 1024.0 / 1024.0;
-                            bytesFreed += info.Length;
-                            info.Delete();
-                            deleted++;
-                            details.Add($"✅ Deleted: {info.Name} " +
-                                        $"({sizeMb:F2} MB, {age.TotalMinutes:F0} mins old)");
-                        }
-                        else
-                        {
-                            skipped++;
-                            details.Add($"⏭ Skipped: {Path.GetFileName(file)} " +
-                                        $"({age.TotalMinutes:F1} mins old — still fresh)");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        failed++;
-                        details.Add($"❌ Failed:  {Path.GetFileName(file)} — {ex.Message}");
-                    }
-                }
-
-                var html = $"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>RatPDF Temp Cleanup</title>
-            </head>
-            <body>
-                <h2>🧹 RatPDF Temp Cleanup Report</h2>
-                <div class="box">
-                    <p class="stat">✅ Deleted : {deleted} files</p>
-                    <p class="stat">⏭ Skipped : {skipped} files (under 30 mins old)</p>
-                    <p class="stat">❌ Failed  : {failed} files</p>
-                    <p class="stat">💾 Freed   : {bytesFreed / 1024.0 / 1024.0:F2} MB</p>
-                    <p class="stat">🕐 Run at  : {now:yyyy-MM-dd HH:mm:ss} UTC</p>
-                </div>
-                <hr class="sep" />
-                <div class="box">
-                    <strong>File Details:</strong><br/><br/>
-                    {(details.Count == 0
-                                ? "<span style='color:#8b949e'>No ratpdf_*.pdf files found in temp folder.</span>"
-                        : string.Join("<br/>", details.Select(d => $"<p class='line'>{d}</p>")))}
-                </div>
-            </body>
-            </html>
-            """;
-
-                return Content(html, "text/html");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Cleanup failed: {ex.Message}");
-            }
+            return Content(html, "text/html");
         }
         [HttpPost]
         public IActionResult TextToPdf(IFormFile file, string typedText)

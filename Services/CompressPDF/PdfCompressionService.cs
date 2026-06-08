@@ -12,8 +12,7 @@ namespace ratpdf.Services.CompressPDF
 
     public class CompressionResult
     {
-        public string ResultFilePath { get; init; } = ""; 
-        public string TempInputPath { get; init; } = "";   
+        public string BlobName { get; init; } = "";
         public long OriginalSize { get; init; }
         public long CompressedSize { get; init; }
         public double ReductionPct { get; init; }
@@ -39,9 +38,11 @@ namespace ratpdf.Services.CompressPDF
         }
 
         public async Task<CompressionResult> CompressAsync(
-            Stream inputStream,
-            CompressionLevel level,
-            CancellationToken ct = default)
+     Stream inputStream,
+     CompressionLevel level,
+     AzureBlobService blobService,
+     string jobId,
+     CancellationToken ct = default)
         {
             var inFile = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{Guid.NewGuid():N}.pdf");
             var outFile = Path.Combine(Path.GetTempPath(), $"ratpdf_out_{Guid.NewGuid():N}.pdf");
@@ -49,57 +50,72 @@ namespace ratpdf.Services.CompressPDF
             try
             {
                 long originalSize;
-                await using (var fs = new FileStream(
-                    inFile, FileMode.Create, FileAccess.Write,
-                    FileShare.None, bufferSize: 81920, useAsync: true))
+                await using (var fs = new FileStream(inFile, FileMode.Create, FileAccess.Write,
+                                 FileShare.None, 81920, useAsync: true))
                 {
-                    await inputStream.CopyToAsync(fs, bufferSize: 81920, ct);
+                    await inputStream.CopyToAsync(fs, 81920, ct);
                     originalSize = fs.Length;
                 }
 
-                _logger.LogInformation("PDF received: {Size} bytes, level: {Level}",
-                    originalSize, level);
-
+                // --- Ghostscript path ---
                 if (IsGhostscriptAvailable())
                 {
                     try
                     {
-                        bool gsSuccess = await CompressWithGhostscriptFileAsync(
-                            inFile, outFile, level, ct);
-
+                        bool gsSuccess = await CompressWithGhostscriptFileAsync(inFile, outFile, level, ct);
                         if (gsSuccess && File.Exists(outFile))
                         {
                             var outInfo = new FileInfo(outFile);
                             if (outInfo.Length < originalSize)
                             {
-                                return BuildResult(inFile, outFile, originalSize,
-                                    outInfo.Length, "Ghostscript");
+                                var blobName = await UploadAndCleanup(
+                                    blobService, outFile, jobId, ct);
+                                return BuildResult(blobName, originalSize, outInfo.Length, "Ghostscript");
                             }
                             TryDelete(outFile);
                         }
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    catch { }
                 }
-                else
-                {
 
-                }
 
                 await CompressWithIText7FileAsync(inFile, outFile, level, ct);
-
                 var fallbackInfo = new FileInfo(outFile);
-                return BuildResult(inFile, outFile, originalSize,
-                    fallbackInfo.Length, "iText7");
+                var fallbackBlob = await UploadAndCleanup(blobService, outFile, jobId, ct);
+                return BuildResult(fallbackBlob, originalSize, fallbackInfo.Length, "iText7");
             }
-            catch
+            finally
             {
                 TryDelete(inFile);
                 TryDelete(outFile);
-                throw;
             }
+        }
+
+
+        private static async Task<string> UploadAndCleanup(
+            AzureBlobService blobService, string localPath, string jobId, CancellationToken ct)
+        {
+            var blobName = $"ratpdf_out_{jobId}.pdf";
+            await blobService.UploadFromFileAsync(localPath, blobName, ct);
+            TryDelete(localPath);
+            return blobName;
+        }
+
+        private static CompressionResult BuildResult(
+            string blobName, long originalSize, long compressedSize, string method)
+        {
+            double pct = originalSize > 0
+                ? (originalSize - compressedSize) / (double)originalSize * 100.0
+                : 0;
+
+            return new CompressionResult
+            {
+                BlobName = blobName,
+                OriginalSize = originalSize,
+                CompressedSize = compressedSize,
+                ReductionPct = Math.Round(pct, 1),
+                Method = method,
+            };
         }
 
         private static bool IsGhostscriptAvailable()
@@ -175,7 +191,7 @@ namespace ratpdf.Services.CompressPDF
                 $"-dGrayImageDownsampleType=/Bicubic " +
                 $"-dMonoImageDownsampleType=/Bicubic " +
                 $"-sOutputFile=\"{outFile}\" " +
-                $"\"{inFile}\"";              
+                $"\"{inFile}\"";
 
             using var process = new Process
             {
@@ -184,8 +200,8 @@ namespace ratpdf.Services.CompressPDF
                     FileName = GhostscriptBinary(),
                     Arguments = gsArgs,
                     RedirectStandardError = true,
-                    RedirectStandardOutput = false, 
-                    RedirectStandardInput = false, 
+                    RedirectStandardOutput = false,
+                    RedirectStandardInput = false,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 }
@@ -355,26 +371,6 @@ namespace ratpdf.Services.CompressPDF
             System.Drawing.Imaging.ImageCodecInfo
                 .GetImageEncoders()
                 .FirstOrDefault(e => e.FormatID == System.Drawing.Imaging.ImageFormat.Jpeg.Guid);
-
-        private static CompressionResult BuildResult(
-            string inFile, string outFile,
-            long originalSize, long compressedSize,
-            string method)
-        {
-            double pct = originalSize > 0
-                ? (originalSize - compressedSize) / (double)originalSize * 100.0
-                : 0;
-
-            return new CompressionResult
-            {
-                ResultFilePath = outFile,
-                TempInputPath = inFile,
-                OriginalSize = originalSize,
-                CompressedSize = compressedSize,
-                ReductionPct = Math.Round(pct, 1),
-                Method = method,
-            };
-        }
 
         private static void TryDelete(string path)
         {

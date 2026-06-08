@@ -19,7 +19,7 @@
                              style="cursor: pointer; background-color: #f8f9fa; transition: background 0.2s, border-color 0.2s;">
                             <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
                             <p class="mb-0 text-muted">Drag & drop PDF here or click to select</p>
-                            <input type="file" id="fileInput" class="d-none" accept="application/pdf">
+                            <input type="file" id="compressFileInput" class="d-none" accept="application/pdf">
                         </div>
                     </div>
 
@@ -619,7 +619,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
         const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
+        const fileInput = document.getElementById('compressFileInput');
         const filePreviewCard = document.getElementById('filePreviewCard');
         const pdfThumbWrap = document.getElementById('pdfThumbWrap');
         const previewName = document.getElementById('previewName');
@@ -677,9 +677,10 @@
         showError('Please select a valid PDF file.');
         return;
         }
-        const maxBytes = 1024 * 1024 * 1024; // 1 GB
+        //const maxBytes = 1024 * 1024 * 1024; // 1 GB
+        const maxBytes = 200 * 1024 * 1024; // 200 MB
         if (file.size > maxBytes) {
-        showError('File exceeds the 1 GB limit.');
+        showError('File exceeds the 200 MB limit.');
         return;
         }
 
@@ -835,7 +836,7 @@
         }
 
 
-        progressMsg.textContent = `Compression in progress. Will check every ${pollIntervalSec} seconds.`;
+        progressMsg.textContent = `Compression in progress. Please wait...`;
 
 
         pollInterval = setInterval(async () => {
@@ -869,7 +870,7 @@
         compressBtn.disabled = false;
         compressBtn.innerHTML = '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
         } else {
-        progressMsg.textContent = `Compressing… next check in ${pollIntervalSec} seconds`;
+        progressMsg.textContent = `Compressing… large file sizes take time, Please wait`;
         }
         } catch (err) {
         clearInterval(pollInterval);
