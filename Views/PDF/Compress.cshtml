@@ -48,7 +48,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-bold">
+                            PDF Password (Optional)
+                        </label>
 
+                        <input type="password"
+                               id="pdfPassword"
+                               class="form-control"
+                               placeholder="Enter password if PDF is protected">
+                    </div>
                     <div class="text-start mb-4">
                         <label class="form-label fw-bold">Compression Level</label>
                         <div class="d-flex flex-wrap gap-3">
@@ -701,30 +710,71 @@
         compressBtn.disabled = true;
 
         try {
+
         const ab = await file.arrayBuffer();
-        pdfJsDoc = await pdfjsLib.getDocument({ data: ab }).promise;
+
+        pdfJsDoc = await pdfjsLib.getDocument({
+        data: ab
+        }).promise;
+
         const n = pdfJsDoc.numPages;
-        previewMeta.textContent = fmtBytes(file.size) + ' · ' + n + ' page' + (n !== 1 ? 's' : '');
+
+        previewMeta.textContent =
+        fmtBytes(file.size) +
+        ' · ' +
+        n +
+        ' page' +
+        (n !== 1 ? 's' : '');
+
         await generateThumbnail(pdfJsDoc);
+
         compressBtn.disabled = false;
+
         const warningEl = document.getElementById('fileSizeWarning');
+
         if (file.size > 200 * 1024 * 1024) {
-        warningEl.textContent = 'Files above 200 MB may take 5–10 minutes to compress. Please keep this tab open.';
+        warningEl.textContent =
+        'Files above 200 MB may take 5–10 minutes to compress. Please keep this tab open.';
         warningEl.classList.remove('d-none');
-        } else if (file.size > 10 * 1024 * 1024) {
-        warningEl.textContent = '⏳ Large file detected. Compression may take 1–5 minutes.';
+        }
+        else if (file.size > 10 * 1024 * 1024) {
+        warningEl.textContent =
+        '⏳ Large file detected. Compression may take 1–5 minutes.';
         warningEl.classList.remove('d-none');
-        } else {
+        }
+        else {
         warningEl.classList.add('d-none');
         }
-        } catch (e) {
+        }
+        catch (e) {
+
+        if (e?.name === 'PasswordException') {
+
+        previewName.textContent = file.name;
+        previewMeta.textContent =
+        fmtBytes(file.size) + ' · Password Protected PDF';
+
+        pdfThumbWrap.innerHTML =
+        '<i class="bi bi-lock-fill text-warning" style="font-size:1.8rem;"></i>';
+
+        filePreviewCard.classList.remove('d-none');
+
+        compressBtn.disabled = false;
+
+        showError(
+        'This PDF is password protected. Enter the password and try again.'
+        );
+
+        return;
+        }
+
         showError('Could not read PDF: ' + e.message);
+
         filePreviewCard.classList.add('d-none');
         currentFile = null;
         pdfJsDoc = null;
         }
         }
-
         function clearFile() {
         if (activePollInterval) {
         clearInterval(activePollInterval);
@@ -781,9 +831,11 @@
         setProgress(10, 'Uploading PDF to server…');
 
         const level = document.querySelector('input[name="compressionLevel"]:checked').value;
+        const password = document.getElementById('pdfPassword').value;
         const formData = new FormData();
         formData.append('file', currentFile);
         formData.append('compressionLevel', level);
+        formData.append('password', password);
 
         let xhr = new XMLHttpRequest();
         let pollInterval = null;

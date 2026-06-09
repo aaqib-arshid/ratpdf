@@ -142,7 +142,7 @@ namespace ratpdf.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 1_073_741_824)]
         public IActionResult Compress(
         IFormFile? file,
-        [FromForm] string? compressionLevel)
+        [FromForm] string? compressionLevel, [FromForm] string? password)
         {
             if (file is null || file.Length == 0)
                 return BadRequest(new { error = "No file uploaded." });
@@ -186,10 +186,15 @@ namespace ratpdf.Controllers
                         tempInputPath, FileMode.Open, FileAccess.Read);
 
                     var result = await compressionService.CompressAsync(
-                        inputStream, level, blobService, jobId, ct);   
+                        inputStream, level, password, blobService, jobId, ct);   
 
                     resultStore.SetCompleted(jobId, result.BlobName,
                         result.OriginalSize, result.CompressedSize, result.ReductionPct);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    resultStore.SetFailed(jobId,
+                        "Incorrect PDF password.");
                 }
                 catch (Exception ex)
                 {

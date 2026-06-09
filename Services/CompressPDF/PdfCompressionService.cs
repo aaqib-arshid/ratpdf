@@ -38,11 +38,12 @@ namespace ratpdf.Services.CompressPDF
         }
 
         public async Task<CompressionResult> CompressAsync(
-     Stream inputStream,
-     CompressionLevel level,
-     AzureBlobService blobService,
-     string jobId,
-     CancellationToken ct = default)
+         Stream inputStream,
+         CompressionLevel level,
+         string? password,
+         AzureBlobService blobService,
+         string jobId,
+         CancellationToken ct = default)
         {
             var inFile = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{Guid.NewGuid():N}.pdf");
             var outFile = Path.Combine(Path.GetTempPath(), $"ratpdf_out_{Guid.NewGuid():N}.pdf");
@@ -62,7 +63,7 @@ namespace ratpdf.Services.CompressPDF
                 {
                     try
                     {
-                        bool gsSuccess = await CompressWithGhostscriptFileAsync(inFile, outFile, level, ct);
+                        bool gsSuccess = await CompressWithGhostscriptFileAsync(inFile, outFile, level,password, ct);
                         if (gsSuccess && File.Exists(outFile))
                         {
                             var outInfo = new FileInfo(outFile);
@@ -79,7 +80,7 @@ namespace ratpdf.Services.CompressPDF
                 }
 
 
-                await CompressWithIText7FileAsync(inFile, outFile, level, ct);
+                await CompressWithIText7FileAsync(inFile, outFile, level,password, ct);
                 var fallbackInfo = new FileInfo(outFile);
                 var fallbackBlob = await UploadAndCleanup(blobService, outFile, jobId, ct);
                 return BuildResult(fallbackBlob, originalSize, fallbackInfo.Length, "iText7");
@@ -174,10 +175,11 @@ namespace ratpdf.Services.CompressPDF
             string inFile,
             string outFile,
             CompressionLevel level,
+            string? password,
             CancellationToken ct)
         {
             var settings = GsSettings[level];
-
+            var passwordArg = string.IsNullOrWhiteSpace(password)? "": $"-sPDFPassword=\"{password}\" ";
             var gsArgs =
                 $"-sDEVICE=pdfwrite " +
                 $"-dCompatibilityLevel=1.5 " +
@@ -190,6 +192,7 @@ namespace ratpdf.Services.CompressPDF
                 $"-dColorImageDownsampleType=/Bicubic " +
                 $"-dGrayImageDownsampleType=/Bicubic " +
                 $"-dMonoImageDownsampleType=/Bicubic " +
+                 passwordArg +
                 $"-sOutputFile=\"{outFile}\" " +
                 $"\"{inFile}\"";
 
@@ -232,6 +235,7 @@ namespace ratpdf.Services.CompressPDF
             string inFile,
             string outFile,
             CompressionLevel level,
+            string? password,
             CancellationToken ct)
         {
             await Task.Run(() =>
@@ -250,7 +254,11 @@ namespace ratpdf.Services.CompressPDF
                     .SetFullCompressionMode(true)
                     .SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
 
-                using var reader = new PdfReader(inFile);
+                using var reader =!string.IsNullOrWhiteSpace(password) ? new PdfReader(inFile,
+                new ReaderProperties()
+                .SetPassword(System.Text.Encoding.UTF8.GetBytes(password)))
+               : new PdfReader(inFile);
+
                 using var writer = new PdfWriter(outFile, writerProps);
                 using var pdfDoc = new PdfDocument(reader, writer);
 
