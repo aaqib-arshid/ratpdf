@@ -27,26 +27,24 @@ namespace ratpdf.Helpers
 
         public static string BuildRatingLdJson(AggregateRating rating, string productName, string canonicalUrl)
         {
-            var schema = new
+            var schema = new Dictionary<string, object>
             {
-                @context = "https://schema.org",
-                @type = "SoftwareApplication",
-                name = productName,
-                applicationCategory = "UtilityApplication",
-                operatingSystem = "Web",
-                url = canonicalUrl,
-                image = "https://ratpdf.com/images/ratpdf-logo.png",
-
-                aggregateRating = new
+                ["@context"] = "https://schema.org",
+                ["@type"] = "SoftwareApplication",
+                ["name"] = productName,
+                ["applicationCategory"] = "UtilityApplication",
+                ["operatingSystem"] = "Web",
+                ["url"] = canonicalUrl,
+                ["image"] = "https://ratpdf.com/images/ratpdf-logo.png",
+                ["aggregateRating"] = new Dictionary<string, object>
                 {
-                    @type = "AggregateRating",
-                    ratingValue = rating.RatingValue,
-                    reviewCount = rating.ReviewCount,
-                    bestRating = "5",
-                    worstRating = "1"
+                    ["@type"] = "AggregateRating",
+                    ["ratingValue"] = rating.RatingValue,
+                    ["reviewCount"] = rating.ReviewCount,
+                    ["bestRating"] = "5",
+                    ["worstRating"] = "1"
                 }
             };
-
             return JsonSerializer.Serialize(schema);
         }
         public static string BuildBreadcrumbLdJson(List<BreadcrumbItem> breadcrumbs)

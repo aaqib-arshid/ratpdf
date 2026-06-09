@@ -1,6 +1,4 @@
-﻿using Google.Apis.SearchConsole.v1.Data;
-
-namespace ratpdf.Models.CompressPdfSeo
+﻿namespace ratpdf.Models.CompressPdfSeo
 {
     public class SeoPageModel
     {
@@ -27,7 +25,7 @@ namespace ratpdf.Models.CompressPdfSeo
 
     public class AggregateRating
     {
-        public double RatingValue { get; set; }  
+        public double RatingValue { get; set; }
         public int ReviewCount { get; set; }
     }
     public class BreadcrumbItem
