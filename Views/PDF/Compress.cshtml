@@ -19,7 +19,7 @@
                              style="cursor: pointer; background-color: #f8f9fa; transition: background 0.2s, border-color 0.2s;">
                             <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
                             <p class="mb-0 text-muted">Drag & drop PDF here or click to select</p>
-                            <input type="file" id="compressFileInput" class="d-none" accept="application/pdf">
+                            <input type="file" id="compressFileInput" class="d-none" accept="application/pdf" multiple>
                         </div>
                     </div>
 
@@ -48,14 +48,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mb-3 text-start">
-                        <label class="form-label fw-bold">
-                            PDF Password (Optional)
-                        </label>
-
-                        <input type="password"
-                               id="pdfPassword"
-                               class="form-control"
+                    <div id="passwordSection" class="mb-3 text-start d-none">
+                        <label class="form-label fw-bold">PDF Password (Optional)</label>
+                        <input type="password" id="pdfPassword" class="form-control"
                                placeholder="Enter password if PDF is protected">
                     </div>
                     <div class="text-start mb-4">
@@ -106,16 +101,7 @@
                     </div>
 
 
-                    <div id="downloadContainer" class="mt-3" style="display: none;">
-                        <div class="alert alert-success py-2 mb-2 d-flex align-items-center gap-2"
-                             role="alert" style="font-size: 0.875rem;">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span id="sizeReport"></span>
-                        </div>
-                        <a id="downloadLink" class="btn btn-success btn-lg w-100" download>
-                            <i class="bi bi-download me-2"></i>Download Compressed PDF
-                        </a>
-                    </div>
+                    <div id="downloadContainer" class="mt-3" style="display: none;"></div>
 
 
                     <div id="errorArea" class="mt-3 alert alert-danger d-none" role="alert">
@@ -639,14 +625,16 @@
         const progressBar = document.getElementById('progressBar');
         const progressMsg = document.getElementById('progressMsg');
         const downloadContainer = document.getElementById('downloadContainer');
-        const downloadLink = document.getElementById('downloadLink');
-        const sizeReport = document.getElementById('sizeReport');
         const errorArea = document.getElementById('errorArea');
         const errorMsgEl = document.getElementById('errorMsg');
+        const passwordSection = document.getElementById('passwordSection');
+        const pdfPasswordInput = document.getElementById('pdfPassword');
+        const fileSizeWarning = document.getElementById('fileSizeWarning');
 
-        let currentFile = null;
-        let pdfJsDoc = null;
+        let currentFiles = [];             // array of File objects
+        let isSingleProtected = false;    // true when 1 file is selected and it's encrypted
         let activePollInterval = null;
+        let processingIndex = 0;          // used during batch processing
 
         const fmtBytes = b =>
         b < 1024 ? b + ' B'
@@ -658,130 +646,25 @@
         if (msg) progressMsg.textContent = msg;
         progressArea.style.display = 'block';
         }
-
-        function hideProgress() { progressArea.style.display = 'none'; progressBar.style.width = '0%'; }
+        function hideProgress() {
+        progressArea.style.display = 'none';
+        progressBar.style.width = '0%';
+        }
         function clearError() { errorArea.classList.add('d-none'); }
-        function showError(msg) { errorMsgEl.textContent = msg; errorArea.classList.remove('d-none'); }
-
-        async function generateThumbnail(pdfDoc) {
-        try {
-        const page = await pdfDoc.getPage(1);
-        const viewport = page.getViewport({ scale: 0.35 });
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.floor(viewport.width);
-        canvas.height = Math.floor(viewport.height);
-        await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-        const img = document.createElement('img');
-        img.src = canvas.toDataURL('image/jpeg', 0.75);
-        img.alt = 'PDF preview';
-        img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-        pdfThumbWrap.innerHTML = '';
-        pdfThumbWrap.appendChild(img);
-        } catch { }
+        function showError(msg) {
+        errorMsgEl.textContent = msg;
+        errorArea.classList.remove('d-none');
         }
 
-        async function loadFile(file) {
-        if (!file) return;
-        if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-        showError('Please select a valid PDF file.');
-        return;
-        }
-        //const maxBytes = 1024 * 1024 * 1024; // 1 GB
-        const maxBytes = 300 * 1024 * 1024; // 300 MB
-        if (file.size > maxBytes) {
-        showError('File exceeds the 300 MB limit.');
-        return;
-        }
-
-        clearError();
-        hideProgress();
-        downloadContainer.style.display = 'none';
+        // Reset everything
+        function clearAll() {
         if (activePollInterval) {
         clearInterval(activePollInterval);
         activePollInterval = null;
         }
-
-        currentFile = file;
-        previewName.textContent = file.name;
-        previewMeta.textContent = fmtBytes(file.size) + ' · loading…';
-        pdfThumbWrap.innerHTML =
-        '<div class="spinner-border spinner-border-sm text-secondary" role="status" aria-label="Loading"></div>';
-        filePreviewCard.classList.remove('d-none');
-        compressBtn.disabled = true;
-
-        try {
-
-        const ab = await file.arrayBuffer();
-
-        pdfJsDoc = await pdfjsLib.getDocument({
-        data: ab
-        }).promise;
-
-        const n = pdfJsDoc.numPages;
-
-        previewMeta.textContent =
-        fmtBytes(file.size) +
-        ' · ' +
-        n +
-        ' page' +
-        (n !== 1 ? 's' : '');
-
-        await generateThumbnail(pdfJsDoc);
-
-        compressBtn.disabled = false;
-
-        const warningEl = document.getElementById('fileSizeWarning');
-
-        if (file.size > 200 * 1024 * 1024) {
-        warningEl.textContent =
-        'Files above 200 MB may take 5–10 minutes to compress. Please keep this tab open.';
-        warningEl.classList.remove('d-none');
-        }
-        else if (file.size > 10 * 1024 * 1024) {
-        warningEl.textContent =
-        '⏳ Large file detected. Compression may take 1–5 minutes.';
-        warningEl.classList.remove('d-none');
-        }
-        else {
-        warningEl.classList.add('d-none');
-        }
-        }
-        catch (e) {
-
-        if (e?.name === 'PasswordException') {
-
-        previewName.textContent = file.name;
-        previewMeta.textContent =
-        fmtBytes(file.size) + ' · Password Protected PDF';
-
-        pdfThumbWrap.innerHTML =
-        '<i class="bi bi-lock-fill text-warning" style="font-size:1.8rem;"></i>';
-
-        filePreviewCard.classList.remove('d-none');
-
-        compressBtn.disabled = false;
-
-        showError(
-        'This PDF is password protected. Enter the password and try again.'
-        );
-
-        return;
-        }
-
-        showError('Could not read PDF: ' + e.message);
-
-        filePreviewCard.classList.add('d-none');
-        currentFile = null;
-        pdfJsDoc = null;
-        }
-        }
-        function clearFile() {
-        if (activePollInterval) {
-        clearInterval(activePollInterval);
-        activePollInterval = null;
-        }
-        currentFile = null;
-        pdfJsDoc = null;
+        currentFiles = [];
+        isSingleProtected = false;
+        processingIndex = 0;
         fileInput.value = '';
         filePreviewCard.classList.add('d-none');
         pdfThumbWrap.innerHTML =
@@ -789,10 +672,258 @@
         compressBtn.disabled = true;
         hideProgress();
         downloadContainer.style.display = 'none';
+        downloadContainer.innerHTML = '';
         clearError();
-        document.getElementById('fileSizeWarning').classList.add('d-none');
+        fileSizeWarning.classList.add('d-none');
+        passwordSection.classList.add('d-none');
+        pdfPasswordInput.value = '';
         }
 
+        async function handleFiles(fileList) {
+        //clearAll();
+        const files = Array.from(fileList);
+        if (files.length === 0) return;
+        if (files.length > 3) {
+        showError('You can upload a maximum of 3 files at once.');
+        return;
+        }
+
+        // ---- SIZE LIMIT: 300 MB for 1 file, 100 MB each for 2-3 files ----
+        const perFileLimit = files.length === 1
+        ? 300 * 1024 * 1024   // single: 300 MB
+        : 100 * 1024 * 1024;  // multiple: 100 MB each
+
+        for (const f of files) {
+        if (f.type !== 'application/pdf' && !f.name.toLowerCase().endsWith('.pdf')) {
+        showError(`'${f.name}' is not a valid PDF file.`);
+        return;
+        }
+        if (f.size > perFileLimit) {
+        const limitText = files.length === 1 ? '300 MB' : '100 MB per file';
+        showError(`'${f.name}' exceeds the ${limitText} limit.`);
+        return;
+        }
+        }
+
+        currentFiles = files;
+        showFileSummary();
+
+        // If exactly one file, check for password protection
+        if (files.length === 1) {
+        try {
+        const ab = await files[0].arrayBuffer();
+        await pdfjsLib.getDocument({ data: ab }).promise;
+        // No password needed
+        passwordSection.classList.add('d-none');
+        isSingleProtected = false;
+        } catch (e) {
+        if (e?.name === 'PasswordException') {
+        passwordSection.classList.remove('d-none');
+        isSingleProtected = true;
+        previewMeta.textContent =
+        fmtBytes(files[0].size) + ' · Password protected';
+        pdfThumbWrap.innerHTML =
+        '<i class="bi bi-lock-fill text-warning" style="font-size:1.8rem;"></i>';
+        } else {
+        showError('Could not read PDF: ' + e.message);
+        clearAll();
+        return;
+        }
+        }
+        } else {
+        // Multiple files → no password
+        passwordSection.classList.add('d-none');
+        isSingleProtected = false;
+        pdfThumbWrap.innerHTML =
+        '<i class="bi bi-file-earmark-pdf text-danger" style="font-size:1.8rem;"></i>';
+        }
+
+        compressBtn.disabled = false;
+
+        // Warn if total size is large
+        const totalSize = currentFiles.reduce((acc, f) => acc + f.size, 0);
+        if (totalSize > 200 * 1024 * 1024) {
+        fileSizeWarning.textContent =
+        'Large files detected. Compression may take several minutes per file. Keep this tab open.';
+        fileSizeWarning.classList.remove('d-none');
+        } else if (totalSize > 10 * 1024 * 1024) {
+        fileSizeWarning.textContent = '⏳ Total size >10 MB – compression may take a while.';
+        fileSizeWarning.classList.remove('d-none');
+        } else {
+        fileSizeWarning.classList.add('d-none');
+        }
+        }
+
+        function showFileSummary() {
+        filePreviewCard.classList.remove('d-none');
+        if (currentFiles.length === 1) {
+        previewName.textContent = currentFiles[0].name;
+        } else {
+        previewName.textContent = `${currentFiles.length} files selected`;
+        const names = currentFiles.map(f => f.name).join(', ');
+        const totalSize = currentFiles.reduce((acc, f) => acc + f.size, 0);
+        previewMeta.textContent = `Total: ${fmtBytes(totalSize)} · ${names}`;
+        }
+        }
+
+        // Process one file (upload via XHR)
+        function compressOneFile(file, index) {
+        return new Promise((resolve, reject) => {
+        const level = document.querySelector('input[name="compressionLevel"]:checked').value;
+        const password = (isSingleProtected && pdfPasswordInput.value)
+        ? pdfPasswordInput.value
+        : '';
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('compressionLevel', level);
+        if (password) formData.append('password', password);
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.addEventListener('progress', e => {
+        if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 60);
+        setProgress(pct,
+        `Uploading file ${index + 1} of ${currentFiles.length}… ${fmtBytes(e.loaded)} / ${fmtBytes(e.total)}`);
+        }
+        });
+
+        xhr.addEventListener('load', () => {
+        if (xhr.status === 202) {
+        try {
+        const { jobId, statusUrl, downloadUrl } = JSON.parse(xhr.responseText);
+        resolve({ jobId, statusUrl, downloadUrl, fileName: file.name });
+        } catch {
+        reject(new Error('Invalid server response for ' + file.name));
+        }
+        } else {
+        let msg = `Error processing ${file.name} (status ${xhr.status})`;
+        try {
+        const json = JSON.parse(xhr.responseText);
+        if (json.error) msg = json.error;
+        } catch { }
+        reject(new Error(msg));
+        }
+        });
+
+        xhr.addEventListener('error', () => reject(new Error('Network error while uploading ' + file.name)));
+        xhr.addEventListener('abort', () => reject(new Error('Upload cancelled')));
+        xhr.addEventListener('timeout', () => reject(new Error('Upload timed out for ' + file.name)));
+
+        xhr.open('POST', '/PDF/Compress');
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.timeout = 30 * 60 * 1000;
+        xhr.send(formData);
+        });
+        }
+
+        // Poll status for one job (every 10 seconds)
+        function pollUntilComplete(statusUrl, downloadUrl, fileName) {
+        return new Promise((resolve, reject) => {
+        const interval = setInterval(async () => {
+        try {
+        const res = await fetch(statusUrl);
+        if (!res.ok) throw new Error('Status check failed');
+        const data = await res.json();
+
+        if (data.status === 'Completed') {
+        clearInterval(interval);
+        resolve({ downloadUrl, fileName, data });
+        } else if (data.status === 'Failed') {
+        clearInterval(interval);
+        reject(new Error(data.error || 'Compression failed for ' + fileName));
+        }
+        } catch (e) {
+        clearInterval(interval);
+        reject(e);
+        }
+        }, 10000);
+        });
+        }
+
+        // download link for one completed file
+        function addDownloadLink(fileName, downloadUrl, data) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'alert alert-success py-2 mb-2 d-flex align-items-center gap-2';
+        wrapper.style.fontSize = '0.875rem';
+
+        const icon = document.createElement('i');
+        icon.className = 'bi bi-check-circle-fill';
+
+        const info = document.createElement('span');
+        if (data.originalSize && data.compressedSize) {
+        const reduction = data.reductionPercent || 0;
+        info.textContent = `${fileName} — ${fmtBytes(data.originalSize)} → ${fmtBytes(data.compressedSize)} (${reduction.toFixed(1)}% smaller)`;
+        } else {
+        info.textContent = `${fileName} — Compression complete`;
+        }
+
+        wrapper.appendChild(icon);
+        wrapper.appendChild(info);
+
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.className = 'btn btn-success btn-sm ms-auto';
+        link.download = fileName.replace(/\.pdf$/i, '_compressed.pdf');
+        link.innerHTML = '<i class="bi bi-download me-1"></i>Download';
+        wrapper.appendChild(link);
+
+        downloadContainer.appendChild(wrapper);
+        }
+
+        // Main compression flow – sequential
+        async function startCompression() {
+        // If single protected file, check password is entered
+        if (isSingleProtected && !pdfPasswordInput.value) {
+        showError('Please enter the PDF password.');
+        return;
+        }
+
+        compressBtn.disabled = true;
+        compressBtn.innerHTML =
+        '<span class="spinner-border spinner-border-sm me-2"></span>Processing…';
+        downloadContainer.style.display = 'block';
+        downloadContainer.innerHTML = '';
+        clearError();
+        hideProgress();
+
+        processingIndex = 0;
+        let errorOccurred = false;
+
+        for (const file of currentFiles) {
+        if (errorOccurred) break;
+
+        try {
+        const { jobId, statusUrl, downloadUrl, fileName } =
+        await compressOneFile(file, processingIndex);
+
+        setProgress(70,
+        `Compressing ${fileName} (file ${processingIndex + 1} of ${currentFiles.length})…`);
+        progressMsg.textContent = 'Please wait, compression in progress…';
+
+        const result = await pollUntilComplete(statusUrl, downloadUrl, fileName);
+
+        addDownloadLink(result.fileName, result.downloadUrl, result.data);
+
+        processingIndex++;
+        setProgress(0, '');
+        } catch (err) {
+        showError(err.message || 'An error occurred.');
+        errorOccurred = true;
+        }
+        }
+
+        compressBtn.disabled = false;
+        compressBtn.innerHTML =
+        '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
+        hideProgress();
+        if (downloadContainer.children.length > 0) {
+        downloadContainer.style.display = 'block';
+        }
+        }
+
+       
         dropZone.addEventListener('click', () => fileInput.click());
         dropZone.addEventListener('dragover', e => {
         e.preventDefault();
@@ -807,142 +938,13 @@
         e.preventDefault();
         dropZone.style.backgroundColor = '#f8f9fa';
         dropZone.style.borderColor = '';
-        if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+        if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
         });
-        fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); });
-        clearFileBtn.addEventListener('click', clearFile);
-
-        // ---- ASYNC COMPRESSION WITH ADAPTIVE POLLING INTERVAL ----
-        compressBtn.addEventListener('click', async () => {
-        if (!currentFile) {
-        showError('Please select a PDF file first.');
-        return;
-        }
-
-        clearError();
-        downloadContainer.style.display = 'none';
-        if (activePollInterval) {
-        clearInterval(activePollInterval);
-        activePollInterval = null;
-        }
-
-        compressBtn.disabled = true;
-        compressBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Submitting…';
-        setProgress(10, 'Uploading PDF to server…');
-
-        const level = document.querySelector('input[name="compressionLevel"]:checked').value;
-        const password = document.getElementById('pdfPassword').value;
-        const formData = new FormData();
-        formData.append('file', currentFile);
-        formData.append('compressionLevel', level);
-        formData.append('password', password);
-
-        let xhr = new XMLHttpRequest();
-        let pollInterval = null;
-
-        try {
-        const submitPromise = new Promise((resolve, reject) => {
-        xhr.upload.addEventListener('progress', e => {
-        if (e.lengthComputable) {
-        const pct = Math.round((e.loaded / e.total) * 60);
-        setProgress(pct, `Uploading… ${fmtBytes(e.loaded)} / ${fmtBytes(e.total)}`);
-        }
+        fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) handleFiles(fileInput.files);
         });
-
-        xhr.addEventListener('load', () => {
-        if (xhr.status === 202) {
-        try {
-        const response = JSON.parse(xhr.responseText);
-        resolve(response);
-        } catch {
-        reject(new Error('Invalid server response'));
-        }
-        } else {
-        let msg = `Server error (${xhr.status})`;
-        try {
-        const json = JSON.parse(xhr.responseText);
-        if (json.error) msg = json.error;
-        } catch { }
-        reject(new Error(msg));
-        }
-        });
-
-        xhr.addEventListener('error', () => reject(new Error('Network error — please check your connection.')));
-        xhr.addEventListener('abort', () => reject(new Error('Upload cancelled')));
-        xhr.addEventListener('timeout', () => reject(new Error('Upload timed out.')));
-
-        xhr.open('POST', '/PDF/Compress');
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.timeout = 30 * 60 * 1000; // 30 minutes
-        xhr.send(formData);
-        });
-
-        const { jobId, statusUrl, downloadUrl } = await submitPromise;
-        setProgress(70, 'Compression queued, waiting for completion…');
-
-        // Determine polling interval based on file size
-        const fileSizeMB = currentFile.size / (1024 * 1024);
-        let pollIntervalSec = 10; // default for small files (≤5 MB)
-        if (fileSizeMB > 5) {
-        pollIntervalSec = 60; // large files: 1 minute
-        }
-
-
-        progressMsg.textContent = `Compression in progress. Please wait...`;
-
-
-        pollInterval = setInterval(async () => {
-        try {
-        const statusRes = await fetch(statusUrl);
-        if (!statusRes.ok) throw new Error('Status check failed');
-        const statusData = await statusRes.json();
-
-        if (statusData.status === 'Completed') {
-        clearInterval(pollInterval);
-        activePollInterval = null;
-
-        if (statusData.originalSize && statusData.compressedSize) {
-        const reduction = statusData.reductionPercent || 0;
-        sizeReport.textContent = `Reduced from ${fmtBytes(statusData.originalSize)} → ${fmtBytes(statusData.compressedSize)} (${reduction.toFixed(1)}% smaller)`;
-        } else {
-        sizeReport.textContent = 'Compression complete — click below to download.';
-        }
-
-        downloadLink.href = downloadUrl;
-        downloadLink.download = currentFile.name.replace(/\.pdf$/i, '_compressed.pdf');
-        downloadContainer.style.display = 'block';
-        setProgress(100, 'Done!');
-        compressBtn.disabled = false;
-        compressBtn.innerHTML = '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
-        } else if (statusData.status === 'Failed') {
-        clearInterval(pollInterval);
-        activePollInterval = null;
-        showError(statusData.error || 'Compression failed. Please try again.');
-        hideProgress();
-        compressBtn.disabled = false;
-        compressBtn.innerHTML = '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
-        } else {
-        progressMsg.textContent = `Compressing… large file sizes take time, Please wait`;
-        }
-        } catch (err) {
-        clearInterval(pollInterval);
-        activePollInterval = null;
-        showError('Failed to check compression status.');
-        hideProgress();
-        compressBtn.disabled = false;
-        compressBtn.innerHTML = '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
-        }
-        }, pollIntervalSec * 1000);
-
-        activePollInterval = pollInterval;
-
-        } catch (err) {
-        showError(err.message || 'Submission failed. Please try again.');
-        hideProgress();
-        compressBtn.disabled = false;
-        compressBtn.innerHTML = '<i class="bi bi-speedometer2 me-2"></i>Compress PDF';
-        }
-        });
+        clearFileBtn.addEventListener('click', clearAll);
+        compressBtn.addEventListener('click', startCompression);
         })();
     </script>
     }
