@@ -1,0 +1,81 @@
+@model ratpdf.Models.ContentEntry
+@using ratpdf.Content
+@using ratpdf.Constants
+
+<article class="rp-article">
+    <div class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb small mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                @if (Model.Kind == ratpdf.Models.ContentKind.Blog)
+                {
+                    <li class="breadcrumb-item"><a href="/blog">Blog</a></li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item"><a href="/guides">Guides</a></li>
+                }
+                <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+            </ol>
+        </nav>
+
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <header class="mb-4">
+                    <span class="rp-badge">@Model.Category</span>
+                    <h1 class="rp-article-title mt-2">@Model.Title</h1>
+                    <p class="rp-article-lead">@Model.Description</p>
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-calendar3 me-1"></i>@Model.Published.ToString("MMMM d, yyyy")
+                        · @Math.Max(1, Model.BodyHtml.Split(' ').Length / 200) min read
+                    </p>
+                </header>
+
+                @if (!string.IsNullOrEmpty(Model.ToolUrl))
+                {
+                    <div class="rp-cta-inline mb-4">
+                        <div>
+                            <strong>Try it free</strong>
+                            <p class="small text-muted mb-0">3 uses per day · 200 MB · no signup required</p>
+                        </div>
+                        <a href="@Model.ToolUrl" class="btn btn-primary btn-sm rounded-pill px-4">@Model.ToolCtaLabel</a>
+                    </div>
+                }
+
+                <div class="rp-prose">
+                    @Html.Raw(Model.BodyHtml)
+                </div>
+
+                @if (Model.FaqQuestions != null && Model.FaqAnswers != null && Model.FaqQuestions.Length > 0)
+                {
+                    <section class="mt-5">
+                        <h2 class="h4 fw-bold">Frequently asked questions</h2>
+                        @for (var i = 0; i < Model.FaqQuestions.Length; i++)
+                        {
+                            <div class="rp-faq-item">
+                                <h3 class="h6 fw-semibold">@Model.FaqQuestions[i]</h3>
+                                <p class="text-muted small mb-0">@Model.FaqAnswers[i]</p>
+                            </div>
+                        }
+                    </section>
+                }
+            </div>
+
+            <aside class="col-lg-4">
+                <div class="rp-sidebar-card sticky-lg-top" style="top: 1rem;">
+                    <h2 class="h6 fw-bold mb-3">Related guides</h2>
+                    <ul class="list-unstyled small mb-0">
+                        @foreach (var g in ContentLibrary.Guides.Where(x => x.Category == Model.Category && x.Slug != Model.Slug).Take(5))
+                        {
+                            <li class="mb-2"><a href="@g.Path" class="text-decoration-none">@g.Title</a></li>
+                        }
+                    </ul>
+                    <hr />
+                    <p class="small text-muted mb-2">Explore all @ContentLibrary.Guides.Count() tutorials</p>
+                    <a href="/guides" class="btn btn-outline-primary btn-sm w-100">Guides hub</a>
+                    <a href="/blog" class="btn btn-link btn-sm w-100 mt-1">Read the blog</a>
+                </div>
+            </aside>
+        </div>
+    </div>
+</article>

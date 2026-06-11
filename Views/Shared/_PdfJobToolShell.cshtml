@@ -1,0 +1,55 @@
+@* Shared conversion tool shell. Set ViewData: ToolTitle, ToolSubtitle, ToolId, AcceptHint *@
+<div class="rp-content-page">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rp-tool-hero">
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-3 text-center text-md-start">
+                        <div class="mb-2">
+                            <span class="rp-tool-pill"><i class="bi bi-shield-lock"></i> SSL encrypted</span>
+                            <span class="rp-tool-pill"><i class="bi bi-trash"></i> Auto-delete</span>
+                            <span class="rp-tool-pill"><i class="bi bi-stars"></i> Adobe-quality engine</span>
+                        </div>
+                        <h1 class="h2 fw-bold mb-1">@ViewData["ToolTitle"]</h1>
+                        <p class="text-muted mb-2">@ViewData["ToolSubtitle"]</p>
+                        @await Html.PartialAsync("_PdfToolUsageBadge")
+                    </div>
+
+                    <div id="dropZone" class="border border-2 border-dashed rounded-4 p-5 text-center mb-3"
+                         style="cursor:pointer;background:#fff;transition:all .2s;border-color:#cbd5e1;">
+                        <i class="bi bi-cloud-arrow-up display-5 text-primary"></i>
+                        <p class="mb-1 fw-semibold mt-2">Drag &amp; drop here or click to browse</p>
+                        <p id="limitHint" class="text-muted small mb-0">@ViewData["AcceptHint"]</p>
+                        <input type="file" id="fileInput" class="d-none" accept="@ViewData["AcceptAttr"]" @(ViewData["Multiple"] as bool? == true ? "multiple" : "")>
+                    </div>
+
+                    <div id="fileList" class="mb-3"></div>
+                    <div id="errorArea" class="alert alert-danger d-none" role="alert"></div>
+
+                    <div id="progressArea" class="mb-3" style="display:none;">
+                        <div class="d-flex justify-content-between small text-muted mb-1">
+                            <span id="progressMsg">Processing…</span>
+                            <span id="progressPct">0%</span>
+                        </div>
+                        <div class="progress" style="height:10px;border-radius:6px;">
+                            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width:0%;background:linear-gradient(90deg,#4a90e2,#667eea);"></div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="convertBtn" class="btn btn-primary btn-lg w-100 py-3 fw-semibold" disabled
+                            style="border-radius:12px;background:linear-gradient(90deg,#4f46e5,#6366f1);border:none;">
+                        <i class="bi @ViewData["BtnIcon"] me-2"></i>@ViewData["BtnLabel"]
+                    </button>
+
+                    <div class="rp-trust-row d-flex flex-wrap justify-content-center gap-3 mt-3">
+                        <span><i class="bi bi-check-circle-fill me-1"></i>No watermark on output</span>
+                        <span><i class="bi bi-check-circle-fill me-1"></i>Works in browser</span>
+                        <span><i class="bi bi-check-circle-fill me-1"></i><a href="/Subscription/Plans" class="text-decoration-none">Pro</a> @ratpdf.Constants.SubscriptionPricing.FormatProDisplay()</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

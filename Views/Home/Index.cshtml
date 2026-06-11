@@ -1,12 +1,17 @@
-﻿@{
-    ViewData["Title"] = "20+ Unlimited Free PDF Tools Online – Compress, Merge, Split & More | Rat PDF";
-    ViewData["Description"] = "All-in-one free PDF toolkit: compress, merge, split, convert, protect, edit PDFs and more. 40+ browser-based tools. No signup, no watermark. Fast & secure.";
+﻿@using ratpdf.Constants
+@using ratpdf.Content
+@{
+    ViewData["FullWidth"] = true;
+    var featuredGuides = ContentLibrary.Guides.Take(6).ToList();
+    var latestPosts = ContentLibrary.Blogs.OrderByDescending(b => b.Published).Take(4).ToList();
+    ViewData["Title"] = "Free PDF Tools Online — Compress, Merge, PDF to Word | RatPDF";
+    ViewData["Description"] = "RatPDF: 40+ free PDF tools with Ghostscript, LibreOffice & pdf2docx engines. Compress, merge, split, convert PDF to Word/Excel. Guides, invoices & Pro from $8.99/mo.";
 }
 
 @section Head {
     <link rel="canonical" href="https://ratpdf.com/" />
-    <meta property="og:title" content="Unlimited Free PDF Tools – Compress, Merge, Split & More | Rat PDF" />
-    <meta property="og:description" content="Unlimited 20+ free PDF tools: compress, merge, split, convert images to PDF, PDF to Word, and many more. No registration, no watermark." />
+    <meta property="og:title" content="Free PDF Tools Online — Compress, Merge, PDF to Word | RatPDF" />
+    <meta property="og:description" content="Professional PDF toolkit: compress, merge, convert PDF to Word & Excel, plus step-by-step guides. Free tier: 3 uses/day. Pro $8.99/mo." />
     <meta property="og:image" content="https://ratpdf.com/images/ratpdf-logo.png" />
     <meta property="og:url" content="https://ratpdf.com/" />
     <meta property="og:type" content="website" />
@@ -50,556 +55,353 @@
     }
 </script>
 
-<div class="rp">
-    <!-- Hero Section - Redesigned for multi-tool messaging -->
-    <div class="rp-hero">
-        <div class="hero-pill">
-            <span class="pill-dot"></span>
-            No sign-up required <span class="pill-dot"></span> 100% free <span class="pill-dot"></span> 40+ tools
+<div class="rp rp-home">
+    <section class="rp-home-hero">
+        <p class="rp-hero-eyebrow"><i class="bi bi-stars"></i> @ContentLibrary.Guides.Count() guides · @ContentLibrary.Blogs.Count() articles · 40+ tools</p>
+        <h1>Professional PDF tools &amp; tutorials you can trust</h1>
+        <p class="lead">Compress, merge, and convert documents with production-grade engines — plus step-by-step guides for every tool.</p>
+        <div class="rp-hero-actions">
+            <a href="/PDF/Compress" class="rp-tool-pill-home primary"><i class="bi bi-lightning-charge-fill"></i> Compress PDF</a>
+            <a href="/PDF/PdfToDoc" class="rp-tool-pill-home"><i class="bi bi-file-earmark-word"></i> PDF to Word</a>
+            <a href="/PDF/Merge" class="rp-tool-pill-home"><i class="bi bi-files"></i> Merge PDF</a>
+            <a href="/guides" class="rp-tool-pill-home"><i class="bi bi-journal-richtext"></i> Guides</a>
         </div>
-        <h1>Professional PDF Tools<br /><span class="blu">Compress, Merge, Convert & Edit</span></h1>
-        <p>Everything you need to work with PDFs, images, and documents — all in one place. No installation, no watermarks, no hidden fees.</p>
+        <a href="#all-pdf-tools" class="btn btn-outline-primary rounded-pill px-4">Browse all tools</a>
+    </section>
 
-        <!-- Quick action tools (mini grid) -->
-        <div class="hero-quick-tools">
-            <a href="/PDF/Compress" class="quick-tool primary">⚡ Compress PDF</a>
-            <a href="/PDF/Merge" class="quick-tool">📄 Merge PDF</a>
-            <a href="/PDF/Split" class="quick-tool">✂️ Split PDF</a>
-            <a href="/PDF/ConvertImages" class="quick-tool">🖼️ Image to PDF</a>
-            <a href="/PDF/PdfToDoc" class="quick-tool">📝 PDF to Word</a>
-            <a href="/PDF/EditPDF" class="quick-tool">✏️ Edit PDF</a>
-        </div>
-
-        <div class="hero-btns" style="margin-top: 2rem;">
-            <a href="#all-pdf-tools" class="btn-outline">Browse all tools ↓</a>
-        </div>
+    <div class="rp-trust-row">
+        <div class="rp-trust-item"><strong>40+</strong><span>Tools</span></div>
+        <div class="rp-trust-item"><strong>@ContentLibrary.Guides.Count()</strong><span>Guides</span></div>
+        <div class="rp-trust-item"><strong>200 MB</strong><span>Free upload</span></div>
+        <div class="rp-trust-item"><strong>4 GB</strong><span>Pro upload</span></div>
+        <div class="rp-trust-item"><strong>@SubscriptionPricing.FormatProShort()</strong><span>Pro plan</span></div>
     </div>
 
+    <section class="rp-section-home">
+        <div class="rp-section-head">
+            <span class="rp-sec-label">Blog</span>
+            <h2>Latest articles</h2>
+            <p>Practical PDF workflows for freelancers and small businesses.</p>
+        </div>
+        <div class="row g-3">
+            @foreach (var post in latestPosts)
+            {
+                <div class="col-md-6">
+                    <article class="rp-editorial-card">
+                        <span class="rp-badge">@post.Category</span>
+                        <h3 class="mt-2"><a href="@post.Path" class="text-dark text-decoration-none">@post.Title</a></h3>
+                        <p class="small text-muted mb-2">@post.Description</p>
+                        <a href="@post.Path" class="small fw-semibold">Read article →</a>
+                    </article>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-3"><a href="/blog" class="btn btn-outline-primary btn-sm rounded-pill">All blog posts</a></div>
+    </section>
 
-    <div class="rp-stats">
-        <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Free Tools</div></div>
-        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Browser-based</div></div>
-        <div class="stat"><div class="stat-num">0</div><div class="stat-label">Files Stored</div></div>
-        <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Access</div></div>
-        <div class="stat"><div class="stat-num">Free</div><div class="stat-label">Always</div></div>
-    </div>
+    <section class="rp-section-home">
+        <div class="rp-section-head">
+            <span class="rp-sec-label">Tutorials</span>
+            <h2>Guides for every tool</h2>
+            <p>Learn the workflow, then use the free tool — real tutorials, not thin landing pages.</p>
+        </div>
+        <div class="row g-3">
+            @foreach (var g in featuredGuides)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <a href="@g.Path" class="rp-guide-card d-block text-decoration-none h-100">
+                        <span class="rp-badge">@g.Category</span>
+                        <h3 class="h6 fw-bold text-dark mt-2 mb-1">@g.Title</h3>
+                        <p class="small text-muted mb-0">@g.Description</p>
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-3"><a href="/guides" class="btn btn-primary rounded-pill px-4">View all @ContentLibrary.Guides.Count() guides</a></div>
+    </section>
 
-  
-    <div class="rp-section" id="all-pdf-tools">
-        <div class="sec-tag">Complete Toolkit</div>
-        <div class="sec-h">All PDF Tools You'll Ever Need</div>
-        <div class="sec-sub">From compression to editing, conversion to protection — work smarter with our professional-grade tools.</div>
-        
-        <div class="tools-grid">
-          
-            <a href="/PDF/Compress" class="tool-card tool-card-featured">
-                <div class="tool-icon ic-g">⚡</div>
+    <section class="rp-section-home">
+        <div class="rp-section-head">
+            <span class="rp-sec-label">Why RatPDF</span>
+            <h2>Built for real document work</h2>
+            <p>Production engines, honest privacy, and editorial content on every major tool.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="rp-editorial-card h-100">
+                    <h3><i class="bi bi-cpu text-primary me-2"></i>Production engines</h3>
+                    <p class="small text-muted mb-0">Ghostscript, LibreOffice, pdf2docx, and iText — not browser toys that break tables on invoices.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="rp-editorial-card h-100">
+                    <h3><i class="bi bi-journal-richtext text-primary me-2"></i>@ContentLibrary.Guides.Count() + @ContentLibrary.Blogs.Count() articles</h3>
+                    <p class="small text-muted mb-0">Every major tool has a dedicated guide. Our blog covers email limits, GST invoices, and security.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="rp-editorial-card h-100">
+                    <h3><i class="bi bi-shield-check text-primary me-2"></i>Honest privacy</h3>
+                    <p class="small text-muted mb-0">HTTPS upload, server processing, auto-deletion. <a href="/Home/Privacy">Privacy policy</a> and <a href="/Home/About">about page</a> explain exactly how it works.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="rp-section" id="all-pdf-tools">
+        <div class="rp-section-head">
+            <span class="rp-sec-label">Toolkit</span>
+            <h2>All PDF tools</h2>
+            <p>Compression, editing, conversion, and protection — free to start, Pro for 4 GB files.</p>
+        </div>
+        <div class="rp-tools-grid">
+            <a href="/PDF/Compress" class="rp-tool-card featured">
+                <div class="rp-tool-icon"><i class="bi bi-lightning-charge-fill"></i></div>
                 <h3>Compress PDF</h3>
                 <p>Reduce file size up to 90% while maintaining quality. Perfect for email & web uploads.</p>
-                <div class="tool-tag">Most popular →</div>
+                <span class="rp-tool-link">Most popular →</span>
             </a>
-            <a href="/PDF/Merge" class="tool-card">
-                <div class="tool-icon">📑</div>
+            <a href="/PDF/Merge" class="rp-tool-card">
+                <div class="rp-tool-icon"><i class="bi bi-files"></i></div>
                 <h3>Merge PDF</h3>
                 <p>Combine multiple PDFs into one document in seconds.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/Split" class="tool-card">
-                <div class="tool-icon">✂️</div>
+            <a href="/PDF/Split" class="rp-tool-card">
+                <div class="rp-tool-icon">✂️</div>
                 <h3>Split PDF</h3>
                 <p>Extract specific pages or split by ranges.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/ConvertImages" class="tool-card">
-                <div class="tool-icon">🖼️</div>
+            <a href="/PDF/ConvertImages" class="rp-tool-card">
+                <div class="rp-tool-icon">🖼️</div>
                 <h3>Image to PDF</h3>
                 <p>Convert JPG, PNG, WEBP to PDF. Multiple images in one PDF.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/TextToPdf" class="tool-card">
-                <div class="tool-icon">📄</div>
+            <a href="/PDF/TextToPdf" class="rp-tool-card">
+                <div class="rp-tool-icon">📄</div>
                 <h3>Text to PDF</h3>
                 <p>Convert TXT files to PDF with custom formatting.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/PdfToText" class="tool-card">
-                <div class="tool-icon">🔤</div>
+            <a href="/PDF/PdfToText" class="rp-tool-card">
+                <div class="rp-tool-icon">🔤</div>
                 <h3>PDF to Text</h3>
                 <p>Extract raw text from any PDF document.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/Watermark" class="tool-card">
-                <div class="tool-icon">💧</div>
+            <a href="/PDF/Watermark" class="rp-tool-card">
+                <div class="rp-tool-icon">💧</div>
                 <h3>Add Watermark</h3>
                 <p>Protect your PDFs with text or image watermarks.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/Password" class="tool-card">
-                <div class="tool-icon">🔒</div>
+            <a href="/PDF/Password" class="rp-tool-card">
+                <div class="rp-tool-icon">🔒</div>
                 <h3>Protect PDF</h3>
                 <p>Add password protection and restrict permissions.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/DocToPdf" class="tool-card">
-                <div class="tool-icon">📝</div>
+            <a href="/PDF/DocToPdf" class="rp-tool-card">
+                <div class="rp-tool-icon">📝</div>
                 <h3>Word to PDF</h3>
                 <p>Convert DOC/DOCX to PDF with original layout.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/PdfToDoc" class="tool-card">
-                <div class="tool-icon">📘</div>
+            <a href="/PDF/PdfToDoc" class="rp-tool-card">
+                <div class="rp-tool-icon">📘</div>
                 <h3>PDF to Word</h3>
                 <p>Edit PDF content in Microsoft Word seamlessly.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/PdfToExcel" class="tool-card">
-                <div class="tool-icon">📊</div>
+            <a href="/PDF/PdfToExcel" class="rp-tool-card">
+                <div class="rp-tool-icon">📊</div>
                 <h3>PDF to Excel</h3>
                 <p>Extract tables and data from PDFs to XLSX.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/ExcelToPdf" class="tool-card">
-                <div class="tool-icon">📈</div>
+            <a href="/PDF/ExcelToPdf" class="rp-tool-card">
+                <div class="rp-tool-icon">📈</div>
                 <h3>Excel to PDF</h3>
                 <p>Convert spreadsheets to professional PDFs.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/SignText" class="tool-card">
-                <div class="tool-icon">✍️</div>
+            <a href="/PDF/SignText" class="rp-tool-card">
+                <div class="rp-tool-icon">✍️</div>
                 <h3>Sign PDF</h3>
                 <p>Add handwritten or text-based signatures.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/RotateOrRemove" class="tool-card">
-                <div class="tool-icon">🔄</div>
+            <a href="/PDF/RotateOrRemove" class="rp-tool-card">
+                <div class="rp-tool-icon">🔄</div>
                 <h3>Rotate / Delete Pages</h3>
                 <p>Rotate, reorder, or remove pages from PDFs.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/EditPDF" class="tool-card">
-                <div class="tool-icon">✏️</div>
+            <a href="/PDF/EditPDF" class="rp-tool-card">
+                <div class="rp-tool-icon">✏️</div>
                 <h3>Edit PDF</h3>
                 <p>Modify text, images, and annotations online.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/ImageCompressor" class="tool-card">
-                <div class="tool-icon">🗜️</div>
+            <a href="/PDF/ImageCompressor" class="rp-tool-card">
+                <div class="rp-tool-icon">🗜️</div>
                 <h3>Image Compressor</h3>
                 <p>Reduce JPG/PNG size before adding to PDFs.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/Tools/ImgBackgroundRemove" class="tool-card">
-                <div class="tool-icon">🎨</div>
+            <a href="/Tools/ImgBackgroundRemove" class="rp-tool-card">
+                <div class="rp-tool-icon">🎨</div>
                 <h3>Remove Background</h3>
                 <p>AI-powered background removal for images.</p>
-                <div class="tool-tag">Free tool →</div>
+                <span class="rp-tool-link">Open tool →</span>
             </a>
-            <a href="/PDF/ImgToBase64" class="tool-card">
-                <div class="tool-icon">🔣</div>
+            <a href="/PDF/ImgToBase64" class="rp-tool-card">
+                <div class="rp-tool-icon">🔣</div>
                 <h3>Image to Base64</h3>
                 <p>Encode images to Base64 for web embedding.</p>
-                <div class="tool-tag">Dev tool →</div>
+                <span class="rp-tool-link">Dev tool →</span>
             </a>
-            <a href="/PDF/HtmlFormatter" class="tool-card">
-                <div class="tool-icon">🌐</div>
+            <a href="/PDF/HtmlFormatter" class="rp-tool-card">
+                <div class="rp-tool-icon">🌐</div>
                 <h3>HTML Formatter</h3>
                 <p>Beautify, minify, and validate HTML code.</p>
-                <div class="tool-tag">Dev tool →</div>
+                <span class="rp-tool-link">Dev tool →</span>
             </a>
-            <a href="/PDF/JsonFormatter" class="tool-card">
-                <div class="tool-icon">{ }</div>
+            <a href="/PDF/JsonFormatter" class="rp-tool-card">
+                <div class="rp-tool-icon">{ }</div>
                 <h3>JSON Formatter</h3>
                 <p>Pretty print and validate JSON data.</p>
-                <div class="tool-tag">Dev tool →</div>
+                <span class="rp-tool-link">Dev tool →</span>
             </a>
-            <a href="/PDF/JwtDecoder" class="tool-card">
-                <div class="tool-icon">🔐</div>
+            <a href="/PDF/JwtDecoder" class="rp-tool-card">
+                <div class="rp-tool-icon">🔐</div>
                 <h3>JWT Decoder</h3>
                 <p>Decode and inspect JSON Web Tokens.</p>
-                <div class="tool-tag">Dev tool →</div>
+                <span class="rp-tool-link">Dev tool →</span>
             </a>
         </div>
-    </div>
+    </section>
 
-  
-    <div class="rp-section pt-0">
-        <div class="sec-tag">Plus Utilities</div>
-        <div class="sec-h">More Free Tools You'll Love</div>
-        <div class="sec-sub">Invoicing, developer tools, text utilities, and more — all 100% free.</div>
-        <div class="tools-grid">
-            <a href="/Invoice/Create" class="tool-card">
-                <div class="tool-icon">🧾</div>
+    <section class="rp-section">
+        <div class="rp-section-head">
+            <span class="rp-sec-label">Utilities</span>
+            <h2>More free tools</h2>
+            <p>Invoicing, developer utilities, text tools, and more.</p>
+        </div>
+        <div class="rp-tools-grid">
+            <a href="/Invoice/Create" class="rp-tool-card">
+                <div class="rp-tool-icon">🧾</div>
                 <h3>Invoice Generator</h3>
                 <p>Create GST invoices, download PDF, send to clients.</p>
-                <div class="tool-tag">Business →</div>
+                <span class="rp-tool-link">Business →</span>
             </a>
-            <a href="/free-payslip-generator" class="tool-card">
-                <div class="tool-icon">💰</div>
+            <a href="/free-payslip-generator" class="rp-tool-card">
+                <div class="rp-tool-icon">💰</div>
                 <h3>Payslip Generator</h3>
                 <p>Generate salary slips for employees in seconds.</p>
-                <div class="tool-tag">HR tool →</div>
+                <span class="rp-tool-link">HR tool →</span>
             </a>
-            <a href="/rent-receipt-generator" class="tool-card">
-                <div class="tool-icon">🏠</div>
+            <a href="/rent-receipt-generator" class="rp-tool-card">
+                <div class="rp-tool-icon">🏠</div>
                 <h3>Rent Receipt</h3>
                 <p>Create rent receipts for tax proof.</p>
-                <div class="tool-tag">Finance →</div>
+                <span class="rp-tool-link">Finance →</span>
             </a>
-            <a href="/Tools/WordCounter" class="tool-card">
-                <div class="tool-icon">📝</div>
+            <a href="/Tools/WordCounter" class="rp-tool-card">
+                <div class="rp-tool-icon">📝</div>
                 <h3>Word Counter</h3>
                 <p>Count words, characters, sentences, reading time.</p>
-                <div class="tool-tag">Writing →</div>
+                <span class="rp-tool-link">Writing →</span>
             </a>
-            <a href="/Tools/WhatIsMyIP" class="tool-card">
-                <div class="tool-icon">🌍</div>
+            <a href="/Tools/WhatIsMyIP" class="rp-tool-card">
+                <div class="rp-tool-icon">🌍</div>
                 <h3>What Is My IP</h3>
                 <p>Show your public IP, location, ISP details.</p>
-                <div class="tool-tag">Network →</div>
+                <span class="rp-tool-link">Network →</span>
             </a>
-            <a href="/Tools/IpLookup" class="tool-card">
-                <div class="tool-icon">🔍</div>
+            <a href="/Tools/IpLookup" class="rp-tool-card">
+                <div class="rp-tool-icon">🔍</div>
                 <h3>IP Lookup</h3>
                 <p>Detailed geolocation and carrier info.</p>
-                <div class="tool-tag">Network →</div>
+                <span class="rp-tool-link">Network →</span>
             </a>
-            <a href="/Tools/DnsLookup" class="tool-card">
-                <div class="tool-icon">🌐</div>
+            <a href="/Tools/DnsLookup" class="rp-tool-card">
+                <div class="rp-tool-icon">🌐</div>
                 <h3>DNS Lookup</h3>
                 <p>Check A, MX, CNAME, TXT records.</p>
-                <div class="tool-tag">Dev →</div>
+                <span class="rp-tool-link">Dev →</span>
             </a>
-            <a href="/Tools/RingSizeConverter" class="tool-card">
-                <div class="tool-icon">💍</div>
+            <a href="/Tools/RingSizeConverter" class="rp-tool-card">
+                <div class="rp-tool-icon">💍</div>
                 <h3>Ring Size Converter</h3>
                 <p>Convert international ring sizes (US, UK, EU).</p>
-                <div class="tool-tag">Lifestyle →</div>
+                <span class="rp-tool-link">Lifestyle →</span>
             </a>
-            <a href="/qr-code-generator" class="tool-card">
-                <div class="tool-icon">📱</div>
+            <a href="/qr-code-generator" class="rp-tool-card">
+                <div class="rp-tool-icon">📱</div>
                 <h3>QR Code Generator</h3>
                 <p>Create custom QR codes for URLs, text, WiFi.</p>
-                <div class="tool-tag">Marketing →</div>
+                <span class="rp-tool-link">Marketing →</span>
             </a>
-            <a href="/password-generator" class="tool-card">
-                <div class="tool-icon">🔑</div>
+            <a href="/password-generator" class="rp-tool-card">
+                <div class="rp-tool-icon">🔑</div>
                 <h3>Password Generator</h3>
                 <p>Generate strong, secure passwords instantly.</p>
-                <div class="tool-tag">Security →</div>
+                <span class="rp-tool-link">Security →</span>
             </a>
-            <a href="/binary-to-decimal" class="tool-card">
-                <div class="tool-icon">💻</div>
+            <a href="/binary-to-decimal" class="rp-tool-card">
+                <div class="rp-tool-icon">💻</div>
                 <h3>Binary to Decimal</h3>
                 <p>Convert binary numbers to decimal format.</p>
-                <div class="tool-tag">Dev →</div>
+                <span class="rp-tool-link">Dev →</span>
             </a>
-            <a href="/decimal-to-binary" class="tool-card">
-                <div class="tool-icon">🔢</div>
+            <a href="/decimal-to-binary" class="rp-tool-card">
+                <div class="rp-tool-icon">🔢</div>
                 <h3>Decimal to Binary</h3>
                 <p>Convert decimal numbers to binary.</p>
-                <div class="tool-tag">Dev →</div>
+                <span class="rp-tool-link">Dev →</span>
             </a>
         </div>
-    </div>
+    </section>
 
-   
-    <div class="rp-section pt-0">
-        <div class="sec-tag">Why Rat PDF</div>
-        <div class="sec-h">Built for speed &amp; privacy</div>
-        <div class="sec-sub">No bloat. No ads. No data collection. Just tools that work.</div>
-        <div class="why-grid">
-            <div class="why-card"><div class="why-icon">🔒</div><div><h4>No file storage</h4><p>Files are processed securely and never stored on our servers permanently.</p></div></div>
-            <div class="why-card"><div class="why-icon">⚡</div><div><h4>Lightning fast</h4><p>Lightweight browser-based processing — results ready in seconds.</p></div></div>
-            <div class="why-card"><div class="why-icon">📱</div><div><h4>Works everywhere</h4><p>Fully responsive — works on mobile, tablet, and desktop.</p></div></div>
-            <div class="why-card"><div class="why-icon">🆓</div><div><h4>Always free</h4><p>All core tools are free with no hidden paywalls or surprise charges.</p></div></div>
+    <section class="rp-section">
+        <div class="rp-section-head">
+            <span class="rp-sec-label">FAQ</span>
+            <h2>Common questions</h2>
         </div>
-    </div>
-
-    
-    <div class="rp-section pt-0">
-        <div class="sec-tag">Resources & Guides</div>
-        <div class="sec-h">Learn how to get the most out of PDFs</div>
-        <div class="sec-sub">Step-by-step tutorials for common tasks.</div>
-        <a href="/guides/compress-pdf-guide" class="guide-box"><span>📘 How to Compress PDF Without Losing Quality</span><span class="guide-arr">→</span></a>
-        <a href="/guides/pdf-txt-guide" class="guide-box"><span>📘 Extract Text from PDF — Complete Guide</span><span class="guide-arr">→</span></a>
-        <a href="/guides/word-counter-guide" class="guide-box"><span>📘 Word Counter Guide — Accurate Counting</span><span class="guide-arr">→</span></a>
-        <a href="/guides/ring-size-converter-guide" class="guide-box"><span>📘 Ring Size Converter — Find Your Perfect Fit</span><span class="guide-arr">→</span></a>
-    </div>
-
-   
-    <div class="rp-section pt-0">
-        <div class="sec-tag">FAQ</div>
-        <div class="sec-h">Common questions</div>
-        <div class="faq-list">
-            <div class="faq-item" id="f1"><div class="faq-q" onclick="toggleFaq('f1')">Is Rat PDF completely free?<span class="ch">+</span></div><div class="faq-a">Yes — all basic tools are 100% free. No signup, no credit card, no hidden charges at all.</div></div>
-            <div class="faq-item" id="f2"><div class="faq-q" onclick="toggleFaq('f2')">Do I need to install anything?<span class="ch">+</span></div><div class="faq-a">No installation needed. Everything runs directly in your browser — just open a tool and start using it.</div></div>
-            <div class="faq-item" id="f3"><div class="faq-q" onclick="toggleFaq('f3')">Is my data safe and private?<span class="ch">+</span></div><div class="faq-a">Yes. Files are processed securely and not stored permanently on our servers. Your privacy is our priority.</div></div>
-            <div class="faq-item" id="f4"><div class="faq-q" onclick="toggleFaq('f4')">Can I use Rat PDF on my phone?<span class="ch">+</span></div><div class="faq-a">Absolutely — Rat PDF is fully mobile responsive and works on any smartphone or tablet browser.</div></div>
+        <div class="rp-faq-list">
+            <div class="rp-faq-item" id="f1">
+                <div class="rp-faq-q" onclick="toggleFaq('f1')">Is RatPDF completely free?<span class="rp-faq-toggle">+</span></div>
+                <div class="rp-faq-a">Yes — core tools are free with 3 uses per tool per day. No credit card required.</div>
+            </div>
+            <div class="rp-faq-item" id="f2">
+                <div class="rp-faq-q" onclick="toggleFaq('f2')">Do I need to install anything?<span class="rp-faq-toggle">+</span></div>
+                <div class="rp-faq-a">No. Open any tool in your browser — processing runs on our servers and returns a download link.</div>
+            </div>
+            <div class="rp-faq-item" id="f3">
+                <div class="rp-faq-q" onclick="toggleFaq('f3')">Is my data safe?<span class="rp-faq-toggle">+</span></div>
+                <div class="rp-faq-a">Files use HTTPS, process in isolated jobs, and are deleted automatically. See our <a href="/Home/Privacy">Privacy Policy</a>.</div>
+            </div>
+            <div class="rp-faq-item" id="f4">
+                <div class="rp-faq-q" onclick="toggleFaq('f4')">Does it work on mobile?<span class="rp-faq-toggle">+</span></div>
+                <div class="rp-faq-a">Yes — the site is fully responsive on phones and tablets.</div>
+            </div>
         </div>
-    </div>
+    </section>
 
   
-    <div class="rp-cta">
-        <h2>Ready to streamline your document workflow?</h2>
-        <p>40+ free tools. No signup. Results in seconds.</p>
-        <a href="/PDF/Compress" class="btn-white">Get Started with Compress PDF →</a>
-        <a href="#all-pdf-tools" class="btn-outline" style="background: transparent; border-color: rgba(255,255,255,0.3); color: white; margin-left: 1rem;">Browse All Tools ↓</a>
-    </div>
+    <section class="rp-cta-band">
+        <h2>Start free — upgrade when you need more</h2>
+        <p>3 uses per tool per day. Pro at @SubscriptionPricing.FormatProDisplay() — unlimited tools, 4 GB uploads.</p>
+        <a href="/PDF/Compress" class="btn btn-light rounded-pill px-4">Compress PDF</a>
+        <a href="/guides" class="btn btn-outline-light rounded-pill px-4">Read guides</a>
+    </section>
 </div>
 
-<style>
-   
-    @@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Syne:wght@400;500;600;700;800&display=swap');
-
-    .rp {
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(145deg, #f9fafc 0%, #ffffff 100%);
-        color: #111827;
-        overflow-x: hidden;
-    }
-
-   
-    .hero-quick-tools {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.75rem;
-        max-width: 780px;
-        margin: 1.5rem auto 0;
-    }
-    .quick-tool {
-        background: white;
-        border-radius: 60px;
-        padding: 8px 20px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #1f2937;
-        text-decoration: none;
-        border: 1px solid #e2e8f0;
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    }
-    .quick-tool.primary {
-        background: linear-gradient(105deg, #2563eb, #4f46e5);
-        color: white;
-        border: none;
-        box-shadow: 0 4px 10px rgba(37,99,235,0.25);
-    }
-    .quick-tool:hover {
-        transform: translateY(-2px);
-        border-color: #cbd5e1;
-        background: #f8fafc;
-        text-decoration: none;
-    }
-    .quick-tool.primary:hover {
-        background: linear-gradient(105deg, #1d4ed8, #4338ca);
-        box-shadow: 0 6px 14px rgba(37,99,235,0.35);
-        color: white;
-    }
-
-    
-    .rp-hero {
-        background: radial-gradient(ellipse at 80% 30%, rgba(37,99,235,0.03), transparent);
-        padding: 4rem 2rem 3.5rem;
-        text-align: center;
-        position: relative;
-        border-bottom: none;
-    }
-    .hero-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(37,99,235,0.08);
-        backdrop-filter: blur(4px);
-        border: 1px solid rgba(37,99,235,0.2);
-        border-radius: 100px;
-        padding: 6px 16px 6px 10px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: #2563eb;
-        margin-bottom: 1.5rem;
-    }
-    .pill-dot {
-        width: 6px; height: 6px;
-        border-radius: 50%;
-        background: #2563eb;
-        display: inline-block;
-        animation: pulse 2s infinite;
-    }
-    @@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .rp-hero h1 {
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif, Georgia, 'Times New Roman', Times, serif;
-        font-size: 3rem;
-        font-weight: 800;
-        line-height: 1.2;
-        letter-spacing: -0.02em;
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        margin-bottom: 1rem;
-    }
-    .rp-hero h1 .blu {
-        background: linear-gradient(135deg, #2563eb, #4f46e5);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-    .rp-hero p {
-        font-size: 1.1rem;
-        color: #4b5563;
-        max-width: 550px;
-        margin: 0 auto 1rem;
-        line-height: 1.6;
-    }
-    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-        background: linear-gradient(105deg, #2563eb, #4f46e5);
-        color: white;
-        padding: 12px 28px;
-        border-radius: 40px;
-        font-weight: 600;
-        transition: all 0.2s;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        display: inline-block;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,0.3); color: white; text-decoration: none; }
-    .btn-outline {
-        background: transparent;
-        border: 1.5px solid #cbd5e1;
-        color: #1f2937;
-        padding: 12px 28px;
-        border-radius: 40px;
-        font-weight: 500;
-        transition: all 0.2s;
-        display: inline-block;
-    }
-    .btn-outline:hover { border-color: #2563eb; color: #2563eb; background: rgba(37,99,235,0.02); text-decoration: none; }
-
- 
-    .rp-stats {
-        display: flex;
-        justify-content: center;
-        background: #ffffff;
-        border-top: 1px solid #edf2f7;
-        border-bottom: 1px solid #edf2f7;
-        flex-wrap: wrap;
-        margin: 0;
-    }
-    .stat { text-align: center; padding: 1rem 2.5rem; border-right: 1px solid #edf2f7; }
-    .stat:last-child { border-right: none; }
-    .stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg,#2563eb,#4f46e5); -webkit-background-clip:text; background-clip:text; color:transparent; }
-    .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600; }
-
-    
-    .rp-section { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
-    .sec-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #2563eb; margin-bottom: 0.5rem; }
-    .sec-h { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
-    .sec-sub { font-size: 1rem; color: #6b7280; margin-bottom: 2rem; }
-
-    
-    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-    .tool-card {
-        background: #fff;
-        border-radius: 24px;
-        padding: 1.5rem;
-        transition: all 0.25s ease;
-        text-decoration: none;
-        border: 1px solid #eef2f6;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-        display: block;
-    }
-    .tool-card:hover { transform: translateY(-6px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1); border-color: #cbdff2; text-decoration: none; }
-    .tool-card-featured {
-        border: 2px solid #2563eb;
-        background: linear-gradient(135deg, #ffffff, #f5f9ff);
-        box-shadow: 0 8px 20px rgba(37,99,235,0.12);
-        transform: scale(1.02);
-    }
-    .tool-icon { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; background: #f1f5f9; }
-    .tool-card h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 0 0 0.4rem; color: #0f172a; }
-    .tool-card p { font-size: 0.8rem; color: #6b7280; line-height: 1.4; margin-bottom: 1rem; }
-    .tool-tag { font-size: 0.7rem; font-weight: 600; color: #2563eb; }
-
-    
-    .why-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
-    .why-card { background: #fff; border-radius: 20px; padding: 1.2rem; display: flex; gap: 1rem; align-items: flex-start; border: 1px solid #edf2f7; transition: all 0.2s; }
-    .why-card:hover { border-color: #bfdbfe; box-shadow: 0 5px 12px rgba(0,0,0,0.02); }
-    .why-icon { width: 44px; height: 44px; background: #eef2ff; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-    .why-card h4 { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; color: #0f172a; }
-    .why-card p { font-size: 0.75rem; color: #6b7280; line-height: 1.4; }
-
-   
-    .guide-box {
-        background: #fff;
-        border-radius: 18px;
-        padding: 1rem 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        text-decoration: none;
-        border: 1px solid #eef2f6;
-        margin-bottom: 0.8rem;
-        transition: all 0.2s;
-    }
-    .guide-box:hover { border-color: #2563eb; background: #fafcff; transform: translateX(4px); text-decoration: none; }
-    .guide-box span:first-child { font-weight: 500; color: #1f2937; }
-    .guide-arr { color: #2563eb; font-weight: 600; }
-
-   
-    .faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
-    .faq-item { background: #fff; border-radius: 18px; border: 1px solid #edf2f7; overflow: hidden; transition: all 0.2s; }
-    .faq-q { padding: 1rem 1.2rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #0f172a; }
-    .faq-q:hover { background: #f8fafc; }
-    .faq-a { display: none; padding: 0 1.2rem 1rem; font-size: 0.9rem; color: #4b5563; line-height: 1.5; }
-    .faq-item.open .faq-a { display: block; }
-    .ch { font-size: 1.3rem; color: #94a3b8; transition: transform 0.2s; }
-    .faq-item.open .ch { transform: rotate(45deg); color: #2563eb; }
-
-    
-    .rp-cta {
-        margin: 2rem 2rem 3rem;
-        border-radius: 32px;
-        background: linear-gradient(115deg, #1e293b, #0f172a);
-        padding: 3rem 2rem;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-    .rp-cta::before {
-        content: '';
-        position: absolute;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(37,99,235,0.2), transparent);
-        top: -100px;
-        right: -80px;
-        border-radius: 50%;
-    }
-    .rp-cta h2 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: white; margin-bottom: 0.5rem; }
-    .rp-cta p { color: #cbd5e1; margin-bottom: 1.5rem; }
-    .btn-white { background: white; color: #2563eb; padding: 12px 30px; border-radius: 40px; font-weight: 600; transition: all 0.2s; display: inline-block; }
-    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); color: #1e40af; text-decoration: none; }
-
-   
-    @@media (max-width: 768px) {
-        .rp-hero h1 { font-size: 2.2rem; }
-        .hero-quick-tools { gap: 0.5rem; }
-        .quick-tool { font-size: 0.7rem; padding: 6px 14px; }
-        .tools-grid { grid-template-columns: 1fr; }
-        .why-grid { grid-template-columns: 1fr; }
-        .stat { padding: 0.75rem 1rem; }
-        .rp-section { padding: 2rem 1rem; }
-        .rp-cta { margin: 1rem; padding: 2rem 1rem; }
-        .tool-card-featured { transform: none; }
-    }
-</style>
-
+@section Scripts {
 <script>
-    function toggleFaq(id) {
-        document.getElementById(id).classList.toggle('open');
-    }
+    function toggleFaq(id) { document.getElementById(id).classList.toggle('open'); }
 </script>
+}

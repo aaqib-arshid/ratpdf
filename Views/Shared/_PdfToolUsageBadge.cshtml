@@ -1,0 +1,18 @@
+@* Usage badge — set ViewData["PdfToolId"] to the tool id (e.g. merge, compress). *@
+@using ratpdf.Constants
+@if (ViewData["PdfToolId"] is string toolId && !string.IsNullOrEmpty(toolId))
+{
+    <p class="text-muted small mb-3">
+        <span id="usageBadge" class="badge bg-secondary" data-pdf-usage-badge="@toolId">3 free today</span>
+        · Up to 200 MB per file ·
+        <a href="/Subscription/Plans">Pro @SubscriptionPricing.FormatProShort()</a> · 4 GB uploads · unlimited tools
+    </p>
+}
+@if (ViewBag.ShowPaywall == true)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.PdfToolkit) PdfToolkit.showPaywall(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Daily free limit reached.")));
+        });
+    </script>
+}

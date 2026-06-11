@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Convert Text to PDF online free";
     ViewData["Description"] = "Convert TEXT to PDF online for free. Fast and secure TEXT to PDF converter.";
+    ViewData["PdfToolId"] = "texttopdf";
 }
 
 <div class="container py-5 d-flex justify-content-center align-items-start">
@@ -9,7 +10,8 @@
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
             <h2 class="fw-bold mb-3">Text to PDF</h2>
-            <p class="text-muted mb-4">Upload a text file or type your content below to convert it into a PDF.</p>
+            <p class="text-muted mb-2">Upload a text file or type your content below to convert it into a PDF.</p>
+            @await Html.PartialAsync("_PdfToolUsageBadge")
 
             <!-- Validation Errors -->
             @if (!ViewData.ModelState.IsValid)
@@ -22,7 +24,7 @@
                 </div>
             }
 
-            <form asp-action="TextToPdf" method="post" enctype="multipart/form-data" id="textForm">
+            <form asp-action="TextToPdf" method="post" enctype="multipart/form-data" id="textForm" data-pdf-tool="texttopdf">
                 <!-- Drag & Drop File Upload -->
                 <div class="mb-3">
                     <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
@@ -38,6 +40,8 @@
                 <!-- Or Typed Text -->
                 <div id="quillEditor" style="height: 250px; background: white; border-radius: 6px;"></div>
                 <input type="hidden" name="typedText" id="typedText" />
+                <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
+                @await Html.PartialAsync("_PdfProgressBar")
                 <button type="submit" class="btn btn-primary btn-lg w-100">
                     <i class="bi bi-file-earmark-text-fill me-2"></i> Convert to PDF
                 </button>
@@ -335,13 +339,7 @@
          $('#textForm').on('submit', function (e) {
          e.preventDefault();
          document.getElementById('typedText').value = quill.root.innerHTML;
-         showLoader('Getting Ready...');
-         setTimeout(function () {
-                 showLoader('Processing...');;
-         }, 3000);
-         setTimeout(function () {
-                submitWithLoader('textForm', 'Downloading...');
-         }, 5000);
+            submitWithLoader('textForm', 'Creating PDF…', 'document.pdf');
         });
     </script>
 }

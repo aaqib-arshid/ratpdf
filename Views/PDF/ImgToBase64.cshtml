@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Convert Image to Base64 Free Online";
     ViewData["Description"] = "Convert JPG, PNG, or WebP images to Base64 string online for free. Fast, secure, and browser-based image to Base64 converter.";
+    ViewData["PdfToolId"] = "imgtobase64";
 }
 
 <head>
@@ -16,9 +17,10 @@
 
             <img src="~/images/ratpdf-logo.png" alt="RatPDF Logo" height="60" class="mb-3">
             <h2 class="fw-bold mb-3">Image to Base64</h2>
-            <p class="text-muted mb-4">
+            <p class="text-muted mb-2">
                 Upload a JPG, PNG, or WebP image to instantly convert it into a Base64 string.
             </p>
+            @await Html.PartialAsync("_PdfToolUsageBadge")
 
             @if (!ViewData.ModelState.IsValid)
             {
@@ -30,7 +32,7 @@
                 </div>
             }
 
-            <form asp-action="ImgToBase64" method="post" enctype="multipart/form-data" id="imgToBase64Form">
+            <form asp-action="ImgToBase64" method="post" enctype="multipart/form-data" id="imgToBase64Form" data-pdf-tool="imgtobase64">
                 <div class="mb-3">
                     <div id="dropZone" class="border border-dashed rounded p-4 mb-3"
                          style="cursor: pointer; background-color: #f8f9fa;">

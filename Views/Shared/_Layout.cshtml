@@ -43,8 +43,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="PDF converter, merge PDF, split PDF, compress PDF, img to pdf, pdf to img, PDF to Word, Word to PDF,doc to pdf, pdf to doc, docx to pdf, pdf to docx, pdf to xls, xls to pdf, excel to pdf, pdf to excel, edit pdf, free PDF tools" />
     <meta name="author" content="Rat PDF" />
-    <meta name="description" content="@ViewData["Description"]" />
-    <title>@ViewData["Title"] - Rat PDF</title>
+    <meta name="description" content="@(ViewData["Description"] ?? "Free online PDF tools — merge, split, compress, PDF to Word, Word to PDF, PDF to Excel. Adobe-quality conversion.")" />
+    <title>@(ViewData["Title"] ?? "Free PDF Tools Online") | RatPDF</title>
+    @await Html.PartialAsync("_TechnicalSeoHead")
     @RenderSection("Head", required: false)
     @* Fav Icons *@
     <link href="/favicon-48x48.png" rel="icon">
@@ -53,28 +54,21 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/ratpdf-theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ratpdf.styles.css" asp-append-version="true" />
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        body {
-            background: #f5f6fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* Legacy navbar — rp-navbar uses ratpdf-theme.css */
+        .navbar:not(.rp-navbar) {
+            background-color: #4a90e2;
         }
-
-        .navbar {
-            background-color: #4a90e2; /* RatPDF primary color */
+        .navbar:not(.rp-navbar) .nav-link,
+        .navbar:not(.rp-navbar) .navbar-brand {
+            color: #fff !important;
         }
-
-            .navbar .nav-link, .navbar-brand {
-                color: #fff !important;
-            }
-
-                .navbar .nav-link:hover {
-                    color: #ffdd59 !important;
-                }
 
         .dropdown-menu {
             max-height: 70vh;
@@ -94,24 +88,10 @@
                 transform: translateX(-10px);
             }
         }
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        footer {
+        footer:not(.rp-footer) {
             background-color: #4a90e2;
             color: #fff;
         }
-
-            footer a {
-                color: #ffdd59;
-                text-decoration: none;
-            }
-
-                footer a:hover {
-                    text-decoration: underline;
-                }
 
         /* Related Tools Section */
         .related-tools {
@@ -170,23 +150,9 @@
                 transform: rotate(360deg);
             }
         }
-.navbar .nav-link.btn-compress-nav {
-    background: #ffdd59;
-    color: #1e293b !important;
-    border-radius: 30px;
-    padding: 6px 18px;
-    margin-left: 10px;
-    font-weight: 700;
-    transition: all 0.2s;
-}
-.navbar .nav-link.btn-compress-nav:hover {
-    background: #ffcd38;
-    transform: translateY(-2px);
-    color: #0f172a !important;
-}
     </style>
 </head>
-<body>
+<body class="rp-page">
     <!-- Global Loader -->
     <div id="globalLoader" style="
     display: none;
@@ -215,36 +181,33 @@
     <header>
     @* <script async="async" data-cfasync="false" src="https://pl29485897.effectivecpmnetwork.com/497b2178bae3fbcc329b46649433037e/invoke.js"></script> *@
     @* <div id="container-497b2178bae3fbcc329b46649433037e"></div> *@
-     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+     <nav class="navbar navbar-expand-xl navbar-light rp-navbar sticky-top">
 
-    <div class="container-fluid">
+    <div class="container">
 
-        <!-- LOGO -->
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="/images/ratpdf-logo.png" alt="RatPDF" height="32" class="me-2" />
-            <span class="fw-bold">RatPDF</span>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <img src="/images/ratpdf-logo.png" alt="RatPDF" height="32" width="32" />
+            <span>RatPDF</span>
         </a>
 
-        <!-- MOBILE TOGGLER -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarContent">
 
-            <!-- LEFT MENU -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link btn-compress-nav" asp-controller="PDF" asp-action="Compress">Compress PDF</a>
+            <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+                <li class="nav-item d-xl-none">
+                    <a class="nav-link btn-compress-nav" asp-controller="PDF" asp-action="Compress"><i class="bi bi-lightning-charge-fill me-1"></i>Compress PDF</a>
                 </li>
-                <!-- PDF TOOLS -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">PDF Tools</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">PDF Tools</a>
                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item featured" asp-controller="PDF" asp-action="Compress"><i class="bi bi-lightning-charge-fill me-2"></i>Compress PDF</a></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="EditPDF">Edit PDF</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Merge">Merge PDF</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Split">Split PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Compress">Compress PDF</a></li>
                         <li><a class="dropdown-item" asp-controller="PdfTools" asp-action="OCRTextExtractor">OCR Tool</a></li>
                         <li><a class="dropdown-item" asp-controller="PdfTools" asp-action="PdfRedaction">Pdf Redaction</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Watermark">Add Watermark</a></li>
@@ -265,75 +228,34 @@
                     </ul>
                 </li>
 
-                <!-- IMAGE TOOLS -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Image Tools</a>
-                    <ul class="dropdown-menu">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More Tools</a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" style="min-width: 220px;">
+                        <li><h6 class="dropdown-header">Image</h6></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImgBackgroundRemove">Background Remover</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="ImageCompressor">Compress Image</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImageFormatConverter">Image Format Converter</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ImgToBase64">Image to Base64</a></li>
-                       <li><a class="dropdown-item" asp-controller="Tools" asp-action="BulkImageCompressor">Bulk Image Compressor</a></li>
-                       <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImageResizer">Image Resizer</a></li>
-                   </ul>
-                </li>
-                 <!--Medical TOOLS -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Medical Tools</a>
-                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImageResizer">Image Resizer</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Medical</h6></li>
                         <li><a class="dropdown-item" asp-controller="Calculators" asp-action="BMICalculator">BMI Calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="PeriodCalculator">Periods Calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="MapCalculator">Map Calculator</a></li>
                         <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="HeartScore">Heart Score</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="GcsCalculator">Glasgow Coma Scale (GCS) Calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="NIHSScalculator">NIHSS calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="Cha2ds2VascScore">Stroke Risk Assessment</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="EgfrCalculator">eGFR calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="WellsScoreCalculator">Wells Score</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="HasBledScore">Has Bled Score</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="ParkLandFormula">Parkland Formula Calculator</a></li>
-                    </ul>
-                </li>
-                <!-- DEV TOOLS -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Dev Tools</a>
-                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="EgfrCalculator">eGFR Calculator</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Developer</h6></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="HtmlFormatter">HTML Formatter</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="JsonFormatter">JSON Formatter</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="JwtDecoder">JWT Decoder</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="DecimalToBinary">Decimal To Binary</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="BinaryToDecimal">Binary To Decimal</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="FavIconGenerator">Fav Icon Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="UrlEncoder">Url Encoder</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="UrlDecoder">Url Decoder</a></li>
-                    </ul>
-                </li>
-
-                <!-- UTILITIES -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Utilities</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="WhatIsMyIP">What is My IP</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="IpLookup">IP Lookup</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="DnsLookup">DNS Lookup</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Utilities</h6></li>
                         <li><a class="dropdown-item" asp-controller="Tools" asp-action="WordCounter">Word Counter</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="TextComparer">Text Comparer</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="QRGenerator">QR Code Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="PaySlip" asp-action="Index">Pay Slip Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="BulkPaySlip" asp-action="Index">Bulk Pay Slip Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="RentReceipt" asp-action="Index">Rent Receipt Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="PasswordGenerator">Password Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="RingSizeConverter">Ring Size Converter</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="GSCIndex">Decay SEO Tool</a></li>
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="AgeCalculator">Age Calculator</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="WhatIsMyIP">What is My IP</a></li>
+                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="QRGenerator">QR Generator</a></li>
                         <li><a class="dropdown-item" asp-controller="Calculators" asp-action="LoanCalculator">EMI Calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="PercentageCalculator">Percentage Calculator</a></li>
                     </ul>
                 </li>
 
-                <!-- INVOICE GENERATOR -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Invoice Generator</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Invoice</a>
                     <ul class="dropdown-menu">
 
                         @if (SignInManager.IsSignedIn(User))
@@ -352,28 +274,34 @@
                     </ul>
                 </li>
 
-                <!-- GUIDES -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Guides</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Guides</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/guides/compress-pdf-guide">Compress PDF Guides</a></li>
-                        <li><a class="dropdown-item" href="/guides/pdf-txt-guide">PDF-Text Guides</a></li>
-                        <li><a class="dropdown-item" href="/guides/background-remover">Bg Remover Guides</a></li>
-                        <li><a class="dropdown-item" href="/guides/ring-size-converter-guide">Ring Size Guides</a></li>
-                        <li><a class="dropdown-item" href="/guides/word-counter-guide">Word Counter Guides</a></li>
-                        <li><a class="dropdown-item" href="/guides/my-ip-guide">What Is My IP Guides</a></li>
+                        <li><a class="dropdown-item featured" href="/guides">All guides</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/guides/compress-pdf-guide">Compress PDF</a></li>
+                        <li><a class="dropdown-item" href="/guides/pdf-to-word">PDF to Word</a></li>
+                        <li><a class="dropdown-item" href="/guides/pdf-txt-guide">PDF to Text</a></li>
+                        <li><a class="dropdown-item" href="/guides/invoice-generator-guide">Invoice Generator</a></li>
                     </ul>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Subscription/Plans">Pricing</a>
+                </li>
+                <li class="nav-item d-none d-xl-block ms-1">
+                    <a class="nav-link btn-compress-nav" asp-controller="PDF" asp-action="Compress"><i class="bi bi-lightning-charge-fill me-1"></i>Compress</a>
+                </li>
             </ul>
 
-            <!-- RIGHT USER MENU -->
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav ms-xl-2 mb-2 mb-xl-0 flex-shrink-0">
 
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle text-truncate" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="max-width: 140px;">
                             @UserManager.GetUserName(User)
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -405,19 +333,64 @@
     </header>
 
     <!-- Main Content -->
-    <div class="container my-5">
+    <main class="rp-main">
+    @if (ViewData["FullWidth"] as bool? == true)
+    {
         @RenderBody()
-    </div>
+    }
+    else
+    {
+        <div class="rp-content-page">
+            @RenderBody()
+        </div>
+    }
+    </main>
 
     <!-- Footer -->
-    <footer class="py-4 mt-auto">
-        <div class="container text-center">
-            &copy; 2026 Rat PDF |
-            <a asp-controller="Home" asp-action="Terms">Terms & Conditions</a> |
-            <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a> |
-            <a asp-controller="Home" asp-action="Contact">Contact Us</a> |
-            <a asp-controller="Home" asp-action="About">About</a> |
-            <a asp-controller="Home" asp-action="Disclaimer">Disclaimer</a>
+    <footer class="py-5 mt-auto rp-footer">
+        <div class="container">
+            <div class="row g-4 text-start">
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-white mb-3">RatPDF</h6>
+                    <p class="small mb-2" style="color: rgba(255,255,255,0.85);">Free online PDF tools with Adobe-class conversion. Compress, merge, convert PDF to Word &amp; Excel, and generate invoices — no desktop install.</p>
+                    <a href="/Subscription/Plans" class="small fw-semibold">Pro from @ratpdf.Constants.SubscriptionPricing.FormatProShort() →</a>
+                </div>
+                <div class="col-6 col-md-2">
+                    <h6 class="fw-bold text-white mb-3">PDF Tools</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1"><a href="/PDF/Compress">Compress PDF</a></li>
+                        <li class="mb-1"><a href="/PDF/Merge">Merge PDF</a></li>
+                        <li class="mb-1"><a href="/PDF/Split">Split PDF</a></li>
+                        <li class="mb-1"><a href="/PDF/PdfToDoc">PDF to Word</a></li>
+                        <li class="mb-1"><a href="/PDF/DocToPdf">Word to PDF</a></li>
+                        <li class="mb-1"><a href="/PDF/PdfToExcel">PDF to Excel</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-2">
+                    <h6 class="fw-bold text-white mb-3">Resources</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1"><a href="/blog">Blog</a></li>
+                        <li class="mb-1"><a href="/guides">All Guides</a></li>
+                        <li class="mb-1"><a href="/guides/compress-pdf-guide">Compress PDF Guide</a></li>
+                        <li class="mb-1"><a href="/guides/pdf-txt-guide">PDF Text Guide</a></li>
+                        <li class="mb-1"><a href="/Invoice/Create">Invoice Generator</a></li>
+                        <li class="mb-1"><a href="/Home/About">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Legal &amp; contact</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1"><a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                        <li class="mb-1"><a asp-controller="Home" asp-action="Terms">Terms &amp; Conditions</a></li>
+                        <li class="mb-1"><a asp-controller="Home" asp-action="Disclaimer">Disclaimer</a></li>
+                        <li class="mb-1"><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-light opacity-25 my-4" />
+            <div class="text-center small" style="color: rgba(255,255,255,0.9);">
+                &copy; 2026 RatPDF · <a href="/sitemap.xml">Sitemap</a>
+            </div>
         </div>
     </footer>
  @*    <script async="async" data-cfasync="false" src="https://pl29485897.effectivecpmnetwork.com/497b2178bae3fbcc329b46649433037e/invoke.js"></script>
@@ -426,39 +399,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/pdf-toolkit.js" asp-append-version="true"></script>
+    @await Html.PartialAsync("_PdfPaywallModal")
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        //const maxSize = 1024 * 1024 * 1024; // 1 GB
-         const maxSize = 50 * 1024 * 1024; // 50MB
-        document.querySelectorAll('input[type="file"]').forEach(input => {
-            if (input.id === 'compressFileInput') return;
-            let errorMsg = document.createElement('div');
-            errorMsg.style.color = 'red';
-            errorMsg.style.fontSize = '0.9em';
-            errorMsg.style.marginTop = '5px';
-            errorMsg.style.display = 'none';
-            input.parentNode.insertBefore(errorMsg, input.nextSibling);
-
-            input.addEventListener('change', function() {
-                let hasError = false;
-                errorMsg.style.display = 'none';
-                for (let file of this.files) {
-                    if (file.size > maxSize) {
-                        hasError = true;
-                        errorMsg.textContent = `File "${file.name}" is too large. Max 50 MB allowed.`;
-                        this.value = '';
-                        break;
-                    }
-                }
-                if (hasError) {
-                    errorMsg.style.display = 'block';
-                }
-            });
-        });
-    });
         function showLoader(message = 'Processing...') {
         $('#loaderMessage').text(message);
         $('#globalLoader').css('display', 'flex');
@@ -467,10 +413,35 @@
     function hideLoader() {
         $('#globalLoader').hide();
     }
-        function submitWithLoader(formId, message = 'Processing...') {
-        showLoader(message);
+        async function submitWithLoader(formId, message = 'Processing...', defaultFileName) {
+        const form = document.getElementById(formId);
+        const toolId = form?.dataset?.pdfTool;
+        const elements = window.PdfToolkit?.getStandardProgressElements?.();
 
-        // Clearing old cookie
+        if (elements?.area && window.PdfToolkit?.submitFormWithProgress) {
+            try {
+                await PdfToolkit.submitFormWithProgress(form, elements, toolId, defaultFileName);
+            } catch (err) {
+                if (!err.paywall) {
+                    const errEl = document.getElementById('errorArea');
+                    if (errEl) {
+                        errEl.textContent = err.message || 'Processing failed.';
+                        errEl.classList.remove('d-none');
+                    } else {
+                        alert(err.message || 'Processing failed.');
+                    }
+                }
+                PdfToolkit.hideProgress(elements);
+            }
+            return;
+        }
+
+        if (toolId && window.PdfToolkit) {
+            const ok = await PdfToolkit.ensureAccess(toolId);
+            if (!ok) return;
+        }
+
+        showLoader(message);
         document.cookie = 'downloadReady=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
         const poll = setInterval(function () {
@@ -478,10 +449,10 @@
                 document.cookie = 'downloadReady=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                 clearInterval(poll);
                 hideLoader();
+                if (toolId && window.PdfToolkit) PdfToolkit.refreshUsageBadges();
             }
         }, 500);
 
-        // Safety fallback
         setTimeout(function () {
             clearInterval(poll);
             hideLoader();

@@ -1,0 +1,52 @@
+@model IReadOnlyList<ratpdf.Models.ContentEntry>
+@using ratpdf.Constants
+@using ratpdf.Content
+
+@{
+    ViewData["Title"] = "RatPDF Blog — PDF Tips, Business Workflows & Security";
+    ViewData["Description"] = "Practical articles on PDF compression, conversion, invoicing, and document security for freelancers and small businesses.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/blog");
+}
+
+@section Head {
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "Blog",
+      "name": "RatPDF Blog",
+      "url": "@PdfToolSeo.Canonical("/blog")",
+      "description": "@ViewData["Description"]"
+    }
+    </script>
+}
+
+<div class="rp-content-page">
+    <header class="text-center mb-5 col-lg-8 mx-auto">
+        <span class="rp-badge mb-2">Articles</span>
+        <h1 class="fw-bold display-6 mt-2">RatPDF Blog</h1>
+        <p class="lead text-muted">Document workflows, security, and small-business tips.</p>
+    </header>
+
+    <div class="row g-4">
+        @foreach (var post in Model)
+        {
+            <div class="col-md-6">
+                <article class="rp-editorial-card h-100 d-flex flex-column">
+                    <span class="rp-badge mb-2">@post.Category</span>
+                    <h2 class="h5 fw-bold"><a href="@post.Path" class="text-dark text-decoration-none">@post.Title</a></h2>
+                    <p class="text-muted small flex-grow-1">@post.Description</p>
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-calendar3 me-1"></i>@post.Published.ToString("MMM d, yyyy")
+                        · <a href="@post.Path" class="fw-semibold">Read →</a>
+                    </p>
+                </article>
+            </div>
+        }
+    </div>
+
+    <section class="mt-5 p-4 bg-white border rounded-4 text-center" style="border-color: var(--rp-border) !important;">
+        <h2 class="h5 fw-bold">Step-by-step tool tutorials</h2>
+        <p class="text-muted small mb-3">@ContentLibrary.Guides.Count() guides covering every PDF tool.</p>
+        <a href="/guides" class="btn btn-primary rounded-pill px-4">All guides</a>
+    </section>
+</div>

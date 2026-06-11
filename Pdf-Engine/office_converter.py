@@ -1,0 +1,258 @@
+#!/usr/bin/env python3
+"""
+High-fidelity office conversions using LibreOffice (primary) and Python fallbacks.
+
+Commands:
+  docx2pdf  <input.docx>  <output.pdf>
+  xlsx2pdf  <input.xlsx>  <output.pdf>
+  pdf2xlsx  <input.pdf>   <output.xlsx>
+"""
+
+from __future__ import annotations
+
+import argparse
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import traceback
+from typing import List, Optional
+
+import fitz
+
+
+def _find_soffice() -> Optional[str]:
+    candidates = [
+        os.environ.get("LIBREOFFICE_PATH", ""),
+        r"C:\Program Files\LibreOffice\program\soffice.exe",
+        r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
+        "soffice",
+        "libreoffice",
+    ]
+    for path in candidates:
+        if not path:
+            continue
+        if os.path.isfile(path):
+            return path
+        found = shutil.which(path)
+        if found:
+            return found
+    return None
+
+
+# Print-accurate export filters (LibreOffice / Adobe-like fidelity).
+_LO_WRITER_PDF = (
+    'pdf:writer_pdf_Export:'
+    '{"SelectPdfVersion":{"type":"long","value":"1"},'
+    '"Quality":{"type":"long","value":"100"},'
+    '"UseLosslessCompression":{"type":"boolean","value":"true"},'
+    '"EmbedStandardFonts":{"type":"boolean","value":"true"},'
+    '"ExportFormFields":{"type":"boolean","value":"true"}}'
+)
+_LO_CALC_PDF = (
+    'pdf:calc_pdf_Export:'
+    '{"SelectPdfVersion":{"type":"long","value":"1"},'
+    '"Quality":{"type":"long","value":"100"},'
+    '"SinglePageSheets":{"type":"boolean","value":"false"}}'
+)
+
+
+def _libreoffice_convert(input_path: str, output_path: str, target_ext: str) -> bool:
+    soffice = _find_soffice()
+    if not soffice:
+        return False
+
+    out_dir = os.path.dirname(os.path.abspath(output_path)) or "."
+    os.makedirs(out_dir, exist_ok=True)
+
+    try:
+        subprocess.run(
+            [
+                soffice,
+                "--headless",
+                "--invisible",
+                "--nologo",
+                "--nofirststartwizard",
+                "--convert-to",
+                target_ext,
+                "--outdir",
+                out_dir,
+                os.path.abspath(input_path),
+            ],
+            check=True,
+            timeout=600,
+            capture_output=True,
+        )
+        base = os.path.splitext(os.path.basename(input_path))[0]
+        produced = os.path.join(out_dir, base + "." + target_ext.split(":")[0])
+        if os.path.isfile(produced):
+            if os.path.abspath(produced) != os.path.abspath(output_path):
+                shutil.move(produced, output_path)
+            return os.path.getsize(output_path) > 0
+    except Exception:
+        traceback.print_exc(file=sys.stderr)
+    return False
+
+
+def _docx2pdf_windows_word(input_path: str, output_path: str) -> bool:
+    if sys.platform != "win32":
+        return False
+    try:
+        import comtypes.client  # type: ignore
+    except ImportError:
+        try:
+            from docx2pdf import convert as d2p_convert  # type: ignore
+            d2p_convert(input_path, output_path)
+            return os.path.isfile(output_path) and os.path.getsize(output_path) > 0
+        except Exception:
+            return False
+
+    word = None
+    try:
+        word = comtypes.client.CreateObject("Word.Application")
+        word.Visible = False
+        doc = word.Documents.Open(os.path.abspath(input_path), ReadOnly=True)
+        doc.ExportAsFixedFormat(os.path.abspath(output_path), 17)  # wdExportFormatPDF
+        doc.Close(False)
+        return os.path.isfile(output_path) and os.path.getsize(output_path) > 0
+    except Exception:
+        traceback.print_exc(file=sys.stderr)
+        return False
+    finally:
+        if word is not None:
+            try:
+                word.Quit()
+            except Exception:
+                pass
+
+
+def docx_to_pdf(input_path: str, output_path: str) -> None:
+    if _libreoffice_convert(input_path, output_path, _LO_WRITER_PDF):
+        return
+    if _libreoffice_convert(input_path, output_path, "pdf:writer_pdf_Export"):
+        return
+    if _docx2pdf_windows_word(input_path, output_path):
+        return
+    raise RuntimeError(
+        "DOCX to PDF failed. Install LibreOffice on the server for print-accurate conversion."
+    )
+
+
+def xlsx_to_pdf(input_path: str, output_path: str) -> None:
+    if _libreoffice_convert(input_path, output_path, _LO_CALC_PDF):
+        return
+    if _libreoffice_convert(input_path, output_path, "pdf:calc_pdf_Export"):
+        return
+    raise RuntimeError(
+        "Excel to PDF failed. Install LibreOffice on the server for print-accurate conversion."
+    )
+
+
+def _style_table_sheet(ws, row_count: int, col_count: int) -> None:
+    """Apply borders and header styling like Acrobat export."""
+    try:
+        from openpyxl.styles import Border, Font, PatternFill, Side
+    except ImportError:
+        return
+
+    thin = Side(style="thin", color="000000")
+    border = Border(left=thin, right=thin, top=thin, bottom=thin)
+    header_fill = PatternFill("solid", fgColor="E8EEF4")
+
+    for r in range(1, row_count + 1):
+        for c in range(1, col_count + 1):
+            cell = ws.cell(row=r, column=c)
+            cell.border = border
+            if r == 1:
+                cell.font = Font(bold=True)
+                cell.fill = header_fill
+
+    for c in range(1, col_count + 1):
+        max_len = 0
+        for r in range(1, row_count + 1):
+            val = ws.cell(row=r, column=c).value
+            if val is not None:
+                max_len = max(max_len, len(str(val)))
+        ws.column_dimensions[ws.cell(row=1, column=c).column_letter].width = min(max(max_len + 2, 10), 48)
+
+    if row_count > 1:
+        ws.freeze_panes = "A2"
+
+
+def pdf_to_xlsx(input_path: str, output_path: str) -> None:
+    """Extract tables + text into structured XLSX (pdfplumber + openpyxl)."""
+    try:
+        from openpyxl import Workbook
+    except ImportError as exc:
+        raise RuntimeError("openpyxl is required: pip install openpyxl") from exc
+
+    from table_extractor import extract_tables
+
+    wb = Workbook()
+    wb.remove(wb.active)
+
+    tables = extract_tables(input_path)
+    if tables:
+        for idx, table in enumerate(tables):
+            name = f"Table_p{table.page_num + 1}_{idx + 1}"[:31]
+            ws = wb.create_sheet(title=name)
+            row_count = len(table.rows)
+            col_count = max((len(r) for r in table.rows), default=0)
+            for r_idx, row in enumerate(table.rows, start=1):
+                for c_idx in range(1, col_count + 1):
+                    val = row[c_idx - 1] if c_idx - 1 < len(row) else ""
+                    ws.cell(row=r_idx, column=c_idx, value=val or "")
+            _style_table_sheet(ws, row_count, col_count)
+
+    doc = fitz.open(input_path)
+    text_ws = wb.create_sheet(title="Text_by_page", index=0)
+    text_ws.append(["Page", "Line", "Content"])
+    for page_num, page in enumerate(doc):
+        blocks = page.get_text("blocks", sort=True)
+        line_num = 0
+        for block in blocks:
+            if len(block) < 7 or block[6] != 0:
+                continue
+            for line in (block[4] or "").splitlines():
+                if line.strip():
+                    line_num += 1
+                    text_ws.append([page_num + 1, line_num, line.strip()])
+    doc.close()
+    _style_table_sheet(text_ws, text_ws.max_row, 3)
+
+    if len(wb.sheetnames) == 0:
+        ws = wb.create_sheet("Sheet1")
+        ws.append(["No extractable content"])
+
+    os.makedirs(os.path.dirname(os.path.abspath(output_path)) or ".", exist_ok=True)
+    wb.save(output_path)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Office file converter")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    for cmd in ("docx2pdf", "xlsx2pdf", "pdf2xlsx"):
+        p = sub.add_parser(cmd)
+        p.add_argument("input_path")
+        p.add_argument("output_path")
+
+    args = parser.parse_args()
+    try:
+        if args.command == "docx2pdf":
+            docx_to_pdf(args.input_path, args.output_path)
+        elif args.command == "xlsx2pdf":
+            xlsx_to_pdf(args.input_path, args.output_path)
+        elif args.command == "pdf2xlsx":
+            pdf_to_xlsx(args.input_path, args.output_path)
+        print(args.output_path)
+        return 0
+    except Exception as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

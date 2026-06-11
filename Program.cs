@@ -50,6 +50,14 @@ public partial class Program
             };
         });
         builder.Services.AddScoped<PdfConversionService>();
+        builder.Services.AddScoped<PdfToDocxProcessor>();
+        builder.Services.AddScoped<PdfToDocxJobService>();
+        builder.Services.AddScoped<PdfOfficeProcessor>();
+        builder.Services.AddScoped<PdfOfficeJobService>();
+        builder.Services.AddScoped<PdfTextProcessor>();
+        builder.Services.AddScoped<ratpdf.Services.PdfTools.PdfToolsAccessService>();
+        builder.Services.AddSingleton<IPdfEditSessionStore, PdfEditSessionStore>();
+        builder.Services.AddScoped<PdfEditProcessor>();
         builder.Services.AddScoped<LayoutEngineProcessor>();
         builder.Services.AddScoped<HtmlReconstructionService>();
         builder.Services.AddSingleton<PayslipPdfService>();
@@ -72,16 +80,19 @@ public partial class Program
         //{
         //    options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB
         //});
+        const long maxUploadBytes = ratpdf.Constants.PdfToolLimits.MaxPremiumFileSizeBytes
+            * ratpdf.Constants.PdfToolLimits.MaxBatchFiles;
+
         builder.Services.Configure<FormOptions>(o =>
         {
-            o.MultipartBodyLengthLimit = 1_073_741_824; 
+            o.MultipartBodyLengthLimit = maxUploadBytes;
         });
 
         builder.WebHost.ConfigureKestrel(k =>
         {
-            k.Limits.MaxRequestBodySize = 1_073_741_824; 
-            k.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(30);
-            k.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(30);
+            k.Limits.MaxRequestBodySize = maxUploadBytes;
+            k.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(60);
+            k.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(60);
         });
         builder.Services.AddSession();
         builder.Services.AddMemoryCache();
@@ -117,10 +128,6 @@ public partial class Program
         builder.Services.AddSingleton<Organization>();
         builder.Services.AddScoped<ILogoStorageService, AzureLogoStorageService>();
         builder.Services.AddScoped<PdfCompressionService>();
-        builder.WebHost.ConfigureKestrel(options =>
-        {
-            options.Limits.MaxRequestBodySize = 1024L * 1024 * 1024; // 1 GB
-        });
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -162,7 +169,7 @@ public partial class Program
         {
             if (context.Request.ContentLength.HasValue)
             {
-                const long maxBytes = 1024L * 1024 * 1024; // 50 MB
+                const long maxBytes = ratpdf.Constants.PdfToolLimits.MaxUploadRequestBytes;
 
                 if (context.Request.ContentLength.Value > maxBytes)
                 {

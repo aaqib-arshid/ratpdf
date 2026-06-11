@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Add Watermark To PDF Online Free";
     ViewData["Description"] = "Add Watermark to PDF online for free. Fast and secure Water mark tool.";
+    ViewData["PdfToolId"] = "watermark";
 }
 
 <div class="container py-5 d-flex justify-content-center align-items-start">
@@ -9,7 +10,8 @@
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
             <h2 class="fw-bold mb-3">Add Watermark</h2>
-            <p class="text-muted mb-4">Upload a PDF and add a text watermark to all pages.</p>
+            <p class="text-muted mb-2">Upload a PDF and add a text watermark to all pages.</p>
+            @await Html.PartialAsync("_PdfToolUsageBadge")
 
             @if (!ViewData.ModelState.IsValid)
             {
@@ -21,13 +23,15 @@
                 </div>
             }
 
-            <form asp-action="Watermark" method="post" enctype="multipart/form-data" id="watermarkForm">
+            <form asp-action="Watermark" method="post" enctype="multipart/form-data" id="watermarkForm" data-pdf-tool="watermark">
                 <div class="mb-3">
                     <input type="file" name="file" class="form-control" accept="application/pdf">
                 </div>
                 <div class="mb-3">
                     <input type="text" name="watermarkText" class="form-control" placeholder="Watermark Text">
                 </div>
+                <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
+                @await Html.PartialAsync("_PdfProgressBar")
                 <button type="submit" class="btn btn-primary w-100">
                     <i class="bi bi-droplet-half me-2"></i> Add Watermark
                 </button>
@@ -280,13 +284,7 @@
     <script>
          $('#watermarkForm').on('submit', function (e) {
          e.preventDefault();
-         showLoader('Getting Ready...');
-         setTimeout(function () {
-                 showLoader('Processing...');;
-         }, 3000);
-         setTimeout(function () {
-                submitWithLoader('watermarkForm', 'Downloading...');
-         }, 5000);
+            submitWithLoader('watermarkForm', 'Applying watermark…', 'watermarked.pdf');
         });
     </script>
 }

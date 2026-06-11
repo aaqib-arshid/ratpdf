@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Convert PDF to Text Online Free";
     ViewData["Description"] = "Convert PDF to TEXT online for free. Fast and secure PDF to TEXT converter.";
+    ViewData["PdfToolId"] = "pdftotext";
 }
 
 <div class="container py-5 d-flex justify-content-center align-items-start">
@@ -9,7 +10,8 @@
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
             <h2 class="fw-bold mb-3">PDF to Text</h2>
-            <p class="text-muted mb-4">Upload a PDF file to extract all text content into a plain text file.</p>
+            <p class="text-muted mb-2">Upload a PDF file to extract all text content into a plain text file.</p>
+            @await Html.PartialAsync("_PdfToolUsageBadge")
 
             @if (!ViewData.ModelState.IsValid)
             {
@@ -21,7 +23,7 @@
                 </div>
             }
 
-            <form asp-action="PdfToText" method="post" enctype="multipart/form-data" id="pdfToTextForm">
+            <form asp-action="PdfToText" method="post" enctype="multipart/form-data" id="pdfToTextForm" data-pdf-tool="pdftotext">
                 <div class="mb-3">
                     <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
                         <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
@@ -32,6 +34,8 @@
 
                 <div id="filePreview" class="text-muted mb-3"></div>
 
+                <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
+                @await Html.PartialAsync("_PdfProgressBar")
                 <button type="submit" class="btn btn-primary btn-lg w-100">
                     <i class="bi bi-file-earmark-text me-2"></i> Extract Text
                 </button>
@@ -316,13 +320,7 @@
 
          $('#pdfToTextForm').on('submit', function (e) {
          e.preventDefault();
-         showLoader('Getting Ready...');
-         setTimeout(function () {
-                 showLoader('Processing...');;
-         }, 3000);
-         setTimeout(function () {
-                submitWithLoader('pdfToTextForm', 'Downloading...');
-         }, 5000);
+            submitWithLoader('pdfToTextForm', 'Extracting text…', 'extracted.txt');
         });
     </script>
 }

@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Sign PDF with your Name online free";
     ViewData["Description"] = "Sign PDF online for free. Fast and secure PDF Signing tool.";
+    ViewData["PdfToolId"] = "signpdf";
 }
 
 <div class="container py-5 d-flex justify-content-center align-items-start">
@@ -8,7 +9,8 @@
         <div class="card-body text-center">
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
             <h2 class="fw-bold mb-3">Sign PDF with Your Name</h2>
-            <p class="text-muted mb-4">Upload a PDF and enter your name to sign it in italic.</p>
+            <p class="text-muted mb-2">Upload a PDF and enter your name to sign it in italic.</p>
+            @await Html.PartialAsync("_PdfToolUsageBadge")
 
             @if (!ViewData.ModelState.IsValid)
             {
@@ -20,7 +22,7 @@
                 </div>
             }
 
-            <form asp-action="SignText" method="post" enctype="multipart/form-data" id="signPdfForm">
+            <form asp-action="SignText" method="post" enctype="multipart/form-data" id="signPdfForm" data-pdf-tool="signpdf">
                 <div class="mb-3">
                     <input type="file" name="file" class="form-control form-control-lg" accept="application/pdf">
                 </div>
@@ -29,6 +31,8 @@
                     <input type="text" name="name" class="form-control form-control-lg" placeholder="Enter your name for signature">
                 </div>
 
+                <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
+                @await Html.PartialAsync("_PdfProgressBar")
                 <button type="submit" class="btn btn-primary btn-lg w-100">
                     <i class="bi bi-pencil-square me-2"></i> Sign PDF
                 </button>
@@ -279,13 +283,7 @@
     <script>
         $('#signPdfForm').on('submit', function (e) {
          e.preventDefault();
-         showLoader('Getting Ready...');
-         setTimeout(function () {
-                 showLoader('Processing...');;
-         }, 3000);
-         setTimeout(function () {
-                submitWithLoader('signPdfForm', 'Downloading...');
-         }, 5000);
+            submitWithLoader('signPdfForm', 'Signing…', 'signed.pdf');
         });
   </script>
 }

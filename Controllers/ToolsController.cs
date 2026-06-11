@@ -21,7 +21,7 @@ namespace ratpdf.Controllers
         private readonly BlobContainerClient _blobContainer;
         private readonly QueueClient _queueClient;
         private readonly AtsEngine _atsEngine;
-        private readonly PdfConversionService _pdf = new();
+        private readonly PdfConversionService _pdf;
         private readonly SearchConsoleService _gsc;
         private readonly DecayCalculatorService _calculator;
         private readonly GoogleOAuthService _googleOAuth;
@@ -29,6 +29,7 @@ namespace ratpdf.Controllers
         private readonly RatPDFDbContext _context;
         private readonly IConfiguration _configuration;
         public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine,
+            PdfConversionService pdfConversionService,
             SearchConsoleService gsc, DecayCalculatorService calculator,
             GoogleOAuthService googleOAuth, RazorpayService razorpayService,
             RatPDFDbContext context, IConfiguration configuration)
@@ -37,6 +38,7 @@ namespace ratpdf.Controllers
             _queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdfai-queue");
             _httpClient = httpClientFactory.CreateClient();
             _atsEngine = atsEngine;
+            _pdf = pdfConversionService;
             _gsc = gsc;
             _calculator = calculator;
             _googleOAuth = googleOAuth;

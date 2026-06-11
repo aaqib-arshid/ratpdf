@@ -1,191 +1,97 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
-    ViewData["Description"] =  "Read the Privacy Policy of RatPDF. Our browser-based tools process files locally and we do not store, collect, or retain your uploaded documents or personal data.";
+    ViewData["Title"] = "Privacy Policy — RatPDF";
+    ViewData["Description"] = "How RatPDF handles uploaded files, account data, cookies, and third-party services. Files are processed on secure servers and deleted after conversion.";
 }
 <head>
     <meta name="robots" content="index, follow">
 </head>
-<div class="card p-4">
 
-    <h1>Privacy Policy</h1>
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <h1 class="fw-bold mb-3">Privacy Policy</h1>
+        <p class="text-muted">Last updated: June 2025</p>
+        <p>
+            RatPDF ("we", "our", "the service") operates ratpdf.com and related subdomains.
+            This policy explains what information we collect, how uploaded files are handled,
+            and your choices.
+        </p>
 
-    <p>
-        Your privacy is extremely important to us. This Privacy Policy explains how <strong>RatPDF</strong>
-        ("we", "our", or "the website") handles information when you use our online PDF tools.
-    </p>
+        <h2 class="h4 fw-semibold mt-4">1. Files you upload</h2>
+        <p>
+            When you use PDF conversion, compression, merge, or similar server-side tools,
+            your file is transmitted over <strong>HTTPS</strong> to our application servers
+            (hosted on Microsoft Azure).
+        </p>
+        <ul>
+            <li>Files are written to temporary server storage only for the duration of processing.</li>
+            <li>Completed outputs may be stored in private Azure Blob Storage until you download them or they expire.</li>
+            <li>Automated cleanup jobs remove old blobs and job metadata on a schedule.</li>
+            <li>We do not manually review document contents except when required to investigate abuse or technical failures you report.</li>
+        </ul>
+        <p>
+            Some lightweight utilities (formatters, counters, client-side previews) may process data entirely
+            in your browser without uploading the file. Each tool page describes its behaviour.
+        </p>
 
-    <p>
-        Our services are designed with privacy in mind. All file processing is performed directly in your
-        browser and <strong>we do not store, collect, or retain your files on our servers</strong>.
-    </p>
+        <h2 class="h4 fw-semibold mt-4">2. Account &amp; billing information</h2>
+        <p>If you create an account or subscribe to Pro:</p>
+        <ul>
+            <li>We store your email address and authentication identifiers.</li>
+            <li>Payments are processed by <strong>Razorpay</strong>; we do not store full card numbers on our servers.</li>
+            <li>Subscription status and invoice references are kept for billing support and tax records.</li>
+        </ul>
 
-    <hr>
+        <h2 class="h4 fw-semibold mt-4">3. Technical logs</h2>
+        <p>Like most websites, we collect limited technical data:</p>
+        <ul>
+            <li>IP address, browser type, and referring URL (standard web server logs)</li>
+            <li>Anonymous usage counters (tool name, success/failure, file size bucket) to monitor capacity</li>
+            <li>Error traces without document content when a conversion fails</li>
+        </ul>
+        <p>Logs are retained for a short period for security and debugging, then rotated.</p>
 
-    <h3>1. File Processing & Storage</h3>
+        <h2 class="h4 fw-semibold mt-4">4. Cookies &amp; advertising</h2>
+        <p>We use cookies for:</p>
+        <ul>
+            <li>Session authentication (signed-in users)</li>
+            <li>Remembering daily free-tier usage limits</li>
+            <li>Analytics and advertising partners such as <strong>Google AdSense</strong></li>
+        </ul>
+        <p>
+            Third-party ad networks may set their own cookies to serve and measure ads.
+            You can control cookies through your browser settings and, where offered,
+            <a href="https://adssettings.google.com" rel="noopener noreferrer" target="_blank">Google Ads Settings</a>.
+        </p>
 
-    <p>
-        RatPDF provides browser-based tools for processing PDF files. When you upload a file to use our tools:
-    </p>
+        <h2 class="h4 fw-semibold mt-4">5. Data sharing</h2>
+        <p>We do <strong>not</strong> sell personal information. We share data only with:</p>
+        <ul>
+            <li>Infrastructure providers (Microsoft Azure) under data-processing agreements</li>
+            <li>Payment processor (Razorpay) to complete transactions you initiate</li>
+            <li>Law enforcement when legally compelled and narrowly scoped</li>
+        </ul>
 
-    <ul>
-        <li>Your files are processed directly within your browser.</li>
-        <li>The file processing occurs temporarily in your device memory.</li>
-        <li>Processed files are immediately made available for download.</li>
-        <li>Once the process is complete, the data is automatically removed from memory.</li>
-    </ul>
+        <h2 class="h4 fw-semibold mt-4">6. Security measures</h2>
+        <ul>
+            <li>TLS encryption in transit</li>
+            <li>Private blob containers (no public listing of uploads)</li>
+            <li>Least-privilege access to production systems</li>
+            <li>Regular dependency updates for conversion engines</li>
+        </ul>
+        <p>No online service can guarantee absolute security; avoid uploading highly classified material.</p>
 
-    <p>
-        <strong>We do not upload, store, copy, or retain any files on our servers.</strong>
-    </p>
+        <h2 class="h4 fw-semibold mt-4">7. Your rights (GDPR / CCPA)</h2>
+        <p>Depending on your location you may request access, correction, or deletion of personal data we hold
+        (account email, billing records). Contact us via the <a href="/Home/Contact">contact page</a>.
+        Because uploaded PDFs are ephemeral, deletion usually occurs automatically within hours.</p>
 
-    <p>
-        Our system does <strong>not store files in any server folders, databases, or storage systems.</strong>
-        We do not keep backups, logs, or archives of user documents.
-    </p>
+        <h2 class="h4 fw-semibold mt-4">8. Children's privacy</h2>
+        <p>The service is not directed at children under 13. We do not knowingly collect data from minors.</p>
 
-    <p>
-        In simple terms:
-        <strong>0% of your files are stored by us — not temporarily, not partially, and not permanently.</strong>
-    </p>
+        <h2 class="h4 fw-semibold mt-4">9. Changes</h2>
+        <p>We may update this policy when we add tools or change hosting practices. Material changes will be posted on this page.</p>
 
-    <hr>
-
-    <h3>2. No File Database or Document Storage</h3>
-
-    <p>
-        RatPDF does not maintain any database containing user documents or uploaded files.
-        Our website is designed strictly as a processing interface that allows users to perform file operations
-        such as:
-    </p>
-
-    <ul>
-        <li>PDF conversion</li>
-        <li>PDF compression</li>
-        <li>PDF merging</li>
-        <li>PDF splitting</li>
-        <li>PDF editing tools</li>
-    </ul>
-
-    <p>
-        All operations occur on the user's device, ensuring complete privacy and control over your files.
-    </p>
-
-    <hr>
-
-    <h3>3. Personal Information</h3>
-
-    <p>
-        We do <strong>not collect personal information from uploaded documents</strong> because files are never transmitted to our servers.
-    </p>
-
-    <p>
-        We may only collect limited technical information necessary for maintaining website performance, such as:
-    </p>
-
-    <ul>
-        <li>Anonymous usage statistics</li>
-        <li>Device or browser type</li>
-        <li>General traffic analytics</li>
-    </ul>
-
-    <p>
-        This information is used solely to improve the functionality and performance of the website.
-    </p>
-
-    <hr>
-
-    <h3>4. Cookies & Advertising</h3>
-
-    <p>
-        Our website may use cookies or similar technologies to improve the browsing experience.
-    </p>
-
-    <p>
-        We may also use third-party services such as advertising networks (for example, Google AdSense)
-        that may use cookies to display relevant advertisements to users.
-    </p>
-
-    <p>
-        These third-party providers may collect anonymous data in accordance with their own privacy policies.
-    </p>
-
-    <hr>
-
-    <h3>5. Data Security</h3>
-
-    <p>
-        Security and privacy are core principles of our platform. Our security approach includes:
-    </p>
-
-    <ul>
-        <li>Local browser-based file processing</li>
-        <li>No file uploads to servers</li>
-        <li>No database storage of documents</li>
-        <li>HTTPS encrypted website connections</li>
-        <li>Secure content delivery</li>
-    </ul>
-
-    <p>
-        Because files never leave your device, the risk of server-side data exposure is eliminated.
-    </p>
-
-    <hr>
-
-    <h3>6. Compliance with Privacy Regulations</h3>
-
-    <p>
-        RatPDF is designed with modern privacy standards in mind and aims to comply with applicable
-        privacy frameworks including:
-    </p>
-
-    <ul>
-        <li>General Data Protection Regulation (GDPR)</li>
-        <li>California Consumer Privacy Act (CCPA)</li>
-        <li>General online privacy and transparency standards</li>
-    </ul>
-
-    <p>
-        Since we do not store or process personal files on our servers, users maintain full control
-        over their data at all times.
-    </p>
-
-    <hr>
-
-    <h3>7. Third-Party Links</h3>
-
-    <p>
-        Our website may contain links to third-party websites or services. We are not responsible
-        for the privacy practices of those external sites. We encourage users to review their
-        privacy policies before sharing any information.
-    </p>
-
-    <hr>
-
-    <h3>8. Children's Privacy</h3>
-
-    <p>
-        Our services are not intended for children under the age of 13. We do not knowingly collect
-        personal information from children.
-    </p>
-
-    <hr>
-
-    <h3>9. Updates to This Privacy Policy</h3>
-
-    <p>
-        We may update this Privacy Policy from time to time to reflect improvements to our services
-        or regulatory requirements. Updates will be posted on this page with the revised date.
-    </p>
-
-    <hr>
-
-    <h3>10. Contact Us</h3>
-
-    <p>
-        If you have any questions regarding this Privacy Policy or our privacy practices,
-        you may contact us through the website contact page.
-    </p>
-
-    <p><strong>Last Updated:</strong> @DateTime.Now.Year</p>
-
-</div>
+        <h2 class="h4 fw-semibold mt-4">10. Contact</h2>
+        <p>Questions about privacy: <a href="/Home/Contact">Contact RatPDF</a>.</p>
+    </div>
+</article>

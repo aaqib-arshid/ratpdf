@@ -1,0 +1,32 @@
+@using ratpdf.Constants
+@using ratpdf.Content
+@{
+    var current = Context.Request.Path.Value ?? "";
+    var related = PdfToolSeo.AllTools.Where(t => !current.Equals(t.Url, StringComparison.OrdinalIgnoreCase)).Take(8);
+    var toolGuide = ContentLibrary.GetGuideForToolUrl(current);
+}
+<nav class="container py-4" aria-label="Related PDF tools">
+    <div class="card border-0 shadow-sm" style="border-radius:12px;">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">More free PDF tools on @PdfToolSeo.SiteName</h2>
+            @if (toolGuide != null)
+            {
+                <p class="small mb-3"><i class="bi bi-journal-text text-primary me-1"></i><a href="@toolGuide.Path" class="fw-semibold">Read the full guide: @toolGuide.Title</a></p>
+            }
+            <div class="row g-2">
+                @foreach (var tool in related)
+                {
+                    <div class="col-6 col-md-3">
+                        <a href="@tool.Url" class="text-decoration-none small d-block p-2 rounded bg-light hover-shadow" title="@tool.Keyword">
+                            @tool.Name
+                        </a>
+                    </div>
+                }
+            </div>
+            <p class="small text-muted mt-3 mb-0">
+                <a href="/Subscription/Plans">View Pro plans</a> — unlimited tools, 4 GB uploads, high-fidelity PDF to Word &amp; Excel.
+                · <a href="/Invoice/Create">Free invoice generator</a>
+            </p>
+        </div>
+    </div>
+</nav>

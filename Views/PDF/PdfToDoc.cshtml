@@ -1,326 +1,271 @@
-﻿@{
-    ViewData["Title"] = "Convert PDF to DOCX Online Free";
-    ViewData["Description"] = "Convert PDF to DOCX online for free. Fast and secure PDF to DOCX converter.";
-}
+﻿@using ratpdf.Constants
 
-<div class="container py-5 d-flex justify-content-center align-items-start">
-    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
-        <div class="card-body text-center">
+@{
 
-            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
-            <h2 class="fw-bold mb-3">PDF to DOCX</h2>
-            <p class="text-muted mb-4">Upload a PDF file to convert all its text content into a Word document.</p>
+    ViewData["Title"] = "PDF to Word Converter Online Free — High Fidelity DOCX | RatPDF";
 
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger text-start" role="alert">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <div>@error.ErrorMessage</div>
-                    }
-                </div>
-            }
+    ViewData["Description"] = "Convert PDF to Word (DOCX) online free. Preserve tables, logos, borders & layout like Adobe Acrobat. Scanned PDF support. 200 MB free, 4 GB Pro.";
 
-            <form asp-action="PdfToDoc" method="post" enctype="multipart/form-data" id="pdfToDocForm">
-                <div class="mb-3">
-                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
-                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
-                        <p class="mb-0 text-muted">Drag & drop a PDF here or click to select</p>
-                        <input type="file" name="file" class="form-control form-control-lg d-none" id="fileInput" accept="application/pdf">
-                    </div>
-                </div>
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/PDF/PdfToDoc");
 
-                <div id="filePreview" class="text-muted mb-3"></div>
+    ViewData["PdfToolId"] = "pdftodoc";
 
-                <button type="submit" class="btn btn-primary btn-lg w-100">
-                    <i class="bi bi-file-earmark-text me-2"></i> Convert to DOCX
-                </button>
-            </form>
-        </div>
-    </div>
-    </div>
-    <section class="related-tools">
-        <h3>Related Tools</h3>
-        <ul>
-            <li><a href="/PDF/Compress">Compress PDF</a></li>
-        </ul>
-    </section>
-<div class="container py-5">
-    <div class="card shadow-sm p-4" style="border-radius: 12px;">
-        <h2 class="fw-bold mb-3">How to Convert PDF to DOCX Online</h2>
+    ViewData["ToolTitle"] = "PDF to Word";
 
-        <p>
-            Working with PDF files can be restrictive, especially when you need to edit, update, or reuse content. Our <strong>PDF to DOCX converter online</strong> allows you to transform your PDF files into fully editable Microsoft Word documents quickly, safely, and for free. The tool extracts text, images, and formatting accurately, giving you a DOCX file ready for editing, copying, or sharing.
-        </p>
+    ViewData["ToolSubtitle"] = "Tables · logos · borders · scanned PDFs · multi-column layouts";
 
-        <h2 class="fw-semibold mt-5">Introduction</h2>
+    ViewData["AcceptHint"] = "PDF files";
 
-        <p>
-            PDF is a widely used file format for sharing reports, contracts, forms, and presentations because it preserves formatting across devices. However, editing a PDF directly can be difficult, often requiring specialized software. Converting a PDF to DOCX format makes it fully editable in Microsoft Word or any other Word-compatible editor.
-        </p>
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
 
-        <p>
-            Our online converter provides a hassle-free solution. There is no need to install desktop software, register for an account, or worry about compatibility issues. It works across Windows, macOS, Android, and iOS, ensuring you can convert PDFs to DOCX anytime, anywhere.
-        </p>
+    ViewData["Multiple"] = true;
 
-        <p>
-            Whether you are a student updating an assignment, a professional editing contracts, or anyone who wants to reuse content from a PDF, this tool simplifies the process and saves time.
-        </p>
+    ViewData["BtnIcon"] = "bi-file-earmark-word";
 
-        <h2 class="fw-semibold mt-5">Step-by-Step Guide to Convert PDF to DOCX</h2>
+    ViewData["BtnLabel"] = "Convert to Word";
 
-        <p>
-            Converting your PDF files to DOCX format is simple and can be done in minutes. Here’s a detailed step-by-step guide:
-        </p>
+    ViewData["SeoH1"] = "PDF to Word Converter — Keep Tables, Logos & Exact Layout";
 
-        <ol class="mb-4">
-            <li>
-                <strong>Upload your PDF file:</strong> Click the upload area or drag and drop your PDF into the designated box. You can upload files from your device, tablet, or smartphone.
-            </li>
-            <li>
-                <strong>Click “Convert to DOCX”:</strong> Once your file is uploaded, start the conversion process by clicking the convert button. The tool extracts text, images, and formatting accurately, ensuring a clean DOCX file.
-            </li>
-            <li>
-                <strong>Download the DOCX file:</strong> After processing, your Word document will be ready for download instantly. Open it in Microsoft Word, Google Docs, or any Word-compatible editor to make changes or reuse the content.
-            </li>
-        </ol>
+    ViewData["SeoLead"] = "RatPDF converts PDF files to editable Microsoft Word documents while preserving the visual structure businesses depend on: branded headers, data tables with borders, charts, and multi-column reports.";
 
-        <p>
-            The conversion process is fully online, fast, and requires no software installation, making it a convenient solution for anyone needing to edit PDF content.
-        </p>
+    var proDisplay = SubscriptionPricing.FormatProDisplay();
 
-        <h2 class="fw-semibold mt-5">Benefits of Using Our PDF to DOCX Converter</h2>
+    ViewData["SeoSections"] = $@"
 
-        <p>
-            Using our online converter offers multiple benefits for individuals and businesses. Here’s why it stands out:
-        </p>
+<h2 class='h4 fw-semibold mt-4'>When you need more than copy-paste</h2>
 
-        <ul>
-            <li><strong>Free and accessible:</strong> Convert PDF files to DOCX at no cost, without any subscription or registration.</li>
-            <li><strong>Accurate text conversion:</strong> The tool extracts text and preserves formatting, images, and layout, making the Word document ready to edit immediately.</li>
-            <li><strong>Privacy and security:</strong> All files are processed securely online and deleted from our servers after conversion to ensure confidentiality.</li>
-            <li><strong>Cross-device support:</strong> Works on Windows, Mac, Android, and iOS. Convert PDFs from your laptop, tablet, or mobile device seamlessly.</li>
-            <li><strong>No software installation:</strong> No need to download large applications; the entire process is browser-based.</li>
-            <li><strong>Time-saving:</strong> Convert PDFs to DOCX in seconds, which is ideal for professionals and students needing quick results.</li>
-        </ul>
+<p>Most free converters dump plain text into a DOCX file and destroy your document. RatPDF runs a <strong>multi-engine pipeline</strong> designed for real-world PDFs:</p>
 
-        <p class="mt-3">
-            By converting PDFs to Word, you gain flexibility in editing, reusing, and updating content without retyping or manual formatting.
-        </p>
+<ol>
 
-        <h2 class="fw-semibold mt-5">Use Cases for Converting PDF to DOCX</h2>
+<li><strong>pdf2docx</strong> — reconstructs editable text, tables, and embedded images.</li>
 
-        <p>
-            Our PDF to DOCX converter is suitable for a wide range of scenarios:
-        </p>
+<li><strong>Page-render fallback</strong> — embeds each page at 200 DPI when logos or complex graphics would otherwise break (common with scanned brochures and marketing PDFs).</li>
 
-        <h4 class="fw-semibold mt-3">1. Editing Reports and Assignments</h4>
-        <p>
-            Students and professionals often receive or create PDFs that require updates. Converting them to DOCX allows easy editing of text, images, and tables without starting from scratch.
-        </p>
+<li><strong>OCR</strong> — extracts text from scanned pages when no text layer exists.</li>
 
-        <h4 class="fw-semibold mt-3">2. Updating Contracts and Legal Documents</h4>
-        <p>
-            Legal professionals can convert PDFs of contracts, agreements, or case files to Word documents for edits or annotations. This speeds up document preparation while maintaining formatting accuracy.
-        </p>
+<li><strong>LibreOffice</strong> — additional pass on servers where it is installed.</li>
 
-        <h4 class="fw-semibold mt-3">3. Reusing Content for Presentations</h4>
-        <p>
-            Marketing, HR, and administrative teams can extract content from PDFs to create presentations, newsletters, or internal documents without retyping the information.
-        </p>
+</ol>
 
-        <h4 class="fw-semibold mt-3">4. Converting Scanned PDFs</h4>
-        <p>
-            Many PDF documents are scanned images. Our tool extracts text accurately (using OCR technology where applicable), making it editable in Word format.
-        </p>
 
-        <h4 class="fw-semibold mt-3">5. Personal Use and Record Keeping</h4>
-        <p>
-            Convert personal PDFs such as resumes, letters, or travel itineraries into DOCX format to update or archive them efficiently. This allows easy organization and editing.
-        </p>
 
-        <h2 class="fw-semibold mt-5">Why Choose Our PDF to DOCX Converter?</h2>
+<h2 class='h4 fw-semibold mt-4'>Document types we handle well</h2>
 
-        <p>
-            While several PDF conversion tools exist, our online converter stands out for several reasons:
-        </p>
+<div class='row g-3 mt-2'>
 
-        <ul>
-            <li><strong>Reliable accuracy:</strong> Text, images, and formatting are preserved, ensuring the output DOCX file is ready for immediate use.</li>
-            <li><strong>User-friendly interface:</strong> Even beginners can convert PDF files without any technical knowledge.</li>
-            <li><strong>Fast and efficient:</strong> Large PDFs are converted quickly, saving you time.</li>
-            <li><strong>Privacy-focused:</strong> Files are deleted from servers after conversion to protect your data.</li>
-            <li><strong>Device independence:</strong> Access the tool from any browser on Windows, Mac, Android, or iOS.</li>
-        </ul>
+<div class='col-md-6'><div class='p-3 bg-light rounded-3 h-100'><strong>Invoices &amp; GST bills</strong><br><span class='text-muted small'>Line items, tax tables, company logos</span></div></div>
 
-        <p>
-            With continuous updates, our converter remains compatible with the latest PDF standards and Word formats, ensuring smooth performance every time.
-        </p>
+<div class='col-md-6'><div class='p-3 bg-light rounded-3 h-100'><strong>Contracts &amp; legal PDFs</strong><br><span class='text-muted small'>Numbered clauses, signature blocks</span></div></div>
 
-        <h2 class="fw-semibold mt-5">FAQ: Frequently Asked Questions About PDF to DOCX Conversion</h2>
+<div class='col-md-6'><div class='p-3 bg-light rounded-3 h-100'><strong>Marketing brochures</strong><br><span class='text-muted small'>Full-bleed images, brand colors</span></div></div>
 
-        <h4 class="fw-semibold mt-3">Q1: Is this PDF to Word converter free?</h4>
-        <p>
-            Yes, our online PDF to DOCX converter is completely free. There are no hidden fees or subscriptions required.
-        </p>
+<div class='col-md-6'><div class='p-3 bg-light rounded-3 h-100'><strong>Scanned office documents</strong><br><span class='text-muted small'>OCR + high-res page images</span></div></div>
 
-        <h4 class="fw-semibold mt-3">Q2: Do I need an account to use the tool?</h4>
-        <p>
-            No registration or account is necessary. Simply upload your PDF and download the converted DOCX file instantly.
-        </p>
-
-        <h4 class="fw-semibold mt-3">Q3: Can I convert PDFs on my mobile device?</h4>
-        <p>
-            Absolutely. The tool is fully responsive and works on smartphones and tablets with Android or iOS.
-        </p>
-
-        <h4 class="fw-semibold mt-3">Q4: Will the formatting be preserved after conversion?</h4>
-        <p>
-            Yes. Text, images, tables, and layout are retained in the converted DOCX file for easy editing.
-        </p>
-
-        <h4 class="fw-semibold mt-3">Q5: Can I convert scanned PDFs?</h4>
-        <p>
-            Yes, our tool can convert scanned or image-based PDFs into editable Word documents using OCR technology where applicable.
-        </p>
-
-        <h4 class="fw-semibold mt-3">Q6: How secure is my file during conversion?</h4>
-        <p>
-            Your files are uploaded securely and deleted from our servers after processing to ensure privacy and confidentiality.
-        </p>
-
-        <h4 class="fw-semibold mt-3">Q7: Can I convert multiple PDFs at once?</h4>
-        <p>
-            The tool supports converting multiple PDFs in separate sessions. Each file is processed individually for accuracy and speed.
-        </p>
-
-        <h4 class="fw-semibold mt-3">Q8: Do I need Microsoft Word to open the DOCX file?</h4>
-        <p>
-            No. You can open the converted DOCX file using Microsoft Word, Google Docs, LibreOffice, or any Word-compatible software.
-        </p>
-
-        <h2 class="fw-semibold mt-5">Conclusion</h2>
-
-        <p>
-            Converting PDFs to editable Word documents has never been easier. Our PDF to DOCX converter allows you to extract text, images, and formatting accurately, enabling effortless editing and reuse. The process is secure, fast, and completely free, with no software installation or registration required.
-        </p>
-
-        <p>
-            Whether for professional, academic, or personal use, this tool provides a reliable solution for making PDFs editable. Start converting your PDF files today and enjoy the flexibility of working with Word documents.
-        </p>
-
-        <p class="mt-3">
-            Upload your PDF, click convert, and download your editable DOCX file in seconds. Simplify your workflow and save time with our free PDF to Word converter.
-        </p>
-    </div>
 </div>
-@section Scripts {
+
+
+
+<h2 class='h4 fw-semibold mt-4'>RatPDF vs typical free converters</h2>
+
+<div class='table-responsive mt-2'>
+
+<table class='table table-bordered align-middle'>
+
+<thead class='table-light'><tr><th>Feature</th><th>RatPDF</th><th>Basic online tools</th></tr></thead>
+
+<tbody>
+
+<tr><td>Table borders preserved</td><td>Yes</td><td>Often lost</td></tr>
+
+<tr><td>Logos &amp; images</td><td>High-res embed</td><td>Missing or blurry</td></tr>
+
+<tr><td>Scanned PDFs</td><td>OCR + page render</td><td>Fails or empty</td></tr>
+
+<tr><td>File size limit</td><td>200 MB free / 4 GB Pro</td><td>Usually 10–50 MB</td></tr>
+
+<tr><td>Progress tracking</td><td>Real-time bar</td><td>None</td></tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+<h2 class='h4 fw-semibold mt-4'>Tips for best results</h2>
+
+<ul>
+
+<li>Use the <strong>original PDF</strong> (not a re-scanned photocopy) when possible.</li>
+
+<li>For password-protected files, unlock them before upload.</li>
+
+<li>Large image-heavy PDFs may produce a Word file with page images — visually identical to the PDF, ideal for printing and sharing.</li>
+
+<li>Need unlimited conversions? <a href='/Subscription/Plans'>Pro from {proDisplay}</a> — cancel anytime.</li>
+
+</ul>
+
+
+
+<h2 class='h4 fw-semibold mt-4'>Related tools</h2>
+
+<p>After converting, you may also need <a href='/PDF/DocToPdf'>Word to PDF</a>, <a href='/PDF/PdfToExcel'>PDF to Excel</a>, <a href='/PDF/Merge'>Merge PDF</a>, or <a href='/PDF/Compress'>Compress PDF</a>.</p>";
+
+}
+
+
+
+@await Html.PartialAsync("_PdfJobToolShell")
+
+@await Html.PartialAsync("_PdfToolInternalLinks")
+
+@await Html.PartialAsync("_PdfToolSeoArticle")
+
+
+
+@section Head {
+
 <script type="application/ld+json">
+
 {
+
   "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "PDF to Word Converter",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/PDF/PdfToDoc",
-  "description": "Convert PDF files to editable Word documents online quickly and safely for free.",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
-    <script type="application/ld+json">
+
+  "@@graph": [
+
+    {
+
+      "@@type": "WebApplication",
+
+      "name": "RatPDF PDF to Word Converter",
+
+      "url": "@PdfToolSeo.Canonical("/PDF/PdfToDoc")",
+
+      "applicationCategory": "BusinessApplication",
+
+      "operatingSystem": "Web",
+
+      "description": "@ViewData["Description"]",
+
+      "offers": { "@@type": "Offer", "price": "0", "priceCurrency": "USD" },
+
+      "featureList": "PDF to DOCX, table preservation, logo preservation, scanned PDF OCR"
+
+    },
+
+    {
+
+      "@@type": "FAQPage",
+
+      "mainEntity": [
+
         {
-          "@@context": "https://schema.org",
-          "@@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@@type": "Question",
-              "name": "How do I convert a PDF to DOCX online?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Upload your PDF file by dragging it into the upload area or selecting it from your device, click 'Convert to DOCX', and then download the Word file once the conversion is complete."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Is converting PDF to Word free?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Yes, our PDF to DOCX converter is completely free and does not require any registration or software installation."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Will the converted Word document be editable?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Yes, the converted DOCX file preserves the text content from your PDF, allowing you to edit, copy, and reuse it freely."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Is my PDF file safe when using this converter?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Yes, all files are handled securely and privately. Uploaded PDFs are not stored permanently and are deleted after conversion."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Which devices and operating systems are supported?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Our online converter works on any device with a browser, including Windows, Mac, Android, and iOS."
-              }
-            }
-          ]
-        }
-    </script>
-    <script>
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const filePreview = document.getElementById('filePreview');
 
-        function updatePreview() {
-            if (fileInput.files.length === 0) {
-                filePreview.textContent = '';
-                return;
-            }
-            filePreview.textContent = 'Selected file: ' + fileInput.files[0].name;
+          "@@type": "Question",
+
+          "name": "Why does my PDF to Word conversion lose logos or tables?",
+
+          "acceptedAnswer": {
+
+            "@@type": "Answer",
+
+            "text": "Basic converters only extract text. RatPDF uses pdf2docx plus a high-resolution page-image fallback so logos, borders, and tables stay intact."
+
+          }
+
+        },
+
+        {
+
+          "@@type": "Question",
+
+          "name": "Can RatPDF convert scanned PDF to Word?",
+
+          "acceptedAnswer": {
+
+            "@@type": "Answer",
+
+            "text": "Yes. Scanned PDFs are detected automatically. RatPDF uses OCR and page rendering to produce a usable Word document."
+
+          }
+
+        },
+
+        {
+
+          "@@type": "Question",
+
+          "name": "Is PDF to Word free on RatPDF?",
+
+          "acceptedAnswer": {
+
+            "@@type": "Answer",
+
+            "text": "Yes — 3 free conversions per day up to 200 MB. Pro subscribers get unlimited conversions and 4 GB file uploads."
+
+          }
+
         }
 
-        dropZone.addEventListener('click', () => fileInput.click());
+      ]
 
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-primary', 'bg-light');
-        });
+    }
 
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-primary', 'bg-light');
-        });
+  ]
 
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-primary', 'bg-light');
-            fileInput.files = e.dataTransfer.files;
-            updatePreview();
-        });
-
-        fileInput.addEventListener('change', updatePreview);
-
-         $('#pdfToDocForm').on('submit', function (e) {
-         e.preventDefault();
-         showLoader('Getting Ready...');
-         setTimeout(function () {
-                 showLoader('Processing...');;
-         }, 3000);
-         setTimeout(function () {
-                submitWithLoader('pdfToDocForm', 'Downloading...');
-         }, 5000);
-        });
-    </script>
 }
+
+</script>
+
+}
+
+
+
+@section Scripts {
+
+<script>
+
+PdfToolkit.initJobTool({
+
+    toolId: 'pdftodoc',
+
+    convertUrl: '/PDF/PdfToDoc/convert',
+
+    extensions: ['.pdf'],
+
+    typeLabel: 'PDF',
+
+    multiple: true,
+
+    defaultFileName: 'converted.docx',
+
+    dropZoneId: 'dropZone',
+
+    fileInputId: 'fileInput',
+
+    fileListId: 'fileList',
+
+    convertBtnId: 'convertBtn',
+
+    errorAreaId: 'errorArea',
+
+    progressAreaId: 'progressArea',
+
+    progressBarId: 'progressBar',
+
+    progressMsgId: 'progressMsg',
+
+    progressPctId: 'progressPct',
+
+    limitHintId: 'limitHint',
+
+});
+
+</script>
+
+}
+
+

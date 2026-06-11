@@ -1,0 +1,21 @@
+@using ratpdf.Constants
+@{
+    var canonical = ViewData["CanonicalUrl"] as string
+        ?? PdfToolSeo.Canonical(Context.Request.Path.Value ?? "/");
+    var title = ViewData["Title"] as string ?? "Free PDF Tools Online";
+    var description = ViewData["Description"] as string ?? "Free online PDF tools — merge, split, compress, convert PDF to Word, Excel, and more. Adobe-quality conversion with RatPDF.";
+    var ogImage = ViewData["OgImage"] as string ?? PdfToolSeo.DefaultOgImage;
+    var robots = ViewData["Robots"] as string ?? "index, follow, max-image-preview:large, max-snippet:-1";
+}
+<link rel="canonical" href="@canonical" />
+<meta name="robots" content="@robots" />
+<meta property="og:site_name" content="@PdfToolSeo.SiteName" />
+<meta property="og:title" content="@title" />
+<meta property="og:description" content="@description" />
+<meta property="og:url" content="@canonical" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="@ogImage" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="@title" />
+<meta name="twitter:description" content="@description" />
+<meta name="twitter:image" content="@ogImage" />

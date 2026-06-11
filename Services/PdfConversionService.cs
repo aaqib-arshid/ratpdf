@@ -20,6 +20,7 @@ using iText.Layout.Element;
 using iText.Layout.Properties;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf.IO;
+using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using System.Text;
@@ -32,17 +33,47 @@ namespace ratpdf.Services
 {
     public class PdfConversionService
     {
+        private readonly PdfToDocxProcessor _pdfToDocxProcessor;
+        private readonly PdfOfficeProcessor _pdfOfficeProcessor;
+        private readonly PdfTextProcessor _pdfTextProcessor;
+        private readonly ILogger<PdfConversionService> _logger;
+
+        public PdfConversionService(
+            PdfToDocxProcessor pdfToDocxProcessor,
+            PdfOfficeProcessor pdfOfficeProcessor,
+            PdfTextProcessor pdfTextProcessor,
+            ILogger<PdfConversionService> logger)
+        {
+            _pdfToDocxProcessor = pdfToDocxProcessor;
+            _pdfOfficeProcessor = pdfOfficeProcessor;
+            _pdfTextProcessor = pdfTextProcessor;
+            _logger = logger;
+        }
+
+        private static iText.Kernel.Pdf.PdfReader OpenPermissiveReader(Stream stream)
+        {
+            var reader = new iText.Kernel.Pdf.PdfReader(stream);
+            reader.SetUnethicalReading(true);
+            return reader;
+        }
+
         public byte[] ConvertImagesToPdf(List<IFormFile> images)
         {
+            if (images == null || images.Count == 0)
+                throw new ArgumentException("No images provided.");
+
             using var ms = new MemoryStream();
-            var writer = new PdfWriter(ms);
-            var pdf = new iText.Kernel.Pdf.PdfDocument(writer);
-            var document = new iText.Layout.Document(pdf);
+            using var writer = new PdfWriter(ms, new WriterProperties().UseSmartMode());
+            using var pdf = new iText.Kernel.Pdf.PdfDocument(writer);
+            using var document = new iText.Layout.Document(pdf, iText.Kernel.Geom.PageSize.A4);
+            document.SetMargins(36, 36, 36, 36);
 
-            foreach (var imageFile in images)
+            var maxW = iText.Kernel.Geom.PageSize.A4.GetWidth() - 72;
+            var maxH = iText.Kernel.Geom.PageSize.A4.GetHeight() - 72;
+
+            for (var i = 0; i < images.Count; i++)
             {
-                using var stream = imageFile.OpenReadStream();
-
+                using var stream = images[i].OpenReadStream();
                 byte[] imgBytes;
                 using (var memoryStream = new MemoryStream())
                 {
@@ -52,11 +83,12 @@ namespace ratpdf.Services
 
                 var imgData = ImageDataFactory.Create(imgBytes);
                 var img = new iText.Layout.Element.Image(imgData);
-
-                img.SetAutoScale(true);
-
+                img.ScaleToFit(maxW, maxH);
+                img.SetHorizontalAlignment(HorizontalAlignment.CENTER);
                 document.Add(img);
-                document.Add(new AreaBreak(iText.Layout.Properties.AreaBreakType.NEXT_PAGE));
+
+                if (i < images.Count - 1)
+                    document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             }
 
             document.Close();
@@ -68,15 +100,15 @@ namespace ratpdf.Services
                 throw new ArgumentException("Select at least 2 PDF files to merge.");
 
             using var ms = new MemoryStream();
-            using var writer = new PdfWriter(ms);
+            using var writer = new PdfWriter(ms, new WriterProperties().UseSmartMode());
             using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(writer);
 
             foreach (var file in files)
             {
                 using var inputStream = file.OpenReadStream();
-                using var readerPdf = new iText.Kernel.Pdf.PdfDocument(new iText.Kernel.Pdf.PdfReader(inputStream));
+                using var pdfReader = OpenPermissiveReader(inputStream);
+                using var readerPdf = new iText.Kernel.Pdf.PdfDocument(pdfReader);
                 readerPdf.CopyPagesTo(1, readerPdf.GetNumberOfPages(), pdfDoc);
-                readerPdf.Close();
             }
 
             pdfDoc.Close();
@@ -95,19 +127,19 @@ namespace ratpdf.Services
                 throw new ArgumentException("No PDF file provided.");
 
             using var ms = new MemoryStream();
-            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(new PdfWriter(ms));
+            using var writer = new PdfWriter(ms, new WriterProperties().UseSmartMode());
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(writer);
 
-            using var reader = new iText.Kernel.Pdf.PdfDocument(new iText.Kernel.Pdf.PdfReader(file.OpenReadStream()));
+            using var splitStream = file.OpenReadStream();
+            using var splitReader = OpenPermissiveReader(splitStream);
+            using var reader = new iText.Kernel.Pdf.PdfDocument(splitReader);
             int totalPages = reader.GetNumberOfPages();
 
             if (startPage < 1 || endPage > totalPages || startPage > endPage)
                 throw new ArgumentException("Invalid page range.");
 
             reader.CopyPagesTo(startPage, endPage, pdfDoc);
-
             pdfDoc.Close();
-            reader.Close();
-
             return ms.ToArray();
         }
         /// <summary>
@@ -178,10 +210,12 @@ namespace ratpdf.Services
             var fontProvider = new DefaultFontProvider(
                 registerStandardPdfFonts: true,
                 registerShippedFonts: true,
-                registerSystemFonts: false
+                registerSystemFonts: true
             );
+            var notoPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fonts", "NotoSans-Regular.ttf");
+            if (File.Exists(notoPath))
+                fontProvider.AddFont(notoPath);
             converterProperties.SetFontProvider(fontProvider);
-
             converterProperties.SetBaseUri(AppDomain.CurrentDomain.BaseDirectory);
 
             HtmlConverter.ConvertToPdf(html, pdfDocument, converterProperties);
@@ -190,47 +224,75 @@ namespace ratpdf.Services
 
             return outputStream.ToArray();
         }
-        public string ExtractTextFromPdf(IFormFile file)
+        public async Task<string> ExtractTextFromPdfAsync(IFormFile file)
         {
             if (file == null)
                 throw new ArgumentException("No PDF file provided.");
 
-            using var reader = new iText.Kernel.Pdf.PdfReader(file.OpenReadStream());
+            try
+            {
+                await using var stream = file.OpenReadStream();
+                return await _pdfTextProcessor.ExtractTextAsync(stream, file.FileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Python text extraction failed for {File}, falling back to iText", file.FileName);
+                return ExtractTextFromPdfLegacy(file);
+            }
+        }
+
+        public string ExtractTextFromPdf(IFormFile file) =>
+            ExtractTextFromPdfAsync(file).GetAwaiter().GetResult();
+
+        private static string ExtractTextFromPdfLegacy(IFormFile file)
+        {
+            using var legacyStream = file.OpenReadStream();
+            using var reader = OpenPermissiveReader(legacyStream);
             using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader);
             var sb = new StringBuilder();
 
             for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
             {
-                var page = pdfDoc.GetPage(i);
-                var text = PdfTextExtractor.GetTextFromPage(page);
-                sb.AppendLine(text);
+                sb.AppendLine($"--- Page {i} ---");
+                sb.AppendLine(PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(i)));
+                sb.AppendLine();
             }
 
-            pdfDoc.Close();
             return sb.ToString();
         }
         public byte[] AddWatermark(IFormFile file, string watermarkText)
         {
             if (file == null) throw new ArgumentException("No PDF provided.");
+            if (string.IsNullOrWhiteSpace(watermarkText))
+                throw new ArgumentException("Watermark text is required.");
 
-            using var reader = new iText.Kernel.Pdf.PdfReader(file.OpenReadStream());
+            using var wmStream = file.OpenReadStream();
+            using var reader = OpenPermissiveReader(wmStream);
             using var ms = new MemoryStream();
-            using var writer = new PdfWriter(ms);
+            using var writer = new PdfWriter(ms, new WriterProperties().UseSmartMode());
             using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
 
-            int totalPages = pdfDoc.GetNumberOfPages();
-            for (int i = 1; i <= totalPages; i++)
+            var font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+            const float fontSize = 42f;
+            var angle = (float)(-Math.PI / 4);
+
+            for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
             {
                 var page = pdfDoc.GetPage(i);
-                var canvas = new PdfCanvas(page);
+                var canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
                 var pageSize = page.GetPageSize();
 
-                // Add semi-transparent text in the center
                 canvas.SaveState();
-                canvas.SetFillColor(ColorConstants.LIGHT_GRAY);
+                canvas.SetFillColor(new DeviceGray(0.82f));
                 canvas.BeginText();
-                canvas.SetFontAndSize(iText.Kernel.Font.PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA_BOLD), 20);
-                canvas.MoveText(pageSize.GetWidth() / 4, pageSize.GetHeight() / 2);
+                canvas.SetFontAndSize(font, fontSize);
+
+                var cx = pageSize.GetWidth() / 2;
+                var cy = pageSize.GetHeight() / 2;
+                canvas.SetTextMatrix(
+                    (float)Math.Cos(angle), (float)Math.Sin(angle),
+                    -(float)Math.Sin(angle), (float)Math.Cos(angle),
+                    cx, cy);
                 canvas.ShowText(watermarkText);
                 canvas.EndText();
                 canvas.RestoreState();
@@ -245,7 +307,8 @@ namespace ratpdf.Services
             if (file == null) throw new ArgumentException("No PDF provided.");
             if (string.IsNullOrEmpty(password)) throw new ArgumentException("Password cannot be empty.");
 
-            using var reader = new iText.Kernel.Pdf.PdfReader(file.OpenReadStream());
+            using var pwStream = file.OpenReadStream();
+            using var reader = OpenPermissiveReader(pwStream);
             var writerProperties = new WriterProperties()
                 .SetStandardEncryption(
                     Encoding.UTF8.GetBytes(password),
@@ -261,7 +324,21 @@ namespace ratpdf.Services
             return ms.ToArray();
         }
 
-        public byte[] ConvertDocxToPdf(IFormFile file)
+        public async Task<byte[]> ConvertDocxToPdfAsync(IFormFile file)
+        {
+            if (file == null)
+                throw new ArgumentException("No DOCX file provided.");
+
+            await using var stream = file.OpenReadStream();
+            return await _pdfOfficeProcessor.ConvertAsync(
+                OfficeConversionKind.DocxToPdf, stream, file.FileName);
+        }
+
+        public byte[] ConvertDocxToPdf(IFormFile file) =>
+            ConvertDocxToPdfAsync(file).GetAwaiter().GetResult();
+
+        [Obsolete("Legacy iText path — use LibreOffice via ConvertDocxToPdfAsync")]
+        private byte[] ConvertDocxToPdfLegacy(IFormFile file)
         {
             if (file == null)
                 throw new ArgumentException("No DOCX file provided.");
@@ -647,7 +724,19 @@ namespace ratpdf.Services
             return null;
         }
 
-        public byte[] ConvertPdfToDoc(IFormFile file)
+        public async Task<byte[]> ConvertPdfToDocAsync(IFormFile file)
+        {
+            if (file == null)
+                throw new ArgumentException("No PDF file provided.");
+
+            await using var stream = file.OpenReadStream();
+            return await _pdfToDocxProcessor.ConvertPdfToDocxAsync(stream, file.FileName);
+        }
+
+        /// <summary>
+        /// Legacy iText text-stream conversion (fallback when Python pipeline is unavailable).
+        /// </summary>
+        private byte[] ConvertPdfToDocLegacy(IFormFile file)
         {
             if (file == null)
                 throw new ArgumentException("No PDF file provided.");
@@ -778,23 +867,26 @@ namespace ratpdf.Services
                 throw new ArgumentException("Name cannot be empty.");
 
             using var pdfStream = file.OpenReadStream();
-            using var reader = new iText.Kernel.Pdf.PdfReader(pdfStream);
+            using var reader = OpenPermissiveReader(pdfStream);
             using var ms = new MemoryStream();
-            using var writer = new PdfWriter(ms);
+            using var writer = new PdfWriter(ms, new WriterProperties().UseSmartMode());
             using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
-            var document = new iText.Layout.Document(pdfDoc);
+            using var document = new iText.Layout.Document(pdfDoc);
 
 
             PdfFont font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_OBLIQUE);
 
             var lastPage = pdfDoc.GetNumberOfPages();
-            document.SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
+            var pageSize = pdfDoc.GetPage(lastPage).GetPageSize();
+            var sigWidth = Math.Min(220f, pageSize.GetWidth() * 0.45f);
+            var sigX = pageSize.GetWidth() - sigWidth - 48f;
 
             var signature = new iText.Layout.Element.Paragraph(name)
                 .SetFont(font)
-                .SetFontSize(24)
-                .SetFontColor(ColorConstants.BLUE)
-                .SetFixedPosition(lastPage, 400, 50, 200);
+                .SetFontSize(22)
+                .SetFontColor(ColorConstants.DARK_GRAY)
+                .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT)
+                .SetFixedPosition(lastPage, sigX, 56f, sigWidth);
 
             document.Add(signature);
             document.Close();
@@ -839,103 +931,71 @@ namespace ratpdf.Services
 
         public byte[] RotatePage(IFormFile pdfFile, int pageNumber = 0, int rotationDegree = 90)
         {
-            using var ms = new MemoryStream();
-            using var inputStream = pdfFile.OpenReadStream();
-            var pdfDoc = PdfSharpCore.Pdf.IO.PdfReader.Open(inputStream, PdfDocumentOpenMode.Modify);
-
-            pageNumber = Math.Clamp(pageNumber, 0, pdfDoc.PageCount - 1);
             if (rotationDegree % 90 != 0)
                 throw new ArgumentException("Rotation degree must be a multiple of 90 (90, 180, 270).");
-            var page = pdfDoc.Pages[pageNumber];
-            page.Rotate = (page.Rotate + rotationDegree) % 360;
 
-            pdfDoc.Save(ms, false);
+            using var ms = new MemoryStream();
+            using var rotStream = pdfFile.OpenReadStream();
+            using var reader = OpenPermissiveReader(rotStream);
+            using var writer = new PdfWriter(ms, new WriterProperties().UseSmartMode());
+            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
+
+            pageNumber = Math.Clamp(pageNumber, 0, pdfDoc.GetNumberOfPages() - 1);
+            var page = pdfDoc.GetPage(pageNumber + 1);
+            page.SetRotation((page.GetRotation() + rotationDegree) % 360);
+
+            pdfDoc.Close();
             return ms.ToArray();
         }
 
         public byte[] RemovePage(IFormFile pdfFile, int pageNumber = 0)
         {
+            using var rmStream = pdfFile.OpenReadStream();
+            using var reader = OpenPermissiveReader(rmStream);
+            using var src = new iText.Kernel.Pdf.PdfDocument(reader);
+            var total = src.GetNumberOfPages();
+            pageNumber = Math.Clamp(pageNumber, 0, total - 1);
+
             using var ms = new MemoryStream();
-            using var inputStream = pdfFile.OpenReadStream();
-            var pdfDoc = PdfSharpCore.Pdf.IO.PdfReader.Open(inputStream, PdfDocumentOpenMode.Modify);
+            using var writer = new PdfWriter(ms, new WriterProperties().UseSmartMode());
+            using var dest = new iText.Kernel.Pdf.PdfDocument(writer);
 
-            pageNumber = Math.Clamp(pageNumber, 0, pdfDoc.PageCount - 1);
-            pdfDoc.Pages.RemoveAt(pageNumber);
+            var pagesToCopy = Enumerable.Range(1, total).Where(p => p != pageNumber + 1).ToList();
+            if (pagesToCopy.Count == 0)
+                throw new ArgumentException("Cannot remove the only page in the document.");
 
-            pdfDoc.Save(ms, false);
+            foreach (var p in pagesToCopy)
+                src.CopyPagesTo(p, p, dest);
+
+            dest.Close();
             return ms.ToArray();
         }
-        public byte[] ConvertPdfToExcel(IFormFile pdfFile)
+
+        public async Task<byte[]> ConvertPdfToExcelAsync(IFormFile pdfFile)
         {
             if (pdfFile == null)
                 throw new ArgumentException("No PDF provided.");
 
-            using var pdfStream = pdfFile.OpenReadStream();
-            using var pdfReader = new iText.Kernel.Pdf.PdfReader(pdfStream);
-            using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(pdfReader);
-
-            using var workbook = new XLWorkbook();
-            var worksheet = workbook.Worksheets.Add("Sheet1");
-
-            int currentRow = 1;
-
-            for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
-            {
-                var page = pdfDoc.GetPage(i);
-                var text = PdfTextExtractor.GetTextFromPage(page);
-
-                var lines = text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                foreach (var line in lines)
-                {
-                    worksheet.Cell(currentRow, 1).Value = line;
-                    currentRow++;
-                }
-                currentRow++;
-            }
-
-            using var ms = new MemoryStream();
-            workbook.SaveAs(ms);
-            return ms.ToArray();
+            await using var stream = pdfFile.OpenReadStream();
+            return await _pdfOfficeProcessor.ConvertAsync(
+                OfficeConversionKind.PdfToXlsx, stream, pdfFile.FileName);
         }
-        public byte[] ConvertExcelToPdf(IFormFile excelFile)
+
+        public byte[] ConvertPdfToExcel(IFormFile pdfFile) =>
+            ConvertPdfToExcelAsync(pdfFile).GetAwaiter().GetResult();
+
+        public async Task<byte[]> ConvertExcelToPdfAsync(IFormFile excelFile)
         {
             if (excelFile == null)
                 throw new ArgumentException("No Excel file uploaded.");
 
-            using var excelStream = excelFile.OpenReadStream();
-            using var workbook = new XLWorkbook(excelStream);
-
-            using var memoryStream = new MemoryStream();
-            using var writer = new PdfWriter(memoryStream);
-            using var pdf = new iText.Kernel.Pdf.PdfDocument(writer);
-            using var document = new iText.Layout.Document(pdf);
-
-            foreach (var worksheet in workbook.Worksheets)
-            {
-                document.Add(new iText.Layout.Element.Paragraph($"Sheet: {worksheet.Name}")
-                    .SetFontSize(16));
-
-                var range = worksheet.RangeUsed();
-                if (range == null) continue;
-
-                int columnCount = range.ColumnCount();
-                var table = new iText.Layout.Element.Table(columnCount);
-
-                foreach (var row in range.Rows())
-                {
-                    foreach (var cell in row.Cells())
-                    {
-                        table.AddCell(new Cell().Add(new iText.Layout.Element.Paragraph(cell.GetFormattedString())));
-                    }
-                }
-
-                document.Add(table);
-                document.Add(new AreaBreak());
-            }
-
-            document.Close();
-            return memoryStream.ToArray();
+            await using var stream = excelFile.OpenReadStream();
+            return await _pdfOfficeProcessor.ConvertAsync(
+                OfficeConversionKind.XlsxToPdf, stream, excelFile.FileName);
         }
+
+        public byte[] ConvertExcelToPdf(IFormFile excelFile) =>
+            ConvertExcelToPdfAsync(excelFile).GetAwaiter().GetResult();
         public async Task<string> ConvertImageToBase64(IFormFile file)
         {
             if (file == null)

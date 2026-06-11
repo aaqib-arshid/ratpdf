@@ -1,102 +1,70 @@
 ﻿@{
-    ViewData["Title"] = "About Us";
-    ViewData["Description"] = "Learn about RatPDF, a privacy-focused online PDF tool that allows users to convert, compress, merge, and edit PDF files directly in their browser without storing files on servers.";
+    ViewData["Title"] = "About RatPDF — Online PDF Tools & Document Utilities";
+    ViewData["Description"] = "RatPDF provides free and Pro PDF tools: compress, merge, convert PDF to Word, Excel, and more. Learn how we process files securely and what makes our converters different.";
 }
 
 <head>
     <meta name="robots" content="index, follow">
 </head>
 
-<div class="card p-4">
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <h1 class="fw-bold mb-3">About RatPDF</h1>
+        <p class="lead text-muted">
+            RatPDF is a document productivity platform for individuals, freelancers, and small businesses
+            who need reliable PDF workflows without installing desktop software.
+        </p>
 
-    <h1>About RatPDF</h1>
+        <h2 class="h4 fw-semibold mt-4">What we offer</h2>
+        <p>
+            The site combines <strong>40+ browser-accessible tools</strong> in one place: compress and merge PDFs,
+            convert between PDF, Word, and Excel, extract text, add watermarks, protect files with passwords,
+            and generate business documents such as invoices and payslips.
+        </p>
+        <p>
+            Heavy conversions (PDF↔Office, OCR, Ghostscript compression) run on our cloud servers using
+            open-source engines including <strong>pdf2docx</strong>, <strong>PyMuPDF</strong>, <strong>LibreOffice</strong>,
+            <strong>Ghostscript</strong>, and <strong>iText</strong>. Lighter utilities may run entirely in your browser.
+        </p>
 
-    <p>
-        <strong>RatPDF</strong> is a privacy-focused online platform that provides simple,
-        fast, and secure tools for working with PDF documents.
-    </p>
+        <h2 class="h4 fw-semibold mt-4">Why we built it</h2>
+        <p>
+            Most “free PDF converters” strip tables, drop logos, or fail on scanned documents.
+            RatPDF was designed around <em>layout fidelity</em>: when a bank statement, GST invoice, or client proposal
+            must look correct in Word or Excel, our multi-engine pipeline tries structured extraction first and
+            falls back to high-resolution page rendering when necessary.
+        </p>
 
-    <p>
-        Our goal is to make PDF processing easy for everyone by offering tools that
-        work directly inside your web browser without requiring software installation
-        or complicated setups.
-    </p>
+        <h2 class="h4 fw-semibold mt-4">How file processing works</h2>
+        <ol>
+            <li>You upload a file over encrypted HTTPS.</li>
+            <li>Our servers process it in an isolated job (temporary disk + optional Azure Blob storage for download).</li>
+            <li>You receive a download link; background jobs delete stale files automatically.</li>
+            <li>We do not sell uploaded documents or use them for advertising profiling.</li>
+        </ol>
+        <p>
+            Read the full details in our <a href="/Home/Privacy">Privacy Policy</a>.
+        </p>
 
-    <hr>
+        <h2 class="h4 fw-semibold mt-4">Free and Pro plans</h2>
+        <p>
+            Core tools remain free with daily limits (3 uses per tool, 200 MB per file).
+            <a href="/Subscription/Plans">Pro subscribers</a> get unlimited conversions, 4 GB uploads, and
+            high-fidelity Office conversions suited to agency and finance teams.
+        </p>
 
-    <h3>Our Mission</h3>
+        <h2 class="h4 fw-semibold mt-4">Editorial content</h2>
+        <p>
+            Beyond one-click tools, we publish practical guides — for example
+            <a href="/guides/compress-pdf-guide">how to compress PDFs without visible quality loss</a> and
+            <a href="/guides/pdf-txt-guide">extracting text from scanned documents</a> — written for real
+            office workflows, not keyword stuffing.
+        </p>
 
-    <p>
-        Our mission is to provide a fast, reliable, and privacy-friendly solution
-        for common PDF tasks such as:
-    </p>
-
-    <ul>
-        <li>PDF conversion</li>
-        <li>PDF compression</li>
-        <li>PDF merging</li>
-        <li>PDF splitting</li>
-        <li>PDF editing tools</li>
-    </ul>
-
-    <p>
-        We focus on simplicity, speed, and privacy to ensure users can process
-        documents quickly and safely.
-    </p>
-
-    <hr>
-
-    <h3>Privacy First Approach</h3>
-
-    <p>
-        RatPDF is designed with privacy as a core principle.
-    </p>
-
-    <ul>
-        <li>Files are processed directly in your browser.</li>
-        <li>Documents are not uploaded to our servers.</li>
-        <li>No files are stored in databases or server storage.</li>
-        <li>Users maintain full control over their documents.</li>
-    </ul>
-
-    <p>
-        This approach reduces privacy risks and ensures that your files remain
-        completely under your control.
-    </p>
-
-    <hr>
-
-    <h3>Why Choose RatPDF</h3>
-
-    <ul>
-        <li>Fast browser-based processing</li>
-        <li>No software installation required</li>
-        <li>Privacy-friendly architecture</li>
-        <li>Easy-to-use tools</li>
-        <li>Secure HTTPS website</li>
-    </ul>
-
-    <hr>
-
-    <h3>Continuous Improvements</h3>
-
-    <p>
-        We are continuously improving our platform to deliver better performance,
-        new PDF tools, and enhanced user experience.
-    </p>
-
-    <p>
-        User feedback plays an important role in helping us improve the website
-        and develop new features.
-    </p>
-
-    <hr>
-
-    <h3>Contact Us</h3>
-
-    <p>
-        If you have questions, feedback, or suggestions, please visit our
-        <a href="/Home/Contact">Contact Page</a>.
-    </p>
-
-</div>
+        <h2 class="h4 fw-semibold mt-4">Contact &amp; feedback</h2>
+        <p>
+            Feature requests and bug reports help us prioritize engine upgrades and new tools.
+            Reach us via the <a href="/Home/Contact">contact page</a>.
+        </p>
+    </div>
+</article>

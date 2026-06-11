@@ -4,10 +4,13 @@ using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Data;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using Microsoft.AspNetCore.Mvc;
+using ratpdf.Constants;
 using ratpdf.Models;
 using ratpdf.Services;
 using ratpdf.Services.CompressPDF;
+using ratpdf.Services.PdfTools;
 using System.Text;
+using System.Text.Json;
 
 namespace ratpdf.Controllers
 {
@@ -22,8 +25,23 @@ namespace ratpdf.Controllers
         private readonly IJobResultStore _jobResultStore;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly AzureBlobService _blobService;
+        private readonly PdfToolsAccessService _pdfToolsAccess;
+        private readonly PdfEditProcessor _pdfEditProcessor;
+        private readonly IPdfEditSessionStore _pdfEditSessions;
         private const long MaxFileSizeBytes = 1024L * 1024 * 1024; // 1 GB
-        public PDFController(IConfiguration config,AzureBlobService azureBlobService, IJobQueue jobQueue,IJobResultStore jobResultStore,IServiceScopeFactory serviceScopeFactory,PdfConversionService pdfService, PdfCompressionService compressionService, LayoutEngineProcessor processor, HtmlReconstructionService reconstructionEngine)
+        public PDFController(
+            IConfiguration config,
+            AzureBlobService azureBlobService,
+            IJobQueue jobQueue,
+            IJobResultStore jobResultStore,
+            IServiceScopeFactory serviceScopeFactory,
+            PdfConversionService pdfService,
+            PdfCompressionService compressionService,
+            LayoutEngineProcessor processor,
+            HtmlReconstructionService reconstructionEngine,
+            PdfToolsAccessService pdfToolsAccess,
+            PdfEditProcessor pdfEditProcessor,
+            IPdfEditSessionStore pdfEditSessions)
         {
             _pdfService = pdfService;
             _processor = processor;
@@ -34,6 +52,9 @@ namespace ratpdf.Controllers
             _jobResultStore = jobResultStore;
             _serviceScopeFactory = serviceScopeFactory;
             _blobService = azureBlobService;
+            _pdfToolsAccess = pdfToolsAccess;
+            _pdfEditProcessor = pdfEditProcessor;
+            _pdfEditSessions = pdfEditSessions;
         }
         #region --GET METHODS--
         public IActionResult ConvertImages()
@@ -61,13 +82,11 @@ namespace ratpdf.Controllers
         public IActionResult ImageCompressor() => View();
         public IActionResult EditPDF()
         {
-            var html = HttpContext.Session.GetString("PdfHtml");
-            var model = new HtmlRequest
+            return View(new PdfEditViewModel
             {
-                Html = html ?? string.Empty
-            };
-
-            return View(model);
+                SessionId = HttpContext.Session.GetString("PdfEditSessionId"),
+                OriginalFileName = HttpContext.Session.GetString("PdfEditFileName"),
+            });
         }
         #endregion
         #region --POST--
@@ -75,6 +94,13 @@ namespace ratpdf.Controllers
         [HttpPost]
         public async Task<IActionResult> ConvertImages(ImageUploadViewModel model)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.ConvertImages, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View(model);
+            }
+
             if (model.Files == null || model.Files.Count == 0)
             {
                 ModelState.AddModelError("Files", "No image selected. Please select at least one image.");
@@ -82,6 +108,7 @@ namespace ratpdf.Controllers
             }
 
             var pdfBytes = _pdfService.ConvertImagesToPdf(model.Files);
+            await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.ConvertImages, 1);
             Response.Cookies.Append("downloadReady", "1", new CookieOptions
             {
                 Expires = DateTimeOffset.Now.AddMinutes(1),
@@ -90,69 +117,68 @@ namespace ratpdf.Controllers
             return File(pdfBytes, "application/pdf", "images.pdf");
         }
         [HttpPost]
-        public IActionResult Merge(List<IFormFile> files)
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> Merge(List<IFormFile> files)
         {
             if (files == null || files.Count < 2)
-            {
-                ModelState.AddModelError("Files", "Please select at least 2 PDF files to merge.");
-                return View();
-            }
-            Response.Cookies.Append("downloadReady", "1", new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddMinutes(1),
-                Path = "/"
-            });
+                return BadRequest(new { error = "Please select at least 2 PDF files to merge." });
+
+            var validation = await ValidateJobFilesAsync(files, PdfToolIds.Merge, "PDF", ".pdf");
+            if (validation.Error != null)
+                return validation.Error;
+
             try
             {
-                var mergedPdf = _pdfService.MergePdfFiles(files);
+                var mergedPdf = _pdfService.MergePdfFiles(validation.Files!);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.Merge, 1);
                 return File(mergedPdf, "application/pdf", "merged.pdf");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Error merging PDFs: " + ex.Message);
-                return View();
+                return BadRequest(new { error = "Error merging PDFs: " + ex.Message });
             }
         }
         [HttpPost]
-        public IActionResult Split(IFormFile file, int startPage, int endPage)
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> Split(IFormFile file, int startPage, int endPage)
         {
-            if (file == null)
-            {
-                ModelState.AddModelError("File", "Please upload a PDF file.");
-                return View();
-            }
-            Response.Cookies.Append("downloadReady", "1", new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddMinutes(1),
-                Path = "/"
-            });
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file },
+                PdfToolIds.Split,
+                "PDF",
+                ".pdf");
+            if (validation.Error != null)
+                return validation.Error;
+
             try
             {
-                var splitPdf = _pdfService.SplitPdf(file, startPage, endPage);
+                var splitPdf = _pdfService.SplitPdf(validation.Files![0], startPage, endPage);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.Split, 1);
                 return File(splitPdf, "application/pdf", "split.pdf");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Error splitting PDF: " + ex.Message);
-                return View();
+                return BadRequest(new { error = "Error splitting PDF: " + ex.Message });
             }
         }
         [HttpPost]
-        [RequestSizeLimit(1_073_741_824)]
-        [RequestFormLimits(MultipartBodyLengthLimit = 1_073_741_824)]
-        public IActionResult Compress(
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> Compress(
         IFormFile? file,
         [FromForm] string? compressionLevel, [FromForm] string? password)
         {
-            if (file is null || file.Length == 0)
-                return BadRequest(new { error = "No file uploaded." });
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file },
+                PdfToolIds.Compress,
+                "PDF",
+                ".pdf");
+            if (validation.Error != null)
+                return validation.Error;
 
-            if (!string.Equals(file.ContentType, "application/pdf", StringComparison.OrdinalIgnoreCase)
-                && !file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
-                return BadRequest(new { error = "Only PDF files are accepted." });
-
-            if (file.Length > 300 * 1024 * 1024)
-                return BadRequest(new { error = "File exceeds the 300 MB limit." });
+            file = validation.Files![0];
 
             var jobId = Guid.NewGuid().ToString();
             var tempInputPath = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{jobId}.pdf");
@@ -169,6 +195,7 @@ namespace ratpdf.Controllers
                 _ => CompressionLevel.Recommended,
             };
             _jobResultStore.CreateJob(jobId);
+            await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.Compress, 1);
 
             _jobQueue.Queue(async ct =>
             {
@@ -213,7 +240,7 @@ namespace ratpdf.Controllers
                 downloadUrl = Url.Action(nameof(DownloadResult), new { jobId })
             });
         }
-        [HttpGet("status/{jobId}")]
+        [HttpGet("/PDF/status/{jobId}")]
         public IActionResult GetJobStatus(string jobId)
         {
             var job = _jobResultStore.GetJob(jobId);
@@ -223,37 +250,161 @@ namespace ratpdf.Controllers
             {
                 jobId,
                 status = job.Status,
+                jobKind = job.JobKind,
+                progressPercent = job.ProgressPercent,
+                progressMessage = job.ProgressMessage,
                 originalSize = job.OriginalSize,
                 compressedSize = job.CompressedSize,
                 reductionPercent = job.ReductionPercent,
+                outputFileName = job.OutputFileName,
+                outputMimeType = job.OutputMimeType,
                 error = job.ErrorMessage
             });
         }
 
-        [HttpGet("download/{jobId}")]
+        [HttpGet("/PDF/download/{jobId}")]
         public async Task<IActionResult> DownloadResult(string jobId)
         {
             var job = _jobResultStore.GetJob(jobId);
             if (job == null) return NotFound();
             if (job.Status != "Completed")
-                return BadRequest(new { error = "Compression not completed yet" });
+                return BadRequest(new { error = "Job not completed yet" });
             if (string.IsNullOrEmpty(job.BlobName))
                 return NotFound(new { error = "Result blob not found" });
 
             try
             {
                 var stream = await _blobService.DownloadAsync(job.BlobName);
-
                 _ = _blobService.DeleteAsync(job.BlobName);
 
-                return File(stream, "application/pdf", "compressed.pdf");
+                var mime = job.OutputMimeType ?? "application/pdf";
+                var name = job.OutputFileName ?? job.JobKind switch
+                {
+                    "pdf2docx" => "converted.docx",
+                    "pdftoxlsx" => "converted.xlsx",
+                    "doctopdf" or "exceltopdf" => "converted.pdf",
+                    _ => "compressed.pdf",
+                };
+                return File(stream, mime, name);
             }
             catch
             {
                 return NotFound(new { error = "Result file could not be retrieved from storage" });
             }
         }
-        [HttpGet("cleanup-temp")]
+
+        [HttpGet("/PDF/tool-access")]
+        public async Task<IActionResult> ToolAccess([FromQuery] string tool)
+        {
+            if (string.IsNullOrWhiteSpace(tool))
+                return BadRequest(new { error = "Tool id required" });
+
+            var status = await _pdfToolsAccess.GetStatusAsync(tool);
+            var limits = await _pdfToolsAccess.GetLimitsAsync();
+            return Ok(new
+            {
+                allowed = status.Allowed,
+                isPremium = status.IsPremium,
+                remaining = status.RemainingFreeUses,
+                denyReason = status.DenyReason,
+                maxFileSizeBytes = limits.MaxFileSizeBytes,
+                maxBatchFiles = limits.MaxBatchFiles,
+                maxFileSizeLabel = limits.MaxFileSizeLabel,
+            });
+        }
+
+        [HttpPost("/PDF/PdfToDoc/convert")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> PdfToDocConvert([FromForm] List<IFormFile> files)
+        {
+            var validation = await ValidateJobFilesAsync(files, PdfToolIds.PdfToDoc, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            files = validation.Files!;
+
+            var jobId = Guid.NewGuid().ToString();
+            var inputs = new List<(string TempPath, string OriginalName, long Size)>();
+
+            foreach (var file in files)
+            {
+                var tempPath = Path.Combine(Path.GetTempPath(), $"ratpdf_docx_in_{jobId}_{Guid.NewGuid():N}.pdf");
+                await using (var fs = new FileStream(tempPath, FileMode.Create, FileAccess.Write))
+                {
+                    await file.CopyToAsync(fs);
+                }
+                inputs.Add((tempPath, file.FileName, file.Length));
+            }
+
+            _jobResultStore.CreateJob(jobId, "pdf2docx");
+            await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.PdfToDoc, files.Count);
+
+            _jobQueue.Queue(async ct =>
+            {
+                using var scope = _serviceScopeFactory.CreateScope();
+                var jobService = scope.ServiceProvider.GetRequiredService<PdfToDocxJobService>();
+                await jobService.RunConversionJobAsync(jobId, inputs, ct);
+            });
+
+            return Accepted(new
+            {
+                jobId,
+                statusUrl = Url.Action(nameof(GetJobStatus), new { jobId }),
+                downloadUrl = Url.Action(nameof(DownloadResult), new { jobId })
+            });
+        }
+
+        [HttpPost("/PDF/DocToPdf/convert")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> DocToPdfConvert([FromForm] IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file },
+                PdfToolIds.DocToPdf, "Word DOCX", ".docx");
+            if (validation.Error != null) return validation.Error;
+
+            return await QueueOfficeJobAsync(
+                validation.Files![0],
+                PdfToolIds.DocToPdf,
+                "doctopdf",
+                OfficeConversionKind.DocxToPdf);
+        }
+
+        [HttpPost("/PDF/PdfToExcel/convert")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> PdfToExcelConvert([FromForm] IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file },
+                PdfToolIds.PdfToExcel, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+
+            return await QueueOfficeJobAsync(
+                validation.Files![0],
+                PdfToolIds.PdfToExcel,
+                "pdftoxlsx",
+                OfficeConversionKind.PdfToXlsx);
+        }
+
+        [HttpPost("/PDF/ExcelToPdf/convert")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> ExcelToPdfConvert([FromForm] IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file },
+                PdfToolIds.ExcelToPdf, "Excel", ".xlsx", ".xls");
+            if (validation.Error != null) return validation.Error;
+
+            return await QueueOfficeJobAsync(
+                validation.Files![0],
+                PdfToolIds.ExcelToPdf,
+                "exceltopdf",
+                OfficeConversionKind.XlsxToPdf);
+        }
+
+        [HttpGet("/PDF/cleanup-temp")]
         public async Task<IActionResult> CleanupTemp([FromQuery] string key)
         {
             var expectedKey = _config["AdminCleanupSecretKey"];
@@ -281,8 +432,15 @@ namespace ratpdf.Controllers
             return Content(html, "text/html");
         }
         [HttpPost]
-        public IActionResult TextToPdf(IFormFile file, string typedText)
+        public async Task<IActionResult> TextToPdf(IFormFile file, string typedText)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.TextToPdf, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null && typedText.Equals("<p><br></p>"))
             {
                 ModelState.AddModelError("Text", "Please upload a text file or type some text.");
@@ -302,6 +460,7 @@ namespace ratpdf.Controllers
                 else
                     pdfBytes = _pdfService.ConvertHtmlToPdf(typedText);
 
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.TextToPdf, 1);
                 return File(pdfBytes, "application/pdf", "document.pdf");
             }
             catch (Exception ex)
@@ -311,8 +470,15 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult PdfToText(IFormFile file)
+        public async Task<IActionResult> PdfToText(IFormFile file)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.PdfToText, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null)
             {
                 ModelState.AddModelError("File", "Please upload a PDF file.");
@@ -326,7 +492,7 @@ namespace ratpdf.Controllers
             try
             {
                 string extractedText = _pdfService.ExtractTextFromPdf(file);
-                // Return as downloadable text file
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.PdfToText, 1);
                 return File(Encoding.UTF8.GetBytes(extractedText), "text/plain", "extracted.txt");
             }
             catch (Exception ex)
@@ -336,8 +502,15 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Watermark(IFormFile file, string watermarkText)
+        public async Task<IActionResult> Watermark(IFormFile file, string watermarkText)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.Watermark, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null || string.IsNullOrWhiteSpace(watermarkText))
             {
                 ModelState.AddModelError("File", "Upload PDF and provide watermark text.");
@@ -351,6 +524,7 @@ namespace ratpdf.Controllers
             try
             {
                 var result = _pdfService.AddWatermark(file, watermarkText);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.Watermark, 1);
                 return File(result, "application/pdf", "watermarked.pdf");
             }
             catch (Exception ex)
@@ -361,8 +535,15 @@ namespace ratpdf.Controllers
         }
 
         [HttpPost]
-        public IActionResult Password(IFormFile file, string password)
+        public async Task<IActionResult> Password(IFormFile file, string password)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.Password, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null || string.IsNullOrWhiteSpace(password))
             {
                 ModelState.AddModelError("File", "Upload PDF and enter a password.");
@@ -376,6 +557,7 @@ namespace ratpdf.Controllers
             try
             {
                 var result = _pdfService.AddPassword(file, password);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.Password, 1);
                 return File(result, "application/pdf", "protected.pdf");
             }
             catch (Exception ex)
@@ -385,8 +567,15 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult DocToPdf(IFormFile file)
+        public async Task<IActionResult> DocToPdf(IFormFile file)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.DocToPdf, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null)
             {
                 ModelState.AddModelError("File", "Please upload a DOCX file.");
@@ -399,7 +588,8 @@ namespace ratpdf.Controllers
             });
             try
             {
-                var pdfBytes = _pdfService.ConvertDocxToPdf(file);
+                var pdfBytes = await _pdfService.ConvertDocxToPdfAsync(file);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.DocToPdf, 1);
                 return File(pdfBytes, "application/pdf", Path.GetFileNameWithoutExtension(file.FileName) + ".pdf");
             }
             catch (Exception ex)
@@ -409,8 +599,15 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult PdfToDoc(IFormFile file)
+        public async Task<IActionResult> PdfToDoc(IFormFile file)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.PdfToDoc, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null)
             {
                 ModelState.AddModelError("File", "Please upload a PDF file.");
@@ -423,7 +620,8 @@ namespace ratpdf.Controllers
             });
             try
             {
-                var docBytes = _pdfService.ConvertPdfToDoc(file);
+                var docBytes = await _pdfService.ConvertPdfToDocAsync(file);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.PdfToDoc, 1);
                 return File(docBytes,
                             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                             Path.GetFileNameWithoutExtension(file.FileName) + ".docx");
@@ -435,8 +633,15 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult SignText(IFormFile file, string name)
+        public async Task<IActionResult> SignText(IFormFile file, string name)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.SignPdf, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null)
             {
                 ModelState.AddModelError("File", "Please upload a PDF.");
@@ -456,6 +661,7 @@ namespace ratpdf.Controllers
             try
             {
                 var signedPdf = _pdfService.SignPdfWithName(file, name);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.SignPdf, 1);
                 return File(signedPdf, "application/pdf", Path.GetFileNameWithoutExtension(file.FileName) + "_signed.pdf");
             }
             catch (Exception ex)
@@ -465,8 +671,15 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult AddText(IFormFile file, string text, int pageNumber = 0)
+        public async Task<IActionResult> AddText(IFormFile file, string text, int pageNumber = 0)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.EditPdf, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View("EditPdf");
+            }
+
             if (file == null || string.IsNullOrWhiteSpace(text))
             {
                 ModelState.AddModelError("", "PDF file or text missing.");
@@ -478,12 +691,20 @@ namespace ratpdf.Controllers
                 Path = "/"
             });
             var pdf = _pdfService.AddText(file, text, pageNumber);
+            await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.EditPdf, 1);
             return File(pdf, "application/pdf", "Edited.pdf");
         }
 
         [HttpPost]
-        public IActionResult AddImage(IFormFile file, IFormFile image, int pageNumber = 0)
+        public async Task<IActionResult> AddImage(IFormFile file, IFormFile image, int pageNumber = 0)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.EditPdf, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View("EditPdf");
+            }
+
             if (file == null || image == null)
             {
                 ModelState.AddModelError("", "PDF or image missing.");
@@ -495,12 +716,20 @@ namespace ratpdf.Controllers
                 Path = "/"
             });
             var pdf = _pdfService.AddImage(file, image, pageNumber);
+            await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.EditPdf, 1);
             return File(pdf, "application/pdf", "Edited.pdf");
         }
 
         [HttpPost]
-        public IActionResult RotatePage(IFormFile file, int pageNumber = 0, int degree = 90)
+        public async Task<IActionResult> RotatePage(IFormFile file, int pageNumber = 0, int degree = 90)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.Rotate, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View("RotateOrRemove");
+            }
+
             if (file == null)
             {
                 ModelState.AddModelError("", "PDF missing.");
@@ -514,6 +743,7 @@ namespace ratpdf.Controllers
             try
             {
                 var pdf = _pdfService.RotatePage(file, pageNumber, degree);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.Rotate, 1);
                 return File(pdf, "application/pdf", "Edited.pdf");
             }
             catch (Exception ex)
@@ -524,8 +754,15 @@ namespace ratpdf.Controllers
         }
 
         [HttpPost]
-        public IActionResult RemovePage(IFormFile file, int pageNumber = 0)
+        public async Task<IActionResult> RemovePage(IFormFile file, int pageNumber = 0)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.Rotate, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View("RotateOrRemove");
+            }
+
             if (file == null)
             {
                 ModelState.AddModelError("", "PDF missing.");
@@ -537,29 +774,33 @@ namespace ratpdf.Controllers
                 Path = "/"
             });
             var pdf = _pdfService.RemovePage(file, pageNumber);
+            await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.Rotate, 1);
             return File(pdf, "application/pdf", "Edited.pdf");
         }
         [HttpPost]
-        public IActionResult PdfToExcel(IFormFile file)
+        public async Task<IActionResult> PdfToExcel(IFormFile file)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.PdfToExcel, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null)
             {
                 ModelState.AddModelError("", "Please upload a PDF file.");
                 return View();
             }
-            if (file.Length > 5 * 1024 * 1024)
-            {
-                ModelState.AddModelError("", "File is too large. Maximum allowed size is 5 MB.");
-                return View();
-            }
-            Response.Cookies.Append("downloadReady", "1", new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddMinutes(1),
-                Path = "/"
-            });
+            var validation = await ValidateJobFilesAsync(
+                new List<IFormFile> { file }, PdfToolIds.PdfToExcel, "PDF", ".pdf");
+            if (validation.Error != null)
+                return validation.Error;
+
             try
             {
-                var excelBytes = _pdfService.ConvertPdfToExcel(file);
+                var excelBytes = await _pdfService.ConvertPdfToExcelAsync(file);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.PdfToExcel, 1);
                 return File(excelBytes,
                             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                             Path.GetFileNameWithoutExtension(file.FileName) + ".xlsx");
@@ -571,26 +812,29 @@ namespace ratpdf.Controllers
             }
         }
         [HttpPost]
-        public IActionResult ExcelToPdf(IFormFile file)
+        public async Task<IActionResult> ExcelToPdf(IFormFile file)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.ExcelToPdf, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null)
             {
                 ModelState.AddModelError("", "Please upload an Excel file.");
                 return View();
             }
-            if (file.Length > 5 * 1024 * 1024)
-            {
-                ModelState.AddModelError("", "File is too large. Maximum allowed size is 5 MB.");
-                return View();
-            }
-            Response.Cookies.Append("downloadReady", "1", new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddMinutes(1),
-                Path = "/"
-            });
+            var validation = await ValidateJobFilesAsync(
+                new List<IFormFile> { file }, PdfToolIds.ExcelToPdf, "Excel", ".xlsx");
+            if (validation.Error != null)
+                return validation.Error;
+
             try
             {
-                var pdfBytes = _pdfService.ConvertExcelToPdf(file);
+                var pdfBytes = await _pdfService.ConvertExcelToPdfAsync(file);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.ExcelToPdf, 1);
                 return File(pdfBytes,
                             "application/pdf",
                             Path.GetFileNameWithoutExtension(file.FileName) + ".pdf");
@@ -604,6 +848,13 @@ namespace ratpdf.Controllers
         [HttpPost]
         public async Task<IActionResult> ImgToBase64(IFormFile file)
         {
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.ImgToBase64, 1);
+            if (!access.Allowed)
+            {
+                AddPaywallError(access.DenyReason);
+                return View();
+            }
+
             if (file == null || file.Length == 0)
             {
                 ModelState.AddModelError("File", "Please upload an image file.");
@@ -617,6 +868,7 @@ namespace ratpdf.Controllers
             try
             {
                 var base64String = await _pdfService.ConvertImageToBase64(file);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.ImgToBase64, 1);
                 ViewBag.Base64String = base64String;
                 return View();
             }
@@ -626,100 +878,256 @@ namespace ratpdf.Controllers
                 return View();
             }
         }
+        /// <summary>Legacy HTML export — superseded by Edit/Export object-level pipeline.</summary>
         [HttpPost]
         public async Task<IActionResult> ExportPdf([FromBody] HtmlRequest request)
         {
-            //ASP.NET Core MVC
-            //no database
-            //simple PDF tool
-
-            //Use:
-
-            //Razorpay + localStorage
-
-            //That is the fastest and simplest setup.
-
-            //Flow:
-
-            //User downloads 3 PDFs free
-            //Browser stores count
-            //4th download opens Razorpay
-            //Payment success → download PDF
-
-            //Very lightweight MVP.
             if (request == null || string.IsNullOrEmpty(request.Html))
                 return BadRequest("Empty content");
 
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.EditPdf, 1);
+            if (!access.Allowed)
+                return StatusCode(402, new { error = access.DenyReason, paywall = true });
+
             var pdfBytes = await Task.Run(() => _pdfService.ConvertHtmlToPdf(request.Html));
+            await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.EditPdf, 1);
             return File(pdfBytes, "application/pdf", "EditedDocument.pdf");
         }
-        [HttpPost]
-        public async Task<IActionResult> UploadPdf(IFormFile file)
+
+        [HttpPost("/PDF/Edit/Upload")]
+        [RequestSizeLimit(PdfToolLimits.MaxFileSizeBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxFileSizeBytes)]
+        public async Task<IActionResult> EditUpload(IFormFile file)
         {
-            if (file == null || file.Length == 0)
-                return BadRequest("No file uploaded");
-            const long maxSizeBytes = 5 * 1024 * 1024; // 5 MB
-            if (file.Length > maxSizeBytes)
-                return BadRequest("File size exceeds the 5 MB limit. Please upload a smaller PDF.");
+            var error = await TryCreateEditSessionAsync(file);
+            if (error != null)
+            {
+                if (error.Paywall)
+                    return StatusCode(402, new { error = error.Message, paywall = true });
+                return BadRequest(new { error = error.Message });
+            }
 
-            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-            if (extension != ".pdf")
-                return BadRequest("Invalid file type. Only PDF files are allowed.");
+            var sessionId = HttpContext.Session.GetString("PdfEditSessionId")!;
+            var modelJson = HttpContext.Session.GetString("PdfEditModelJson")!;
+            using var doc = JsonDocument.Parse(modelJson);
+            var pageCount = doc.RootElement.TryGetProperty("pageCount", out var pc)
+                ? pc.GetInt32()
+                : doc.RootElement.GetProperty("pages").GetArrayLength();
 
-            if (!file.ContentType.Equals("application/pdf", StringComparison.OrdinalIgnoreCase))
-                return BadRequest("Invalid file content type. Only PDF files are accepted.");
+            return Ok(new PdfEditUploadResponse
+            {
+                SessionId = sessionId,
+                OriginalFileName = HttpContext.Session.GetString("PdfEditFileName") ?? "document.pdf",
+                PageCount = pageCount,
+                DocumentModel = JsonSerializer.Deserialize<object>(modelJson),
+            });
+        }
+
+        [HttpGet("/PDF/Edit/{sessionId}/file")]
+        public IActionResult EditGetPdfFile(string sessionId)
+        {
+            var owned = HttpContext.Session.GetString("PdfEditSessionId");
+            if (string.IsNullOrEmpty(owned) || owned != sessionId)
+                return Forbid();
+
+            var session = _pdfEditSessions.Get(sessionId);
+            if (session == null || !System.IO.File.Exists(session.PdfPath))
+                return NotFound();
+
+            return PhysicalFile(session.PdfPath, "application/pdf", enableRangeProcessing: true);
+        }
+
+        [HttpPost("/PDF/Edit/Export")]
+        public async Task<IActionResult> EditExport([FromBody] PdfEditExportRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.SessionId))
+                return BadRequest(new { error = "Invalid request" });
+
+            var owned = HttpContext.Session.GetString("PdfEditSessionId");
+            if (owned != request.SessionId)
+                return Forbid();
+
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.EditPdf, 1);
+            if (!access.Allowed)
+                return StatusCode(402, new { error = access.DenyReason, paywall = true });
+
+            var session = _pdfEditSessions.Get(request.SessionId);
+            if (session == null || !System.IO.File.Exists(session.PdfPath))
+                return NotFound(new { error = "Session expired — re-import your PDF." });
+
+            string? editsPath = null;
+            string? outputPath = null;
             try
             {
-                Response.Cookies.Append("downloadReady", "1", new CookieOptions
+                editsPath = Path.GetTempFileName() + ".json";
+                outputPath = Path.GetTempFileName() + ".pdf";
+                var jsonOptions = new JsonSerializerOptions
                 {
-                    Expires = DateTimeOffset.Now.AddMinutes(1),
-                    Path = "/"
-                });
-                using var stream = file.OpenReadStream();
-                var header = new byte[4];
-                await stream.ReadAsync(header, 0, 4);
-                if (header[0] != 0x25 || header[1] != 0x50 ||
-                    header[2] != 0x44 || header[3] != 0x46)
-                {
-                    return BadRequest("The uploaded file is not a valid PDF.");
-                }
-                stream.Position = 0;
-                bool hasGraphics = await PdfContainsColoredRectanglesOrImages(stream);
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                };
+                var payload = JsonSerializer.Serialize(new { edits = request.Edits }, jsonOptions);
+                await System.IO.File.WriteAllTextAsync(editsPath, payload);
 
-                stream.Position = 0; // resetting again
+                await _pdfEditProcessor.ApplyEditsAsync(session.PdfPath, editsPath, outputPath);
+                var bytes = await System.IO.File.ReadAllBytesAsync(outputPath);
+                await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.EditPdf, 1);
 
-                string html;
-                if (hasGraphics)
-                {
-                    Console.WriteLine("PDF contains images – using layout extraction + OCR");
-                    string json = await _processor.ExtractLayoutJsonAsync(stream);
-                    html = _reconstructionEngine.BuildHtml(json);
-                }
-                else
-                {
-                    Console.WriteLine("No images detected – using ConvertPdfToHtml (pure text)");
-                    html = await _pdfService.ConvertPdfToHtml(file);
-                }
-                HttpContext.Session.SetString("PdfHtml", html);
-                return RedirectToAction("EditPDF", "PDF");
+                var downloadName = Path.GetFileNameWithoutExtension(session.OriginalFileName) + "_edited.pdf";
+                return File(bytes, "application/pdf", downloadName);
             }
-            catch (Exception ex)
+            finally
             {
-                Console.WriteLine($"Error:{ex.Message}, {ex.StackTrace}");
-                try
-                {
-                    var html = await _pdfService.ConvertPdfToHtml(file);
-                    HttpContext.Session.SetString("PdfHtml", html);
-                    return RedirectToAction("EditPDF", "PDF");
-                }
-                catch
-                {
-                    return BadRequest("Pdf file is corrupted or contains sensitive data.");
-                }
+                if (editsPath != null) try { System.IO.File.Delete(editsPath); } catch { }
+                if (outputPath != null) try { System.IO.File.Delete(outputPath); } catch { }
             }
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(PdfToolLimits.MaxFileSizeBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxFileSizeBytes)]
+        public async Task<IActionResult> UploadPdf(IFormFile file)
+        {
+            var error = await TryCreateEditSessionAsync(file);
+            if (error != null)
+            {
+                if (error.Paywall)
+                    return BadRequest(error.Message);
+                return BadRequest(error.Message);
+            }
+            return RedirectToAction(nameof(EditPDF));
         }
         #endregion
         #region private
+
+        private sealed record EditSessionError(string Message, bool Paywall = false);
+        private sealed record JobFileValidation(List<IFormFile>? Files, IActionResult? Error);
+
+        private async Task<JobFileValidation> ValidateJobFilesAsync(
+            List<IFormFile>? files,
+            string toolId,
+            string fileTypeLabel,
+            params string[] allowedExtensions)
+        {
+            if (files == null || files.Count == 0)
+                return new JobFileValidation(null, BadRequest(new { error = "No files uploaded." }));
+
+            var limits = await _pdfToolsAccess.GetLimitsAsync();
+
+            if (files.Count > limits.MaxBatchFiles)
+                return new JobFileValidation(null, BadRequest(new { error = $"Maximum {limits.MaxBatchFiles} files allowed." }));
+
+            var access = await _pdfToolsAccess.CheckAccessAsync(toolId, files.Count);
+            if (!access.Allowed)
+                return new JobFileValidation(null, StatusCode(402, new { error = access.DenyReason, paywall = true }));
+
+            foreach (var file in files)
+            {
+                if (file.Length == 0)
+                    return new JobFileValidation(null, BadRequest(new { error = "Empty file detected." }));
+                if (file.Length > limits.MaxFileSizeBytes)
+                    return new JobFileValidation(null, BadRequest(new
+                    {
+                        error = $"Each file must be under {limits.MaxFileSizeLabel}. Subscribe for up to 4 GB per file.",
+                    }));
+                var ext = Path.GetExtension(file.FileName);
+                if (!allowedExtensions.Any(e => ext.Equals(e, StringComparison.OrdinalIgnoreCase)))
+                    return new JobFileValidation(null, BadRequest(new { error = $"Only {fileTypeLabel} files are accepted." }));
+            }
+
+            return new JobFileValidation(files, null);
+        }
+
+        private async Task<IActionResult> QueueOfficeJobAsync(
+            IFormFile file,
+            string toolId,
+            string jobKind,
+            OfficeConversionKind kind)
+        {
+            var jobId = Guid.NewGuid().ToString();
+            var ext = Path.GetExtension(file.FileName);
+            var tempPath = Path.Combine(Path.GetTempPath(), $"ratpdf_office_in_{jobId}{ext}");
+
+            await using (var fs = new FileStream(tempPath, FileMode.Create, FileAccess.Write))
+            {
+                await file.CopyToAsync(fs);
+            }
+
+            _jobResultStore.CreateJob(jobId, jobKind);
+            await _pdfToolsAccess.RecordUsageAsync(toolId, 1);
+
+            _jobQueue.Queue(async ct =>
+            {
+                using var scope = _serviceScopeFactory.CreateScope();
+                var jobService = scope.ServiceProvider.GetRequiredService<PdfOfficeJobService>();
+                await jobService.RunJobAsync(jobId, jobKind, kind, tempPath, file.FileName, ct);
+            });
+
+            return Accepted(new
+            {
+                jobId,
+                statusUrl = Url.Action(nameof(GetJobStatus), new { jobId }),
+                downloadUrl = Url.Action(nameof(DownloadResult), new { jobId }),
+            });
+        }
+
+        private IActionResult? PaywallJson(PdfToolAccessResult access)
+        {
+            if (access.Allowed) return null;
+            return StatusCode(402, new { error = access.DenyReason, paywall = true });
+        }
+
+        private void AddPaywallError(string? reason)
+        {
+            ModelState.AddModelError(string.Empty,
+                reason ?? $"Free limit reached ({PdfToolLimits.FreeUsesPerDay}/day). Subscribe for unlimited access.");
+            ViewBag.ShowPaywall = true;
+        }
+
+        private async Task<EditSessionError?> TryCreateEditSessionAsync(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return new EditSessionError("No file uploaded");
+            var limits = await _pdfToolsAccess.GetLimitsAsync();
+            if (file.Length > limits.MaxFileSizeBytes)
+                return new EditSessionError($"File exceeds {limits.MaxFileSizeLabel} limit.");
+
+            if (!file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                return new EditSessionError("Only PDF files are allowed.");
+
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.EditPdf, 1);
+            if (!access.Allowed)
+                return new EditSessionError(access.DenyReason ?? "Subscription required.", Paywall: true);
+
+            using var stream = file.OpenReadStream();
+            var header = new byte[4];
+            await stream.ReadAsync(header.AsMemory(0, 4));
+            if (header[0] != 0x25 || header[1] != 0x50 || header[2] != 0x44 || header[3] != 0x46)
+                return new EditSessionError("Invalid PDF file.");
+
+            var tempPath = Path.Combine(Path.GetTempPath(), $"ratpdf_edit_{Guid.NewGuid():N}.pdf");
+            await using (var fs = new FileStream(tempPath, FileMode.Create, FileAccess.Write))
+            {
+                stream.Position = 0;
+                await stream.CopyToAsync(fs);
+            }
+
+            try
+            {
+                var modelJson = await _pdfEditProcessor.ExtractEditableModelJsonAsync(tempPath);
+                var session = _pdfEditSessions.Create(tempPath, file.FileName, modelJson);
+
+                HttpContext.Session.SetString("PdfEditSessionId", session.SessionId);
+                HttpContext.Session.SetString("PdfEditFileName", file.FileName);
+                HttpContext.Session.SetString("PdfEditModelJson", modelJson);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                try { System.IO.File.Delete(tempPath); } catch { }
+                return new EditSessionError("Could not open PDF: " + ex.Message);
+            }
+        }
+
         private async Task<bool> PdfContainsColoredRectanglesOrImages(Stream pdfStream)
         {
             pdfStream.Position = 0;

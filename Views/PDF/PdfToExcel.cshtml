@@ -1,284 +1,45 @@
-﻿@{
-    ViewData["Title"] = "Convert PDF to Excel Online Free";
-    ViewData["Description"] = "Convert PDF to EXCEL online for free. Fast and secure PDF to EXCEL converter.";
-}
-
-<div class="container py-5 d-flex justify-content-center">
-    <div class="card shadow-lg p-5" style="max-width: 500px; width: 100%;">
-        <div class="card-body text-center">
-            <h2 class="fw-bold mb-3">Convert PDF to Excel</h2>
-            <p class="text-muted mb-4">Upload a PDF and get its text extracted into an Excel file.</p>
-
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger text-start">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <div>@error.ErrorMessage</div>
-                    }
-                </div>
-            }
-
-            <form asp-action="PdfToExcel" method="post" enctype="multipart/form-data" id="pdfToXlForm">
-                <input type="file" name="file" class="form-control mb-3" accept="application/pdf">
-                <button type="submit" class="btn btn-primary w-100">
-                    <i class="bi bi-file-earmark-spreadsheet-fill me-2"></i> Convert to Excel
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-<section class="related-tools">
-    <h3>Related Tools</h3>
-    <ul>
-        <li><a href="/PDF/Compress">Compress PDF</a></li>
-    </ul>
-</section>
-<div class="container py-5">
-    <div class="card shadow-sm p-4" style="border-radius: 12px;">
-        <h2 class="fw-bold mb-3">How to Convert PDF to Excel Online</h2>
-
-           <p>
-        Handling data in PDF files can be challenging, especially when you need to analyze or reuse it in Excel. Our <strong>PDF to Excel converter online</strong> allows you to quickly and securely extract tables, text, and structured data from PDF files into editable XLSX or XLS spreadsheets. With accurate conversion and preserved formatting, you can start working with your data immediately, without manually copying or reformatting.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Introduction</h2>
-
-    <p>
-        PDF files are commonly used for reports, invoices, financial statements, and forms because they maintain consistent formatting across devices. However, extracting tables or structured data from PDFs can be time-consuming and prone to errors if done manually. Converting PDFs into Excel spreadsheets makes it easier to analyze, sort, filter, and manipulate data efficiently.
-    </p>
-
-    <p>
-        Our online PDF to Excel converter eliminates the need for complex desktop software or technical knowledge. It works directly in your browser on Windows, Mac, Android, or iOS devices. Whether you’re a business professional, accountant, student, or data analyst, this tool simplifies the process of turning PDF data into actionable Excel spreadsheets.
-    </p>
-
-    <p>
-        The conversion process preserves table structures, text alignment, and numeric data accuracy, ensuring your Excel file is ready to use immediately.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Step-by-Step Guide to Convert PDF to Excel</h2>
-
-    <p>
-        Converting PDF files to Excel is simple and can be done in just a few clicks. Follow this step-by-step guide:
-    </p>
-
-    <ol class="mb-4">
-        <li>
-            <strong>Upload your PDF file:</strong> Click the upload area or drag and drop your PDF into the designated box. You can select files from your computer, tablet, or smartphone.
-        </li>
-        <li>
-            <strong>Click “Convert to Excel”:</strong> Start the conversion process. Our tool accurately detects tables, rows, and columns, and transfers them into XLSX or XLS format.
-        </li>
-        <li>
-            <strong>Download your Excel file:</strong> Once the conversion is complete, download your spreadsheet instantly. Open it in Microsoft Excel, Google Sheets, or any Excel-compatible application to start analyzing your data.
-        </li>
-    </ol>
-
-    <p>
-        The entire process is fast, browser-based, and requires no registration or software installation.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Benefits of Using Our PDF to Excel Converter</h2>
-
-    <p>
-        Converting PDFs to Excel online offers several advantages, whether you’re working with financial statements, business reports, or academic data:
-    </p>
-
-    <ul>
-        <li><strong>Free and easy to use:</strong> Convert PDFs without any subscription, registration, or hidden fees.</li>
-        <li><strong>Accurate data extraction:</strong> Tables, columns, and numeric values are preserved for seamless analysis.</li>
-        <li><strong>Secure and private:</strong> Files are processed over a secure connection and deleted from our servers after conversion.</li>
-        <li><strong>Cross-platform support:</strong> Works on Windows, Mac, Android, and iOS. Convert PDFs from any modern browser.</li>
-        <li><strong>No software installation:</strong> Everything is done online, saving you from downloading heavy applications.</li>
-        <li><strong>Time-saving:</strong> Quickly convert multiple PDFs without manually copying and pasting data.</li>
-    </ul>
-
-    <p class="mt-3">
-        By converting PDFs to Excel, you gain control over your data, enabling easy editing, sorting, filtering, and analysis for both professional and personal purposes.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Use Cases for PDF to Excel Conversion</h2>
-
-    <p>
-        Our PDF to Excel converter is versatile and suitable for many scenarios:
-    </p>
-
-    <h4 class="fw-semibold mt-3">1. Financial Analysis</h4>
-    <p>
-        Accountants and finance professionals can extract data from financial statements, balance sheets, and reports into Excel to perform calculations, track trends, and create visualizations.
-    </p>
-
-    <h4 class="fw-semibold mt-3">2. Business Reporting</h4>
-    <p>
-        Managers and business analysts can convert PDF sales reports, performance summaries, or inventory lists into Excel to analyze key metrics and share insights with teams.
-    </p>
-
-    <h4 class="fw-semibold mt-3">3. Academic Data Handling</h4>
-    <p>
-        Students, researchers, and educators can extract data tables from PDFs for research, statistical analysis, or assignments without manually re-entering numbers.
-    </p>
-
-    <h4 class="fw-semibold mt-3">4. Invoice and Receipt Management</h4>
-    <p>
-        Businesses can convert invoices and receipts in PDF format into Excel spreadsheets to track expenses, calculate totals, and manage bookkeeping efficiently.
-    </p>
-
-    <h4 class="fw-semibold mt-3">5. Personal Organization</h4>
-    <p>
-        Individuals can extract information from tables, forms, or reports for personal record-keeping, budgeting, or project planning.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Why Choose Our Online PDF to Excel Converter?</h2>
-
-    <p>
-        There are many PDF conversion tools available, but our solution stands out for its speed, accuracy, and simplicity:
-    </p>
-
-    <ul>
-        <li><strong>Precise table extraction:</strong> Maintains row and column integrity for ready-to-use spreadsheets.</li>
-        <li><strong>Fast and reliable:</strong> Converts large PDFs quickly without compromising data quality.</li>
-        <li><strong>Secure and private:</strong> Files are deleted from our servers after processing, ensuring confidentiality.</li>
-        <li><strong>User-friendly interface:</strong> No technical expertise required. Anyone can convert PDFs in minutes.</li>
-        <li><strong>Device independence:</strong> Works on any modern browser across Windows, Mac, Android, and iOS.</li>
-    </ul>
-
-    <p>
-        The tool is continuously updated to support the latest PDF and Excel standards, guaranteeing smooth and accurate conversions every time.
-    </p>
-
-    <h2 class="fw-semibold mt-5">FAQ: Frequently Asked Questions About PDF to Excel Conversion</h2>
-
-    <h4 class="fw-semibold mt-3">Q1: Is this PDF to Excel converter free?</h4>
-    <p>
-        Yes, our online converter is completely free. You can extract data from PDFs into Excel without any subscription or fees.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q2: Do I need to create an account?</h4>
-    <p>
-        No account or registration is required. Upload your PDF, convert it, and download the Excel file instantly.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q3: Can I convert PDFs on mobile devices?</h4>
-    <p>
-        Yes, the tool is fully responsive and works on smartphones and tablets with Android or iOS.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q4: Will my tables and formatting be preserved?</h4>
-    <p>
-        Yes, the converter preserves tables, columns, text alignment, and numeric data for accurate Excel spreadsheets.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q5: Can I convert scanned PDFs?</h4>
-    <p>
-        Yes, our tool supports scanned PDFs using OCR technology where applicable to extract data into editable Excel files.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q6: Is my data secure during conversion?</h4>
-    <p>
-        Your files are uploaded over a secure connection and deleted from our servers after processing to protect your privacy.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q7: Can I convert multiple PDFs at once?</h4>
-    <p>
-        The tool can handle multiple PDFs in separate sessions. Each PDF is processed individually for accuracy and speed.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q8: Can I open the Excel file without Microsoft Excel?</h4>
-    <p>
-        Yes, the XLSX or XLS file can be opened in Google Sheets, LibreOffice, or any Excel-compatible spreadsheet software.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Conclusion</h2>
-
-    <p>
-        Extracting data from PDFs and converting it into Excel spreadsheets has never been easier. Our PDF to Excel converter provides a fast, secure, and accurate way to turn PDF tables and structured data into editable Excel files. The tool is free, browser-based, and works on any device without requiring software installation or registration.
-    </p>
-
-    <p>
-        Whether you need to analyze financial data, update reports, or manage personal records, our converter simplifies the process and saves you valuable time. Start converting your PDF files today and enjoy effortless data extraction into Excel.
-    </p>
-
-    <p class="mt-3">
-        Upload your PDF, click convert, and download your Excel spreadsheet instantly. Make data analysis and management easier with our free PDF to Excel converter.
-    </p>
-    </div>
-</div>
-@section Scripts {
-     <script type="application/ld+json">
-@Html.Raw(@"{
-  ""@context"": ""https://schema.org"",
-  ""@graph"": [
-    {
-      ""@type"": ""SoftwareApplication"",
-      ""name"": ""PDF to Excel Converter"",
-      ""applicationCategory"": ""UtilityApplication"",
-      ""operatingSystem"": ""Web"",
-      ""url"": ""https://ratpdf.com/PDF/PdfToExcel"",
-      ""description"": ""Convert PDF files to Excel spreadsheets online for free. Fast and secure."",
-      ""offers"": {
-        ""@type"": ""Offer"",
-        ""price"": ""0"",
-        ""priceCurrency"": ""USD""
-      }
-    },
-    {
-      ""@type"": ""FAQPage"",
-      ""mainEntity"": [
-        {
-          ""@type"": ""Question"",
-          ""name"": ""How do I convert a PDF to Excel online?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Upload your PDF file using the upload button, click 'Convert to Excel', and then download the Excel file once the conversion is complete.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Is converting PDF to Excel free?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, our PDF to Excel converter is completely free and does not require any signup or software installation.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Will the Excel file retain the formatting from the PDF?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, the converter preserves table structures and formatting as accurately as possible, making the data ready for editing and analysis.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Is my PDF file safe when using this converter?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, all files are processed securely and privately. Uploaded PDFs are not stored permanently and are deleted after conversion.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Which devices and operating systems are supported?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Our online converter works on any device with a browser, including Windows, Mac, Android, and iOS.""
-          }
-        }
-      ]
-    }
-  ]
-}");
-    </script>
-    <script>
-         $('#pdfToXlForm').on('submit', function (e) {
-         e.preventDefault();
-         showLoader('Getting Ready...');
-         setTimeout(function () {
-                 showLoader('Processing...');;
-         }, 3000);
-         setTimeout(function () {
-                submitWithLoader('pdfToXlForm', 'Downloading...');
-         }, 5000);
-        });
-    </script>
-}
+﻿@using ratpdf.Constants
+@{
+    ViewData["Title"] = "PDF to Excel Converter Online Free — Tables & Data | RatPDF";
+    ViewData["Description"] = "Convert PDF to Excel (XLSX) online. Extract tables with borders, structured sheets, and reading-order text. Free 200 MB, Pro 4 GB.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/PDF/PdfToExcel");
+    ViewData["PdfToolId"] = "pdftoexcel";
+    ViewData["ToolTitle"] = "PDF to Excel";
+    ViewData["ToolSubtitle"] = "Table borders · multi-sheet · structured data";
+    ViewData["AcceptHint"] = "PDF files";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-file-earmark-spreadsheet";
+    ViewData["BtnLabel"] = "Convert to Excel";
+    ViewData["SeoH1"] = "PDF to Excel — Extract Tables Without Losing Structure";
+    ViewData["SeoLead"] = "Pull tables, grid lines, and cell data from PDFs into editable Excel workbooks — not a single-column text dump.";
+}
+
+@await Html.PartialAsync("_PdfJobToolShell")
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+
+@section Scripts {
+<script>
+PdfToolkit.initJobTool({
+    toolId: 'pdftoexcel',
+    convertUrl: '/PDF/PdfToExcel/convert',
+    extensions: ['.pdf'],
+    typeLabel: 'PDF',
+    multiple: false,
+    defaultFileName: 'converted.xlsx',
+    dropZoneId: 'dropZone',
+    fileInputId: 'fileInput',
+    fileListId: 'fileList',
+    convertBtnId: 'convertBtn',
+    errorAreaId: 'errorArea',
+    progressAreaId: 'progressArea',
+    progressBarId: 'progressBar',
+    progressMsgId: 'progressMsg',
+    progressPctId: 'progressPct',
+    badgeId: 'usageBadge',
+    limitHintId: 'limitHint',
+});
+</script>
+}
+

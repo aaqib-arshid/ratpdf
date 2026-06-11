@@ -1,6 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Compress PDF size online free";
-    ViewData["Description"] = "Compress pdf size online for free. Fast and secure PDF compressor.";
+﻿@using ratpdf.Constants
+@{
+    ViewData["Title"] = "Compress PDF Online Free — Reduce File Size | RatPDF";
+    ViewData["Description"] = "Compress PDF online free. Reduce PDF file size with Ghostscript engine while keeping readable quality. Pro up to 4 GB.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/PDF/Compress");
+    ViewData["PdfToolId"] = "compress";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +13,8 @@
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
                 <h2 class="fw-bold mb-3">Compress PDF</h2>
-                <p class="text-muted mb-4">Upload a PDF to reduce its file size. Choose your compression level below.</p>
+                <p class="text-muted mb-2">Upload a PDF to reduce its file size. Choose your compression level below.</p>
+                @await Html.PartialAsync("_PdfToolUsageBadge")
 
                 <div>
 
@@ -91,14 +95,8 @@
                     </button>
 
 
-                    <div id="progressArea" class="mt-3" style="display: none;">
-                        <div class="progress mb-2" style="height: 6px;">
-                            <div id="progressBar"
-                                 class="progress-bar progress-bar-striped progress-bar-animated"
-                                 role="progressbar" style="width: 0%;"></div>
-                        </div>
-                        <div id="progressMsg" class="text-muted small text-center">Uploading…</div>
-                    </div>
+                    @await Html.PartialAsync("_PdfProgressBar")
+                    <p id="limitHint" class="text-muted small text-center mb-0"></p>
 
 
                     <div id="downloadContainer" class="mt-3" style="display: none;"></div>
@@ -621,9 +619,22 @@
         const previewMeta = document.getElementById('previewMeta');
         const clearFileBtn = document.getElementById('clearFileBtn');
         const compressBtn = document.getElementById('compressBtn');
-        const progressArea = document.getElementById('progressArea');
-        const progressBar = document.getElementById('progressBar');
-        const progressMsg = document.getElementById('progressMsg');
+        const progressElements = PdfToolkit.getStandardProgressElements();
+        let compressLimits = { maxFiles: 3, maxSizeBytes: 200 * 1024 * 1024, maxFileSizeLabel: '200 MB' };
+
+        async function loadCompressLimits() {
+            const access = await PdfToolkit.checkToolAccess('compress');
+            compressLimits = {
+                maxFiles: access.maxBatchFiles || 3,
+                maxSizeBytes: access.maxFileSizeBytes || compressLimits.maxSizeBytes,
+                maxFileSizeLabel: access.maxFileSizeLabel || '200 MB',
+            };
+            const hint = document.getElementById('limitHint');
+            if (hint) {
+                hint.textContent = `Up to ${compressLimits.maxFiles} PDFs · ${compressLimits.maxFileSizeLabel} per file (4 GB on Pro)`;
+            }
+        }
+        loadCompressLimits();
         const downloadContainer = document.getElementById('downloadContainer');
         const errorArea = document.getElementById('errorArea');
         const errorMsgEl = document.getElementById('errorMsg');
@@ -642,13 +653,10 @@
         : (b / (1024 * 1024)).toFixed(2) + ' MB';
 
         function setProgress(pct, msg) {
-        progressBar.style.width = pct + '%';
-        if (msg) progressMsg.textContent = msg;
-        progressArea.style.display = 'block';
+        PdfToolkit.setProgress(progressElements, pct, msg);
         }
         function hideProgress() {
-        progressArea.style.display = 'none';
-        progressBar.style.width = '0%';
+        PdfToolkit.hideProgress(progressElements);
         }
         function clearError() { errorArea.classList.add('d-none'); }
         function showError(msg) {
@@ -688,21 +696,14 @@
         return;
         }
 
-        // ---- SIZE LIMIT: 300 MB for 1 file, 100 MB each for 2-3 files ----
-        const perFileLimit = files.length === 1
-        ? 300 * 1024 * 1024   // single: 300 MB
-        : 100 * 1024 * 1024;  // multiple: 100 MB each
-
-        for (const f of files) {
-        if (f.type !== 'application/pdf' && !f.name.toLowerCase().endsWith('.pdf')) {
-        showError(`'${f.name}' is not a valid PDF file.`);
+        const v = PdfToolkit.validatePdfFiles(files, {
+            maxFiles: compressLimits.maxFiles,
+            maxSizeBytes: compressLimits.maxSizeBytes,
+            multiple: true,
+        });
+        if (!v.ok) {
+        showError(v.error);
         return;
-        }
-        if (f.size > perFileLimit) {
-        const limitText = files.length === 1 ? '300 MB' : '100 MB per file';
-        showError(`'${f.name}' exceeds the ${limitText} limit.`);
-        return;
-        }
         }
 
         currentFiles = files;
@@ -790,6 +791,13 @@
         });
 
         xhr.addEventListener('load', () => {
+        if (xhr.status === 402) {
+        let msg = 'Daily free limit reached.';
+        try { const json = JSON.parse(xhr.responseText); if (json.error) msg = json.error; } catch { }
+        if (window.PdfToolkit) PdfToolkit.showPaywall(msg);
+        reject(new Error(msg));
+        return;
+        }
         if (xhr.status === 202) {
         try {
         const { jobId, statusUrl, downloadUrl } = JSON.parse(xhr.responseText);
@@ -874,7 +882,8 @@
 
         // Main compression flow – sequential
         async function startCompression() {
-        // If single protected file, check password is entered
+        if (window.PdfToolkit && !(await PdfToolkit.ensureAccess('compress'))) return;
+
         if (isSingleProtected && !pdfPasswordInput.value) {
         showError('Please enter the PDF password.');
         return;

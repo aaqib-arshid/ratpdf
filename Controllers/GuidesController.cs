@@ -1,40 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ratpdf.Content;
+using ratpdf.Constants;
 
 namespace ratpdf.Controllers
 {
     [Route("guides")]
     public class GuidesController : Controller
     {
-        [HttpGet("background-remover")]
-        public IActionResult BackgroundRemoverGuide()
+        [HttpGet("")]
+        [HttpGet("index")]
+        public IActionResult Index()
         {
-            ViewData["Title"] = "Background Remover Guides";
-            ViewData["Description"] = "Learn how to remove image backgrounds online for free, without Photoshop, using AI tools and step-by-step guides.";
-            return View();
+            ViewData["Title"] = "PDF & Document Guides — Free Tutorials | RatPDF";
+            ViewData["Description"] = "20+ step-by-step guides for every RatPDF tool: compress, merge, convert PDF to Word/Excel, invoices, OCR, and more.";
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/guides");
+            return View(ContentLibrary.Guides.OrderBy(g => g.Category).ThenBy(g => g.Title).ToList());
         }
-        [HttpGet("compress-pdf-guide")]
-        public IActionResult CompressPdfGuide() { 
-            return View();
-        }
-        [HttpGet("ring-size-converter-guide")]
-        public IActionResult RingSizeConverterGuide()
+
+        [HttpGet("{slug}")]
+        public IActionResult Article(string slug)
         {
-            return View();
-        }
-        [HttpGet("word-counter-guide")]
-        public IActionResult WordCounterGuide()
-        {
-            return View();
-        }
-        [HttpGet("pdf-txt-guide")]
-        public IActionResult PdfToTxtGuide()
-        {
-            return View();
-        }
-        [HttpGet("my-ip-guide")]
-        public IActionResult MyIpGuide()
-        {
-            return View();
+            var entry = ContentLibrary.GetGuide(slug);
+            if (entry == null) return NotFound();
+            ViewData["Title"] = entry.Title;
+            ViewData["Description"] = entry.Description;
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(entry.Path);
+            return View(entry);
         }
     }
 }

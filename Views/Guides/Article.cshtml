@@ -1,0 +1,20 @@
+@model ratpdf.Models.ContentEntry
+@using ratpdf.Constants
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Head {
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "Article",
+      "headline": "@Model.Title",
+      "description": "@Model.Description",
+      "datePublished": "@Model.Published.ToString("yyyy-MM-dd")",
+      "author": { "@@type": "Organization", "name": "RatPDF" },
+      "publisher": { "@@type": "Organization", "name": "RatPDF", "logo": { "@@type": "ImageObject", "url": "@PdfToolSeo.DefaultOgImage" } },
+      "mainEntityOfPage": "@PdfToolSeo.Canonical(Model.Path)"
+    }
+    </script>
+}
+@await Html.PartialAsync("_ContentArticle", Model)

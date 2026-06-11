@@ -1,0 +1,23 @@
+@using ratpdf.Constants
+@* Set ViewData: SeoH1, SeoLead, SeoSections (optional HTML), PdfToolId *@
+<article class="container py-5">
+    <div class="card shadow-sm border-0 p-4 p-md-5" style="border-radius:12px;">
+        <h1 class="fw-bold mb-3">@(ViewData["SeoH1"] ?? ViewData["Title"])</h1>
+        <p class="lead text-muted">@(ViewData["SeoLead"] ?? ViewData["Description"])</p>
+        @{
+            var sections = ViewData["SeoSections"] as string
+                ?? PdfToolSeoArticles.ForTool(ViewData["PdfToolId"] as string);
+        }
+        @if (!string.IsNullOrEmpty(sections))
+        {
+            @Html.Raw(sections)
+        }
+        <h2 class="h4 fw-semibold mt-4">Security &amp; retention</h2>
+        <p class="text-muted">Files are uploaded over HTTPS, processed on our servers, and stored only long enough for you to download the result. Temporary copies are removed automatically; we do not use your documents to train models or build marketing lists.</p>
+        <h2 class="h4 fw-semibold mt-4">Free vs Pro</h2>
+        <ul>
+            <li><strong>Free</strong> — 3 conversions per tool per day, 200 MB per file.</li>
+            <li><strong>Pro</strong> — unlimited use, 4 GB uploads, priority conversion queue. <a href="/Subscription/Plans">See plans</a>.</li>
+        </ul>
+    </div>
+</article>

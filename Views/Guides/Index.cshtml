@@ -1,0 +1,51 @@
+@model IReadOnlyList<ratpdf.Models.ContentEntry>
+@using ratpdf.Constants
+@{
+    ViewData["Title"] = "PDF & Document Guides — Free Tutorials | RatPDF";
+    ViewData["Description"] = "20+ step-by-step guides for every RatPDF tool: compress, merge, convert PDF to Word/Excel, invoices, OCR, and more.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/guides");
+    var byCategory = Model.GroupBy(g => g.Category).OrderBy(g => g.Key);
+}
+
+@section Head {
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "CollectionPage",
+      "name": "RatPDF Guides",
+      "description": "@ViewData["Description"]",
+      "url": "@PdfToolSeo.Canonical("/guides")",
+      "numberOfItems": @Model.Count
+    }
+    </script>
+}
+
+<div class="rp-content-page">
+    <header class="text-center mb-5 col-lg-9 mx-auto">
+        <span class="rp-badge mb-2">Tutorials</span>
+        <h1 class="fw-bold display-6 mt-2">Guides for every tool</h1>
+        <p class="lead text-muted">
+            @Model.Count in-depth tutorials for freelancers, accountants, and office teams.
+        </p>
+        <a href="/blog" class="btn btn-outline-primary btn-sm rounded-pill mt-2">Read the blog</a>
+    </header>
+
+    @foreach (var group in byCategory)
+    {
+        <section class="mb-5">
+            <h2 class="h5 fw-bold text-primary mb-3">@group.Key</h2>
+            <div class="row g-3">
+                @foreach (var g in group)
+                {
+                    <div class="col-sm-6 col-lg-4">
+                        <a href="@g.Path" class="rp-guide-card text-decoration-none h-100 d-flex flex-column">
+                            <h3 class="h6 fw-bold text-dark mb-2">@g.Title</h3>
+                            <p class="small text-muted mb-2 flex-grow-1">@g.Description</p>
+                            <span class="small fw-semibold text-primary">Read guide →</span>
+                        </a>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+</div>

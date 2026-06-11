@@ -13,6 +13,13 @@
     <None Remove="wwwroot\AIModels\**" />
   </ItemGroup>
 	<ItemGroup>
+		<Content Include="startup.sh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Remove="Pdf-Engine\**\*" />
 		<Content Include="Pdf-Engine\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<CopyToPublishDirectory>Always</CopyToPublishDirectory>

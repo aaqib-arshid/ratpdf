@@ -1,6 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Merge PDFs online free";
-    ViewData["Description"] = "Merge multiple PDFs online for free. Fast and secure PDF merger tool.";
+﻿@using ratpdf.Constants
+@{
+    ViewData["Title"] = "Merge PDF Online Free — Combine PDF Files | RatPDF";
+    ViewData["Description"] = "Merge PDF files online free. Combine multiple PDFs into one document without losing quality. Secure, fast, up to 4 GB on Pro.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/PDF/Merge");
+    ViewData["PdfToolId"] = "merge";
 }
 
 <div class="container py-5 d-flex justify-content-center align-items-start">
@@ -9,7 +12,8 @@
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
             <h2 class="fw-bold mb-3">Merge PDFs</h2>
-            <p class="text-muted mb-4">Upload two or more PDF files to merge them into a single document.</p>
+            <p class="text-muted mb-2">Upload two or more PDF files to merge them into a single document.</p>
+            @await Html.PartialAsync("_PdfToolUsageBadge")
 
             <!-- Validation Errors -->
             @if (!ViewData.ModelState.IsValid)
@@ -22,7 +26,7 @@
                 </div>
             }
 
-            <form asp-action="Merge" method="post" enctype="multipart/form-data" id="mergeForm">
+            <form asp-action="Merge" method="post" enctype="multipart/form-data" id="mergeForm" data-pdf-tool="merge">
                 <div class="mb-3">
                     <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
                         <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
@@ -33,6 +37,9 @@
 
                 <!-- Preview Selected Files -->
                 <ul id="preview" class="list-group list-group-flush mb-3"></ul>
+                <p id="limitHint" class="text-muted small text-start mb-2"></p>
+                <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
+                @await Html.PartialAsync("_PdfProgressBar")
 
                 <button type="submit" class="btn btn-primary btn-lg w-100">
                     <i class="bi bi-file-earmark-pdf-fill me-2"></i> Merge PDFs
@@ -41,12 +48,7 @@
         </div>
     </div>
 </div>
-    <section class="related-tools">
-        <h3>Related Tools</h3>
-        <ul>
-            <li><a href="/PDF/Compress">Compress PDF</a></li>
-        </ul>
-    </section>
+@await Html.PartialAsync("_PdfToolInternalLinks")
 <div class="container py-5">
 <p>
     Managing multiple PDF files can be cumbersome, especially when you need to combine reports, contracts, invoices, or scanned documents. Our <strong>PDF merger online</strong> offers a simple, efficient, and secure way to merge PDF files into a single, organized document without losing quality. Whether you are a student, professional, or business owner, this tool is designed to save you time and streamline your workflow.
@@ -317,26 +319,50 @@
 
         fileInput.addEventListener('change', showPreview);
 
-        function showPreview() {
-            preview.innerHTML = '';
-            const files = fileInput.files;
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].type !== 'application/pdf') continue;
-                const li = document.createElement('li');
-                li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                li.textContent = files[i].name;
-                preview.appendChild(li);
+        let mergeLimits = { maxFiles: 3, maxSizeBytes: 200 * 1024 * 1024 };
+
+        async function loadLimits() {
+            const access = await PdfToolkit.checkToolAccess('merge');
+            mergeLimits = {
+                maxFiles: access.maxBatchFiles || 3,
+                maxSizeBytes: access.maxFileSizeBytes || mergeLimits.maxSizeBytes,
+            };
+            const hint = document.getElementById('limitHint');
+            if (hint) {
+                hint.textContent = `2–${mergeLimits.maxFiles} PDFs · ${access.maxFileSizeLabel || PdfToolkit.fmtBytes(mergeLimits.maxSizeBytes)} per file`;
             }
         }
-           $('#mergeForm').on('submit', function (e) {
-             e.preventDefault();
-             showLoader('Processing...');
-             setTimeout(function () {
-                     showLoader('Merging...');;
-             }, 3000);
-             setTimeout(function () {
-                    submitWithLoader('mergeForm', 'Downloading...');
-             }, 5000);
+        loadLimits();
+
+        function showPreview() {
+            preview.innerHTML = '';
+            const err = document.getElementById('errorArea');
+            const v = PdfToolkit.validatePdfFiles(fileInput.files, mergeLimits);
+            if (!v.ok) {
+                if (err) { err.textContent = v.error; err.classList.remove('d-none'); }
+                return;
+            }
+            err?.classList.add('d-none');
+            v.files.forEach(f => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.textContent = f.name;
+                preview.appendChild(li);
+            });
+        }
+
+        $('#mergeForm').on('submit', function (e) {
+            e.preventDefault();
+            const v = PdfToolkit.validatePdfFiles(fileInput.files, { ...mergeLimits, multiple: true });
+            if (!v.ok || v.files.length < 2) {
+                const err = document.getElementById('errorArea');
+                if (err) {
+                    err.textContent = v.ok ? 'Please select at least 2 PDF files.' : v.error;
+                    err.classList.remove('d-none');
+                }
+                return;
+            }
+            submitWithLoader('mergeForm', 'Merging…', 'merged.pdf');
         });
     </script>
 }

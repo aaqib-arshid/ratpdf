@@ -1,949 +1,144 @@
-﻿@model HtmlRequest
+﻿@model ratpdf.Models.PdfEditViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Free Online PDF Editor – Edit, Annotate & Download PDF Files";
-    ViewData["Description"] = "Edit PDF files online for free. Add text, images, and formatting to any PDF document. No installation needed — import, edit, and download your PDF in seconds.";
+    ViewData["Title"] = "Professional PDF Editor";
+    ViewData["Description"] = "Edit PDFs online with in-place text, whiteout, highlights, images, and object-level export. Up to 200 MB per file.";
+    var modelJson = Context.Session.GetString("PdfEditModelJson") ?? "{}";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="keywords" content="edit PDF online, PDF editor free, modify PDF, annotate PDF, PDF text editor, online PDF editor no download, edit PDF without Adobe, PDF editor tool" />
-    <meta name="robots" content="index, follow" />
+@section Head {
     <link rel="canonical" href="https://ratpdf.com/PDF/EditPDF" />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Free Online PDF Editor – Edit PDF Files Instantly" />
-    <meta property="og:description" content="Import any PDF, edit text and images, then download — no software install required." />
-    <meta property="og:url" content="https://ratpdf.com/PDF/EditPDF" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Free Online PDF Editor" />
-    <meta name="twitter:description" content="Edit, annotate, and download PDF files in your browser. No sign-up needed." />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
+        .edit-app {
+            width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+            background: #e8eaf0; min-height: 85vh;
         }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #e8eaf0;
+        .edit-topbar {
+            background: #1e293b; color: #fff; padding: 10px 16px;
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
         }
-
-        .top-bar {
-            background: #1e293b;
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-            .top-bar label {
-                color: #94a3b8;
-                font-size: 13px;
-            }
-
-            .top-bar input[type="file"] {
-                color: white;
-                font-size: 13px;
-            }
-
-        .btn {
-            padding: 7px 14px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .btn-primary {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .btn-success {
-            background: #22c55e;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #2563eb;
-        }
-
-        .btn-success:hover {
-            background: #16a34a;
-        }
-
+        .edit-topbar label { color: #94a3b8; font-size: 13px; margin: 0; }
+        .edit-topbar .btn { font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 6px; border: none; }
+        .edit-topbar .btn-primary { background: #3b82f6; color: #fff; }
+        .edit-topbar .btn-success { background: #22c55e; color: #fff; }
         #toolbar {
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 6px 12px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 4px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 1px 4px rgba(0,0,0,.08);
+            background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 6px 12px;
+            display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,.08);
         }
-
-        .tb-group {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            padding: 0 6px;
-            border-right: 1px solid #cbd5e1;
-        }
-
-            .tb-group:last-child {
-                border-right: none;
-            }
-
+        .tb-group { display: flex; align-items: center; gap: 3px; padding: 0 8px; border-right: 1px solid #cbd5e1; }
+        .tb-group:last-child { border-right: none; }
         .tb-btn {
-            width: 30px;
-            height: 30px;
-            border: none;
-            background: transparent;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background .15s;
+            width: 32px; height: 32px; border: none; background: transparent; border-radius: 4px;
+            cursor: pointer; font-size: 14px; color: #334155;
+            display: flex; align-items: center; justify-content: center;
         }
-
-            .tb-btn:hover {
-                background: #e2e8f0;
-            }
-
-            .tb-btn.active {
-                background: #bfdbfe;
-                color: #1d4ed8;
-            }
-
-        .tb-select {
-            height: 28px;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            background: white;
-            color: #334155;
-            font-size: 13px;
-            padding: 0 4px;
-            cursor: pointer;
+        .tb-btn:hover { background: #e2e8f0; }
+        .tb-btn.active { background: #bfdbfe; color: #1d4ed8; }
+        .tb-select { height: 28px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px; }
+        .editor-shell { display: flex; min-height: calc(80vh - 100px); }
+        #pdfPageSidebar { width: 100px; background: #1e293b; overflow-y: auto; flex-shrink: 0; padding: 8px 4px; }
+        .pdf-page-thumb { position: relative; margin-bottom: 8px; cursor: pointer; border: 2px solid transparent; border-radius: 4px; overflow: hidden; }
+        .pdf-page-thumb:hover, .pdf-page-thumb.active { border-color: #3b82f6; }
+        .pdf-page-thumb canvas { width: 100%; display: block; }
+        .pdf-page-num { position: absolute; bottom: 2px; right: 4px; background: rgba(0,0,0,.65); color: #fff; font-size: 10px; padding: 1px 4px; border-radius: 3px; }
+        #pdfPageViewer {
+            flex: 1; overflow: auto; padding: 24px; background: #64748b;
+            display: flex; flex-direction: column; align-items: center; gap: 28px;
         }
-
-        .tb-color {
-            width: 28px;
-            height: 28px;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            cursor: pointer;
-            padding: 2px;
+        .pdf-page-view { position: relative; box-shadow: 0 4px 24px rgba(0,0,0,.3); background: #fff; }
+        .pdf-page-label { position: absolute; top: -22px; left: 0; font-size: 12px; color: #f1f5f9; font-weight: 600; }
+        .pdf-page-canvas { display: block; }
+        .pdf-page-overlay { position: absolute; left: 0; top: 0; }
+        #emptyState { padding: 80px 24px; text-align: center; color: #475569; }
+        #editorStatus {
+            position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: #fff;
+            padding: 10px 16px; border-radius: 8px; font-size: 13px; display: none; z-index: 9999;
         }
-
-
-        #editor-wrap {
-            padding: 28px;
-            min-height: calc(100vh - 120px);
-        }
-
-        #editor {
-            background: white;
-            min-height: 1100px;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 72px;
-            box-shadow: 0 2px 16px rgba(0,0,0,.12);
-            border-radius: 4px;
-            outline: none;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-            #editor img {
-                max-width: 100%;
-                height: auto;
-            }
-
-            #editor table {
-                border-collapse: collapse;
-                width: 100%;
-            }
-
-            #editor td, #editor th {
-                border: 1px solid #ccc;
-                padding: 6px 10px;
-            }
-        #status {
-            position: fixed;
-            bottom: 20px;
-            right: 24px;
-            background: #1e293b;
-            color: white;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            display: none;
-            z-index: 9999;
-        }
-
-        .pdf-notice {
-            background-color: #f5f9ff;
-            border: 1px solid #cfe3ff;
-            color: #1a3d7c;
-            padding: 10px 14px;
-            margin: 10px 0;
-            border-radius: 6px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
+        .import-progress, .export-progress { display: none; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e2e8f0; }
+        .zoom-label { color: #cbd5e1; font-size: 12px; min-width: 42px; text-align: center; }
     </style>
-</head>
-<body>
-    <div class="pdf-notice">
-    📄 If you have a scanned or photo‑based PDF, click the <i class="fa fa-eye"></i> <strong>OCR Edit</strong> button in the toolbar to make the text editable.
-    </div>
-    <div class="top-bar">
-        <label>Import PDF:</label>
-        <form method="post" enctype="multipart/form-data" action="/PDF/UploadPdf" id="uploadForm" style="display:flex;align-items:center;gap:8px;">
-            <input type="file" name="file" accept="application/pdf" id="pdfFileInput" />
-            <button type="submit" class="btn btn-primary">
-                <i class="fa fa-upload"></i> Import
-            </button>
-        </form>
-        <button class="btn btn-success" onclick="downloadPdf()" style="margin-left:auto;">
-            <i class="fa fa-download"></i> Download PDF
-        </button>
+}
+
+<div class="edit-app">
+    <div class="edit-topbar">
+        <label>Open PDF</label>
+        <input type="file" id="pdfFileInput" accept="application/pdf" class="form-control form-control-sm" style="max-width:220px;">
+        <button type="button" class="btn btn-primary" id="importBtn"><i class="fa fa-upload"></i> Open</button>
+        <span id="editUsageBadge" class="badge bg-light text-dark border">…</span>
+        <div class="ms-auto d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-light btn-sm" id="zoomOutBtn" title="Zoom out"><i class="fa fa-search-minus"></i></button>
+            <span id="zoomLabel" class="zoom-label">135%</span>
+            <button type="button" class="btn btn-outline-light btn-sm" id="zoomInBtn" title="Zoom in"><i class="fa fa-search-plus"></i></button>
+            <button type="button" class="btn btn-success" onclick="exportPdf()"><i class="fa fa-download"></i> Download PDF</button>
+        </div>
     </div>
 
+    <div class="import-progress" id="importProgressArea">
+        <div class="progress" style="height:8px;">
+            <div id="importProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%"></div>
+        </div>
+        <small id="importProgressMsg" class="text-muted">Opening document…</small>
+    </div>
+    <div class="export-progress" id="exportProgressArea">
+        <div class="progress" style="height:8px;">
+            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width:100%"></div>
+        </div>
+        <small class="text-muted">Finalizing your edited PDF…</small>
+    </div>
 
     <div id="toolbar">
         <div class="tb-group">
-    <button id="btnWhiteout" class="tb-btn" title="Whiteout / Erase Area" onclick="toggleMode('whiteout', this)">
-        <i class="fa fa-eraser"></i>
-    </button>
-    <button id="btnAddText" class="tb-btn" title="Add Text Box" onclick="toggleMode('addText', this)">
-        <i class="fa fa-plus-square"></i>
-    </button>
-     </div>
+            <button class="tb-btn active" data-tool="select" title="Select &amp; edit text" onclick="setTool('select', this)"><i class="fa fa-mouse-pointer"></i></button>
+            <button class="tb-btn" data-tool="pan" title="Pan (drag to scroll)" onclick="setTool('pan', this)"><i class="bi bi-arrows-move"></i></button>
+            <button class="tb-btn" data-tool="whiteout" title="Whiteout area" onclick="setTool('whiteout', this)"><i class="fa fa-eraser"></i></button>
+            <button class="tb-btn" data-tool="addText" title="Add text box" onclick="setTool('addText', this)"><i class="fa fa-font"></i></button>
+            <button class="tb-btn" data-tool="highlight" title="Highlight area" onclick="setTool('highlight', this)"><i class="fa fa-highlighter"></i></button>
+            <button class="tb-btn" title="Insert image" onclick="insertImageStamp()"><i class="fa fa-image"></i></button>
+        </div>
         <div class="tb-group">
-            <select class="tb-select" id="fontFamilySelect" style="width:130px"
-                    onchange="execCmd('fontName', this.value)">
-                <option value="Arial">Arial</option>
-                <option value="Times New Roman">Times New Roman</option>
-                <option value="Courier New">Courier New</option>
-                <option value="Georgia">Georgia</option>
-                <option value="Verdana">Verdana</option>
-                <option value="Helvetica">Helvetica</option>
-                <option value="Tahoma">Tahoma</option>
-                <option value="Trebuchet MS">Trebuchet MS</option>
+            <button class="tb-btn" id="boldToggle" title="Bold" onclick="toggleStyle(this,'bold')"><i class="fa fa-bold"></i></button>
+            <button class="tb-btn" id="italicToggle" title="Italic" onclick="toggleStyle(this,'italic')"><i class="fa fa-italic"></i></button>
+            <select class="tb-select" id="fontFamilySelect" style="width:110px">
+                <option>Arial</option><option>Helvetica</option>
+                <option>Times New Roman</option><option>Courier New</option><option>Georgia</option>
             </select>
-        </div>
-
-        <div class="tb-group">
-            <select class="tb-select" id="fontSizeSelect" style="width:70px"
-                    onchange="setFontSize(this.value)">
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>11</option>
-                <option selected>12</option>
-                <option>14</option>
-                <option>16</option>
-                <option>18</option>
-                <option>20</option>
-                <option>24</option>
-                <option>28</option>
-                <option>32</option>
-                <option>36</option>
-                <option>48</option>
-                <option>72</option>
+            <select class="tb-select" id="fontSizeSelect" style="width:54px">
+                <option>10</option><option>11</option><option selected>12</option>
+                <option>14</option><option>16</option><option>18</option><option>24</option>
             </select>
-        </div>
-        <textarea id="imported-html-source" style="display:none;"
-                  aria-hidden="true">@Model.Html</textarea>
-        <div class="tb-group">
-            <button class="tb-btn" title="Bold (Ctrl+B)"
-                    onmousedown="e=>e.preventDefault()" onclick="execCmd('bold')">
-                <i class="fa fa-bold"></i>
-            </button>
-            <button class="tb-btn" title="Italic (Ctrl+I)" onclick="execCmd('italic')">
-                <i class="fa fa-italic"></i>
-            </button>
-            <button class="tb-btn" title="Underline (Ctrl+U)" onclick="execCmd('underline')">
-                <i class="fa fa-underline"></i>
-            </button>
-            <button class="tb-btn" title="Strikethrough" onclick="execCmd('strikeThrough')">
-                <i class="fa fa-strikethrough"></i>
-            </button>
-        </div>
-
-        <div class="tb-group">
-            <label title="Text color" style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:12px;color:#475569;">
-                <i class="fa fa-font"></i>
-                <input type="color" class="tb-color" id="textColor" value="#000000"
-                       oninput="execCmd('foreColor', this.value)" title="Text color" />
-            </label>
-            <label title="Highlight color" style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:12px;color:#475569;">
-                <i class="fa fa-highlighter"></i>
-                <input type="color" class="tb-color" id="bgColor" value="#ffff00"
-                       oninput="execCmd('backColor', this.value)" title="Highlight" />
-            </label>
-        </div>
-
-        <div class="tb-group">
-            <button class="tb-btn" title="Align Left" onclick="execCmd('justifyLeft')">
-                <i class="fa fa-align-left"></i>
-            </button>
-            <button class="tb-btn" title="Align Center" onclick="execCmd('justifyCenter')">
-                <i class="fa fa-align-center"></i>
-            </button>
-            <button class="tb-btn" title="Align Right" onclick="execCmd('justifyRight')">
-                <i class="fa fa-align-right"></i>
-            </button>
-            <button class="tb-btn" title="Justify" onclick="execCmd('justifyFull')">
-                <i class="fa fa-align-justify"></i>
-            </button>
-        </div>
-
-        <div class="tb-group">
-            <button class="tb-btn" title="Bullet list" onclick="execCmd('insertUnorderedList')">
-                <i class="fa fa-list-ul"></i>
-            </button>
-            <button class="tb-btn" title="Numbered list" onclick="execCmd('insertOrderedList')">
-                <i class="fa fa-list-ol"></i>
-            </button>
-        </div>
-
-        <div class="tb-group">
-            <button class="tb-btn" title="Indent" onclick="execCmd('indent')">
-                <i class="fa fa-indent"></i>
-            </button>
-            <button class="tb-btn" title="Outdent" onclick="execCmd('outdent')">
-                <i class="fa fa-outdent"></i>
-            </button>
-        </div>
-
-        <div class="tb-group">
-            <button class="tb-btn" title="Insert Image" onclick="insertImage()">
-                <i class="fa fa-image"></i>
-            </button>
-            <button class="tb-btn" title="Insert Link" onclick="insertLink()">
-                <i class="fa fa-link"></i>
-            </button>
+            <input type="color" id="textColor" value="#000000" class="tb-select" style="width:36px;padding:2px;" title="Text color">
         </div>
         <div class="tb-group">
-        <button id="btnOcrEdit" class="tb-btn" title="OCR scanned text → editable" onclick="runOcrEditable()">
-        <i class="fa fa-eye"></i>
-       </button>
-            </div>
-        <div class="tb-group">
-            <button class="tb-btn" title="Undo (Ctrl+Z)" onclick="execCmd('undo')">
-                <i class="fa fa-undo"></i>
-            </button>
-            <button class="tb-btn" title="Redo (Ctrl+Y)" onclick="execCmd('redo')">
-                <i class="fa fa-redo"></i>
-            </button>
+            <button class="tb-btn" title="Undo (Ctrl+Z)" onclick="undoEdit()"><i class="fa fa-undo"></i></button>
+            <button class="tb-btn" title="Redo (Ctrl+Y)" onclick="redoEdit()"><i class="fa fa-redo"></i></button>
+        </div>
+        <div class="tb-group small text-muted d-none d-md-flex">
+            Click text to edit · Drag to mark areas · Ctrl+scroll to zoom · Delete removes selection
         </div>
     </div>
 
-    <div id="editor-wrap">
-        <div id="editor"
-             contenteditable="true"
-             spellcheck="true">
-        </div>
+    <div id="emptyState" class="@(Model.HasDocument ? "d-none" : "")">
+        <i class="bi bi-file-earmark-pdf d-block mb-3" style="font-size:4rem;color:#94a3b8;"></i>
+        <h4>Professional PDF Editor</h4>
+        <p class="mb-0">Open a PDF to edit text in place, white out content, add annotations, and download a polished result.<br>Supports files up to 200 MB with full page rendering and thumbnail navigation.</p>
     </div>
 
-    <input type="file" id="imageFileInput" accept="image/*" style="display:none" />
+    <div id="editorWorkspace" class="editor-shell @(Model.HasDocument ? "" : "d-none")">
+        <div id="pdfPageSidebar"></div>
+        <div id="pdfPageViewer"></div>
+    </div>
 
-    <div id="status"></div>
+    <div id="editorStatus"></div>
+    <input type="file" id="imageStampInput" accept="image/*" class="d-none">
+</div>
 
-    <section style="max-width:900px;margin:40px auto;padding:0 28px 60px;font-family:Arial,sans-serif;color:#334155;">
-
-        <h1 style="font-size:28px;font-weight:700;color:#1e293b;margin-bottom:8px;">
-            Free Online PDF Editor — Edit PDF Files in Your Browser
-        </h1>
-        <p style="font-size:16px;line-height:1.7;color:#475569;">
-            Edit any PDF document instantly without downloading software. Our free online PDF editor
-            lets you open a PDF, modify text and images, change fonts, add links, and download your
-            updated file — all inside your web browser.
-        </p>
-
-        <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-top:36px;">How to Edit a PDF Online</h2>
-        <ol style="font-size:15px;line-height:2;color:#475569;padding-left:20px;">
-            <li>Click <strong>Import PDF</strong> and choose the PDF file from your computer.</li>
-            <li>Use the toolbar to edit text — change fonts, size, bold, italic, color, and alignment.</li>
-            <li>Insert images or hyperlinks using the toolbar buttons.</li>
-            <li>Click <strong>Download PDF</strong> (or press <kbd>Ctrl+S</kbd>) to save your edited document.</li>
-        </ol>
-
-        <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-top:36px;">Features of Our PDF Editor</h2>
-        <ul style="font-size:15px;line-height:2;color:#475569;padding-left:20px;">
-            <li><strong>Rich text editing</strong> — bold, italic, underline, strikethrough</li>
-            <li><strong>Font control</strong> — choose family (Arial, Times New Roman, Georgia, etc.) and size</li>
-            <li><strong>Text & highlight colors</strong> — color picker for text and background highlighting</li>
-            <li><strong>Alignment</strong> — left, center, right, and justified alignment</li>
-            <li><strong>Lists</strong> — bulleted and numbered lists with indent/outdent</li>
-            <li><strong>Images</strong> — insert images directly into the PDF</li>
-            <li><strong>Hyperlinks</strong> — add clickable links to any selected text</li>
-            <li><strong>Undo & Redo</strong> — full edit history</li>
-            <li><strong>Download as PDF</strong> — one-click export</li>
-        </ul>
-
-        <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-top:36px;">Why Use Our PDF Editor?</h2>
-        <ul style="font-size:15px;line-height:2;color:#475569;padding-left:20px;">
-            <li>✔ <strong>No installation required</strong> — works entirely in your browser</li>
-            <li>✔ <strong>Free to use</strong> — no subscription, no sign-up</li>
-            <li>✔ <strong>Works on Windows, Mac, and Linux</strong></li>
-            <li>✔ <strong>No Adobe Acrobat needed</strong></li>
-            <li>✔ <strong>Secure</strong> — files are not permanently stored on our servers</li>
-            <li>✔ <strong>Fast</strong> — import and export PDFs in seconds</li>
-        </ul>
-
-        <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-top:36px;">Frequently Asked Questions</h2>
-
-        <details style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
-            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
-                Can I edit a PDF online for free?
-            </summary>
-            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
-                Yes — our tool is completely free. No credit card, no account, no software to install.
-                Upload your PDF, edit it, and download.
-            </p>
-        </details>
-
-        <details style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
-            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
-                Do I need Adobe Acrobat to edit a PDF?
-            </summary>
-            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
-                No. Our PDF editor is a browser-based alternative to Adobe Acrobat. You can edit and
-                download PDFs without any Adobe software.
-            </p>
-        </details>
-
-        <details style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
-            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
-                Can I add images to a PDF online?
-            </summary>
-            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
-                Yes. Click the image button in the toolbar to insert JPG, PNG, or GIF images anywhere
-                in your PDF document.
-            </p>
-        </details>
-
-        <details style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
-            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
-                Is my PDF file safe and private?
-            </summary>
-            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
-                Your file is processed in your browser session and is not permanently stored on our servers.
-            </p>
-        </details>
-
-        <details style="border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;">
-            <summary style="font-weight:600;font-size:15px;cursor:pointer;color:#1e293b;">
-                What browsers are supported?
-            </summary>
-            <p style="margin:10px 0 0;font-size:14px;color:#475569;">
-                The PDF editor works on all modern browsers — Google Chrome, Microsoft Edge, Firefox,
-                and Safari — on desktop and laptop computers.
-            </p>
-        </details>
-
-    </section>
-    <section class="related-tools">
-  <h3>Related Tools</h3>
-  <ul>
-            <li><a href="/PDF/Compress">Compress PDF</a></li>
-  </ul>
-</section>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <script type="application/ld+json">
-        {
-          "@@context": "https://schema.org",
-          "@@type": "WebApplication",
-          "name": "Free Online PDF Editor",
-          "url": "https://ratpdf.com/PDF/EditPDF",
-          "description": "Edit PDF files online for free. Import a PDF, modify text and images using a full-featured toolbar, then export as a PDF document.",
-          "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "All",
-          "offers": {
-            "@@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
-          "featureList": [
-            "Upload and edit PDF documents",
-            "Rich text formatting — bold, italic, underline",
-            "Font family and size control",
-            "Text and highlight color picker",
-            "Insert images into PDF",
-            "Insert hyperlinks",
-            "Bullet and numbered lists",
-            "Undo/Redo support",
-            "Download edited file as PDF"
-          ],
-          "aggregateRating": {
-            "@@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "512"
-          }
-        }
-    </script>
-    <script type="application/ld+json">
-        {
-          "@@context": "https://schema.org",
-          "@@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@@type": "Question",
-              "name": "Can I edit a PDF online for free?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Yes. Our PDF editor is completely free to use in your browser. Upload your PDF, make changes, and download — no sign-up or software installation required."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Do I need to install software to edit a PDF?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "No. Everything runs in your web browser. There is no download, plugin, or Adobe Acrobat subscription needed."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Can I add images to a PDF online?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Yes. Use the image insert button in the toolbar to add JPG, PNG, or GIF images directly into your PDF document."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Is my uploaded PDF stored on your servers?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "No. Your PDF is processed locally in your browser session and is never permanently stored on our servers."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "What file format can I download after editing?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "You can download your edited document as a PDF file with one click after making your changes."
-              }
-            }
-          ]
-        }
-    </script>
-    <script>
-        let currentMode = null;
-        (function () {
-            var source = document.getElementById('imported-html-source');
-            if (!source) return;
-
-            var html = source.value;
-            if (html && html.trim().length > 0) {
-                document.getElementById('editor').innerHTML = html;
-            }
-            source.remove();
-        })();
-
-        function execCmd(cmd, value) {
-            document.getElementById('editor').focus();
-            document.execCommand(cmd, false, value || null);
-            updateToolbarState();
-        }
-
-
-        function setFontSize(pt) {
-            var sel = window.getSelection();
-            if (!sel.rangeCount) return;
-            var range = sel.getRangeAt(0);
-            if (range.collapsed) return;
-
-            var span = document.createElement('span');
-            span.style.fontSize = pt + 'pt';
-            try {
-                range.surroundContents(span);
-            } catch (e) {
-                var level = pt <= 10 ? 1 : pt <= 13 ? 2 : pt <= 16 ? 3 :
-                            pt <= 18 ? 4 : pt <= 24 ? 5 : pt <= 32 ? 6 : 7;
-                document.execCommand('fontSize', false, level);
-            }
-        }
-
-        function updateToolbarState() {
-            ['bold','italic','underline','strikeThrough'].forEach(function(cmd) {
-                var btn = document.querySelector('.tb-btn[onclick*="' + cmd + '"]');
-                if (btn) btn.classList.toggle('active', document.queryCommandState(cmd));
-            });
-        }
-
-        document.getElementById('editor').addEventListener('keyup', updateToolbarState);
-        document.addEventListener('selectionchange', updateToolbarState);
-       
-        document.getElementById('imageFileInput').addEventListener('change', function (e) {
-            var file = e.target.files[0];
-            if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                showStatus('✗ File is not an image');
-                return;
-            }
-
-            var reader = new FileReader();
-
-            reader.onload = function (readerEvent) {
-                var dataUrl = readerEvent.target.result;
-                if (!dataUrl) return;
-
-                var img = document.createElement('img');
-                img.src = dataUrl;
-                img.style.cssText = 'max-width:100%;height:auto;display:block;margin:8px 0;cursor:pointer;';
-                img.alt = file.name;
-
-                var editor   = document.getElementById('editor');
-                var sel      = window.getSelection();
-                var inserted = false;
-
-                if (sel && sel.rangeCount > 0) {
-                    var range = sel.getRangeAt(0);
-
-                    if (editor.contains(range.commonAncestorContainer)) {
-                        range.deleteContents();
-                        range.insertNode(img);
-
-                        range.setStartAfter(img);
-                        range.setEndAfter(img);
-                        sel.removeAllRanges();
-                        sel.addRange(range);
-                        inserted = true;
-                    }
-                }
-
-                if (!inserted) {
-                    editor.appendChild(img);
-                }
-
-                e.target.value = '';
-
-                showStatus('✓ Image inserted');
-
-                img.addEventListener('click', function () {
-                    sel = window.getSelection();
-                    var r = document.createRange();
-                    r.selectNode(img);
-                    sel.removeAllRanges();
-                    sel.addRange(r);
-                });
-            };
-
-            reader.onerror = function () {
-                showStatus('✗ Failed to read image file');
-                e.target.value = '';
-            };
-
-            reader.readAsDataURL(file);
-        });
-
-        function insertImage() {
-            var sel = window.getSelection();
-            if (sel && sel.rangeCount > 0) {
-                window._savedImageRange = sel.getRangeAt(0).cloneRange();
-            }
-            document.getElementById('imageFileInput').click();
-        }
-
-        function handleImageFile(e) {
-            var file = e.target.files[0];
-            if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function (re) {
-                document.getElementById('editor').focus();
-                var img = '<img src="' + re.result + '" style="max-width:100%;height:auto;" />';
-                document.execCommand('insertHTML', false, img);
-            };
-            reader.readAsDataURL(file);
-            e.target.value = '';
-        }
-
-        function insertLink() {
-            var url = prompt('Enter URL:', 'https://');
-            if (url) execCmd('createLink', url);
-        }
-
-        function downloadPdf() {
-            showStatus('Generating PDF…');
-
-            var innerHtml = document.getElementById('editor').innerHTML;
-            showLoader('Downloading...');
-            fetch('/PDF/ExportPdf', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ html: innerHtml })  
-            })
-            .then(function(res) {
-                if (!res.ok) throw new Error('Server error ' + res.status);
-                hideLoader();
-                return res.blob();
-            })
-            .then(function(blob) {
-                hideLoader();
-                var url = window.URL.createObjectURL(blob);
-                var a   = document.createElement('a');
-                a.href     = url;
-                a.download = 'EditedDocument.pdf';
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(url);
-                showStatus('✓ PDF downloaded');
-            })
-            .catch(function(err) {
-                hideLoader();
-                showStatus('✗ PDF generation failed');
-            });
-        }
-
-        var statusTimer;
-        function showStatus(msg) {
-            var el = document.getElementById('status');
-            el.textContent = msg;
-            el.style.display = 'block';
-            clearTimeout(statusTimer);
-            statusTimer = setTimeout(function() { el.style.display = 'none'; }, 3000);
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                e.preventDefault();
-                downloadPdf();
-            }
-        });
-            document.getElementById('uploadForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            showLoader('Getting Ready...');
-
-            setTimeout(function () {
-                showLoader('Processing...');
-            }, 3000);
-
-            setTimeout(function () {
-                submitWithLoader('uploadForm', 'Importing...');
-            }, 5000);
-        });
-        //start
-        async function runOcrEditable() {
-    const editor = document.getElementById('editor');
-    const images = editor.querySelectorAll('img');
-    if (images.length === 0) {
-        showStatus('No images found for OCR.');
-        return;
+@section Scripts {
+    <script src="~/js/pdf-editor-studio.js" asp-append-version="true"></script>
+    @if (Model.HasDocument)
+    {
+        <script>
+            PdfStudioEditor.initFromServer('@Model.SessionId', @Html.Raw(modelJson), '@Model.OriginalFileName');
+        </script>
     }
-
-    const editorWidth = editor.clientWidth;
-    showStatus('Loading OCR engine…');
-    const worker = await Tesseract.createWorker('eng');
-
-    for (let i = 0; i < images.length; i++) {
-        const img = images[i];
-        const imageUrl = img.src;
-        if (!imageUrl.startsWith('data:image')) continue;
-
-        // Skipping tiny logos / icons
-        if (img.clientWidth < editorWidth * 0.3) continue;
-
-        await img.decode().catch(() => {});
-        const displayWidth = img.clientWidth;
-        const displayHeight = img.clientHeight;
-        const naturalWidth = img.naturalWidth;
-        const naturalHeight = img.naturalHeight;
-        if (naturalWidth === 0 || naturalHeight === 0) continue;
-
-        const scaleX = displayWidth / naturalWidth;
-        const scaleY = displayHeight / naturalHeight;
-
-        showStatus(`OCR on image ${i + 1} of ${images.length}…`);
-        const { data: { words } } = await worker.recognize(imageUrl);
-
-        const confidentWords = words
-            .filter(w => w.confidence >= 40 && w.text.trim().length > 0)
-            .map(w => ({
-                text: w.text.trim(),
-                x0: w.bbox.x0 * scaleX,
-                y0: w.bbox.y0 * scaleY,
-                x1: w.bbox.x1 * scaleX,
-                y1: w.bbox.y1 * scaleY
-            }));
-
-        if (confidentWords.length < 2) continue;
-
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = naturalWidth;
-        canvas.height = naturalHeight;
-        const origImg = new Image();
-        origImg.src = imageUrl;
-        await origImg.decode().catch(() => {});
-        ctx.drawImage(origImg, 0, 0);
-
-        function getTextColor(natX0, natY0, natX1, natY1) {
-            const w = natX1 - natX0;
-            const h = natY1 - natY0;
-            if (w < 1 || h < 1) return '#000000';
-            const imageData = ctx.getImageData(natX0, natY0, w, h).data;
-            let rTotal = 0, gTotal = 0, bTotal = 0, count = 0;
-            for (let i = 0; i < imageData.length; i += 4) {
-                const r = imageData[i], g = imageData[i+1], b = imageData[i+2];
-                const luminance = 0.299*r + 0.587*g + 0.114*b;
-                if (luminance < 128) {
-                    rTotal += r; gTotal += g; bTotal += b;
-                    count++;
-                }
-            }
-            if (count === 0) return '#000000';  
-            const avgR = Math.round(rTotal / count);
-            const avgG = Math.round(gTotal / count);
-            const avgB = Math.round(bTotal / count);
-            return '#' + [avgR, avgG, avgB].map(v => v.toString(16).padStart(2,'0')).join('');
-        }
-
-        function isBold(natX0, natY0, natX1, natY1) {
-            
-            const midY = Math.floor((natY0 + natY1) / 2);
-            const w = natX1 - natX0;
-            if (w < 2) return false;
-            const imageData = ctx.getImageData(natX0, midY, w, 2).data;
-            let dark = 0;
-            for (let i = 0; i < imageData.length; i += 4) {
-                const r = imageData[i], g = imageData[i+1], b = imageData[i+2];
-                if (0.299*r + 0.587*g + 0.114*b < 128) dark++;
-            }
-            return dark > (w * 2 * 0.3);   
-        }
-
-        const lines = [];
-        const Y_TOLERANCE = Math.max(5, (confidentWords[0]?.y1 - confidentWords[0]?.y0) * 0.5 || 5);
-        confidentWords.forEach(word => {
-            let added = false;
-            for (let line of lines) {
-                const avgY = line.reduce((s, w) => s + w.y0, 0) / line.length;
-                if (Math.abs(word.y0 - avgY) < Y_TOLERANCE) {
-                    line.push(word);
-                    added = true;
-                    break;
-                }
-            }
-            if (!added) lines.push([word]);
-        });
-        lines.forEach(line => line.sort((a, b) => a.x0 - b.x0));
-
-        const container = document.createElement('div');
-        container.style.position = 'relative';
-        container.style.display = 'inline-block';
-        container.style.width = displayWidth + 'px';
-        container.style.height = displayHeight + 'px';   
-        container.contentEditable = 'false';
-
-        const bgImg = document.createElement('img');
-        bgImg.src = imageUrl;
-        bgImg.style.width = '100%';
-        bgImg.style.height = '100%';
-        bgImg.style.display = 'block';
-        container.appendChild(bgImg);
-
-        lines.forEach(lineWords => {
-            const left = Math.min(...lineWords.map(w => w.x0));
-            const top = Math.min(...lineWords.map(w => w.y0));
-            const right = Math.max(...lineWords.map(w => w.x1));
-            const bottom = Math.max(...lineWords.map(w => w.y1));
-            const width = right - left;
-            const height = bottom - top;
-
-            const firstWord = lineWords[0];
-            const natX0 = firstWord.x0 / scaleX;
-            const natY0 = firstWord.y0 / scaleY;
-            const natX1 = firstWord.x1 / scaleX;
-            const natY1 = firstWord.y1 / scaleY;
-            const textColor = getTextColor(natX0, natY0, natX1, natY1);
-            const fontWeight = isBold(natX0, natY0, natX1, natY1) ? 'bold' : 'normal';
-
-            const fontSize = Math.max(10, height * 0.75);
-
-            const whiteBg = document.createElement('div');
-            whiteBg.style.position = 'absolute';
-            whiteBg.style.left = left + 'px';
-            whiteBg.style.top = top + 'px';
-            whiteBg.style.width = width + 'px';
-            whiteBg.style.height = height + 'px';
-            whiteBg.style.backgroundColor = 'white';
-            whiteBg.style.zIndex = '1';
-            container.appendChild(whiteBg);
-
-            // Editable line
-            const fullText = lineWords.map(w => w.text).join(' ');
-            const span = document.createElement('span');
-            span.textContent = fullText;
-            span.contentEditable = 'true';
-            span.setAttribute('tabindex', '0');
-            span.setAttribute('role', 'textbox');
-            span.style.position = 'absolute';
-            span.style.left = left + 'px';
-            span.style.top = top + 'px';
-            span.style.minWidth = width + 'px';
-            span.style.width = 'auto';   
-            span.style.height = height + 'px';
-            span.style.lineHeight = height + 'px';
-            span.style.fontSize = fontSize + 'px';
-            span.style.fontFamily = document.getElementById('fontFamilySelect').value || 'Arial';
-            span.style.fontWeight = fontWeight;
-            span.style.color = textColor;
-            span.style.backgroundColor = 'transparent';
-            span.style.cursor = 'text';
-            span.style.overflow = 'visible';
-            span.style.whiteSpace = 'nowrap';
-            span.style.display = 'inline-block';
-            span.style.zIndex = '2';
-            span.style.outline = 'none';
-            span.style.padding = '0 2px';
-            span.style.boxSizing = 'content-box';
-
-            span.addEventListener('mousedown', (e) => {
-                e.stopPropagation();
-                span.focus();
-            });
-            span.addEventListener('keydown', (e) => {
-                e.stopPropagation();
-            });
-
-            span.addEventListener('focus', () => {
-                activeTextBox = span;
-                span.style.backgroundColor = 'rgba(255,255,0,0.3)';
-            });
-            span.addEventListener('blur', () => {
-                span.style.backgroundColor = 'transparent';
-                if (activeTextBox === span) activeTextBox = null;
-            });
-
-            container.appendChild(span);
-        });
-
-        img.parentNode.replaceChild(container, img);
-    }
-
-    await worker.terminate();
-    showStatus('OCR complete. Click any line to edit.');
 }
-        //end
-    </script>
-</body>
-</html>
