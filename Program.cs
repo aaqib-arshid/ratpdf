@@ -150,6 +150,19 @@ public partial class Program
         builder.Logging.AddConsole();
         builder.Logging.AddDebug();
         var app = builder.Build();
+
+        {
+            var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("PythonRuntime");
+            var config = app.Services.GetRequiredService<IConfiguration>();
+            var env = app.Services.GetRequiredService<IWebHostEnvironment>();
+            var python = PythonRuntime.ResolveExecutable(config);
+            var engineDir = PythonRuntime.GetEngineDirectory(env);
+            var requirements = Path.Combine(engineDir, "requirements.txt");
+            logger.LogInformation(
+                "Pdf-Engine: dir={EngineDir} exists={DirExists}, requirements={ReqExists}, python={Python}",
+                engineDir, Directory.Exists(engineDir), File.Exists(requirements), python);
+        }
+
         // In Program.cs, after app.Build()
         //var cleanupTimer = new Timer(_ =>
         //{

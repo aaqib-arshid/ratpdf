@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace ratpdf.Services
@@ -12,14 +13,15 @@ namespace ratpdf.Services
 
         public LayoutEngineProcessor(
             ILogger<LayoutEngineProcessor> logger,
-            IWebHostEnvironment env,                       
-            string pythonScriptPath = null,
-            string pythonExecutable = null)
+            IWebHostEnvironment env,
+            IConfiguration configuration,
+            string? pythonScriptPath = null,
+            string? pythonExecutable = null)
         {
             _logger = logger;
             _pythonScriptPath = pythonScriptPath
                 ?? Path.Combine(env.ContentRootPath, "Pdf-Engine", "pdf-reconstruction-engine.py");
-            _pythonExecutable = pythonExecutable ?? "python3";
+            _pythonExecutable = pythonExecutable ?? PythonRuntime.ResolveExecutable(configuration);
         }
 
         /// <summary>

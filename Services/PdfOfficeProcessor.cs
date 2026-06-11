@@ -25,8 +25,7 @@ namespace ratpdf.Services
         {
             _logger = logger;
             _pythonScriptPath = Path.Combine(env.ContentRootPath, "Pdf-Engine", "office_converter.py");
-            _pythonExecutable = configuration["PdfToDocx:PythonExecutable"]
-                ?? (OperatingSystem.IsWindows() ? "python" : "python3");
+            _pythonExecutable = PythonRuntime.ResolveExecutable(configuration);
             _timeoutSeconds = configuration.GetValue("PdfToDocx:ConversionTimeoutSeconds", 600);
         }
 
