@@ -60,7 +60,7 @@ namespace ratpdf.Controllers
         public IActionResult SitemapCompressLegacy() =>
             RedirectPermanent("/sitemaps/compress-pdf-index.xml");
 
-        /// <summary>Dynamic sub-index listing all compress SEO urlset chunks.</summary>
+        /// <summary>Static compress index + chunks in wwwroot; SeoController routes are fallback.</summary>
         [HttpGet("/sitemaps/compress-pdf-index.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]

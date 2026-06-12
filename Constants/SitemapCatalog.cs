@@ -3,17 +3,17 @@ namespace ratpdf.Constants
     /// <summary>Child sitemaps referenced by /sitemap.xml index.</summary>
     public static class SitemapCatalog
     {
-        /// <summary>Dynamically generated urlsets (served by SeoController).</summary>
+        /// <summary>Dynamically generated urlsets (served by SeoController when no static file exists).</summary>
         public static readonly string[] DynamicChildren =
         [
             "/sitemaps/site.xml",
             "/sitemaps/pdf-tool-landings.xml",
-            "/sitemaps/compress-pdf-index.xml",
         ];
 
-        /// <summary>Legacy static urlsets in wwwroot/sitemaps/.</summary>
+        /// <summary>Static urlsets in wwwroot/sitemaps/ (regenerate via --generate-compress-sitemap).</summary>
         public static readonly string[] StaticChildren =
         [
+            "/sitemaps/compress-pdf-index.xml",
             "/sitemaps/sitemaptools.xml",
             "/sitemaps/sitemap-pdf-to-word.xml",
             "/sitemaps/sitemap_pdf_to_txt.xml",

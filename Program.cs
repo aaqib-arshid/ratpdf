@@ -28,6 +28,17 @@ public partial class Program
 {
     private static void Main(string[] args)
     {
+        if (args.Contains("--generate-compress-sitemap", StringComparer.OrdinalIgnoreCase))
+        {
+            var webRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var result = CompressPdfSitemapFileGenerator.Generate(webRoot);
+            Console.WriteLine($"Generated {result.UrlCount} URLs in {result.ChunkCount} chunk(s).");
+            Console.WriteLine($"Index: {result.IndexPath}");
+            foreach (var chunk in result.ChunkFileNames)
+                Console.WriteLine($"  - wwwroot/sitemaps/{chunk}");
+            return;
+        }
+
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddHostedService<PythonBootstrapHostedService>();
