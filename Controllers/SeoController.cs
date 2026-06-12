@@ -18,19 +18,8 @@ namespace ratpdf.Controllers
 
         [HttpGet("/robots.txt")]
         [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any)]
-        public ContentResult Robots()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("User-agent: *");
-            sb.AppendLine("Allow: /");
-            sb.AppendLine("Disallow: /Account/");
-            sb.AppendLine("Disallow: /InvoiceDashboard/");
-            sb.AppendLine("Disallow: /Error/");
-            sb.AppendLine("Disallow: /*-keywords.txt");
-            sb.AppendLine($"Sitemap: {PdfToolSeo.SiteUrl}/sitemap.xml");
-            sb.AppendLine($"Sitemap: {PdfToolSeo.SiteUrl}/sitemaps/compress-pdf-index.xml");
-            return Content(sb.ToString(), "text/plain", Encoding.UTF8);
-        }
+        public ContentResult Robots() =>
+            Content(RobotsTxtBuilder.Build(), "text/plain", Encoding.UTF8);
 
         [HttpGet("/sitemap.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]

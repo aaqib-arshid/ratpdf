@@ -32,8 +32,10 @@ public partial class Program
         {
             var webRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             var result = CompressPdfSitemapFileGenerator.Generate(webRoot);
+            RobotsTxtBuilder.WriteToWwwRoot(webRoot);
             Console.WriteLine($"Generated {result.UrlCount} URLs in {result.ChunkCount} chunk(s).");
             Console.WriteLine($"Index: {result.IndexPath}");
+            Console.WriteLine($"Robots: {Path.Combine(webRoot, "robots.txt")}");
             foreach (var chunk in result.ChunkFileNames)
                 Console.WriteLine($"  - wwwroot/sitemaps/{chunk}");
             return;

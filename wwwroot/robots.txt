@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /Account/
+Disallow: /InvoiceDashboard/
+Disallow: /Error/
+Disallow: /*-keywords.txt
+Sitemap: https://ratpdf.com/sitemap.xml
+Sitemap: https://ratpdf.com/sitemaps/compress-pdf-index.xml
