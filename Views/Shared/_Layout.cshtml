@@ -418,9 +418,16 @@
         const toolId = form?.dataset?.pdfTool;
         const elements = window.PdfToolkit?.getStandardProgressElements?.();
 
-        if (elements?.area && window.PdfToolkit?.submitFormWithProgress) {
+        if (elements?.area && window.PdfToolkit?.runJobFlow) {
             try {
-                await PdfToolkit.submitFormWithProgress(form, elements, toolId, defaultFileName);
+                const formData = new FormData(form);
+                await PdfToolkit.runJobFlow({
+                    url: form.getAttribute('action') || form.action,
+                    formData,
+                    elements,
+                    toolId,
+                    defaultFileName,
+                });
             } catch (err) {
                 if (!err.paywall) {
                     const errEl = document.getElementById('errorArea');

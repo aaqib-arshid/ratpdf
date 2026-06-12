@@ -1,0 +1,316 @@
+using ratpdf.Services.PdfProcessing;
+
+namespace ratpdf.Services;
+
+public class PdfItextToolJobService
+{
+    private readonly PdfConversionFileOps _fileOps;
+    private readonly IJobResultStore _jobStore;
+    private readonly AzureBlobService _blobService;
+    private readonly PdfJobStorageService _jobStorage;
+    private readonly ILogger<PdfItextToolJobService> _logger;
+
+    public PdfItextToolJobService(
+        PdfConversionFileOps fileOps,
+        IJobResultStore jobStore,
+        AzureBlobService blobService,
+        PdfJobStorageService jobStorage,
+        ILogger<PdfItextToolJobService> logger)
+    {
+        _fileOps = fileOps;
+        _jobStore = jobStore;
+        _blobService = blobService;
+        _jobStorage = jobStorage;
+        _logger = logger;
+    }
+
+    public async Task RunMergeJobAsync(
+        string jobId,
+        IReadOnlyList<(string StagingBlobName, string OriginalName, long Size)> inputs,
+        CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "merge", jobId);
+        var tempInputs = new List<string>();
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 10, "Preparing files…");
+            foreach (var input in inputs)
+                tempInputs.Add(await _jobStorage.MaterializeToTempFileAsync(input.StagingBlobName, ".pdf", ct));
+
+            _jobStore.SetProgress(jobId, 40, "Merging PDFs…");
+            outputPath = PdfTempPaths.NewOutput(".pdf");
+            var result = _fileOps.MergePdfFilesFromPaths(tempInputs, outputPath);
+            outputPath = result.FilePath;
+
+            await UploadResultAsync(jobId, "merge", result.FilePath, "merged.pdf", "application/pdf",
+                inputs.Sum(x => x.Size), result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputs.Sum(x => x.Size), result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Merge job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, ex.Message);
+        }
+        finally
+        {
+            Cleanup(tempInputs, outputPath, inputs.Select(i => i.StagingBlobName), ct);
+        }
+    }
+
+    public async Task RunSplitJobAsync(
+        string jobId,
+        string stagingBlob,
+        string originalName,
+        long inputSize,
+        int startPage,
+        int endPage,
+        CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "split", jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Preparing file…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+
+            _jobStore.SetProgress(jobId, 45, "Splitting pages…");
+            var result = _fileOps.SplitPdfFromPath(tempInput, startPage, endPage);
+            outputPath = result.FilePath;
+
+            await UploadResultAsync(jobId, "split", result.FilePath, "split.pdf", "application/pdf",
+                inputSize, result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputSize, result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Split job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, ex.Message);
+        }
+        finally
+        {
+            Cleanup(tempInput, outputPath, new[] { stagingBlob }, ct);
+        }
+    }
+
+    public async Task RunWatermarkJobAsync(
+        string jobId, string stagingBlob, string originalName, long inputSize, string watermarkText, CancellationToken ct)
+        => await RunSinglePdfTransformAsync(jobId, "watermark", stagingBlob, inputSize, "watermarked.pdf",
+            "Applying watermark…", ct,
+            path => _fileOps.AddWatermarkFromPath(path, watermarkText));
+
+    public async Task RunPasswordJobAsync(
+        string jobId, string stagingBlob, long inputSize, string password, CancellationToken ct)
+        => await RunSinglePdfTransformAsync(jobId, "password", stagingBlob, inputSize, "protected.pdf",
+            "Encrypting PDF…", ct,
+            path => _fileOps.AddPasswordFromPath(path, password));
+
+    public async Task RunSignJobAsync(
+        string jobId, string stagingBlob, long inputSize, string name, CancellationToken ct)
+        => await RunSinglePdfTransformAsync(jobId, "signpdf", stagingBlob, inputSize, "signed.pdf",
+            "Adding signature…", ct,
+            path => _fileOps.SignPdfFromPath(path, name));
+
+    public async Task RunRotateJobAsync(
+        string jobId, string stagingBlob, long inputSize, int pageNumber, int degree, CancellationToken ct)
+        => await RunSinglePdfTransformAsync(jobId, "rotate", stagingBlob, inputSize, "rotated.pdf",
+            "Rotating page…", ct,
+            path => _fileOps.RotatePageFromPath(path, pageNumber, degree));
+
+    public async Task RunRemovePageJobAsync(
+        string jobId, string stagingBlob, long inputSize, int pageNumber, CancellationToken ct)
+        => await RunSinglePdfTransformAsync(jobId, "rotate", stagingBlob, inputSize, "edited.pdf",
+            "Removing page…", ct,
+            path => _fileOps.RemovePageFromPath(path, pageNumber));
+
+    public async Task RunConvertImagesJobAsync(
+        string jobId,
+        IReadOnlyList<(string StagingBlobName, string OriginalName, long Size)> inputs,
+        CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "convertimages", jobId);
+        var tempInputs = new List<string>();
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 10, "Preparing images…");
+            foreach (var input in inputs)
+            {
+                var ext = Path.GetExtension(input.OriginalName);
+                if (string.IsNullOrEmpty(ext)) ext = ".img";
+                tempInputs.Add(await _jobStorage.MaterializeToTempFileAsync(input.StagingBlobName, ext, ct));
+            }
+
+            _jobStore.SetProgress(jobId, 50, "Building PDF…");
+            var result = _fileOps.ConvertImagesToPdfFromPaths(tempInputs);
+            outputPath = result.FilePath;
+
+            await UploadResultAsync(jobId, "convertimages", result.FilePath, "images.pdf", "application/pdf",
+                inputs.Sum(x => x.Size), result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputs.Sum(x => x.Size), result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Convert images job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, ex.Message);
+        }
+        finally
+        {
+            Cleanup(tempInputs, outputPath, inputs.Select(i => i.StagingBlobName), ct);
+        }
+    }
+
+    public async Task RunTextToPdfJobAsync(
+        string jobId,
+        string? stagingBlob,
+        long inputSize,
+        string? typedHtml,
+        CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "texttopdf", jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 20, "Creating PDF…");
+            PdfConversionFileResult result;
+
+            if (!string.IsNullOrEmpty(stagingBlob))
+            {
+                tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".txt", ct);
+                var text = await File.ReadAllTextAsync(tempInput, ct);
+                result = _fileOps.ConvertTextToPdfFile(text);
+            }
+            else
+            {
+                result = _fileOps.ConvertHtmlToPdfFile(typedHtml ?? "<p></p>");
+            }
+
+            outputPath = result.FilePath;
+            await UploadResultAsync(jobId, "texttopdf", result.FilePath, "document.pdf", "application/pdf",
+                inputSize, result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputSize, result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Text to PDF job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, ex.Message);
+        }
+        finally
+        {
+            var staging = stagingBlob == null ? Enumerable.Empty<string>() : new[] { stagingBlob };
+            Cleanup(tempInput, outputPath, staging, ct);
+        }
+    }
+
+    public async Task RunPdfToTextJobAsync(
+        string jobId, string stagingBlob, string originalName, long inputSize, CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "pdftotext", jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Extracting text…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+            var result = await _fileOps.ExtractTextToFileAsync(tempInput, originalName, ct: ct);
+            outputPath = result.FilePath;
+
+            await UploadResultAsync(jobId, "pdftotext", result.FilePath, "extracted.txt", "text/plain",
+                inputSize, result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputSize, result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "PDF to text job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, ex.Message);
+        }
+        finally
+        {
+            Cleanup(tempInput, outputPath, new[] { stagingBlob }, ct);
+        }
+    }
+
+    private async Task RunSinglePdfTransformAsync(
+        string jobId,
+        string jobKind,
+        string stagingBlob,
+        long inputSize,
+        string outputFileName,
+        string progressMessage,
+        CancellationToken ct,
+        Func<string, PdfConversionFileResult> transform)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, jobKind, jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Preparing file…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+
+            _jobStore.SetProgress(jobId, 50, progressMessage);
+            var result = transform(tempInput);
+            outputPath = result.FilePath;
+
+            await UploadResultAsync(jobId, jobKind, result.FilePath, outputFileName, "application/pdf",
+                inputSize, result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputSize, result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "{JobKind} job {JobId} failed", jobKind, jobId);
+            _jobStore.SetFailed(jobId, ex.Message);
+        }
+        finally
+        {
+            Cleanup(tempInput, outputPath, new[] { stagingBlob }, ct);
+        }
+    }
+
+    private async Task UploadResultAsync(
+        string jobId,
+        string jobKind,
+        string localPath,
+        string outputFileName,
+        string mimeType,
+        long inputSize,
+        long outputSize,
+        CancellationToken ct)
+    {
+        _jobStore.SetProgress(jobId, 90, "Uploading result…");
+        var blobName = $"{jobKind}/{jobId}/{outputFileName}";
+        await _blobService.UploadFromFileAsync(localPath, blobName, ct);
+        _jobStore.SetFileJobCompleted(jobId, blobName, mimeType, outputFileName, inputSize, outputSize, jobKind);
+    }
+
+    private void Cleanup(
+        IEnumerable<string> localPaths,
+        string? outputPath,
+        IEnumerable<string> stagingBlobs,
+        CancellationToken ct)
+    {
+        foreach (var path in localPaths)
+            PdfJobStorageService.TryDeleteLocalFile(path);
+        PdfJobStorageService.TryDeleteLocalFile(outputPath);
+        foreach (var blob in stagingBlobs)
+        {
+            try { _jobStorage.DeleteStagingAsync(blob, ct).GetAwaiter().GetResult(); }
+            catch { }
+        }
+    }
+
+    private void Cleanup(
+        string? localPath,
+        string? outputPath,
+        IEnumerable<string> stagingBlobs,
+        CancellationToken ct)
+        => Cleanup(localPath == null ? Array.Empty<string>() : new[] { localPath }, outputPath, stagingBlobs, ct);
+}

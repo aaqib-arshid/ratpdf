@@ -26,6 +26,7 @@ namespace ratpdf.Services
         void SetCompleted(string jobId, string BlobName, long originalSize, long compressedSize, double reductionPercent);
         void SetFileJobCompleted(string jobId, string blobName, string mimeType, string outputFileName, long inputSize, long outputSize, string jobKind);
         void SetFailed(string jobId, string error);
+        void ClearResultBlob(string jobId);
         JobResult? GetJob(string jobId);
         void CleanupOldJobs(TimeSpan maxAge);
     }
@@ -99,6 +100,15 @@ namespace ratpdf.Services
             {
                 job.Status = "Failed";
                 job.ErrorMessage = error;
+                job.LastUpdated = DateTime.UtcNow;
+            }
+        }
+
+        public void ClearResultBlob(string jobId)
+        {
+            if (_jobs.TryGetValue(jobId, out var job))
+            {
+                job.BlobName = null;
                 job.LastUpdated = DateTime.UtcNow;
             }
         }

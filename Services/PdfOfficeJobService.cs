@@ -1,3 +1,5 @@
+using ratpdf.Services.PdfProcessing;
+
 namespace ratpdf.Services
 {
     public class PdfOfficeJobService
@@ -5,17 +7,20 @@ namespace ratpdf.Services
         private readonly PdfOfficeProcessor _processor;
         private readonly IJobResultStore _jobStore;
         private readonly AzureBlobService _blobService;
+        private readonly PdfJobStorageService _jobStorage;
         private readonly ILogger<PdfOfficeJobService> _logger;
 
         public PdfOfficeJobService(
             PdfOfficeProcessor processor,
             IJobResultStore jobStore,
             AzureBlobService blobService,
+            PdfJobStorageService jobStorage,
             ILogger<PdfOfficeJobService> logger)
         {
             _processor = processor;
             _jobStore = jobStore;
             _blobService = blobService;
+            _jobStorage = jobStorage;
             _logger = logger;
         }
 
@@ -23,19 +28,40 @@ namespace ratpdf.Services
             string jobId,
             string jobKind,
             OfficeConversionKind kind,
-            string tempInputPath,
+            string stagingBlobName,
             string originalName,
+            long inputSize,
             CancellationToken ct)
         {
+            using var metrics = PdfProcessingMetrics.Start(_logger, jobKind, jobId);
+            string? tempInput = null;
+            string? tempOutput = null;
+
             try
             {
                 _jobStore.SetProgress(jobId, 10, "Preparing file…");
+                metrics.Checkpoint("staging-read", inputSize);
 
-                await using var stream = new FileStream(tempInputPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var fileInfo = new FileInfo(tempInputPath);
+                var inputExt = kind switch
+                {
+                    OfficeConversionKind.DocxToPdf => ".docx",
+                    OfficeConversionKind.PdfToXlsx => ".pdf",
+                    OfficeConversionKind.XlsxToPdf => ".xlsx",
+                    _ => ".bin",
+                };
+
+                var outputExt = kind switch
+                {
+                    OfficeConversionKind.PdfToXlsx => ".xlsx",
+                    _ => ".pdf",
+                };
+
+                tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlobName, inputExt, ct);
+                tempOutput = Path.Combine(Path.GetTempPath(), $"ratpdf_office_{Guid.NewGuid():N}{outputExt}");
 
                 _jobStore.SetProgress(jobId, 25, "Running high-fidelity conversion…");
-                var bytes = await _processor.ConvertAsync(kind, stream, originalName, ct);
+                var result = await _processor.ConvertFileAsync(
+                    kind, tempInput, tempOutput, originalName, ct);
 
                 _jobStore.SetProgress(jobId, 85, "Uploading result…");
 
@@ -44,7 +70,7 @@ namespace ratpdf.Services
                     OfficeConversionKind.DocxToPdf => Path.GetFileNameWithoutExtension(originalName) + ".pdf",
                     OfficeConversionKind.PdfToXlsx => Path.GetFileNameWithoutExtension(originalName) + ".xlsx",
                     OfficeConversionKind.XlsxToPdf => Path.GetFileNameWithoutExtension(originalName) + ".pdf",
-                    _ => "converted" + (kind == OfficeConversionKind.PdfToXlsx ? ".xlsx" : ".pdf"),
+                    _ => "converted" + outputExt,
                 };
 
                 var mime = kind switch
@@ -55,16 +81,16 @@ namespace ratpdf.Services
                 };
 
                 var blobName = $"{jobKind}/{jobId}/{outputName}";
-                await using var upload = new MemoryStream(bytes);
-                await _blobService.UploadAsync(upload, blobName, ct);
+                var outputSize = await _blobService.UploadFromFileAsync(result.FilePath, blobName, ct);
+                metrics.Checkpoint("uploaded", inputSize, outputSize);
 
                 _jobStore.SetFileJobCompleted(
                     jobId,
                     blobName,
                     mime,
                     outputName,
-                    fileInfo.Length,
-                    bytes.Length,
+                    inputSize,
+                    outputSize,
                     jobKind);
             }
             catch (Exception ex)
@@ -74,11 +100,10 @@ namespace ratpdf.Services
             }
             finally
             {
-                try
-                {
-                    if (File.Exists(tempInputPath))
-                        File.Delete(tempInputPath);
-                }
+                PdfJobStorageService.TryDeleteLocalFile(tempInput);
+                PdfJobStorageService.TryDeleteLocalFile(tempOutput);
+
+                try { await _jobStorage.DeleteStagingAsync(stagingBlobName, ct); }
                 catch { /* best effort */ }
             }
         }

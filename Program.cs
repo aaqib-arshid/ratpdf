@@ -73,6 +73,9 @@ public partial class Program
         builder.Services.AddScoped<IPayslipAllowedSlugsService, PayslipAllowedSlugsService>();
         builder.Services.AddScoped<IPayslipContentGenerator, PayslipContentGenerator>();
         builder.Services.AddSingleton<AzureBlobService>();
+        builder.Services.Configure<ratpdf.Services.PdfProcessing.PdfProcessingOptions>(
+            builder.Configuration.GetSection(ratpdf.Services.PdfProcessing.PdfProcessingOptions.SectionName));
+        builder.Services.AddSingleton<ratpdf.Services.PdfProcessing.PdfJobStorageService>();
         builder.Services.AddSingleton<IJobQueue, JobQueue>();
         builder.Services.AddSingleton<IJobResultStore, JobResultStore>();
         builder.Services.AddHostedService<BackgroundJobProcessor>();
@@ -128,6 +131,8 @@ public partial class Program
         builder.Services.AddSingleton<Organization>();
         builder.Services.AddScoped<ILogoStorageService, AzureLogoStorageService>();
         builder.Services.AddScoped<PdfCompressionService>();
+        builder.Services.AddScoped<PdfConversionFileOps>();
+        builder.Services.AddScoped<PdfItextToolJobService>();
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

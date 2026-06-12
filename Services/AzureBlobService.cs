@@ -1,10 +1,14 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Storage;
+using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
 namespace ratpdf.Services;
 
 public class AzureBlobService
 {
+    private const int DefaultBufferSize = 4 * 1024 * 1024;
+    private const int TransferChunkSize = 8 * 1024 * 1024;
+
     private readonly BlobContainerClient _container;
 
     public AzureBlobService(IConfiguration config)
@@ -15,40 +19,88 @@ public class AzureBlobService
         _container.CreateIfNotExists(PublicAccessType.None);
     }
 
-    // Upload a stream; returns the blob name
-    public async Task<string> UploadAsync(Stream stream, string blobName, CancellationToken ct = default)
+    private static StorageTransferOptions TransferOptions => new()
+    {
+        MaximumConcurrency = 4,
+        InitialTransferSize = TransferChunkSize,
+        MaximumTransferSize = TransferChunkSize,
+    };
+
+    /// <summary>Upload a stream using chunked block upload (no full-file buffering).</summary>
+    public async Task<string> UploadStreamAsync(
+        Stream stream, string blobName, CancellationToken ct = default)
     {
         var blob = _container.GetBlobClient(blobName);
-        stream.Position = 0;
-        await blob.UploadAsync(stream, overwrite: true, ct);
+        if (stream.CanSeek)
+            stream.Position = 0;
+
+        await blob.UploadAsync(stream, new BlobUploadOptions
+        {
+            TransferOptions = TransferOptions,
+        }, ct);
+
         return blobName;
     }
 
-    // Upload from a local file path
-    public async Task<string> UploadFromFileAsync(string filePath, string blobName, CancellationToken ct = default)
+    public Task<string> UploadAsync(Stream stream, string blobName, CancellationToken ct = default)
+        => UploadStreamAsync(stream, blobName, ct);
+
+    /// <summary>Upload from a local file path without loading the file into memory.</summary>
+    public async Task<long> UploadFromFileAsync(
+        string filePath, string blobName, CancellationToken ct = default)
     {
-        await using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-        return await UploadAsync(fs, blobName, ct);
+        var fileInfo = new FileInfo(filePath);
+        await using var fs = new FileStream(
+            filePath,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            DefaultBufferSize,
+            useAsync: true);
+
+        await UploadStreamAsync(fs, blobName, ct);
+        return fileInfo.Length;
     }
 
-    // Download blob into a MemoryStream
-    public async Task<MemoryStream> DownloadAsync(string blobName, CancellationToken ct = default)
+    /// <summary>Open a read stream from blob storage (chunked, not buffered in RAM).</summary>
+    public async Task<Stream> OpenReadAsync(string blobName, CancellationToken ct = default)
     {
         var blob = _container.GetBlobClient(blobName);
-        var ms = new MemoryStream();
-        await blob.DownloadToAsync(ms, ct);
-        ms.Position = 0;
-        return ms;
+        return await blob.OpenReadAsync(new BlobOpenReadOptions(allowModifications: false)
+        {
+            BufferSize = DefaultBufferSize,
+        }, ct);
     }
 
-    // Delete a blob (silently ignore if not found)
+    /// <summary>Stream blob content directly to a local file.</summary>
+    public async Task DownloadToFileAsync(
+        string blobName,
+        string destinationPath,
+        int bufferSize = DefaultBufferSize,
+        CancellationToken ct = default)
+    {
+        await using var readStream = await OpenReadAsync(blobName, ct);
+        await using var fileStream = new FileStream(
+            destinationPath,
+            FileMode.Create,
+            FileAccess.Write,
+            FileShare.None,
+            bufferSize,
+            useAsync: true);
+
+        await readStream.CopyToAsync(fileStream, bufferSize, ct);
+    }
+
+    /// <summary>Returns a streaming read handle. Caller must dispose the stream.</summary>
+    public Task<Stream> DownloadAsync(string blobName, CancellationToken ct = default)
+        => OpenReadAsync(blobName, ct);
+
     public async Task DeleteAsync(string blobName, CancellationToken ct = default)
     {
         var blob = _container.GetBlobClient(blobName);
         await blob.DeleteIfExistsAsync(cancellationToken: ct);
     }
 
-    // Delete all blobs older than maxAge (for cleanup)
     public async Task<(int deleted, int failed, long bytesFreed)> CleanupOldBlobsAsync(
         TimeSpan maxAge, CancellationToken ct = default)
     {
@@ -69,6 +121,7 @@ public class AzureBlobService
                 catch { failed++; }
             }
         }
+
         return (deleted, failed, bytesFreed);
     }
 }

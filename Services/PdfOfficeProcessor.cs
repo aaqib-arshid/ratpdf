@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ratpdf.Services.PdfProcessing;
 
 namespace ratpdf.Services
 {
@@ -29,14 +30,40 @@ namespace ratpdf.Services
             _timeoutSeconds = configuration.GetValue("PdfToDocx:ConversionTimeoutSeconds", 600);
         }
 
-        public async Task<byte[]> ConvertAsync(
+        public async Task<PdfConversionFileResult> ConvertToFileAsync(
             OfficeConversionKind kind,
             Stream inputStream,
+            string outputPath,
+            string originalFileName,
+            CancellationToken ct = default)
+        {
+            var (inputExt, _) = GetExtensions(kind);
+            string? tempInput = null;
+
+            try
+            {
+                tempInput = Path.GetTempFileName() + inputExt;
+                await PdfStreamCopy.CopyToFileAsync(inputStream, tempInput, 4 * 1024 * 1024, ct);
+                return await ConvertFileAsync(kind, tempInput, outputPath, originalFileName, ct);
+            }
+            finally
+            {
+                PdfJobStorageService.TryDeleteLocalFile(tempInput);
+            }
+        }
+
+        public async Task<PdfConversionFileResult> ConvertFileAsync(
+            OfficeConversionKind kind,
+            string inputPath,
+            string outputPath,
             string originalFileName,
             CancellationToken ct = default)
         {
             if (!File.Exists(_pythonScriptPath))
                 throw new FileNotFoundException($"Office converter not found at {_pythonScriptPath}");
+
+            if (!File.Exists(inputPath))
+                throw new FileNotFoundException("Input file not found.", inputPath);
 
             var command = kind switch
             {
@@ -46,79 +73,72 @@ namespace ratpdf.Services
                 _ => throw new ArgumentOutOfRangeException(nameof(kind)),
             };
 
-            var inputExt = kind switch
-            {
-                OfficeConversionKind.DocxToPdf => ".docx",
-                OfficeConversionKind.PdfToXlsx => ".pdf",
-                OfficeConversionKind.XlsxToPdf => ".xlsx",
-                _ => ".bin",
-            };
+            var psi = PythonRuntime.CreateStartInfo(
+                _pythonExecutable,
+                $"\"{_pythonScriptPath}\" {command} \"{inputPath}\" \"{outputPath}\"",
+                Path.GetDirectoryName(_pythonScriptPath));
 
-            var outputExt = kind switch
-            {
-                OfficeConversionKind.DocxToPdf => ".pdf",
-                OfficeConversionKind.PdfToXlsx => ".xlsx",
-                OfficeConversionKind.XlsxToPdf => ".pdf",
-                _ => ".out",
-            };
+            using var process = Process.Start(psi)
+                ?? throw new InvalidOperationException("Failed to start office conversion process.");
 
-            string? tempInput = null;
-            string? tempOutput = null;
+            var stdoutTask = process.StandardOutput.ReadToEndAsync(ct);
+            var stderrTask = process.StandardError.ReadToEndAsync(ct);
+
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            cts.CancelAfter(TimeSpan.FromSeconds(_timeoutSeconds));
 
             try
             {
-                tempInput = Path.GetTempFileName() + inputExt;
-                tempOutput = Path.Combine(Path.GetTempPath(), $"ratpdf_office_{Guid.NewGuid():N}{outputExt}");
+                await process.WaitForExitAsync(cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                try { process.Kill(entireProcessTree: true); } catch { }
+                throw new TimeoutException($"Office conversion timed out after {_timeoutSeconds}s.");
+            }
 
-                await using (var fs = new FileStream(tempInput, FileMode.Create, FileAccess.Write))
-                {
-                    inputStream.Position = 0;
-                    await inputStream.CopyToAsync(fs, ct);
-                }
+            var stderr = await stderrTask;
+            await stdoutTask;
 
-                var psi = PythonRuntime.CreateStartInfo(
-                    _pythonExecutable,
-                    $"\"{_pythonScriptPath}\" {command} \"{tempInput}\" \"{tempOutput}\"",
-                    Path.GetDirectoryName(_pythonScriptPath));
+            if (process.ExitCode != 0 || !File.Exists(outputPath) || new FileInfo(outputPath).Length == 0)
+            {
+                _logger.LogError("Office conversion failed for {File}: {Stderr}", originalFileName, stderr);
+                throw new InvalidOperationException(
+                    string.IsNullOrWhiteSpace(stderr)
+                        ? "Office conversion failed."
+                        : stderr.Trim());
+            }
 
-                using var process = Process.Start(psi)
-                    ?? throw new InvalidOperationException("Failed to start office conversion process.");
+            return new PdfConversionFileResult(outputPath, new FileInfo(outputPath).Length);
+        }
 
-                var stdoutTask = process.StandardOutput.ReadToEndAsync(ct);
-                var stderrTask = process.StandardError.ReadToEndAsync(ct);
-
-                using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-                cts.CancelAfter(TimeSpan.FromSeconds(_timeoutSeconds));
-
-                try
-                {
-                    await process.WaitForExitAsync(cts.Token);
-                }
-                catch (OperationCanceledException)
-                {
-                    try { process.Kill(entireProcessTree: true); } catch { }
-                    throw new TimeoutException($"Office conversion timed out after {_timeoutSeconds}s.");
-                }
-
-                var stderr = await stderrTask;
-                await stdoutTask;
-
-                if (process.ExitCode != 0 || !File.Exists(tempOutput) || new FileInfo(tempOutput).Length == 0)
-                {
-                    _logger.LogError("Office conversion failed for {File}: {Stderr}", originalFileName, stderr);
-                    throw new InvalidOperationException(
-                        string.IsNullOrWhiteSpace(stderr)
-                            ? "Office conversion failed."
-                            : stderr.Trim());
-                }
-
-                return await File.ReadAllBytesAsync(tempOutput, ct);
+        /// <summary>Legacy API — loads output into memory. Prefer ConvertToFileAsync for large files.</summary>
+        public async Task<byte[]> ConvertAsync(
+            OfficeConversionKind kind,
+            Stream inputStream,
+            string originalFileName,
+            CancellationToken ct = default)
+        {
+            var (_, outputExt) = GetExtensions(kind);
+            var outputPath = Path.Combine(Path.GetTempPath(), $"ratpdf_office_{Guid.NewGuid():N}{outputExt}");
+            try
+            {
+                var result = await ConvertToFileAsync(kind, inputStream, outputPath, originalFileName, ct);
+                return await File.ReadAllBytesAsync(result.FilePath, ct);
             }
             finally
             {
-                if (tempInput != null) try { if (File.Exists(tempInput)) File.Delete(tempInput); } catch { }
-                if (tempOutput != null) try { if (File.Exists(tempOutput)) File.Delete(tempOutput); } catch { }
+                PdfJobStorageService.TryDeleteLocalFile(outputPath);
             }
         }
+
+        private static (string InputExt, string OutputExt) GetExtensions(OfficeConversionKind kind) =>
+            kind switch
+            {
+                OfficeConversionKind.DocxToPdf => (".docx", ".pdf"),
+                OfficeConversionKind.PdfToXlsx => (".pdf", ".xlsx"),
+                OfficeConversionKind.XlsxToPdf => (".xlsx", ".pdf"),
+                _ => (".bin", ".out"),
+            };
     }
 }

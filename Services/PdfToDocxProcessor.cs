@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ratpdf.Services.PdfProcessing;
 
 namespace ratpdf.Services
 {
@@ -40,7 +41,6 @@ namespace ratpdf.Services
                 return msg.Length > 500 ? msg[..500] + "…" : msg;
             }
 
-            // Surface Python tracebacks and OCR/tesseract hints from stderr
             var relevant = lines
                 .Where(l =>
                     l.Contains("ModuleNotFoundError", StringComparison.OrdinalIgnoreCase)
@@ -65,85 +65,126 @@ namespace ratpdf.Services
                 : (tail.Length > 500 ? tail[..500] + "…" : tail);
         }
 
-        public async Task<byte[]> ConvertPdfToDocxAsync(Stream pdfStream, string? originalFileName = null)
+        /// <summary>
+        /// Converts PDF to DOCX on disk. Caller owns output path cleanup.
+        /// </summary>
+        public async Task<PdfConversionFileResult> ConvertPdfToDocxToFileAsync(
+            Stream pdfStream,
+            string outputDocxPath,
+            string? originalFileName = null,
+            CancellationToken ct = default)
         {
-            if (pdfStream == null || pdfStream.Length == 0)
-                throw new ArgumentException("PDF stream is empty or null.");
+            if (pdfStream == null)
+                throw new ArgumentException("PDF stream is null.");
 
             if (!File.Exists(_pythonScriptPath))
                 throw new FileNotFoundException($"PDF to DOCX script not found at {_pythonScriptPath}");
 
             string? tempPdfPath = null;
-            string? tempDocxPath = null;
 
             try
             {
                 tempPdfPath = Path.GetTempFileName() + ".pdf";
-                pdfStream.Position = 0;
-                await using (var fileStream = new FileStream(tempPdfPath, FileMode.Create, FileAccess.Write))
-                {
-                    await pdfStream.CopyToAsync(fileStream);
-                }
+                await PdfStreamCopy.CopyToFileAsync(pdfStream, tempPdfPath, 4 * 1024 * 1024, ct);
 
-                tempDocxPath = Path.Combine(
-                    Path.GetTempPath(),
-                    $"ratpdf_{Guid.NewGuid():N}.docx");
+                await RunPythonConversionAsync(tempPdfPath, outputDocxPath, originalFileName, ct);
 
-                var processStartInfo = PythonRuntime.CreateStartInfo(
-                    _pythonExecutable,
-                    $"\"{_pythonScriptPath}\" \"{tempPdfPath}\" \"{tempDocxPath}\"",
-                    Path.GetDirectoryName(_pythonScriptPath));
+                var size = new FileInfo(outputDocxPath).Length;
+                if (size == 0)
+                    throw new InvalidOperationException("PDF to DOCX conversion produced no output file.");
 
-                using var process = Process.Start(processStartInfo)
-                    ?? throw new InvalidOperationException("Failed to start Python PDF to DOCX process.");
-
-                var stdoutTask = process.StandardOutput.ReadToEndAsync();
-                var stderrTask = process.StandardError.ReadToEndAsync();
-
-                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(_timeoutSeconds));
-                try
-                {
-                    await process.WaitForExitAsync(cts.Token);
-                }
-                catch (OperationCanceledException)
-                {
-                    try { process.Kill(entireProcessTree: true); } catch { /* best effort */ }
-                    throw new TimeoutException(
-                        $"PDF to DOCX conversion timed out after {_timeoutSeconds} seconds.");
-                }
-
-                var stdout = await stdoutTask;
-                var stderr = await stderrTask;
-
-                if (process.ExitCode != 0)
-                {
-                    _logger.LogError(
-                        "PDF to DOCX Python process exited with code {ExitCode}. stderr: {Stderr}",
-                        process.ExitCode, stderr);
-                    throw new InvalidOperationException(ExtractConversionError(stderr));
-                }
-
-                if (!File.Exists(tempDocxPath) || new FileInfo(tempDocxPath).Length == 0)
-                    throw new InvalidOperationException(
-                        "PDF to DOCX conversion produced no output file.");
-
-                _logger.LogInformation(
-                    "PDF to DOCX conversion succeeded for {FileName}. stdout: {Stdout}",
-                    originalFileName ?? "upload", stdout.Trim());
-
-                return await File.ReadAllBytesAsync(tempDocxPath);
+                return new PdfConversionFileResult(outputDocxPath, size);
             }
             finally
             {
-                if (tempPdfPath != null)
-                {
-                    try { if (File.Exists(tempPdfPath)) File.Delete(tempPdfPath); } catch { }
-                }
-                if (tempDocxPath != null)
-                {
-                    try { if (File.Exists(tempDocxPath)) File.Delete(tempDocxPath); } catch { }
-                }
+                PdfJobStorageService.TryDeleteLocalFile(tempPdfPath);
             }
+        }
+
+        /// <summary>
+        /// Converts when input is already on disk (avoids re-copying multi-GB files).
+        /// </summary>
+        public async Task<PdfConversionFileResult> ConvertPdfFileToDocxAsync(
+            string inputPdfPath,
+            string outputDocxPath,
+            string? originalFileName = null,
+            CancellationToken ct = default)
+        {
+            if (!File.Exists(inputPdfPath))
+                throw new FileNotFoundException("Input PDF not found.", inputPdfPath);
+
+            await RunPythonConversionAsync(inputPdfPath, outputDocxPath, originalFileName, ct);
+
+            var size = new FileInfo(outputDocxPath).Length;
+            if (size == 0)
+                throw new InvalidOperationException("PDF to DOCX conversion produced no output file.");
+
+            return new PdfConversionFileResult(outputDocxPath, size);
+        }
+
+        /// <summary>Legacy API — loads output into memory. Prefer ConvertPdfToDocxToFileAsync for large files.</summary>
+        public async Task<byte[]> ConvertPdfToDocxAsync(Stream pdfStream, string? originalFileName = null)
+        {
+            var outputPath = Path.Combine(Path.GetTempPath(), $"ratpdf_{Guid.NewGuid():N}.docx");
+            try
+            {
+                var result = await ConvertPdfToDocxToFileAsync(pdfStream, outputPath, originalFileName);
+                return await File.ReadAllBytesAsync(result.FilePath);
+            }
+            finally
+            {
+                PdfJobStorageService.TryDeleteLocalFile(outputPath);
+            }
+        }
+
+        private async Task RunPythonConversionAsync(
+            string inputPdfPath,
+            string outputDocxPath,
+            string? originalFileName,
+            CancellationToken ct)
+        {
+            var processStartInfo = PythonRuntime.CreateStartInfo(
+                _pythonExecutable,
+                $"\"{_pythonScriptPath}\" \"{inputPdfPath}\" \"{outputDocxPath}\"",
+                Path.GetDirectoryName(_pythonScriptPath));
+
+            using var process = Process.Start(processStartInfo)
+                ?? throw new InvalidOperationException("Failed to start Python PDF to DOCX process.");
+
+            var stdoutTask = process.StandardOutput.ReadToEndAsync(ct);
+            var stderrTask = process.StandardError.ReadToEndAsync(ct);
+
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            cts.CancelAfter(TimeSpan.FromSeconds(_timeoutSeconds));
+
+            try
+            {
+                await process.WaitForExitAsync(cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                try { process.Kill(entireProcessTree: true); } catch { }
+                throw new TimeoutException(
+                    $"PDF to DOCX conversion timed out after {_timeoutSeconds} seconds.");
+            }
+
+            var stdout = await stdoutTask;
+            var stderr = await stderrTask;
+
+            if (process.ExitCode != 0)
+            {
+                _logger.LogError(
+                    "PDF to DOCX Python process exited with code {ExitCode}. stderr: {Stderr}",
+                    process.ExitCode, stderr);
+                throw new InvalidOperationException(ExtractConversionError(stderr));
+            }
+
+            if (!File.Exists(outputDocxPath))
+                throw new InvalidOperationException("PDF to DOCX conversion produced no output file.");
+
+            _logger.LogInformation(
+                "PDF to DOCX conversion succeeded for {FileName}. stdout: {Stdout}",
+                originalFileName ?? "upload", stdout.Trim());
         }
     }
 }

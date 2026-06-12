@@ -37,26 +37,23 @@ namespace ratpdf.Services.CompressPDF
             _env = env;
         }
 
-        public async Task<CompressionResult> CompressAsync(
-         Stream inputStream,
-         CompressionLevel level,
-         string? password,
-         AzureBlobService blobService,
-         string jobId,
-         CancellationToken ct = default)
+        public async Task<CompressionResult> CompressFromFileAsync(
+            string inputFilePath,
+            CompressionLevel level,
+            string? password,
+            AzureBlobService blobService,
+            string jobId,
+            CancellationToken ct = default)
         {
-            var inFile = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{Guid.NewGuid():N}.pdf");
+            var inFile = inputFilePath;
             var outFile = Path.Combine(Path.GetTempPath(), $"ratpdf_out_{Guid.NewGuid():N}.pdf");
 
             try
             {
-                long originalSize;
-                await using (var fs = new FileStream(inFile, FileMode.Create, FileAccess.Write,
-                                 FileShare.None, 81920, useAsync: true))
-                {
-                    await inputStream.CopyToAsync(fs, 81920, ct);
-                    originalSize = fs.Length;
-                }
+                if (!File.Exists(inFile))
+                    throw new FileNotFoundException("Input PDF not found.", inFile);
+
+                var originalSize = new FileInfo(inFile).Length;
 
                 // --- Ghostscript path ---
                 if (IsGhostscriptAvailable())
@@ -87,11 +84,47 @@ namespace ratpdf.Services.CompressPDF
             }
             finally
             {
-                TryDelete(inFile);
                 TryDelete(outFile);
             }
         }
 
+        public Task<CompressionResult> CompressAsync(
+            Stream inputStream,
+            CompressionLevel level,
+            string? password,
+            AzureBlobService blobService,
+            string jobId,
+            CancellationToken ct = default)
+        {
+            var inFile = Path.Combine(Path.GetTempPath(), $"ratpdf_in_{Guid.NewGuid():N}.pdf");
+            return CompressFromStreamInternalAsync(
+                inputStream, inFile, level, password, blobService, jobId, ct);
+        }
+
+        private async Task<CompressionResult> CompressFromStreamInternalAsync(
+            Stream inputStream,
+            string inFile,
+            CompressionLevel level,
+            string? password,
+            AzureBlobService blobService,
+            string jobId,
+            CancellationToken ct)
+        {
+            try
+            {
+                await using (var fs = new FileStream(inFile, FileMode.Create, FileAccess.Write,
+                    FileShare.None, 81920, useAsync: true))
+                {
+                    await inputStream.CopyToAsync(fs, 81920, ct);
+                }
+
+                return await CompressFromFileAsync(inFile, level, password, blobService, jobId, ct);
+            }
+            finally
+            {
+                TryDelete(inFile);
+            }
+        }
 
         private static async Task<string> UploadAndCleanup(
             AzureBlobService blobService, string localPath, string jobId, CancellationToken ct)
