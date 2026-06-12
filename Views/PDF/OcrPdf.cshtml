@@ -1,0 +1,20 @@
+@using ratpdf.Constants
+@{
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.OcrPdf, ViewData);
+    ViewData["ToolTitle"] = "OCR PDF";
+    ViewData["ToolSubtitle"] = "Make scanned documents searchable";
+    ViewData["AcceptHint"] = "Scanned or image-based PDFs";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-eye";
+    ViewData["BtnLabel"] = "Run OCR";
+}
+@await Html.PartialAsync("_PdfJobToolShell")
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+@section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+PdfToolkit.initJobTool({ toolId: 'ocrpdf', convertUrl: '/PDF/OcrPdf', extensions: ['.pdf'], typeLabel: 'PDF', multiple: false, defaultFileName: 'searchable.pdf', dropZoneId: 'dropZone', fileInputId: 'fileInput', fileListId: 'fileList', convertBtnId: 'convertBtn', errorAreaId: 'errorArea', progressAreaId: 'progressArea', progressBarId: 'progressBar', progressMsgId: 'progressMsg', progressPctId: 'progressPct', badgeId: 'usageBadge', limitHintId: 'limitHint' });
+</script>
+}

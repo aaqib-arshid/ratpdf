@@ -77,7 +77,9 @@ public partial class Program
             builder.Configuration.GetSection(ratpdf.Services.PdfProcessing.PdfProcessingOptions.SectionName));
         builder.Services.AddSingleton<ratpdf.Services.PdfProcessing.PdfJobStorageService>();
         builder.Services.AddSingleton<IJobQueue, JobQueue>();
-        builder.Services.AddSingleton<IJobResultStore, JobResultStore>();
+        builder.Services.AddSingleton<IJobResultStore, PersistingJobResultStore>();
+        builder.Services.AddScoped<PdfPythonToolProcessor>();
+        builder.Services.AddScoped<PdfExtendedToolJobService>();
         builder.Services.AddHostedService<BackgroundJobProcessor>();
         //builder.Services.Configure<FormOptions>(options =>
         //{

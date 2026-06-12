@@ -25,6 +25,13 @@ namespace ratpdf.Content
             "ring-size-converter-guide" => RingSize,
             "my-ip-guide" => MyIp,
             "invoice-generator-guide" => InvoiceGenerator,
+            "unlock-pdf" => UnlockPdf,
+            "flatten-pdf" => FlattenPdf,
+            "pdf-to-images" => PdfToImages,
+            "extract-images-from-pdf" => ExtractImages,
+            "ocr-pdf" => OcrPdf,
+            "add-page-numbers" => PageNumbers,
+            "pdf-metadata" => PdfMetadata,
             _ => null
         };
 
@@ -317,6 +324,75 @@ namespace ratpdf.Content
             <h2>Pro features</h2>
             <p>Remove watermarks, save reusable templates, and add your logo on Pro plans. See <a href="/Subscription/Plans">pricing</a>.</p>
             <p><a href="/Invoice/Create">Create invoice →</a></p>
+            """;
+
+        private const string UnlockPdf = """
+            <h2>Why unlock a PDF?</h2>
+            <p>Encryption blocks printing, copying, or opening without a password. When you <strong>own the document</strong> and know the passphrase, removing protection lets you merge, compress, or archive an unrestricted copy.</p>
+            <h2>Step-by-step</h2>
+            <ol>
+            <li>Open the <a href="/PDF/UnlockPdf">Unlock PDF tool</a>.</li>
+            <li>Upload the protected file and enter the password.</li>
+            <li>Download the decrypted PDF when the job completes.</li>
+            </ol>
+            <p>RatPDF never bypasses unknown passwords. Use only on files you are authorized to access.</p>
+            """;
+
+        private const string FlattenPdf = """
+            <h2>What flattening does</h2>
+            <p>Interactive forms keep answers in editable fields. Flattening burns those values into the page so recipients cannot change them — essential for tax forms, HR packets, and signed applications.</p>
+            <h2>Workflow</h2>
+            <ol>
+            <li>Fill the PDF in your viewer or our <a href="/PDF/EditPDF">Edit PDF</a> tool.</li>
+            <li>Run <a href="/PDF/FlattenPdf">Flatten PDF</a> to lock field values.</li>
+            <li>Optionally <a href="/PDF/Password">password-protect</a> the final pack.</li>
+            </ol>
+            """;
+
+        private const string PdfToImages = """
+            <h2>Page renders vs embedded images</h2>
+            <p><a href="/PDF/PdfToImages">PDF to Images</a> renders <em>every page</em> as PNG — ideal for slide decks, scanned books, and social previews. For photos embedded inside a layout PDF, try <a href="/PDF/ExtractImages">Extract Images</a> instead.</p>
+            <h2>DPI guide</h2>
+            <ul>
+            <li><strong>150 DPI</strong> — web and email (default)</li>
+            <li><strong>300 DPI</strong> — print-quality grabs</li>
+            </ul>
+            """;
+
+        private const string ExtractImages = """
+            <h2>Embedded bitmaps</h2>
+            <p>This tool exports image objects stored in the PDF structure — product photos, chart PNGs, logos. It does not screenshot vector text.</p>
+            <h2>When to use</h2>
+            <ul>
+            <li>E-commerce catalog PDFs with many SKUs</li>
+            <li>Marketing brochures with separate hero images</li>
+            </ul>
+            <p><a href="/PDF/ExtractImages">Extract Images tool →</a></p>
+            """;
+
+        private const string OcrPdf = """
+            <h2>Searchable scans</h2>
+            <p>Scanned PDFs are pictures of pages. <a href="/PDF/OcrPdf">OCR PDF</a> adds an invisible text layer so you can search and copy content in any viewer.</p>
+            <h2>Best results</h2>
+            <ul>
+            <li>Scan at 300 DPI, straight pages</li>
+            <li>Grayscale for text forms</li>
+            <li>Follow with <a href="/PDF/PdfToDoc">PDF to Word</a> if you need editable layout</li>
+            </ul>
+            """;
+
+        private const string PageNumbers = """
+            <h2>Footer numbering</h2>
+            <p>Use <code>{page}</code> and <code>{total}</code> in the format field — e.g. <code>Page {page} of {total}</code>. RatPDF stamps every page consistently.</p>
+            <h2>Tip</h2>
+            <p><a href="/PDF/Merge">Merge</a> chapters first if your document comes from multiple PDFs, then run <a href="/PDF/PageNumbers">Add Page Numbers</a>.</p>
+            """;
+
+        private const string PdfMetadata = """
+            <h2>Document properties</h2>
+            <p>PDFs store title, author, creator app, dates, and page count in metadata — critical for legal filings and archive migration.</p>
+            <h2>Export</h2>
+            <p>The <a href="/PDF/PdfMetadata">PDF Metadata Viewer</a> returns JSON you can save or feed into audit scripts.</p>
             """;
     }
 }

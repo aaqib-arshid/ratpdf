@@ -1,0 +1,62 @@
+@using ratpdf.Constants
+@{
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.UnlockPdf, ViewData);
+    ViewData["ToolTitle"] = "Unlock PDF";
+    ViewData["ToolSubtitle"] = "Remove password protection · preserve content";
+    ViewData["AcceptHint"] = "Password-protected PDF files";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-unlock";
+    ViewData["BtnLabel"] = "Unlock PDF";
+}
+
+@await Html.PartialAsync("_PdfJobToolShell")
+<div class="container pb-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <label class="form-label fw-semibold" for="pdfPassword">PDF password</label>
+            <input type="password" id="pdfPassword" class="form-control mb-3" placeholder="Enter the PDF password" autocomplete="off">
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+
+@section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+(async function () {
+    const toolId = 'unlockpdf';
+    const access = await PdfToolkit.checkToolAccess(toolId);
+    const limits = { maxFiles: 1, maxSizeBytes: access.maxFileSizeBytes || 200*1024*1024, extensions: ['.pdf'], typeLabel: 'PDF', multiple: false };
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const convertBtn = document.getElementById('convertBtn');
+    const errorArea = document.getElementById('errorArea');
+    const elements = { area: document.getElementById('progressArea'), bar: document.getElementById('progressBar'), msg: document.getElementById('progressMsg'), pct: document.getElementById('progressPct') };
+    let selected = null;
+    dropZone?.addEventListener('click', () => fileInput?.click());
+    fileInput?.addEventListener('change', () => {
+        const v = PdfToolkit.validatePdfFiles(fileInput.files, limits);
+        if (!v.ok) { errorArea.textContent = v.error; errorArea.classList.remove('d-none'); return; }
+        errorArea.classList.add('d-none');
+        selected = v.files[0];
+        fileList.innerHTML = `<div class="p-2 border rounded">${selected.name}</div>`;
+        convertBtn.disabled = false;
+    });
+    convertBtn?.addEventListener('click', async () => {
+        if (!selected) return;
+        const formData = new FormData();
+        formData.append('file', selected);
+        formData.append('password', document.getElementById('pdfPassword').value);
+        try {
+            await PdfToolkit.runJobFlow({ url: '/PDF/UnlockPdf', formData, elements, toolId, defaultFileName: 'unlocked.pdf' });
+        } catch (e) {
+            errorArea.textContent = e.message || 'Failed';
+            errorArea.classList.remove('d-none');
+        }
+    });
+})();
+</script>
+}

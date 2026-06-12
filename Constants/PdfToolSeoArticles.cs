@@ -12,6 +12,13 @@ namespace ratpdf.Constants
             "merge" => Merge,
             "split" => Split,
             "pdftotext" => PdfToText,
+            "unlockpdf" => UnlockPdf,
+            "flattenpdf" => FlattenPdf,
+            "pdftoimages" => PdfToImages,
+            "extractimages" => ExtractImages,
+            "ocrpdf" => OcrPdf,
+            "pagenumbers" => PageNumbers,
+            "pdfmetadata" => PdfMetadata,
             _ => null
         };
 
@@ -105,6 +112,91 @@ namespace ratpdf.Constants
             <p>RatPDF extracts Unicode text from digital PDFs and applies OCR on scanned pages when Tesseract is available on the server. Output is clean UTF-8 text you can paste into editors, CMS fields, or translation tools.</p>
             <h2 class='h4 fw-semibold mt-4'>Limitations to know</h2>
             <p>Multi-column magazines and footnotes may need manual cleanup. For editable layout, use <a href='/PDF/PdfToDoc'>PDF to Word</a> instead of raw text.</p>
+            """;
+
+        private const string UnlockPdf = """
+            <h2 class='h4 fw-semibold mt-4'>When you need to unlock a PDF</h2>
+            <p>Password-protected PDFs block printing, copying, or opening without a passphrase. If you <strong>know the password</strong> but need an unencrypted copy for archiving, email, or downstream tools, RatPDF removes the encryption layer with iText — without re-rasterizing pages.</p>
+            <h2 class='h4 fw-semibold mt-4'>Owner vs user passwords</h2>
+            <ul>
+            <li><strong>User password</strong> — required to open the file.</li>
+            <li><strong>Owner password</strong> — restricts editing/printing even when the file opens.</li>
+            </ul>
+            <p>Enter whichever password the PDF prompts for. After unlocking, use <a href='/PDF/Compress'>Compress PDF</a> or <a href='/PDF/Merge'>Merge PDF</a> on the decrypted file.</p>
+            <h2 class='h4 fw-semibold mt-4'>Legal &amp; ethical use</h2>
+            <p>Only unlock documents you own or are authorized to access. RatPDF does not bypass unknown passwords or crack encryption.</p>
+            """;
+
+        private const string FlattenPdf = """
+            <h2 class='h4 fw-semibold mt-4'>Why flatten interactive PDFs</h2>
+            <p>Fillable PDF forms keep field values in a separate layer — recipients can still tab between boxes or change answers. <strong>Flattening</strong> merges those values into the page so the document behaves like a flat scan.</p>
+            <h2 class='h4 fw-semibold mt-4'>Common workflows</h2>
+            <ul>
+            <li>IRS/tax forms after data entry</li>
+            <li>HR onboarding packets with typed signatures</li>
+            <li>Insurance claims before portal upload</li>
+            <li>Design proofs with approval stamps</li>
+            </ul>
+            <p>Pair with <a href='/PDF/Password'>Password Protect PDF</a> after flattening if the final pack must stay read-only.</p>
+            """;
+
+        private const string PdfToImages = """
+            <h2 class='h4 fw-semibold mt-4'>PDF pages as PNG images</h2>
+            <p>RatPDF renders each page with <strong>PyMuPDF</strong> at your chosen DPI. PNG output preserves sharp text and UI screenshots — better than lossy JPEG for diagrams and slides.</p>
+            <h2 class='h4 fw-semibold mt-4'>Choose the right DPI</h2>
+            <ul>
+            <li><strong>96–120 DPI</strong> — thumbnails, Slack previews</li>
+            <li><strong>150 DPI</strong> — default; good for web articles and decks</li>
+            <li><strong>300 DPI</strong> — print inserts and archival page grabs</li>
+            </ul>
+            <p>Need editable text instead of pictures? Try <a href='/PDF/OcrPdf'>OCR PDF</a> or <a href='/PDF/PdfToDoc'>PDF to Word</a>.</p>
+            """;
+
+        private const string ExtractImages = """
+            <h2 class='h4 fw-semibold mt-4'>Embedded images vs page screenshots</h2>
+            <p>This tool pulls <strong>image objects stored inside</strong> the PDF — product photos, chart bitmaps, logos — not full-page renders. For slide decks exported as vector PDFs, you get the original raster assets when they were embedded.</p>
+            <h2 class='h4 fw-semibold mt-4'>When extraction beats PDF to Images</h2>
+            <ul>
+            <li>Catalog PDFs with hundreds of product shots</li>
+            <li>Marketing brochures with separate hero images</li>
+            <li>Technical manuals with diagram PNGs</li>
+            </ul>
+            <p>For scanned books where each page is one bitmap, use <a href='/PDF/PdfToImages'>PDF to Images</a> instead.</p>
+            """;
+
+        private const string OcrPdf = """
+            <h2 class='h4 fw-semibold mt-4'>Make scans searchable</h2>
+            <p>Image-only PDFs look fine to humans but contain no selectable text. RatPDF runs <strong>Tesseract OCR</strong> server-side and adds an invisible text layer so you can search, copy, and highlight content in any PDF viewer.</p>
+            <h2 class='h4 fw-semibold mt-4'>Scan quality tips</h2>
+            <ol>
+            <li>Scan at 300 DPI, black-and-white or grayscale for text forms</li>
+            <li>Straighten pages — skew hurts recognition accuracy</li>
+            <li>For multi-language docs, OCR works best when one dominant language is present</li>
+            </ol>
+            <p>After OCR, convert to Word with <a href='/PDF/PdfToDoc'>PDF to Word</a> or extract plain text with <a href='/PDF/PdfToText'>PDF to Text</a>.</p>
+            """;
+
+        private const string PageNumbers = """
+            <h2 class='h4 fw-semibold mt-4'>Professional footer numbering</h2>
+            <p>Reports, SOPs, and legal bundles often need consistent page labels. RatPDF stamps a footer on every page using your format string — <code>Page {page} of {total}</code> by default.</p>
+            <h2 class='h4 fw-semibold mt-4'>Format tokens</h2>
+            <ul>
+            <li><code>{page}</code> — current page number (1-based)</li>
+            <li><code>{total}</code> — total page count</li>
+            </ul>
+            <p>Combine with <a href='/PDF/Merge'>Merge PDF</a> before numbering if you are assembling chapters from multiple sources.</p>
+            """;
+
+        private const string PdfMetadata = """
+            <h2 class='h4 fw-semibold mt-4'>What lives in PDF metadata</h2>
+            <p>Every PDF carries a document information dictionary: title, author, subject, keywords, creator application, and timestamps. This data drives search indexes, DAM systems, and compliance audits.</p>
+            <h2 class='h4 fw-semibold mt-4'>Practical checks</h2>
+            <ul>
+            <li>Confirm page count before court e-filing</li>
+            <li>Verify author/creator fields before public release</li>
+            <li>Batch-inspect archives before migration to ECM</li>
+            </ul>
+            <p>Export is JSON for scripting. For content edits, use <a href='/PDF/EditPDF'>Edit PDF</a> or conversion tools.</p>
             """;
     }
 }

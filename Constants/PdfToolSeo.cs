@@ -1,4 +1,5 @@
 using ratpdf.Content;
+using ratpdf.Services;
 
 namespace ratpdf.Constants
 {
@@ -26,10 +27,24 @@ namespace ratpdf.Constants
             ("Sign PDF", "/PDF/SignText", "sign pdf online"),
             ("Rotate PDF", "/PDF/RotateOrRemove", "rotate pdf pages"),
             ("Images to PDF", "/PDF/ConvertImages", "convert images to pdf"),
+            ("Unlock PDF", "/PDF/UnlockPdf", "unlock pdf remove password"),
+            ("Flatten PDF", "/PDF/FlattenPdf", "flatten pdf forms"),
+            ("PDF to Images", "/PDF/PdfToImages", "pdf to png images"),
+            ("Extract Images", "/PDF/ExtractImages", "extract images from pdf"),
+            ("OCR PDF", "/PDF/OcrPdf", "ocr pdf searchable"),
+            ("Page Numbers", "/PDF/PageNumbers", "add page numbers pdf"),
+            ("PDF Metadata", "/PDF/PdfMetadata", "pdf metadata viewer"),
         ];
 
-        /// <summary>All public URLs for sitemap.xml (path only).</summary>
-        public static IReadOnlyList<string> SitemapPaths()
+        /// <summary>All public URLs (path only), including long-tail landing pages.</summary>
+        public static IReadOnlyList<string> SitemapPaths() =>
+            SitemapCorePaths()
+                .Concat(PdfToolSeoLandingGenerator.AllLandingPaths())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+        /// <summary>Core site URLs for /sitemaps/site.xml (excludes SEO landing slugs).</summary>
+        public static IReadOnlyList<string> SitemapCorePaths()
         {
             var paths = new List<string>
             {
@@ -56,15 +71,38 @@ namespace ratpdf.Constants
                 "/PDF/ImgToBase64",
                 "/PDF/HtmlFormatter",
                 "/PDF/JsonFormatter",
+                "/PDF/JwtDecoder",
                 "/Tools/ImgBackgroundRemove",
                 "/Tools/WhatIsMyIP",
                 "/Tools/WordCounter",
                 "/Tools/QRGenerator",
+                "/Tools/IpLookup",
+                "/Tools/DnsLookup",
                 "/Calculators/LoanCalculator",
                 "/PaySlip/Index",
                 "/RentReceipt/Index",
                 "/password-generator",
                 "/qr-code-generator",
+                "/free-payslip-generator",
+                "/rent-receipt-generator",
+                "/bulk-payslip-generator",
+                "/binary-to-decimal",
+                "/decimal-to-binary",
+                "/url-encoder",
+                "/url-decoder",
+                "/bmi-calculator",
+                "/age-calculator",
+                "/emi-calculator",
+                "/percentage-calculator",
+                "/ocr-tool",
+                "/pdf-redaction",
+                "/image-format-converter",
+                "/bulk-image-compressor",
+                "/image-resizer",
+                "/text-comparer",
+                "/favicon-generator",
+                "/period-calculator",
+                "/tools/gscindex",
             ]);
 
             return paths.Distinct(StringComparer.OrdinalIgnoreCase).ToList();

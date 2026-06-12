@@ -1,0 +1,51 @@
+@using System.Text.Json
+@using ratpdf.Constants
+@{
+    var appName = ViewData["SchemaAppName"] as string;
+    var appDesc = ViewData["SchemaAppDescription"] as string;
+    var appUrl = ViewData["SchemaAppUrl"] as string;
+    var faqs = ViewData["SchemaFaqs"] as (string Question, string Answer)[];
+    if (string.IsNullOrEmpty(appName) || string.IsNullOrEmpty(appUrl))
+    {
+        return;
+    }
+}
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": @Html.Raw(JsonSerializer.Serialize(appName)),
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "url": @Html.Raw(JsonSerializer.Serialize(appUrl)),
+  "description": @Html.Raw(JsonSerializer.Serialize(appDesc ?? "")),
+  "offers": {
+    "@@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+@if (faqs is { Length: > 0 })
+{
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "FAQPage",
+  "mainEntity": [
+@for (var i = 0; i < faqs.Length; i++)
+{
+    var faq = faqs[i];
+    <text>    {
+      "@@type": "Question",
+      "name": @Html.Raw(JsonSerializer.Serialize(faq.Question)),
+      "acceptedAnswer": {
+        "@@type": "Answer",
+        "text": @Html.Raw(JsonSerializer.Serialize(faq.Answer))
+      }
+    }</text>@(i < faqs.Length - 1 ? "," : "")
+}
+  ]
+}
+</script>
+}

@@ -1,0 +1,87 @@
+@using System.Text.Json
+@using ratpdf.Constants
+@model ratpdf.Models.SEOPageModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonical = $"{PdfToolSeo.SiteUrl}/{Model.RoutePrefix}/{Model.Slug}";
+    var toolHref = PdfToolSeo.Canonical(Model.ToolUrl);
+}
+
+@section Head {
+    <title>@Model.Title</title>
+    <meta name="description" content="@Model.Description" />
+    <link rel="canonical" href="@canonical" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "Article",
+      "headline": @Html.Raw(JsonSerializer.Serialize(Model.Title)),
+      "description": @Html.Raw(JsonSerializer.Serialize(Model.Description)),
+      "author": { "@@type": "Organization", "name": "RatPDF" },
+      "publisher": {
+        "@@type": "Organization",
+        "name": "RatPDF",
+        "logo": { "@@type": "ImageObject", "url": "@PdfToolSeo.DefaultOgImage" }
+      },
+      "mainEntityOfPage": { "@@type": "WebPage", "@@id": @Html.Raw(JsonSerializer.Serialize(canonical)) }
+    }
+    </script>
+    @if (Model.FAQ.Count > 0)
+    {
+        <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "FAQPage",
+          "mainEntity": [
+        @for (var i = 0; i < Model.FAQ.Count; i++)
+        {
+            var faq = Model.FAQ[i];
+            <text>    {
+              "@@type": "Question",
+              "name": @Html.Raw(JsonSerializer.Serialize(faq.Question)),
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": @Html.Raw(JsonSerializer.Serialize(faq.Answer))
+              }
+            }</text>@(i < Model.FAQ.Count - 1 ? "," : "")
+        }
+          ]
+        }
+        </script>
+    }
+}
+
+<article class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="@Model.ToolUrl">@Model.ToolLinkText</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Slug</li>
+        </ol>
+    </nav>
+    <h1 class="fw-bold mb-3">@Model.Title</h1>
+    <p class="lead text-muted">@Model.Description</p>
+    <div class="mb-4">
+        <a href="@toolHref" class="btn btn-primary btn-lg">
+            <i class="bi bi-lightning-charge-fill me-2"></i>Use @Model.ToolLinkText
+        </a>
+    </div>
+    <div class="seo-landing-body">@Html.Raw(Model.FullContentHtml)</div>
+
+    @if (Model.FAQ.Count > 0)
+    {
+        <h2 class="h4 fw-semibold mt-5">Frequently Asked Questions</h2>
+        @foreach (var faq in Model.FAQ)
+        {
+            <h3 class="h6 fw-semibold mt-3">@faq.Question</h3>
+            <p class="text-muted">@faq.Answer</p>
+        }
+    }
+
+    <p class="mt-4">
+        Ready to start? Open the <a href="@toolHref">@Model.ToolLinkText</a> — free to try, no signup required.
+    </p>
+</article>
+
+@await Html.PartialAsync("_PdfToolInternalLinks")

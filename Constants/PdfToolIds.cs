@@ -19,5 +19,12 @@ namespace ratpdf.Constants
         public const string PdfToExcel = "pdftoexcel";
         public const string ExcelToPdf = "exceltopdf";
         public const string ImgToBase64 = "imgtobase64";
+        public const string UnlockPdf = "unlockpdf";
+        public const string FlattenPdf = "flattenpdf";
+        public const string PdfToImages = "pdftoimages";
+        public const string ExtractImages = "extractimages";
+        public const string OcrPdf = "ocrpdf";
+        public const string PageNumbers = "pagenumbers";
+        public const string PdfMetadata = "pdfmetadata";
     }
 }

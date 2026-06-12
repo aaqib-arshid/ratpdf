@@ -18,6 +18,7 @@ namespace ratpdf.Data.AppDBContext
         public DbSet<Template> Templates { get; set; }
         public DbSet<BrandingSettings> BrandingSettings { get; set; }
         public DbSet<UsageLog> UsageLogs { get; set; }
+        public DbSet<PdfJobRecord> PdfJobRecords { get; set; }
         //public DbSet<ImgBgUserUsage> ImgBgUserUsages { get; set; }
 
         //public DbSet<ImgBgUserSubscription> ImgBgUserSubscriptions { get; set; }
@@ -52,6 +53,19 @@ namespace ratpdf.Data.AppDBContext
                 entity.HasIndex(s => s.UserId)
                       .IsUnique()
                       .HasFilter("[Status] = 'active'");
+            });
+
+            builder.Entity<PdfJobRecord>(entity =>
+            {
+                entity.HasKey(j => j.JobId);
+                entity.Property(j => j.JobId).HasMaxLength(64);
+                entity.Property(j => j.JobKind).HasMaxLength(64).IsRequired();
+                entity.Property(j => j.Status).HasMaxLength(32).IsRequired();
+                entity.Property(j => j.BlobName).HasMaxLength(512);
+                entity.Property(j => j.OutputFileName).HasMaxLength(256);
+                entity.Property(j => j.OutputMimeType).HasMaxLength(128);
+                entity.HasIndex(j => j.UpdatedUtc);
+                entity.HasIndex(j => j.UserId);
             });
 
             // --- Invoice ---

@@ -80,6 +80,20 @@ namespace ratpdf.Controllers
         public IActionResult PdfToDoc() => View();
         public IActionResult SignText() => View();
         public IActionResult RotateOrRemove() => View();
+        [HttpGet]
+        public IActionResult UnlockPdf() => View();
+        [HttpGet]
+        public IActionResult FlattenPdf() => View();
+        [HttpGet]
+        public IActionResult PdfToImages() => View();
+        [HttpGet]
+        public IActionResult ExtractImages() => View();
+        [HttpGet]
+        public IActionResult OcrPdf() => View();
+        [HttpGet]
+        public IActionResult PageNumbers() => View();
+        [HttpGet]
+        public IActionResult PdfMetadata() => View();
         public IActionResult PdfToExcel() => View();
         public IActionResult ExcelToPdf() => View();
         public IActionResult ImgToBase64() => View();
@@ -301,6 +315,13 @@ namespace ratpdf.Controllers
                     "rotate" => "edited.pdf",
                     "convertimages" => "images.pdf",
                     "texttopdf" => "document.pdf",
+                    "unlockpdf" => "unlocked.pdf",
+                    "flattenpdf" => "flattened.pdf",
+                    "pdftoimages" => "pages.zip",
+                    "extractimages" => "images.zip",
+                    "ocrpdf" => "searchable.pdf",
+                    "pagenumbers" => "numbered.pdf",
+                    "pdfmetadata" => "metadata.json",
                     _ => "compressed.pdf",
                 };
                 return File(stream, mime, name, enableRangeProcessing: true);
@@ -682,6 +703,128 @@ namespace ratpdf.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
         public Task<IActionResult> ExcelToPdf(IFormFile file) =>
             ExcelToPdfConvert(file);
+
+        [HttpPost]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> UnlockPdf(IFormFile file, string? password)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.UnlockPdf, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            var pwd = password;
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.UnlockPdf, "unlockpdf",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunUnlockJobAsync(jobId, stagingBlob, file.Length, pwd, ct));
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        [HttpPost]
+        public async Task<IActionResult> FlattenPdf(IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.FlattenPdf, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.FlattenPdf, "flattenpdf",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunFlattenJobAsync(jobId, stagingBlob, file.Length, ct));
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        [HttpPost]
+        public async Task<IActionResult> PdfToImages(IFormFile file, int dpi = 150)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.PdfToImages, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            dpi = Math.Clamp(dpi, 72, 300);
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.PdfToImages, "pdftoimages",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunPdfToImagesJobAsync(jobId, stagingBlob, file.Length, dpi, ct));
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        [HttpPost]
+        public async Task<IActionResult> ExtractImages(IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.ExtractImages, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.ExtractImages, "extractimages",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunExtractImagesJobAsync(jobId, stagingBlob, file.Length, ct));
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        [HttpPost]
+        public async Task<IActionResult> OcrPdf(IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.OcrPdf, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.OcrPdf, "ocrpdf",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunOcrJobAsync(jobId, stagingBlob, file.Length, ct));
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        [HttpPost]
+        public async Task<IActionResult> PageNumbers(IFormFile file, string? format = "{page}")
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.PageNumbers, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            var fmt = string.IsNullOrWhiteSpace(format) ? "{page}" : format;
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.PageNumbers, "pagenumbers",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunPageNumbersJobAsync(jobId, stagingBlob, file.Length, fmt, ct));
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        [HttpPost]
+        public async Task<IActionResult> PdfMetadata(IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.PdfMetadata, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.PdfMetadata, "pdfmetadata",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunMetadataJobAsync(jobId, stagingBlob, file.Length, ct));
+        }
+
         [HttpPost]
         public async Task<IActionResult> ImgToBase64(IFormFile file)
         {
@@ -927,6 +1070,31 @@ namespace ratpdf.Controllers
                 65536,
                 FileOptions.DeleteOnClose | FileOptions.Asynchronous);
             return new FileStreamResult(stream, mime) { FileDownloadName = downloadName, EnableRangeProcessing = true };
+        }
+
+        private async Task<IActionResult> QueueExtendedJobAsync(
+            string jobId,
+            string toolId,
+            string jobKind,
+            IReadOnlyList<(string StagingBlobName, string OriginalName, long Size)> inputs,
+            Func<PdfExtendedToolJobService, CancellationToken, Task> work)
+        {
+            _jobResultStore.CreateJob(jobId, jobKind);
+            await _pdfToolsAccess.RecordUsageAsync(toolId, Math.Max(1, inputs.Count));
+
+            _jobQueue.Queue(async ct =>
+            {
+                using var scope = _serviceScopeFactory.CreateScope();
+                var jobService = scope.ServiceProvider.GetRequiredService<PdfExtendedToolJobService>();
+                await work(jobService, ct);
+            });
+
+            return Accepted(new
+            {
+                jobId,
+                statusUrl = Url.Action(nameof(GetJobStatus), new { jobId }),
+                downloadUrl = Url.Action(nameof(DownloadResult), new { jobId }),
+            });
         }
 
         private async Task<IActionResult> QueueItextJobAsync(

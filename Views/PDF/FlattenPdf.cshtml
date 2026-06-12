@@ -1,0 +1,20 @@
+@using ratpdf.Constants
+@{
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.FlattenPdf, ViewData);
+    ViewData["ToolTitle"] = "Flatten PDF";
+    ViewData["ToolSubtitle"] = "Merge form fields into page content";
+    ViewData["AcceptHint"] = "PDF with forms or annotations";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-layers";
+    ViewData["BtnLabel"] = "Flatten PDF";
+}
+@await Html.PartialAsync("_PdfJobToolShell")
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+@section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+PdfToolkit.initJobTool({ toolId: 'flattenpdf', convertUrl: '/PDF/FlattenPdf', extensions: ['.pdf'], typeLabel: 'PDF', multiple: false, defaultFileName: 'flattened.pdf', dropZoneId: 'dropZone', fileInputId: 'fileInput', fileListId: 'fileList', convertBtnId: 'convertBtn', errorAreaId: 'errorArea', progressAreaId: 'progressArea', progressBarId: 'progressBar', progressMsgId: 'progressMsg', progressPctId: 'progressPct', badgeId: 'usageBadge', limitHintId: 'limitHint' });
+</script>
+}

@@ -1,0 +1,44 @@
+@using ratpdf.Constants
+@{
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.PageNumbers, ViewData);
+    ViewData["ToolTitle"] = "Add Page Numbers";
+    ViewData["ToolSubtitle"] = "Footer numbering · {page} / {total}";
+    ViewData["AcceptHint"] = "PDF files";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-123";
+    ViewData["BtnLabel"] = "Add Numbers";
+}
+@await Html.PartialAsync("_PdfJobToolShell")
+<div class="container pb-4"><div class="row justify-content-center"><div class="col-lg-8">
+<label class="form-label" for="pageFormat">Format</label>
+<input type="text" id="pageFormat" class="form-control" value="Page {page} of {total}" />
+</div></div></div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+@section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+(async function () {
+    const toolId = 'pagenumbers';
+    const access = await PdfToolkit.checkToolAccess(toolId);
+    const limits = { maxFiles: 1, maxSizeBytes: access.maxFileSizeBytes || 200*1024*1024, extensions: ['.pdf'], typeLabel: 'PDF', multiple: false };
+    const elements = PdfToolkit.getStandardProgressElements();
+    let selected = null;
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    dropZone?.addEventListener('click', () => fileInput?.click());
+    fileInput?.addEventListener('change', () => {
+        const v = PdfToolkit.validatePdfFiles(fileInput.files, limits);
+        if (v.ok) { selected = v.files[0]; document.getElementById('convertBtn').disabled = false; document.getElementById('fileList').innerHTML = `<div class="p-2 border rounded">${selected.name}</div>`; }
+    });
+    document.getElementById('convertBtn')?.addEventListener('click', async () => {
+        if (!selected) return;
+        const formData = new FormData();
+        formData.append('file', selected);
+        formData.append('format', document.getElementById('pageFormat').value);
+        await PdfToolkit.runJobFlow({ url: '/PDF/PageNumbers', formData, elements, toolId, defaultFileName: 'numbered.pdf' });
+    });
+})();
+</script>
+}

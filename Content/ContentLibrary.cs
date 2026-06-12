@@ -61,6 +61,15 @@ namespace ratpdf.Content
                 ("ring-size-converter-guide", "Ring Size Conversion — US, UK, EU & India", "Measure finger size at home and convert international ring sizes before buying online.", "Lifestyle", "/Tools/RingSizeConverter", null, null),
                 ("my-ip-guide", "What Is My IP Address? — Public IP Explained", "Find public IPv4/IPv6, whitelist office IPs, and troubleshoot VPN visibility.", "Network", "/Tools/WhatIsMyIP", null, null),
                 ("invoice-generator-guide", "Free Invoice Generator — GST, PDF & Templates", "Create professional tax invoices with line items, logos, and instant PDF download.", "Business", "/Invoice/Create", null, null),
+                ("unlock-pdf", "Unlock PDF Online — Remove Password Protection", "Remove PDF passwords when you know the passphrase. Owner vs user locks, legal use, and post-unlock workflows.", "PDF", "/PDF/UnlockPdf",
+                    ["Can I unlock a PDF without the password?", "Will unlocking reduce quality?"],
+                    ["No — RatPDF requires the correct password; we do not crack encryption.", "No — only the encryption wrapper is removed; page content stays identical."]),
+                ("flatten-pdf", "Flatten PDF Forms — Lock Field Values", "Merge fillable form fields and annotations into flat page content before portal uploads.", "PDF", "/PDF/FlattenPdf", null, null),
+                ("pdf-to-images", "PDF to PNG — Export Pages as Images", "Render PDF pages to PNG at 150–300 DPI. ZIP download for slides, thumbnails, and design handoffs.", "PDF", "/PDF/PdfToImages", null, null),
+                ("extract-images-from-pdf", "Extract Images from PDF — Embedded Photos", "Pull embedded bitmaps (logos, product shots) from PDFs without full-page screenshots.", "PDF", "/PDF/ExtractImages", null, null),
+                ("ocr-pdf", "OCR PDF — Make Scanned Documents Searchable", "Add a Tesseract text layer to image PDFs. Scan tips, accuracy, and follow-up conversion tools.", "PDF", "/PDF/OcrPdf", null, null),
+                ("add-page-numbers", "Add Page Numbers to PDF — Footer Format", "Stamp Page {page} of {total} footers on reports and manuals. Tokens, margins, and merge-first tips.", "PDF", "/PDF/PageNumbers", null, null),
+                ("pdf-metadata", "PDF Metadata Viewer — Document Properties", "Inspect title, author, dates, and page count. JSON export for audits and ECM migration.", "PDF", "/PDF/PdfMetadata", null, null),
             };
 
             foreach (var m in meta)

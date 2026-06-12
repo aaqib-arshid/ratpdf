@@ -1,3 +1,4 @@
+using iText.Forms;
 using iText.Html2pdf;
 using iText.Html2pdf.Resolver.Font;
 using iText.IO.Font.Constants;
@@ -11,6 +12,7 @@ using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf.IO;
 using ratpdf.Services.PdfProcessing;
 using System.Text;
+using System.Text.Json;
 
 namespace ratpdf.Services;
 
@@ -354,6 +356,96 @@ public class PdfConversionFileOps
         gfx.DrawImage(img, x, y, width, height);
 
         pdfDoc.Save(outputPath);
+        return ToResult(outputPath);
+    }
+
+    public PdfConversionFileResult UnlockPdfFromPath(
+        string inputPath, string? password, string? outputPath = null)
+    {
+        outputPath ??= PdfTempPaths.NewOutput(".pdf");
+        var readerProps = new ReaderProperties();
+        if (!string.IsNullOrEmpty(password))
+            readerProps.SetPassword(Encoding.UTF8.GetBytes(password));
+
+        using var fs = OpenReadStream(inputPath);
+        using var reader = new iText.Kernel.Pdf.PdfReader(fs, readerProps);
+        reader.SetUnethicalReading(true);
+        using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
+        using var pdfDoc = new PdfDocument(reader, writer);
+        pdfDoc.Close();
+        return ToResult(outputPath);
+    }
+
+    public PdfConversionFileResult FlattenPdfFromPath(string inputPath, string? outputPath = null)
+    {
+        outputPath ??= PdfTempPaths.NewOutput(".pdf");
+        using var fs = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(fs);
+        using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
+        using var pdfDoc = new PdfDocument(reader, writer);
+
+        var form = PdfAcroForm.GetAcroForm(pdfDoc, false);
+        if (form != null)
+            form.FlattenFields();
+
+        pdfDoc.Close();
+        return ToResult(outputPath);
+    }
+
+    public PdfConversionFileResult AddPageNumbersFromPath(
+        string inputPath, string? outputPath = null, string format = "{page}")
+    {
+        outputPath ??= PdfTempPaths.NewOutput(".pdf");
+        using var fs = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(fs);
+        using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
+        using var pdfDoc = new PdfDocument(reader, writer);
+
+        var font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+        var total = pdfDoc.GetNumberOfPages();
+
+        for (int i = 1; i <= total; i++)
+        {
+            var page = pdfDoc.GetPage(i);
+            var pageSize = page.GetPageSize();
+            var label = format.Replace("{page}", i.ToString()).Replace("{total}", total.ToString());
+            var canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
+            canvas.BeginText();
+            canvas.SetFontAndSize(font, 10);
+            canvas.MoveText(pageSize.GetWidth() / 2 - (label.Length * 3), 24);
+            canvas.ShowText(label);
+            canvas.EndText();
+        }
+
+        pdfDoc.Close();
+        return ToResult(outputPath);
+    }
+
+    public async Task<PdfConversionFileResult> ExportMetadataToFileAsync(
+        string inputPath, string? outputPath = null, CancellationToken ct = default)
+    {
+        outputPath ??= PdfTempPaths.NewOutput(".json");
+        using var fs = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(fs);
+        using var pdfDoc = new PdfDocument(reader);
+
+        var info = pdfDoc.GetDocumentInfo();
+        var meta = new
+        {
+            pageCount = pdfDoc.GetNumberOfPages(),
+            title = info.GetTitle(),
+            author = info.GetAuthor(),
+            subject = info.GetSubject(),
+            keywords = info.GetKeywords(),
+            creator = info.GetCreator(),
+            producer = info.GetProducer(),
+            fileSizeBytes = new FileInfo(inputPath).Length,
+        };
+
+        await File.WriteAllTextAsync(
+            outputPath,
+            JsonSerializer.Serialize(meta, new JsonSerializerOptions { WriteIndented = true }),
+            ct);
         return ToResult(outputPath);
     }
 

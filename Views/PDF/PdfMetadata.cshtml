@@ -1,0 +1,20 @@
+@using ratpdf.Constants
+@{
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.PdfMetadata, ViewData);
+    ViewData["ToolTitle"] = "PDF Metadata";
+    ViewData["ToolSubtitle"] = "Extract title, author, pages & properties";
+    ViewData["AcceptHint"] = "PDF files";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-info-circle";
+    ViewData["BtnLabel"] = "Extract Metadata";
+}
+@await Html.PartialAsync("_PdfJobToolShell")
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+@section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+PdfToolkit.initJobTool({ toolId: 'pdfmetadata', convertUrl: '/PDF/PdfMetadata', extensions: ['.pdf'], typeLabel: 'PDF', multiple: false, defaultFileName: 'metadata.json', dropZoneId: 'dropZone', fileInputId: 'fileInput', fileListId: 'fileList', convertBtnId: 'convertBtn', errorAreaId: 'errorArea', progressAreaId: 'progressArea', progressBarId: 'progressBar', progressMsgId: 'progressMsg', progressPctId: 'progressPct', badgeId: 'usageBadge', limitHintId: 'limitHint' });
+</script>
+}

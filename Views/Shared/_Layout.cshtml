@@ -41,7 +41,7 @@
     </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="PDF converter, merge PDF, split PDF, compress PDF, img to pdf, pdf to img, PDF to Word, Word to PDF,doc to pdf, pdf to doc, docx to pdf, pdf to docx, pdf to xls, xls to pdf, excel to pdf, pdf to excel, edit pdf, free PDF tools" />
+    <meta name="keywords" content="PDF converter, merge PDF, split PDF, compress PDF, unlock PDF, flatten PDF, OCR PDF, PDF to images, extract images from PDF, add page numbers PDF, PDF metadata, img to pdf, pdf to img, PDF to Word, Word to PDF, doc to pdf, pdf to doc, docx to pdf, pdf to docx, pdf to xls, xls to pdf, excel to pdf, pdf to excel, edit pdf, free PDF tools" />
     <meta name="author" content="Rat PDF" />
     <meta name="description" content="@(ViewData["Description"] ?? "Free online PDF tools — merge, split, compress, PDF to Word, Word to PDF, PDF to Excel. Adobe-quality conversion.")" />
     <title>@(ViewData["Title"] ?? "Free PDF Tools Online") | RatPDF</title>
@@ -208,7 +208,13 @@
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="EditPDF">Edit PDF</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Merge">Merge PDF</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Split">Split PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PdfTools" asp-action="OCRTextExtractor">OCR Tool</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="UnlockPdf">Unlock PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="FlattenPdf">Flatten PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="OcrPdf">OCR PDF</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToImages">PDF to Images</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ExtractImages">Extract Images</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PageNumbers">Page Numbers</a></li>
+                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfMetadata">PDF Metadata</a></li>
                         <li><a class="dropdown-item" asp-controller="PdfTools" asp-action="PdfRedaction">Pdf Redaction</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Watermark">Add Watermark</a></li>
                         <li><a class="dropdown-item" asp-controller="PDF" asp-action="Password">Protect PDF</a></li>
@@ -364,6 +370,10 @@
                         <li class="mb-1"><a href="/PDF/PdfToDoc">PDF to Word</a></li>
                         <li class="mb-1"><a href="/PDF/DocToPdf">Word to PDF</a></li>
                         <li class="mb-1"><a href="/PDF/PdfToExcel">PDF to Excel</a></li>
+                        <li class="mb-1"><a href="/PDF/UnlockPdf">Unlock PDF</a></li>
+                        <li class="mb-1"><a href="/PDF/OcrPdf">OCR PDF</a></li>
+                        <li class="mb-1"><a href="/PDF/PdfToImages">PDF to Images</a></li>
+                        <li class="mb-1"><a href="/PDF/FlattenPdf">Flatten PDF</a></li>
                     </ul>
                 </div>
                 <div class="col-6 col-md-2">
