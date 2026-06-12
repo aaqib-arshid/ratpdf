@@ -14,6 +14,7 @@ namespace ratpdf.Services.Invoice
         public async Task<List<Template>> GetUserTemplatesAsync(Guid userId)
         {
             return await _db.Templates
+                .AsNoTracking()
                 .Where(t => t.UserId == userId)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();

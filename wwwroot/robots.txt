@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ratpdf.com/sitemap.xml
-Sitemap: https://ratpdf.com/sitemaps/site.xml
-Sitemap: https://ratpdf.com/sitemaps/pdf-tool-landings.xml

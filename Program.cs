@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using ratpdf.Data.AppDBContext;
 using ratpdf.Data.Entities;
+using ratpdf.Middleware;
 using ratpdf.Models.CompressPdfSeo;
 using ratpdf.Routing;
 using ratpdf.Services;
@@ -19,6 +21,7 @@ using ratpdf.Services.JwtSeo;
 using ratpdf.Services.PaySlip;
 using ratpdf.Services.PayslipSeo;
 using ratpdf.Services.RentReceipt;
+using ratpdf.Services.Seo;
 using System.Threading.RateLimiting;
 
 public partial class Program
@@ -29,17 +32,59 @@ public partial class Program
 
         builder.Services.AddHostedService<PythonBootstrapHostedService>();
         builder.Services.AddControllersWithViews();
-        builder.Services.Configure<Microsoft.AspNetCore.Routing.RouteOptions>(options =>
+        builder.Services.Configure<RouteOptions>(options =>
         {
             options.ConstraintMap.Add("compressSeo", typeof(CompressSeoSlugConstraint));
         });
+
+        builder.Services.AddResponseCompression(options =>
+        {
+            options.EnableForHttps = true;
+            options.Providers.Add<BrotliCompressionProvider>();
+            options.Providers.Add<GzipCompressionProvider>();
+            options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                ["application/xml", "text/xml", "image/svg+xml"]);
+        });
+        builder.Services.Configure<BrotliCompressionProviderOptions>(o => o.Level = System.IO.Compression.CompressionLevel.Fastest);
+        builder.Services.Configure<GzipCompressionProviderOptions>(o => o.Level = System.IO.Compression.CompressionLevel.Fastest);
+
+        builder.Services.AddResponseCaching();
+        builder.Services.AddOutputCache(options =>
+        {
+            options.AddBasePolicy(b => b.NoCache());
+            options.AddPolicy("SeoLanding", b => b.Expire(TimeSpan.FromHours(24)).Tag("seo"));
+            options.AddPolicy("Sitemap", b => b.Expire(TimeSpan.FromHours(1)).Tag("sitemap"));
+        });
+
+        builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddMemoryCache();
+
         builder.Services.AddHttpClient();
         builder.Services.AddRateLimiter(options =>
         {
             options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
             {
-                var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+                var path = httpContext.Request.Path.Value ?? "";
+                if (path.StartsWith("/sitemap", StringComparison.OrdinalIgnoreCase)
+                    || path.StartsWith("/sitemaps/", StringComparison.OrdinalIgnoreCase)
+                    || path.Equals("/robots.txt", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RateLimitPartition.GetNoLimiter("seo-crawl");
+                }
 
+                var ua = httpContext.Request.Headers.UserAgent.ToString();
+                if (IsSearchCrawler(ua))
+                {
+                    return RateLimitPartition.GetFixedWindowLimiter($"crawler:{ua}", _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 500,
+                        Window = TimeSpan.FromSeconds(10),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 50
+                    });
+                }
+
+                var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
                 return RateLimitPartition.GetFixedWindowLimiter(ip, _ => new FixedWindowRateLimiterOptions
                 {
                     PermitLimit = 50,
@@ -48,10 +93,11 @@ public partial class Program
                     QueueLimit = 0
                 });
             });
-            options.OnRejected = (context, cancellationToken) =>
+            options.OnRejected = async (context, cancellationToken) =>
             {
-                context.HttpContext.Response.Redirect("/Error/TooManyRequests");
-                return ValueTask.CompletedTask;
+                context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+                context.HttpContext.Response.Headers.RetryAfter = "60";
+                await context.HttpContext.Response.WriteAsync("Too Many Requests", cancellationToken);
             };
         });
         builder.Services.AddScoped<PdfConversionService>();
@@ -105,14 +151,26 @@ public partial class Program
             k.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(60);
         });
         builder.Services.AddSession();
-        builder.Services.AddMemoryCache();
+        builder.Services.AddSingleton<SitemapCacheService>();
+        builder.Services.AddSingleton<CachedPdfCompressSeoService>();
+        builder.Services.AddSingleton<NavigationMetadataService>();
+        builder.Services.Configure<SeoIndexingOptions>(builder.Configuration.GetSection(SeoIndexingOptions.SectionName));
+        builder.Services.AddSingleton<IndexNowSubmissionService>();
+        builder.Services.AddHostedService<SeoIndexingHostedService>();
 
         builder.Services.AddHttpClient<RemoteEmbeddingService>(client =>
         {
             client.BaseAddress = new Uri("https://ai-embed-app.jollyisland-ab3b4974.canadacentral.azurecontainerapps.io/");
         });
-        builder.Services.AddDbContext<RatPDFDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddDbContextPool<RatPDFDbContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment());
+            options.LogTo(
+                Console.WriteLine,
+                new[] { DbLoggerCategory.Database.Command.Name },
+                LogLevel.Warning);
+        });
         builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
         {
             options.SignIn.RequireConfirmedAccount = false;
@@ -197,37 +255,61 @@ public partial class Program
         //{
         app.UseExceptionHandler("/Home/Error");
 
-        app.UseHsts();
-        //}
+        if (!app.Environment.IsDevelopment())
+            app.UseHsts();
 
         app.Use(async (context, next) =>
         {
             if (context.Request.ContentLength.HasValue)
             {
                 const long maxBytes = ratpdf.Constants.PdfToolLimits.MaxUploadRequestBytes;
-
                 if (context.Request.ContentLength.Value > maxBytes)
                 {
                     context.Response.StatusCode = StatusCodes.Status413PayloadTooLarge;
                     context.Response.ContentType = "text/html";
-
-                    await context.Response.WriteAsync(@"
-                <html>
-                    <body style='font-family:Arial; text-align:center; margin-top:50px;'>
-                        <h1>File Too Large</h1>
-                        <p>The uploaded file exceeds the maximum allowed size.</p>
-                        <a href='/'>Go back</a>
-                    </body>
-                </html>
-            ");
+                    await context.Response.WriteAsync(
+                        "<html><body style='font-family:Arial;text-align:center;margin-top:50px;'>" +
+                        "<h1>File Too Large</h1><p>The uploaded file exceeds the maximum allowed size.</p>" +
+                        "<a href='/'>Go back</a></body></html>");
                     return;
                 }
             }
             await next();
         });
-        app.UseStaticFiles();
+
+        app.UseResponseCompression();
         app.UseHttpsRedirection();
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            OnPrepareResponse = ctx =>
+            {
+                var path = ctx.Context.Request.Path.Value ?? "";
+                if (path.EndsWith("-keywords.txt", StringComparison.OrdinalIgnoreCase))
+                {
+                    ctx.Context.Response.StatusCode = StatusCodes.Status404NotFound;
+                    ctx.Context.Response.ContentLength = 0;
+                    return;
+                }
+
+                if (path.StartsWith("/lib/", StringComparison.OrdinalIgnoreCase)
+                    || path.StartsWith("/css/", StringComparison.OrdinalIgnoreCase)
+                    || path.EndsWith(".js", StringComparison.OrdinalIgnoreCase)
+                    || path.EndsWith(".woff2", StringComparison.OrdinalIgnoreCase))
+                {
+                    ctx.Context.Response.Headers.CacheControl = "public,max-age=31536000,immutable";
+                }
+                else if (path.StartsWith("/images/", StringComparison.OrdinalIgnoreCase))
+                {
+                    ctx.Context.Response.Headers.CacheControl = "public,max-age=604800";
+                }
+            }
+        });
+
+        app.UseMiddleware<SeoUrlNormalizationMiddleware>();
         app.UseRouting();
+        app.UseResponseCaching();
+        app.UseOutputCache();
         app.UseSession();
         app.UseAuthentication();
         app.UseAuthorization();
@@ -243,5 +325,16 @@ public partial class Program
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
         app.Run();
+    }
+
+    private static bool IsSearchCrawler(string userAgent)
+    {
+        if (string.IsNullOrWhiteSpace(userAgent)) return false;
+        return userAgent.Contains("Googlebot", StringComparison.OrdinalIgnoreCase)
+            || userAgent.Contains("bingbot", StringComparison.OrdinalIgnoreCase)
+            || userAgent.Contains("Slurp", StringComparison.OrdinalIgnoreCase)
+            || userAgent.Contains("DuckDuckBot", StringComparison.OrdinalIgnoreCase)
+            || userAgent.Contains("Baiduspider", StringComparison.OrdinalIgnoreCase)
+            || userAgent.Contains("YandexBot", StringComparison.OrdinalIgnoreCase);
     }
 }

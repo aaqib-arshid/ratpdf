@@ -2,20 +2,31 @@
 @using ratpdf.Data.Entities
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@{
+    var lightLayout = ViewData["LightLayout"] as bool? == true;
+    var loadPdfLib = ViewData["PdfToolId"] != null || ViewData["LoadPdfLib"] as bool? == true;
+    var loadEditor = ViewData["LoadEditor"] as bool? == true;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  @*  <script src="https://pl29485899.effectivecpmnetwork.com/53/20/ad/5320ad858e843d8f74b1c8c90680c6ce.js"></script> *@
-   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-        <!-- Prism.js Theme: 'Tomorrow Night' – vibrant and modern for HTML/XML -->
+  @if (loadEditor)
+  {
+   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+  }
+  @if (!lightLayout)
+  {
+        <!-- Prism.js Theme -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
-    <!-- js-beautify for formatting -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify-html.min.js"></script>
-    <!-- Prism core + markup language support -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
-    @* pdf-lib *@
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify-html.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js" defer></script>
+  }
+  @if (loadPdfLib)
+  {
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
+  }
    <script type="application/ld+json">
         {
           "@@context": "https://schema.org",
@@ -58,8 +69,10 @@
     <link rel="stylesheet" href="~/ratpdf.styles.css" asp-append-version="true" />
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    @if (!lightLayout)
+    {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    }
     <style>
         /* Legacy navbar — rp-navbar uses ratpdf-theme.css */
         .navbar:not(.rp-navbar) {
@@ -381,6 +394,8 @@
                     <ul class="list-unstyled small">
                         <li class="mb-1"><a href="/blog">Blog</a></li>
                         <li class="mb-1"><a href="/guides">All Guides</a></li>
+                        <li class="mb-1"><a href="/compress-pdf">Compress PDF Hub</a></li>
+                        <li class="mb-1"><a href="/pdf/compress">PDF Compressor Tool</a></li>
                         <li class="mb-1"><a href="/guides/compress-pdf-guide">Compress PDF Guide</a></li>
                         <li class="mb-1"><a href="/guides/pdf-txt-guide">PDF Text Guide</a></li>
                         <li class="mb-1"><a href="/Invoice/Create">Invoice Generator</a></li>
@@ -409,12 +424,13 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @if (loadPdfLib)
+    {
     <script src="~/js/pdf-toolkit.js" asp-append-version="true"></script>
+    }
     @await Html.PartialAsync("_PdfPaywallModal")
     @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
-<script>
+    <script>
         function showLoader(message = 'Processing...') {
         $('#loaderMessage').text(message);
         $('#globalLoader').css('display', 'flex');
@@ -512,3 +528,5 @@
 }
 
 </script>
+</body>
+</html>

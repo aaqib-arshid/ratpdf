@@ -13,6 +13,7 @@ namespace ratpdf.Services.Invoice
         public async Task<BrandingSettings?> GetBrandingAsync(Guid userId)
         {
             return await _db.BrandingSettings
+                .AsNoTracking()
                 .FirstOrDefaultAsync(b => b.UserId == userId);
         }
 

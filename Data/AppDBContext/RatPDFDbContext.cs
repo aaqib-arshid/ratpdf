@@ -53,6 +53,8 @@ namespace ratpdf.Data.AppDBContext
                 entity.HasIndex(s => s.UserId)
                       .IsUnique()
                       .HasFilter("[Status] = 'active'");
+
+                entity.HasIndex(s => new { s.UserId, s.Status, s.CurrentPeriodEnd });
             });
 
             builder.Entity<PdfJobRecord>(entity =>
@@ -89,6 +91,7 @@ namespace ratpdf.Data.AppDBContext
 
                 entity.HasIndex(i => i.InvoiceNumber);
                 entity.HasIndex(i => i.UserId);
+                entity.HasIndex(i => new { i.UserId, i.CreatedAt });
             });
 
             // --- InvoiceItem ---

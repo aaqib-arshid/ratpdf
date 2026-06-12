@@ -68,7 +68,6 @@ namespace ratpdf.Constants
 
             paths.AddRange([
                 "/compress-pdf",
-                "/PDF/Compress",
                 "/PDF/ImgToBase64",
                 "/PDF/HtmlFormatter",
                 "/PDF/JsonFormatter",

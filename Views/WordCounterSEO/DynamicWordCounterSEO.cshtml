@@ -1,12 +1,13 @@
 ﻿@model ratpdf.Models.SEOPageModel
+@using ratpdf.Constants
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical($"/{Model.Slug}");
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.Description;
 }
 
 @section Head {
-    <title>@Model.Title</title>
-    <meta name="description" content="@Model.Description" />
-    <link rel="canonical" href="https://ratpdf.com/@Model.Slug" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899635585691076"
             crossorigin="anonymous"></script>
     <script type="application/ld+json">

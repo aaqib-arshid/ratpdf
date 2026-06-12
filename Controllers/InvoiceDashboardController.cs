@@ -34,10 +34,12 @@ namespace ratpdf.Controllers
             int pageSize = 5;
             
             var totalInvoices = await _db.Invoices
+            .AsNoTracking()
             .Where(i => i.UserId == userId.Value)
             .CountAsync();
             
             var invoices = await _db.Invoices
+           .AsNoTracking()
            .Where(i => i.UserId == userId.Value)
            .OrderByDescending(i => i.CreatedAt)
            .Skip((page - 1) * pageSize)
@@ -45,6 +47,7 @@ namespace ratpdf.Controllers
            .ToListAsync();
             var templates = await _templateService.GetUserTemplatesAsync(userId.Value);
             var subscription = await _db.Subscriptions
+                .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.UserId == userId.Value && s.Status == "active");
 
             var model = new DashboardViewModel

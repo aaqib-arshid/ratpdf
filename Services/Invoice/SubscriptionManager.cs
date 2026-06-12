@@ -13,6 +13,7 @@ namespace ratpdf.Services.Invoice
         public async Task<Subscription?> GetActiveSubscriptionAsync(Guid userId)
         {
             return await _db.Subscriptions
+                .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.UserId == userId
                                            && s.Status == "active"
                                            && s.CurrentPeriodEnd > DateTime.UtcNow);

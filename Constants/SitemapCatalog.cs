@@ -8,14 +8,13 @@ namespace ratpdf.Constants
         [
             "/sitemaps/site.xml",
             "/sitemaps/pdf-tool-landings.xml",
-            "/sitemaps/compress-pdf-programmatic.xml",
+            "/sitemaps/compress-pdf-index.xml",
         ];
 
         /// <summary>Legacy static urlsets in wwwroot/sitemaps/.</summary>
         public static readonly string[] StaticChildren =
         [
             "/sitemaps/sitemaptools.xml",
-            "/sitemaps/sitemap_compress_pdf.xml",
             "/sitemaps/sitemap-pdf-to-word.xml",
             "/sitemaps/sitemap_pdf_to_txt.xml",
             "/sitemaps/sitemap-editpdf.xml",

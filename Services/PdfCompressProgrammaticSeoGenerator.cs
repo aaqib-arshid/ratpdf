@@ -15,6 +15,11 @@ namespace ratpdf.Services
         private static readonly object SlugLock = new();
         private static HashSet<string>? _keywordSlugs;
         private static HashSet<string>? _allSlugs;
+        private static string? _sitemapLastMod;
+
+        /// <summary>Stable lastmod for sitemap entries (keywords file date, not rebuild time).</summary>
+        public static string SitemapLastModified =>
+            _sitemapLastMod ??= DateTime.UtcNow.ToString("yyyy-MM-dd");
 
         public enum PageCategory
         {
@@ -95,6 +100,10 @@ namespace ratpdf.Services
                 "Keep PDFs under 500KB for reliable email delivery. Recommended compression preserves readable images.",
                 PageCategory.SizeUnder, "compress pdf under 500kb",
                 ["compress-pdf-to-500kb", "pdf-under-500kb-email", "compress-pdf-for-email"]),
+            new("compress-pdf-under-1mb", "Compress PDF Under 1MB", "Compress PDF Under 1MB — Fast Upload Ready | RatPDF",
+                "Compress PDF under 1MB for email, LMS, and job portals. Balanced quality with Ghostscript /ebook profile.",
+                PageCategory.SizeUnder, "compress pdf under 1mb",
+                ["compress-pdf-to-1mb", "compress-pdf-for-email", "compress-pdf-for-job-application"]),
 
             // ── Use cases ──
             new("compress-pdf-for-email", "Compress PDF for Email", "Compress PDF for Email Attachments — Under 25MB Free | RatPDF",
@@ -232,12 +241,48 @@ namespace ratpdf.Services
         private static readonly Dictionary<string, CuratedPage> CuratedBySlug =
             CuratedPages.ToDictionary(p => p.Slug, StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>Slugs explicitly handled by PdfCompressSeoController static actions — excluded from programmatic routing.</summary>
-        private static readonly HashSet<string> StaticControllerSlugs = new(StringComparer.OrdinalIgnoreCase)
-        {
-            "compress-pdf", "compress-pdf-adobe", "compress-pdf-app", "compress-pdf-adobe-acrobat",
-            "compress-pdf-ilovepdf", "compress-pdf-smallpdf", "compress-pdf-online", "compress-pdf-free",
-        };
+        /// <summary>Hand-crafted compress SEO pages in PdfCompressSeoController (still indexed, not programmatic).</summary>
+        public static readonly string[] StaticLegacySlugs =
+        [
+            "compress-pdf",
+            "compress-pdf-adobe",
+            "compress-pdf-app",
+            "compress-pdf-adobe-acrobat",
+            "compress-pdf-ilovepdf",
+            "compress-pdf-smallpdf",
+            "compress-pdf-as-per-size",
+            "compress-pdf-and-merge",
+            "compress-pdf-ave",
+            "compress-pdf-according-to-size",
+            "compress-pdf-avepdf",
+            "compress-pdf-ai",
+            "compress-pdf-and-jpg",
+            "compress-pdf-acrobat",
+            "compress-pdf-adobe-free",
+            "compress-pdf-online",
+            "compress-pdf-as-per-required-size",
+            "shrink-pdf-size-online",
+            "reduce-pdf-size-online",
+            "compress-pdf-app-for-pc",
+            "compress-aadhar-pdf",
+            "pdf-compress-aap",
+            "compress-pdf-reduce-pdf-size",
+            "compress-pdf-to-pdf-small-size",
+            "compress-pdf-file-size",
+            "compress-pdf-above-200-mb",
+            "compress-pdf-adobe-online",
+            "compress-pdf-above-100-kb",
+            "compress-pdf-above-50-kb",
+            "compress-pdf-above-100kb-free",
+            "compress-pdf-10-mb-without-losing-quality",
+            "compress-pdf-1-mb-without-losing-quality",
+            "compress-pdf-200kb-without-losing-quality",
+            "how-to-compress-a-large-pdf-file-for-emailing",
+            "how-do-i-shrink-a-pdf-size",
+        ];
+
+        /// <summary>Slugs handled by PdfCompressSeoController static actions — excluded from programmatic routing.</summary>
+        private static readonly HashSet<string> StaticControllerSlugs = new(StaticLegacySlugs, StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Load keyword slugs from wwwroot — call once at app startup.</summary>
         public static void Initialize(string webRootPath) => LoadKeywordSlugs(webRootPath);
@@ -257,15 +302,31 @@ namespace ratpdf.Services
             return _allSlugs!.Select(s => $"/{s}").ToList();
         }
 
+        /// <summary>All compress SEO URLs for sitemap: hero tool, legacy static pages, curated + keyword landings.</summary>
+        public static IReadOnlyList<string> AllSitemapPaths()
+        {
+            EnsureSlugCache();
+            var paths = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ToolPath,
+            };
+            foreach (var slug in StaticLegacySlugs)
+                paths.Add($"/{slug}");
+            foreach (var slug in _allSlugs!)
+                paths.Add($"/{slug}");
+            return paths.OrderBy(p => p, StringComparer.OrdinalIgnoreCase).ToList();
+        }
+
         public static IReadOnlyList<(string Label, string Path)> HubSpokeLinks() =>
         [
+            ("Compress PDF Hub", "/compress-pdf"),
             ("Compress PDF to 100KB", "/compress-pdf-to-100kb"),
             ("Compress PDF to 200KB", "/compress-pdf-to-200kb"),
             ("Compress PDF to 500KB", "/compress-pdf-to-500kb"),
+            ("Compress PDF Under 1MB", "/compress-pdf-under-1mb"),
             ("Compress PDF for Email", "/compress-pdf-for-email"),
             ("Compress Without Losing Quality", "/compress-pdf-without-losing-quality"),
             ("Adobe Alternative", "/adobe-pdf-compressor-alternative"),
-            ("iPhone Guide", "/compress-pdf-on-iphone"),
             ("Passport Upload (100KB)", "/pdf-under-100kb-passport"),
             ("PDF Optimization Guide", "/pdf-optimization-guide"),
         ];
@@ -317,8 +378,11 @@ namespace ratpdf.Services
             if (!File.Exists(path))
             {
                 _keywordSlugs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                _sitemapLastMod = DateTime.UtcNow.ToString("yyyy-MM-dd");
                 return;
             }
+
+            _sitemapLastMod = File.GetLastWriteTimeUtc(path).ToString("yyyy-MM-dd");
 
             var lines = File.ReadAllLines(path)
                 .Where(l => !string.IsNullOrWhiteSpace(l))
@@ -455,7 +519,7 @@ namespace ratpdf.Services
             $"<a href=\"{PdfToolSeo.Canonical(ToolPath)}\">PDF Compressor</a>";
 
         private static string HubLink() =>
-            $"<a href=\"{PdfToolSeo.Canonical(HubPath)}\">Compress PDF hub</a>";
+            $"<a href=\"{PdfToolSeo.Canonical(HubPath)}\"><strong>Compress PDF hub</strong></a>";
 
         // ── Content builders ──
 

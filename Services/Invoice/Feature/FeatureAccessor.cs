@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ratpdf.Constants;
 using ratpdf.Data.AppDBContext;
+using ratpdf.Data.Entities;
 
 namespace ratpdf.Services.Invoice.Feature
 {
@@ -8,6 +9,8 @@ namespace ratpdf.Services.Invoice.Feature
     {
         private readonly RatPDFDbContext _db;
         private readonly IHttpContextAccessor _http;
+        private Subscription? _cachedSubscription;
+        private Guid? _cachedUserId;
 
         public FeatureAccessor(RatPDFDbContext db, IHttpContextAccessor http)
         {
@@ -22,24 +25,33 @@ namespace ratpdf.Services.Invoice.Feature
                 return null;
             return uid;
         }
+
+        private async Task<Subscription?> GetActiveSubscriptionAsync(Guid? userId = null)
+        {
+            var uid = userId ?? GetCurrentUserId();
+            if (!uid.HasValue) return null;
+
+            if (_cachedSubscription != null && _cachedUserId == uid)
+                return _cachedSubscription;
+
+            _cachedUserId = uid;
+            _cachedSubscription = await _db.Subscriptions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.UserId == uid.Value
+                    && s.Status == "active"
+                    && s.CurrentPeriodEnd > DateTime.UtcNow);
+            return _cachedSubscription;
+        }
+
         public async Task<bool> CanUseBulkInvoicingAsync(Guid? userId = null)
         {
-            var uid = userId ?? GetCurrentUserId();
-            if (!uid.HasValue) return false;
-            var sub = await _db.Subscriptions
-                .FirstOrDefaultAsync(s => s.UserId == uid.Value
-                                          && s.Status == "active"
-                                          && s.CurrentPeriodEnd > DateTime.UtcNow);
+            var sub = await GetActiveSubscriptionAsync(userId);
             return sub != null && sub.PlanId == Plan.Business_Monthly;
         }
+
         public async Task<bool> CanRemoveWatermarkAsync(Guid? userId = null)
         {
-            var uid = userId ?? GetCurrentUserId();
-            if (!uid.HasValue) return false;
-            var sub = await _db.Subscriptions
-                .FirstOrDefaultAsync(s => s.UserId == uid.Value
-                                          && s.Status == "active"
-                                          && s.CurrentPeriodEnd > DateTime.UtcNow);
+            var sub = await GetActiveSubscriptionAsync(userId);
             return sub != null && (sub.PlanId == Plan.Pro_Monthly || sub.PlanId == Plan.Business_Monthly);
         }
 
@@ -47,21 +59,15 @@ namespace ratpdf.Services.Invoice.Feature
 
         public async Task<bool> CanSaveTemplatesAsync()
         {
-            var uid = GetCurrentUserId();
-            if (!uid.HasValue) return false;
-            var sub = await _db.Subscriptions
-                .FirstOrDefaultAsync(s => s.UserId == uid.Value && s.Status == "active" && s.CurrentPeriodEnd > DateTime.UtcNow);
-            return sub != null; // both paid plans allow template saving
+            var sub = await GetActiveSubscriptionAsync();
+            return sub != null;
         }
 
         public async Task<int> MaxTemplatesAllowedAsync()
         {
-            var uid = GetCurrentUserId();
-            if (!uid.HasValue) return 0;
-            var sub = await _db.Subscriptions
-                .FirstOrDefaultAsync(s => s.UserId == uid.Value && s.Status == "active" && s.CurrentPeriodEnd > DateTime.UtcNow);
+            var sub = await GetActiveSubscriptionAsync();
             if (sub == null) return 0;
-            return sub.PlanId == Plan.Business_Monthly ? int.MaxValue : 1; // Pro = 1
+            return sub.PlanId == Plan.Business_Monthly ? int.MaxValue : 1;
         }
     }
 }
