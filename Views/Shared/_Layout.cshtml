@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using ratpdf.Constants
+@using Microsoft.AspNetCore.Identity
 @using ratpdf.Data.Entities
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -211,65 +212,75 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-xl-0">
                 <li class="nav-item d-xl-none">
-                    <a class="nav-link btn-compress-nav" asp-controller="PDF" asp-action="Compress"><i class="bi bi-lightning-charge-fill me-1"></i>Compress PDF</a>
+                    <a class="nav-link btn-compress-nav" href="/pdf/compress"><i class="bi bi-lightning-charge-fill me-1"></i>Compress PDF</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">PDF Tools</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item featured" asp-controller="PDF" asp-action="Compress"><i class="bi bi-lightning-charge-fill me-2"></i>Compress PDF</a></li>
+                        <li><a class="dropdown-item featured" href="/pdf/compress"><i class="bi bi-lightning-charge-fill me-2"></i>Compress PDF</a></li>
+                        <li><a class="dropdown-item" href="/compress-pdf"><i class="bi bi-collection me-2"></i>Compression Hub</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="EditPDF">Edit PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Merge">Merge PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Split">Split PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="UnlockPdf">Unlock PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="FlattenPdf">Flatten PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="OcrPdf">OCR PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToImages">PDF to Images</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ExtractImages">Extract Images</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PageNumbers">Page Numbers</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfMetadata">PDF Metadata</a></li>
-                        <li><a class="dropdown-item" asp-controller="PdfTools" asp-action="PdfRedaction">Pdf Redaction</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Watermark">Add Watermark</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="Password">Protect PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="SignText">Sign PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="RotateOrRemove">Rotate</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="RotateOrRemove">Remove</a></li>
+                        @foreach (var tool in SiteToolNavigation.PdfEditTools)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
                         <li><hr class="dropdown-divider"></li>
                         <li><h6 class="dropdown-header">Convert</h6></li>
+                        @foreach (var tool in SiteToolNavigation.PdfConvertTools)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
+                    </ul>
+                </li>
 
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ConvertImages">Image to PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="DocToPdf">Word to PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToDoc">PDF to Word</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToExcel">PDF to Excel</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ExcelToPdf">Excel to PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="TextToPdf">Text to PDF</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="PdfToText">PDF to Text</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Medical</a>
+                    <ul class="dropdown-menu">
+                        @foreach (var tool in SiteToolNavigation.MedicalTools)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
                     </ul>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More Tools</a>
-                    <ul class="dropdown-menu dropdown-menu-lg-end" style="min-width: 220px;">
+                    <ul class="dropdown-menu dropdown-menu-lg-end" style="min-width: 240px;">
                         <li><h6 class="dropdown-header">Image</h6></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImgBackgroundRemove">Background Remover</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="ImageCompressor">Compress Image</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="ImageResizer">Image Resizer</a></li>
+                        @foreach (var tool in SiteToolNavigation.ImageTools)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
                         <li><hr class="dropdown-divider"></li>
-                        <li><h6 class="dropdown-header">Medical</h6></li>
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="BMICalculator">BMI Calculator</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="HeartScore">Heart Score</a></li>
-                        <li><a class="dropdown-item" asp-controller="MedicalTools" asp-action="EgfrCalculator">eGFR Calculator</a></li>
+                        <li><h6 class="dropdown-header">Calculators</h6></li>
+                        @foreach (var tool in SiteToolNavigation.Calculators)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
                         <li><hr class="dropdown-divider"></li>
                         <li><h6 class="dropdown-header">Developer</h6></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="HtmlFormatter">HTML Formatter</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="JsonFormatter">JSON Formatter</a></li>
-                        <li><a class="dropdown-item" asp-controller="PDF" asp-action="JwtDecoder">JWT Decoder</a></li>
+                        @foreach (var tool in SiteToolNavigation.DeveloperTools)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Network</h6></li>
+                        @foreach (var tool in SiteToolNavigation.NetworkTools)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
                         <li><hr class="dropdown-divider"></li>
                         <li><h6 class="dropdown-header">Utilities</h6></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="WordCounter">Word Counter</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="WhatIsMyIP">What is My IP</a></li>
-                        <li><a class="dropdown-item" asp-controller="Tools" asp-action="QRGenerator">QR Generator</a></li>
-                        <li><a class="dropdown-item" asp-controller="Calculators" asp-action="LoanCalculator">EMI Calculator</a></li>
+                        @foreach (var tool in SiteToolNavigation.Utilities)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Business</h6></li>
+                        @foreach (var tool in SiteToolNavigation.BusinessTools)
+                        {
+                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
+                        }
                     </ul>
                 </li>
 
@@ -311,7 +322,7 @@
                     <a class="nav-link" href="/Subscription/Plans">Pricing</a>
                 </li>
                 <li class="nav-item d-none d-xl-block ms-1">
-                    <a class="nav-link btn-compress-nav" asp-controller="PDF" asp-action="Compress"><i class="bi bi-lightning-charge-fill me-1"></i>Compress</a>
+                    <a class="nav-link btn-compress-nav" href="/pdf/compress"><i class="bi bi-lightning-charge-fill me-1"></i>Compress</a>
                 </li>
             </ul>
 
@@ -363,51 +374,64 @@
             @RenderBody()
         </div>
     }
+    @await Html.PartialAsync("_RelatedSiteTools")
     </main>
 
     <!-- Footer -->
     <footer class="py-5 mt-auto rp-footer">
         <div class="container">
             <div class="row g-4 text-start">
-                <div class="col-md-4">
+                <div class="col-lg-3 col-md-6">
                     <h6 class="fw-bold text-white mb-3">RatPDF</h6>
                     <p class="small mb-2" style="color: rgba(255,255,255,0.85);">Free online PDF tools with Adobe-class conversion. Compress, merge, convert PDF to Word &amp; Excel, and generate invoices — no desktop install.</p>
                     <a href="/Subscription/Plans" class="small fw-semibold">Pro from @ratpdf.Constants.SubscriptionPricing.FormatProShort() →</a>
                 </div>
-                <div class="col-6 col-md-2">
+                <div class="col-6 col-lg-2 col-md-3">
                     <h6 class="fw-bold text-white mb-3">PDF Tools</h6>
                     <ul class="list-unstyled small">
-                        <li class="mb-1"><a href="/PDF/Compress">Compress PDF</a></li>
+                        <li class="mb-1"><a href="/pdf/compress">Compress PDF</a></li>
                         <li class="mb-1"><a href="/PDF/Merge">Merge PDF</a></li>
                         <li class="mb-1"><a href="/PDF/Split">Split PDF</a></li>
                         <li class="mb-1"><a href="/PDF/PdfToDoc">PDF to Word</a></li>
-                        <li class="mb-1"><a href="/PDF/DocToPdf">Word to PDF</a></li>
-                        <li class="mb-1"><a href="/PDF/PdfToExcel">PDF to Excel</a></li>
-                        <li class="mb-1"><a href="/PDF/UnlockPdf">Unlock PDF</a></li>
+                        <li class="mb-1"><a href="/PDF/EditPDF">Edit PDF</a></li>
                         <li class="mb-1"><a href="/PDF/OcrPdf">OCR PDF</a></li>
-                        <li class="mb-1"><a href="/PDF/PdfToImages">PDF to Images</a></li>
-                        <li class="mb-1"><a href="/PDF/FlattenPdf">Flatten PDF</a></li>
+                        <li class="mb-1"><a href="/pdf-redaction">PDF Redaction</a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-2">
+                <div class="col-6 col-lg-2 col-md-3">
+                    <h6 class="fw-bold text-white mb-3">Medical</h6>
+                    <ul class="list-unstyled small">
+                        @foreach (var tool in SiteToolNavigation.MedicalTools.Take(7))
+                        {
+                            <li class="mb-1"><a href="@tool.Url">@tool.Name</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2 col-md-3">
+                    <h6 class="fw-bold text-white mb-3">Dev &amp; Utilities</h6>
+                    <ul class="list-unstyled small">
+                        @foreach (var tool in SiteToolNavigation.DeveloperTools.Take(4))
+                        {
+                            <li class="mb-1"><a href="@tool.Url">@tool.Name</a></li>
+                        }
+                        @foreach (var tool in SiteToolNavigation.Utilities.Take(3))
+                        {
+                            <li class="mb-1"><a href="@tool.Url">@tool.Name</a></li>
+                        }
+                        <li class="mb-1"><a href="/Tools/WhatIsMyIP">What Is My IP</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-3 col-md-6">
                     <h6 class="fw-bold text-white mb-3">Resources</h6>
                     <ul class="list-unstyled small">
                         <li class="mb-1"><a href="/blog">Blog</a></li>
                         <li class="mb-1"><a href="/guides">All Guides</a></li>
                         <li class="mb-1"><a href="/compress-pdf">Compress PDF Hub</a></li>
-                        <li class="mb-1"><a href="/pdf/compress">PDF Compressor Tool</a></li>
-                        <li class="mb-1"><a href="/guides/compress-pdf-guide">Compress PDF Guide</a></li>
-                        <li class="mb-1"><a href="/guides/pdf-txt-guide">PDF Text Guide</a></li>
                         <li class="mb-1"><a href="/Invoice/Create">Invoice Generator</a></li>
+                        <li class="mb-1"><a href="/free-payslip-generator">Payslip Generator</a></li>
+                        <li class="mb-1"><a href="/rent-receipt-generator">Rent Receipt</a></li>
                         <li class="mb-1"><a href="/Home/About">About Us</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h6 class="fw-bold text-white mb-3">Legal &amp; contact</h6>
-                    <ul class="list-unstyled small">
                         <li class="mb-1"><a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
-                        <li class="mb-1"><a asp-controller="Home" asp-action="Terms">Terms &amp; Conditions</a></li>
-                        <li class="mb-1"><a asp-controller="Home" asp-action="Disclaimer">Disclaimer</a></li>
                         <li class="mb-1"><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                     </ul>
                 </div>

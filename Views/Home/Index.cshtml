@@ -356,6 +356,26 @@
         </div>
     </section>
 
+    <section class="rp-section-home">
+        <div class="rp-section-head">
+            <span class="rp-sec-label">Healthcare</span>
+            <h2>Medical calculators</h2>
+            <p>Evidence-based clinical scores and calculators — free, private, browser-based.</p>
+        </div>
+        <div class="row g-2">
+            @foreach (var tool in SiteToolNavigation.MedicalTools.Take(6))
+            {
+                <div class="col-md-4">
+                    <a href="@tool.Url" class="rp-guide-card d-block text-decoration-none p-3">@tool.Name</a>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-3">
+            <a href="/heart-score" class="btn btn-outline-primary rounded-pill px-4 me-2">HEART Score</a>
+            <a href="/bmi-calculator" class="btn btn-outline-primary rounded-pill px-4">BMI Calculator</a>
+        </div>
+    </section>
+
     <section class="rp-section">
         <div class="rp-section-head">
             <span class="rp-sec-label">Utilities</span>

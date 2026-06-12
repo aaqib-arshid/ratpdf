@@ -1,0 +1,29 @@
+@using ratpdf.Constants
+@{
+    var category = ViewData["RelatedToolCategory"] as string
+        ?? SiteToolNavigation.InferRelatedCategory(Context.Request.Path.Value);
+    if (string.IsNullOrEmpty(category)) return;
+
+    var current = Context.Request.Path.Value ?? "";
+    var tools = SiteToolNavigation.GetRelatedTools(category, current);
+    if (tools.Count == 0) return;
+
+    var heading = SiteToolNavigation.CategoryHeading(category);
+}
+<section class="related-tools container py-4" aria-label="@heading">
+    <h3>@heading</h3>
+    <ul>
+        @foreach (var tool in tools)
+        {
+            <li><a href="@tool.Url">@tool.Name</a></li>
+        }
+    </ul>
+    @if (category is SiteToolCategories.Medical or SiteToolCategories.Calculators)
+    {
+        <p class="small text-muted mb-0 mt-2">For document workflows, see our <a href="/pdf/compress">PDF compressor</a> and <a href="/Invoice/Create">invoice generator</a>.</p>
+    }
+    else if (category is SiteToolCategories.Developer or SiteToolCategories.Network or SiteToolCategories.Utilities)
+    {
+        <p class="small text-muted mb-0 mt-2">Need PDFs? Try <a href="/PDF/Merge">Merge PDF</a>, <a href="/PDF/PdfToDoc">PDF to Word</a>, or <a href="/guides">all guides</a>.</p>
+    }
+</section>
