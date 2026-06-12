@@ -14,7 +14,7 @@ namespace ratpdf.Constants
         [
             ("Merge PDF", "/PDF/Merge", "merge pdf online"),
             ("Split PDF", "/PDF/Split", "split pdf online"),
-            ("Compress PDF", "/PDF/Compress", "compress pdf online"),
+            ("Compress PDF", "/pdf/compress", "compress pdf online"),
             ("PDF to Word", "/PDF/PdfToDoc", "pdf to word converter"),
             ("Word to PDF", "/PDF/DocToPdf", "word to pdf converter"),
             ("PDF to Excel", "/PDF/PdfToExcel", "pdf to excel converter"),
@@ -67,7 +67,8 @@ namespace ratpdf.Constants
             paths.AddRange(ContentLibrary.AllContentPaths());
 
             paths.AddRange([
-                "/PDF/ImageCompressor",
+                "/compress-pdf",
+                "/PDF/Compress",
                 "/PDF/ImgToBase64",
                 "/PDF/HtmlFormatter",
                 "/PDF/JsonFormatter",

@@ -113,6 +113,26 @@ namespace ratpdf.Controllers
 
 
 
+        /// <summary>Programmatic PDF compression SEO landing pages (curated + keyword file).</summary>
+
+        [HttpGet("/sitemaps/compress-pdf-programmatic.xml")]
+
+        [ResponseCache(Duration = 3600)]
+
+        public ContentResult SitemapCompressPdfProgrammatic()
+
+        {
+
+            var paths = PdfCompressProgrammaticSeoGenerator.AllLandingPaths();
+
+            var hub = new List<string> { "/compress-pdf", "/pdf/compress" };
+
+            return Xml(BuildUrlSet(hub.Concat(paths).Distinct(StringComparer.OrdinalIgnoreCase).ToList()));
+
+        }
+
+
+
         private static XDocument BuildUrlSet(IReadOnlyList<string> paths)
 
         {
@@ -212,10 +232,18 @@ namespace ratpdf.Controllers
 
             || path.StartsWith("/add-page-numbers-to-pdf/", StringComparison.OrdinalIgnoreCase)
 
-            || path.StartsWith("/pdf-metadata/", StringComparison.OrdinalIgnoreCase);
+            || path.StartsWith("/pdf-metadata/", StringComparison.OrdinalIgnoreCase)
+
+            || path.StartsWith("/compress-pdf-", StringComparison.OrdinalIgnoreCase)
+
+            || path.StartsWith("/pdf-under-", StringComparison.OrdinalIgnoreCase)
+
+            || path.EndsWith("-pdf-compressor-alternative", StringComparison.OrdinalIgnoreCase)
+
+            || path.StartsWith("/compress-pdf-vs-", StringComparison.OrdinalIgnoreCase)
+
+            || path is "/lossless-pdf-compression" or "/pdf-optimization-guide" or "/optimize-pdf-for-web";
 
     }
 
 }
-
-

@@ -1,0 +1,187 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@model ratpdf.Models.CompressPdfSeo.CompressSeoLandingModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.MetaDescription;
+    ViewData["CanonicalUrl"] = Model.CanonicalUrl;
+    var toolHref = PdfToolSeo.Canonical(Model.ToolPath);
+    var hubHref = PdfToolSeo.Canonical(Model.HubPath);
+}
+
+@section Head {
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    @if (Model.Rating != null)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildRatingLdJson(Model.Rating, "RatPDF PDF Compressor", toolHref))
+        </script>
+    }
+    @if (Model.Organization != null)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildOrganizationLdJson(Model.Organization))
+        </script>
+    }
+    @if (Model.WebSite != null)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildWebSiteLdJson(Model.WebSite))
+        </script>
+    }
+    @if (Model.Breadcrumbs != null && Model.Breadcrumbs.Count > 1)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildBreadcrumbLdJson(Model.Breadcrumbs))
+        </script>
+    }
+    @if (Model.FaqItems != null && Model.FaqItems.Count > 0)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildFaqLdJson(Model.FaqItems))
+        </script>
+    }
+    @if (Model.HowToSteps != null && Model.HowToSteps.Count > 0)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(SchemaHelper.BuildHowToLdJson(
+                $"How to {Model.H1}",
+                Model.MetaDescription,
+                Model.HowToSteps,
+                Model.CanonicalUrl))
+        </script>
+    }
+}
+
+<article class="container py-4 py-md-5">
+    @if (Model.Breadcrumbs != null && Model.Breadcrumbs.Count > 0)
+    {
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb mb-0">
+                @foreach (var bc in Model.Breadcrumbs)
+                {
+                    if (bc == Model.Breadcrumbs[^1])
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@bc.Name</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a href="@bc.Url">@bc.Name</a></li>
+                    }
+                }
+            </ol>
+        </nav>
+    }
+
+    <header class="mb-4">
+        <h1 class="display-6 fw-bold">@Model.H1</h1>
+        <p class="lead text-muted mb-0">@Model.MetaDescription</p>
+    </header>
+
+    <div class="card border-primary shadow-sm mb-4">
+        <div class="card-body p-4 text-center">
+            <i class="bi bi-file-earmark-zip display-4 text-primary mb-2"></i>
+            <h2 class="h5 fw-semibold mb-2">Free PDF Compressor</h2>
+            <p class="text-muted mb-3">Upload your PDF and reduce file size in seconds. Ghostscript-powered — no signup required.</p>
+            <a href="@toolHref" class="btn btn-primary btn-lg">
+                <i class="bi bi-lightning-charge-fill me-2"></i>Compress PDF Now
+            </a>
+            <p class="small text-muted mt-2 mb-0">
+                Also see the <a href="@hubHref">Compress PDF hub</a> for all compression guides.
+            </p>
+        </div>
+    </div>
+
+    <div class="compress-seo-body seo-landing-body">
+        @Html.Raw(Model.ContentHtml)
+    </div>
+
+    @if (Model.HowToSteps != null && Model.HowToSteps.Count > 0)
+    {
+        <section class="mt-5" aria-labelledby="howto-heading">
+            <h2 id="howto-heading" class="h4 fw-semibold">How it works</h2>
+            <ol class="list-group list-group-numbered mt-3">
+                @for (var i = 0; i < Model.HowToSteps.Count; i++)
+                {
+                    var step = Model.HowToSteps[i];
+                    <li class="list-group-item d-flex justify-content-between align-items-start" id="step-@(i + 1)">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-semibold">@step.Name</div>
+                            @step.Text
+                        </div>
+                    </li>
+                }
+            </ol>
+        </section>
+    }
+
+    @if (Model.FaqItems != null && Model.FaqItems.Count > 0)
+    {
+        <section class="mt-5" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" class="h4 fw-semibold">Frequently Asked Questions</h2>
+            <div class="accordion mt-3" id="compressFaq">
+                @for (var i = 0; i < Model.FaqItems.Count; i++)
+                {
+                    var faq = Model.FaqItems[i];
+                    var collapseId = $"faqCollapse{i}";
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button@(i > 0 ? " collapsed" : "")" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#@collapseId">
+                                @faq.Question
+                            </button>
+                        </h3>
+                        <div id="@collapseId" class="accordion-collapse collapse@(i == 0 ? " show" : "")"
+                             data-bs-parent="#compressFaq">
+                            <div class="accordion-body">@faq.Answer</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    @if (Model.RelatedPages != null && Model.RelatedPages.Count > 0)
+    {
+        <section class="mt-5" aria-labelledby="related-heading">
+            <h2 id="related-heading" class="h4 fw-semibold">Related compression guides</h2>
+            <div class="row g-2 mt-2">
+                @foreach (var link in Model.RelatedPages)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <a href="@link.Path" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body py-3">
+                                    <i class="bi bi-file-earmark-pdf text-danger me-2"></i>@link.Label
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+            <p class="mt-3 mb-0">
+                <a href="@hubHref">← Back to Compress PDF hub</a>
+            </p>
+        </section>
+    }
+
+    @if (Model.RelatedTools != null && Model.RelatedTools.Count > 0)
+    {
+        <section class="mt-5" aria-labelledby="tools-heading">
+            <h2 id="tools-heading" class="h4 fw-semibold">Related PDF tools</h2>
+            <div class="row g-2 mt-2">
+                @foreach (var tool in Model.RelatedTools)
+                {
+                    <div class="col-6 col-md-3">
+                        <a href="@tool.Url" class="text-decoration-none">
+                            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                                @tool.Name
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+</article>

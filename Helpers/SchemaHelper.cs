@@ -106,6 +106,34 @@ namespace ratpdf.Helpers
             };
             return JsonSerializer.Serialize(schema, new JsonSerializerOptions { IgnoreNullValues = true });
         }
+
+        public static string BuildHowToLdJson(string name, string description,
+            IReadOnlyList<(string Name, string Text)> steps, string canonicalUrl)
+        {
+            if (steps == null || steps.Count == 0) return null;
+
+            var schema = new
+            {
+                @context = "https://schema.org",
+                @type = "HowTo",
+                name,
+                description,
+                totalTime = "PT2M",
+                tool = new[]
+                {
+                    new { @type = "HowToTool", name = "Web browser" }
+                },
+                step = steps.Select((s, i) => new
+                {
+                    @type = "HowToStep",
+                    position = i + 1,
+                    name = s.Name,
+                    text = s.Text,
+                    url = $"{canonicalUrl}#step-{i + 1}"
+                }).ToList()
+            };
+            return JsonSerializer.Serialize(schema);
+        }
     }
 }
 

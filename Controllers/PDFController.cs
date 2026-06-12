@@ -73,6 +73,15 @@ namespace ratpdf.Controllers
         public IActionResult Merge() => View();
         public IActionResult Split() => View();
         public IActionResult Compress() => View();
+
+        /// <summary>SEO-friendly canonical URL for the hero PDF compressor tool.</summary>
+        [HttpGet("/pdf/compress")]
+        public IActionResult CompressCanonical()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/compress");
+            return View("Compress");
+        }
+
         public IActionResult TextToPdf() => View();
         public IActionResult PdfToText() => View();
         public IActionResult Watermark() => View();

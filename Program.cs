@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ratpdf.Data.AppDBContext;
 using ratpdf.Data.Entities;
 using ratpdf.Models.CompressPdfSeo;
+using ratpdf.Routing;
 using ratpdf.Services;
 using ratpdf.Services.CompressPDF;
 using ratpdf.Services.HtmlSeo;
@@ -28,6 +29,10 @@ public partial class Program
 
         builder.Services.AddHostedService<PythonBootstrapHostedService>();
         builder.Services.AddControllersWithViews();
+        builder.Services.Configure<Microsoft.AspNetCore.Routing.RouteOptions>(options =>
+        {
+            options.ConstraintMap.Add("compressSeo", typeof(CompressSeoSlugConstraint));
+        });
         builder.Services.AddHttpClient();
         builder.Services.AddRateLimiter(options =>
         {
@@ -157,6 +162,9 @@ public partial class Program
         builder.Logging.AddConsole();
         builder.Logging.AddDebug();
         var app = builder.Build();
+
+        PdfCompressProgrammaticSeoGenerator.Initialize(
+            app.Services.GetRequiredService<IWebHostEnvironment>().WebRootPath);
 
         {
             var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("PythonRuntime");

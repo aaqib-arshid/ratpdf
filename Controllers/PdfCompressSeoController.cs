@@ -71,6 +71,23 @@ namespace ratpdf.Controllers
                                 <li><strong>Download</strong> the compressed PDF instantly.</li>
                             </ol>
                         </div>
+
+                        <div class='hub-links' style='margin:40px 0;'>
+                            <h2>PDF compression guides</h2>
+                            <p>Explore our hub-and-spoke guides for every compression intent — size targets, email uploads, device tips, and competitor alternatives.</p>
+                            <ul style='columns:2; gap:2rem;'>
+                                <li><a href=""/compress-pdf-to-100kb"">Compress PDF to 100KB</a></li>
+                                <li><a href=""/compress-pdf-to-200kb"">Compress PDF to 200KB</a></li>
+                                <li><a href=""/compress-pdf-to-500kb"">Compress PDF to 500KB</a></li>
+                                <li><a href=""/compress-pdf-for-email"">Compress PDF for Email</a></li>
+                                <li><a href=""/compress-pdf-without-losing-quality"">Compress Without Losing Quality</a></li>
+                                <li><a href=""/adobe-pdf-compressor-alternative"">Adobe Compressor Alternative</a></li>
+                                <li><a href=""/compress-pdf-on-iphone"">Compress PDF on iPhone</a></li>
+                                <li><a href=""/pdf-under-100kb-passport"">PDF Under 100KB for Passport</a></li>
+                                <li><a href=""/pdf-optimization-guide"">PDF Optimization Guide</a></li>
+                            </ul>
+                            <p style='margin-top:1rem;'>Use the main tool at <a href=""/pdf/compress"">/pdf/compress</a> — our canonical PDF compressor URL.</p>
+                        </div>
                         ",
 
                 FaqItems = new List<FaqItem>
@@ -110,7 +127,8 @@ namespace ratpdf.Controllers
 
                 Breadcrumbs = new List<BreadcrumbItem>
         {
-            new BreadcrumbItem { Name = "Compress PDF", Url = $"{_config["BaseUrl"]}/pdf/compress" }
+            new BreadcrumbItem { Name = "Home", Url = $"{_config["BaseUrl"]}/" },
+            new BreadcrumbItem { Name = "Compress PDF", Url = $"{_config["BaseUrl"]}/compress-pdf" }
         },
 
                 Organization = _siteOrganization,

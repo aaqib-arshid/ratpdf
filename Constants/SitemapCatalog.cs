@@ -8,6 +8,7 @@ namespace ratpdf.Constants
         [
             "/sitemaps/site.xml",
             "/sitemaps/pdf-tool-landings.xml",
+            "/sitemaps/compress-pdf-programmatic.xml",
         ];
 
         /// <summary>Legacy static urlsets in wwwroot/sitemaps/.</summary>
