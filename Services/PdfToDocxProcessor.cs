@@ -21,7 +21,7 @@ namespace ratpdf.Services
         {
             _logger = logger;
             _pythonScriptPath = Path.Combine(env.ContentRootPath, "Pdf-Engine", "pdf_to_docx_converter.py");
-            _pythonExecutable = PythonRuntime.ResolveExecutable(configuration);
+            _pythonExecutable = PythonRuntime.ResolveExecutable(configuration, env);
             _timeoutSeconds = configuration.GetValue("PdfToDocx:ConversionTimeoutSeconds", 600);
         }
 
@@ -31,22 +31,38 @@ namespace ratpdf.Services
                 return "PDF to DOCX conversion failed. Please try a different file or upgrade to Pro.";
 
             var lines = stderr.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            var errorLine = lines.LastOrDefault(l =>
-                l.StartsWith("ERROR:", StringComparison.OrdinalIgnoreCase))
-                ?? lines.LastOrDefault(l => l.Contains("conversion failed", StringComparison.OrdinalIgnoreCase));
 
+            var errorLine = lines.LastOrDefault(l =>
+                l.StartsWith("ERROR:", StringComparison.OrdinalIgnoreCase));
             if (errorLine != null)
             {
-                var msg = errorLine.StartsWith("ERROR:", StringComparison.OrdinalIgnoreCase)
-                    ? errorLine["ERROR:".Length..].Trim()
-                    : errorLine;
-                // Strip pdf2docx log noise if full stderr was captured
-                if (msg.Length > 400)
-                    msg = msg[..400] + "…";
-                return msg;
+                var msg = errorLine["ERROR:".Length..].Trim();
+                return msg.Length > 500 ? msg[..500] + "…" : msg;
             }
 
-            return "PDF to DOCX conversion failed. For scanned PDFs, ensure Tesseract is installed on the server.";
+            // Surface Python tracebacks and OCR/tesseract hints from stderr
+            var relevant = lines
+                .Where(l =>
+                    l.Contains("ModuleNotFoundError", StringComparison.OrdinalIgnoreCase)
+                    || l.Contains("RuntimeError", StringComparison.OrdinalIgnoreCase)
+                    || l.Contains("Tesseract", StringComparison.OrdinalIgnoreCase)
+                    || l.Contains("tesseract", StringComparison.OrdinalIgnoreCase)
+                    || l.Contains("OCR hybrid", StringComparison.OrdinalIgnoreCase)
+                    || l.Contains("conversion failed", StringComparison.OrdinalIgnoreCase)
+                    || l.Contains("Attempts:", StringComparison.OrdinalIgnoreCase))
+                .TakeLast(6)
+                .ToList();
+
+            if (relevant.Count > 0)
+            {
+                var msg = string.Join(" ", relevant);
+                return msg.Length > 500 ? msg[..500] + "…" : msg;
+            }
+
+            var tail = string.Join(" ", lines.TakeLast(4));
+            return string.IsNullOrWhiteSpace(tail)
+                ? "PDF to DOCX conversion failed."
+                : (tail.Length > 500 ? tail[..500] + "…" : tail);
         }
 
         public async Task<byte[]> ConvertPdfToDocxAsync(Stream pdfStream, string? originalFileName = null)
@@ -73,16 +89,10 @@ namespace ratpdf.Services
                     Path.GetTempPath(),
                     $"ratpdf_{Guid.NewGuid():N}.docx");
 
-                var processStartInfo = new ProcessStartInfo
-                {
-                    FileName = _pythonExecutable,
-                    Arguments = $"\"{_pythonScriptPath}\" \"{tempPdfPath}\" \"{tempDocxPath}\"",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WorkingDirectory = Path.GetDirectoryName(_pythonScriptPath)!
-                };
+                var processStartInfo = PythonRuntime.CreateStartInfo(
+                    _pythonExecutable,
+                    $"\"{_pythonScriptPath}\" \"{tempPdfPath}\" \"{tempDocxPath}\"",
+                    Path.GetDirectoryName(_pythonScriptPath));
 
                 using var process = Process.Start(processStartInfo)
                     ?? throw new InvalidOperationException("Failed to start Python PDF to DOCX process.");

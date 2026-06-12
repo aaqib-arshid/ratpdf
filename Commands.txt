@@ -1,0 +1,29 @@
+apt-get update
+
+# Python
+apt-get install -y python3
+apt-get install -y python3-pip
+apt-get install -y python3-venv
+
+# PDF / Office conversion (server-side Python tools)
+apt-get install -y ghostscript
+apt-get install -y libreoffice
+apt-get install -y libreoffice-writer
+apt-get install -y libreoffice-calc
+apt-get install -y libreoffice-impress
+
+# OCR (scanned PDFs)
+pip3 install --break-system-packages pytesseract
+apt-get install -y tesseract-ocr
+apt-get install -y tesseract-ocr-eng
+
+# .NET image support on Linux
+apt-get install -y libgdiplus
+pip3 install --break-system-packages openpyxl PyMuPDF pdfplumber Pillow python-docx pdf2docx
+# Fonts (better PDF/Office output)
+apt-get install -y fontconfig
+apt-get install -y fonts-liberation
+apt-get install -y fonts-dejavu-core
+
+# Useful for Miniforge download (if you use install-python.sh)
+apt-get install -y curl

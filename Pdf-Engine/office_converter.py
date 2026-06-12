@@ -26,6 +26,9 @@ import fitz
 def _find_soffice() -> Optional[str]:
     candidates = [
         os.environ.get("LIBREOFFICE_PATH", ""),
+        "/usr/bin/soffice",
+        "/usr/bin/libreoffice",
+        "/usr/lib/libreoffice/program/soffice",
         r"C:\Program Files\LibreOffice\program\soffice.exe",
         r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
         "soffice",
@@ -59,16 +62,26 @@ _LO_CALC_PDF = (
 )
 
 
+def _lo_env() -> dict:
+    """Headless LibreOffice on Azure App Service needs a writable HOME."""
+    env = os.environ.copy()
+    env.setdefault("HOME", "/tmp")
+    env.setdefault("SAL_USE_VCLPLUGIN", "gen")
+    env.setdefault("LANG", "C.UTF-8")
+    return env
+
+
 def _libreoffice_convert(input_path: str, output_path: str, target_ext: str) -> bool:
     soffice = _find_soffice()
     if not soffice:
+        print("ERROR: soffice not found — LibreOffice still installing? Check: tail /home/site/ratpdf-install.log", file=sys.stderr)
         return False
 
     out_dir = os.path.dirname(os.path.abspath(output_path)) or "."
     os.makedirs(out_dir, exist_ok=True)
 
     try:
-        subprocess.run(
+        result = subprocess.run(
             [
                 soffice,
                 "--headless",
@@ -84,13 +97,20 @@ def _libreoffice_convert(input_path: str, output_path: str, target_ext: str) -> 
             check=True,
             timeout=600,
             capture_output=True,
+            text=True,
+            env=_lo_env(),
         )
+        if result.stderr:
+            print(result.stderr, file=sys.stderr)
         base = os.path.splitext(os.path.basename(input_path))[0]
         produced = os.path.join(out_dir, base + "." + target_ext.split(":")[0])
         if os.path.isfile(produced):
             if os.path.abspath(produced) != os.path.abspath(output_path):
                 shutil.move(produced, output_path)
             return os.path.getsize(output_path) > 0
+        print(f"ERROR: LibreOffice produced no file at {produced}", file=sys.stderr)
+    except subprocess.CalledProcessError as exc:
+        print(f"ERROR: soffice exit {exc.returncode}: {exc.stderr or exc.stdout}", file=sys.stderr)
     except Exception:
         traceback.print_exc(file=sys.stderr)
     return False
@@ -129,6 +149,11 @@ def _docx2pdf_windows_word(input_path: str, output_path: str) -> bool:
 
 
 def docx_to_pdf(input_path: str, output_path: str) -> None:
+    if not _find_soffice():
+        raise RuntimeError(
+            "LibreOffice (soffice) is not installed yet. On Azure, wait 5–8 minutes after restart "
+            "then check: tail /home/site/ratpdf-install.log — or run: apt-get install -y libreoffice libreoffice-writer"
+        )
     if _libreoffice_convert(input_path, output_path, _LO_WRITER_PDF):
         return
     if _libreoffice_convert(input_path, output_path, "pdf:writer_pdf_Export"):
@@ -136,7 +161,7 @@ def docx_to_pdf(input_path: str, output_path: str) -> None:
     if _docx2pdf_windows_word(input_path, output_path):
         return
     raise RuntimeError(
-        "DOCX to PDF failed. Install LibreOffice on the server for print-accurate conversion."
+        "DOCX to PDF failed. LibreOffice is present but conversion failed — see stderr above."
     )
 
 

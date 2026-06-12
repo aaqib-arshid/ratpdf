@@ -6,7 +6,9 @@ Extracts text spans, reading order, multi-column structure, and header/footer re
 
 from __future__ import annotations
 
+import os
 import re
+import shutil
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -277,6 +279,23 @@ def is_scanned_pdf(pdf_path: str, min_chars_per_page: int = 30) -> bool:
 # OCR layout extraction (Tesseract fallback)
 # ---------------------------------------------------------------------------
 
+def _configure_tesseract(pytesseract) -> None:
+    """Azure/dotnet child processes often have a minimal PATH — set tesseract explicitly."""
+    for candidate in (
+        os.environ.get("TESSERACT_CMD", ""),
+        shutil.which("tesseract"),
+        "/usr/bin/tesseract",
+        "/usr/local/bin/tesseract",
+    ):
+        if candidate and os.path.isfile(candidate):
+            pytesseract.pytesseract.tesseract_cmd = candidate
+            return
+    raise RuntimeError(
+        "Tesseract binary not found. Install: apt-get install -y tesseract-ocr tesseract-ocr-eng "
+        "or set TESSERACT_CMD=/usr/bin/tesseract"
+    )
+
+
 def extract_ocr_layout(pdf_path: str, dpi: int = 300) -> DocumentLayout:
     """Render pages and OCR with bounding boxes for scanned PDFs."""
     try:
@@ -287,6 +306,8 @@ def extract_ocr_layout(pdf_path: str, dpi: int = 300) -> DocumentLayout:
             "pytesseract and Pillow are required for OCR fallback. "
             "Install with: pip install pytesseract Pillow"
         ) from exc
+
+    _configure_tesseract(pytesseract)
 
     doc = fitz.open(pdf_path)
     pages: List[PageLayout] = []

@@ -1,50 +1,47 @@
 #!/bin/bash
-# RatPDF Azure App Service (Linux) startup script.
-# Installs Python PDF conversion dependencies + LibreOffice, then starts the app.
-set -euo pipefail
+# RatPDF Azure startup — background deps + immediate dotnet (keeps health check happy).
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_LOG="/home/site/ratpdf-install.log"
 
-echo "[ratpdf] Starting dependency setup..."
+log() { echo "[ratpdf] $*"; }
 
-export DEBIAN_FRONTEND=noninteractive
-if command -v apt-get >/dev/null 2>&1; then
-  apt-get update -qq
-  apt-get install -y -qq \
-    python3 \
-    python3-pip \
-    python3-venv \
-    libreoffice \
-    libreoffice-writer \
-    libreoffice-calc \
-    libreoffice-impress \
-    tesseract-ocr \
-    tesseract-ocr-eng \
-    ghostscript \
-    fonts-liberation \
-    fonts-dejavu-core \
-    fontconfig \
-    >/dev/null 2>&1 || echo "[ratpdf] apt install warning (non-fatal)"
+load_env_marker() {
+  local envfile="/home/site/.ratpdf-env"
+  if [ -f "$envfile" ]; then
+    set -a
+    # shellcheck disable=SC1090
+    source "$envfile"
+    set +a
+  fi
+}
+
+# Start apt/LibreOffice/pip install in background — blocks 5+ min if run synchronously
+if [ -f "$DIR/install-python.sh" ]; then
+  log "Background install started (tail -f $INSTALL_LOG)"
+  nohup bash "$DIR/install-python.sh" >> "$INSTALL_LOG" 2>&1 &
 fi
 
-APP_DIR="${APP_DIR:-/home/site/wwwroot}"
-ENGINE_DIR="$APP_DIR/Pdf-Engine"
+load_env_marker
 
-if [ -f "$ENGINE_DIR/requirements.txt" ]; then
-  echo "[ratpdf] Installing Python packages..."
-  python3 -m pip install --upgrade pip --quiet
-  python3 -m pip install -r "$ENGINE_DIR/requirements.txt" --quiet
-  python3 -c "import fitz, pdfplumber, pdf2docx, openpyxl; print('[ratpdf] Python OK')"
-else
-  echo "[ratpdf] WARNING: $ENGINE_DIR/requirements.txt not found"
+if [ -z "${PdfToDocx__PythonExecutable:-}" ] && [ -f /home/site/.python-executable ]; then
+  export PdfToDocx__PythonExecutable="$(cat /home/site/.python-executable)"
+fi
+if [ -z "${PdfToDocx__PythonExecutable:-}" ] && [ -x /usr/bin/python3 ]; then
+  export PdfToDocx__PythonExecutable="/usr/bin/python3"
+fi
+if [ -z "${PdfToDocx__PythonExecutable:-}" ] && [ -x /home/site/miniforge3/bin/python ]; then
+  export PdfToDocx__PythonExecutable="/home/site/miniforge3/bin/python"
 fi
 
-if command -v soffice >/dev/null 2>&1; then
-  echo "[ratpdf] LibreOffice: $(soffice --version 2>/dev/null | head -1)"
-else
-  echo "[ratpdf] WARNING: LibreOffice (soffice) not found — Word/Excel conversion quality will suffer"
+if [ -z "${LIBREOFFICE_PATH:-}" ]; then
+  for lo in /usr/bin/soffice /usr/lib/libreoffice/program/soffice; do
+    if [ -x "$lo" ]; then
+      export LIBREOFFICE_PATH="$lo"
+      break
+    fi
+  done
 fi
+export TESSERACT_CMD="${TESSERACT_CMD:-/usr/bin/tesseract}"
 
-export LIBREOFFICE_PATH="${LIBREOFFICE_PATH:-$(command -v soffice || true)}"
-export PdfToDocx__PythonExecutable="${PdfToDocx__PythonExecutable:-python3}"
-
-echo "[ratpdf] Launching ASP.NET Core..."
-exec dotnet "$APP_DIR/ratpdf.dll"
+log "Launching dotnet python=${PdfToDocx__PythonExecutable:-unset} libreoffice=${LIBREOFFICE_PATH:-installing...}"
+exec dotnet "$DIR/ratpdf.dll"

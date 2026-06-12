@@ -25,7 +25,7 @@ namespace ratpdf.Services
         {
             _logger = logger;
             _pythonScriptPath = Path.Combine(env.ContentRootPath, "Pdf-Engine", "office_converter.py");
-            _pythonExecutable = PythonRuntime.ResolveExecutable(configuration);
+            _pythonExecutable = PythonRuntime.ResolveExecutable(configuration, env);
             _timeoutSeconds = configuration.GetValue("PdfToDocx:ConversionTimeoutSeconds", 600);
         }
 
@@ -76,16 +76,10 @@ namespace ratpdf.Services
                     await inputStream.CopyToAsync(fs, ct);
                 }
 
-                var psi = new ProcessStartInfo
-                {
-                    FileName = _pythonExecutable,
-                    Arguments = $"\"{_pythonScriptPath}\" {command} \"{tempInput}\" \"{tempOutput}\"",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WorkingDirectory = Path.GetDirectoryName(_pythonScriptPath)!,
-                };
+                var psi = PythonRuntime.CreateStartInfo(
+                    _pythonExecutable,
+                    $"\"{_pythonScriptPath}\" {command} \"{tempInput}\" \"{tempOutput}\"",
+                    Path.GetDirectoryName(_pythonScriptPath));
 
                 using var process = Process.Start(psi)
                     ?? throw new InvalidOperationException("Failed to start office conversion process.");

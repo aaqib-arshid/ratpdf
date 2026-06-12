@@ -3,6 +3,9 @@
 ###############################################################################
 * text=auto
 
+# Shell scripts must use LF on Linux (Azure App Service)
+*.sh text eol=lf
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #

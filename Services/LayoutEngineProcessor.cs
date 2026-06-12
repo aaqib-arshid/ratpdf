@@ -21,7 +21,7 @@ namespace ratpdf.Services
             _logger = logger;
             _pythonScriptPath = pythonScriptPath
                 ?? Path.Combine(env.ContentRootPath, "Pdf-Engine", "pdf-reconstruction-engine.py");
-            _pythonExecutable = pythonExecutable ?? PythonRuntime.ResolveExecutable(configuration);
+            _pythonExecutable = pythonExecutable ?? PythonRuntime.ResolveExecutable(configuration, env);
         }
 
         /// <summary>
@@ -48,16 +48,10 @@ namespace ratpdf.Services
                     await pdfStream.CopyToAsync(fileStream);
                 }
 
-                // Configure the Python process
-                var processStartInfo = new ProcessStartInfo
-                {
-                    FileName = _pythonExecutable,
-                    Arguments = $"\"{_pythonScriptPath}\" \"{tempPdfPath}\"",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
+                var processStartInfo = PythonRuntime.CreateStartInfo(
+                    _pythonExecutable,
+                    $"\"{_pythonScriptPath}\" \"{tempPdfPath}\"",
+                    Path.GetDirectoryName(_pythonScriptPath));
 
                 using var process = Process.Start(processStartInfo);
                 if (process == null)

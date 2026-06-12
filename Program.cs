@@ -26,7 +26,7 @@ public partial class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-
+        builder.Services.AddHostedService<PythonBootstrapHostedService>();
         builder.Services.AddControllersWithViews();
         builder.Services.AddHttpClient();
         builder.Services.AddRateLimiter(options =>
@@ -155,12 +155,19 @@ public partial class Program
             var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("PythonRuntime");
             var config = app.Services.GetRequiredService<IConfiguration>();
             var env = app.Services.GetRequiredService<IWebHostEnvironment>();
-            var python = PythonRuntime.ResolveExecutable(config);
+            var python = PythonRuntime.ResolveExecutable(config, env);
             var engineDir = PythonRuntime.GetEngineDirectory(env);
             var requirements = Path.Combine(engineDir, "requirements.txt");
+            var pythonVersion = PythonRuntime.ProbeVersion(python);
+            var hasFitz = PythonRuntime.ProbeImport(python, "fitz");
             logger.LogInformation(
-                "Pdf-Engine: dir={EngineDir} exists={DirExists}, requirements={ReqExists}, python={Python}",
-                engineDir, Directory.Exists(engineDir), File.Exists(requirements), python);
+                "Pdf-Engine: dir={EngineDir} exists={DirExists}, requirements={ReqExists}, python={Python}, version={Version}, fitz={HasFitz}",
+                engineDir, Directory.Exists(engineDir), File.Exists(requirements), python, pythonVersion ?? "NOT FOUND", hasFitz);
+
+            if (pythonVersion == null || !hasFitz)
+                logger.LogWarning(
+                    "Python missing or PyMuPDF not installed for {Python}. On SSH run: /usr/bin/python3 -m pip install --break-system-packages PyMuPDF pytesseract && echo /usr/bin/python3 > /home/site/.python-executable",
+                    python);
         }
 
         // In Program.cs, after app.Build()

@@ -6,6 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- Azure Linux requires LF line endings in shell scripts (CRLF breaks bash) -->
+  <Target Name="NormalizeShellScriptsLf" BeforeTargets="PrepareForPublish;PrepareForBuild">
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\build\normalize-sh-lf.ps1&quot; &quot;$(MSBuildProjectDirectory)&quot;" />
+  </Target>
+
   <ItemGroup>
     <Compile Remove="wwwroot\AIModels\**" />
     <Content Remove="wwwroot\AIModels\**" />
@@ -14,6 +19,10 @@
   </ItemGroup>
 	<ItemGroup>
 		<Content Include="startup.sh">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
+		<Content Include="install-python.sh">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
 		</Content>
