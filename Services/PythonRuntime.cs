@@ -196,6 +196,11 @@ namespace ratpdf.Services
                 }
             }
 
+            psi.Environment["HOME"] = "/tmp";
+            psi.Environment["SAL_USE_VCLPLUGIN"] = "svp";
+            psi.Environment["SAL_DISABLE_OPENCL"] = "1";
+            psi.Environment.Remove("DISPLAY");
+
             return psi;
         }
 

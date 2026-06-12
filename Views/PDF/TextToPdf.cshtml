@@ -12,6 +12,7 @@
             <h2 class="fw-bold mb-3">Text to PDF</h2>
             <p class="text-muted mb-2">Upload a text file or type your content below to convert it into a PDF.</p>
             @await Html.PartialAsync("_PdfToolUsageBadge")
+            @await Html.PartialAsync("_PdfToolTrustPills")
 
             <!-- Validation Errors -->
             @if (!ViewData.ModelState.IsValid)
@@ -34,8 +35,7 @@
                     </div>
                 </div>
 
-                <!-- File Preview -->
-                <div id="filePreview" class="text-muted mb-3"></div>
+                @await Html.PartialAsync("_PdfFilePreviewCard")
 
                 <!-- Or Typed Text -->
                 <div id="quillEditor" style="height: 250px; background: white; border-radius: 6px;"></div>
@@ -46,16 +46,11 @@
                     <i class="bi bi-file-earmark-text-fill me-2"></i> Convert to PDF
                 </button>
             </form>
+            @await Html.PartialAsync("_PdfToolTrustFooter")
         </div>
     </div>
-    </div>
-    <section class="related-tools">
-        <h3>Related Tools</h3>
-        <ul>
-            <li><a href="/PDF/Compress">Compress PDF</a></li>
-        </ul>
-    </section>
-</section>
+</div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
 <div class="container py-5">
     <div class="card shadow-sm p-4" style="border-radius: 12px;">
         <h2 class="fw-bold mb-3">How to Convert Text to PDF Online</h2>
@@ -304,38 +299,6 @@
             ]
         }
     });
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const filePreview = document.getElementById('filePreview');
-
-        function updatePreview() {
-            if (fileInput.files.length === 0) {
-                filePreview.textContent = '';
-                return;
-            }
-            filePreview.textContent = 'Selected file: ' + fileInput.files[0].name;
-        }
-
-        dropZone.addEventListener('click', () => fileInput.click());
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-primary', 'bg-light');
-            fileInput.files = e.dataTransfer.files;
-            updatePreview();
-        });
-
-        fileInput.addEventListener('change', updatePreview);
-
          $('#textForm').on('submit', function (e) {
          e.preventDefault();
          document.getElementById('typedText').value = quill.root.innerHTML;

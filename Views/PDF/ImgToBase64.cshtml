@@ -21,6 +21,7 @@
                 Upload a JPG, PNG, or WebP image to instantly convert it into a Base64 string.
             </p>
             @await Html.PartialAsync("_PdfToolUsageBadge")
+            @await Html.PartialAsync("_PdfToolTrustPills")
 
             @if (!ViewData.ModelState.IsValid)
             {
@@ -54,6 +55,7 @@
                     Convert to Base64
                 </button>
             </form>
+            @await Html.PartialAsync("_PdfToolTrustFooter")
             <div class="mt-5 text-start">
                 <h3>How to Convert Image to Base64?</h3>
                 <ol>

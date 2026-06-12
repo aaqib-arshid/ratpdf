@@ -60,6 +60,7 @@
             Change image dimensions to any width and height – <strong>free, private, no upload</strong><br />
             Preserve aspect ratio or stretch, choose output format and quality.
         </p>
+        <span id="imageUsageBadge" class="badge bg-secondary mb-2" data-image-tool-id="imageresizer">3 free use(s) today</span>
         <div class="d-flex justify-content-center gap-2 flex-wrap">
             <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📐 Custom dimensions</span>
             <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🔒 No server upload</span>
@@ -262,6 +263,7 @@
 
 @section Scripts
 {
+    <script src="~/js/image-toolkit.js" asp-append-version="true"></script>
     <script type="application/ld+json">
 {
   "@@context": "https://schema.org",
@@ -426,6 +428,11 @@
             
             async function performResize() {
                 if (!currentFile || !originalWidth) return;
+                try {
+                    await ImageToolkit.ensureAccess('imageresizer');
+                } catch (e) {
+                    return;
+                }
                 let reqWidth = parseInt(widthInput.value);
                 let reqHeight = parseInt(heightInput.value);
                 if (isNaN(reqWidth)) reqWidth = originalWidth;
@@ -458,6 +465,8 @@
                     resizedDimensionsSpan.innerText = `${newWidth} × ${newHeight} px`;
                     downloadBtn.disabled = false;
                     resizedImg.onload = () => URL.revokeObjectURL(url);
+                    await ImageToolkit.recordUsage('imageresizer');
+                    await ImageToolkit.refreshBadge('imageresizer');
                 } catch (err) {
                     console.error(err);
                     showMessage('Resize failed: ' + err.message, true);

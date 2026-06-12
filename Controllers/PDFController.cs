@@ -147,8 +147,8 @@ namespace ratpdf.Controllers
         }
 
         [HttpPost]
-        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
-        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestSizeLimit(PdfToolLimits.MergeMaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MergeMaxUploadRequestBytes)]
         public async Task<IActionResult> Merge([FromForm] List<IFormFile> files)
         {
             if (files == null || files.Count < 2)
@@ -351,7 +351,7 @@ namespace ratpdf.Controllers
                 return BadRequest(new { error = "Tool id required" });
 
             var status = await _pdfToolsAccess.GetStatusAsync(tool);
-            var limits = await _pdfToolsAccess.GetLimitsAsync();
+            var limits = await _pdfToolsAccess.GetLimitsForToolAsync(tool);
             return Ok(new
             {
                 allowed = status.Allowed,
@@ -361,6 +361,8 @@ namespace ratpdf.Controllers
                 maxFileSizeBytes = limits.MaxFileSizeBytes,
                 maxBatchFiles = limits.MaxBatchFiles,
                 maxFileSizeLabel = limits.MaxFileSizeLabel,
+                maxTotalBatchBytes = limits.MaxTotalBatchBytes,
+                maxTotalBatchLabel = limits.MaxTotalBatchLabel,
             });
         }
 
@@ -496,7 +498,7 @@ namespace ratpdf.Controllers
 
             if (file != null)
             {
-                if (file.Length > (await _pdfToolsAccess.GetLimitsAsync()).MaxFileSizeBytes)
+                if (file.Length > (await _pdfToolsAccess.GetLimitsForToolAsync(PdfToolIds.TextToPdf)).MaxFileSizeBytes)
                     return BadRequest(new { error = "File exceeds size limit." });
                 stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
                 inputSize = file.Length;
@@ -1012,7 +1014,7 @@ namespace ratpdf.Controllers
             if (files == null || files.Count == 0)
                 return new JobFileValidation(null, BadRequest(new { error = "No files uploaded." }));
 
-            var limits = await _pdfToolsAccess.GetLimitsAsync();
+            var limits = await _pdfToolsAccess.GetLimitsForToolAsync(toolId);
 
             if (files.Count > limits.MaxBatchFiles)
                 return new JobFileValidation(null, BadRequest(new { error = $"Maximum {limits.MaxBatchFiles} files allowed." }));
@@ -1020,6 +1022,18 @@ namespace ratpdf.Controllers
             var access = await _pdfToolsAccess.CheckAccessAsync(toolId, files.Count);
             if (!access.Allowed)
                 return new JobFileValidation(null, StatusCode(402, new { error = access.DenyReason, paywall = true }));
+
+            if (limits.MaxTotalBatchBytes is long totalCap)
+            {
+                var combined = files.Sum(f => f.Length);
+                if (combined > totalCap)
+                {
+                    return new JobFileValidation(null, BadRequest(new
+                    {
+                        error = $"Combined file size must be under {limits.MaxTotalBatchLabel ?? "4 GB"} for Merge PDF on Pro.",
+                    }));
+                }
+            }
 
             foreach (var file in files)
             {
@@ -1183,7 +1197,7 @@ namespace ratpdf.Controllers
         {
             if (file == null || file.Length == 0)
                 return new EditSessionError("No file uploaded");
-            var limits = await _pdfToolsAccess.GetLimitsAsync();
+            var limits = await _pdfToolsAccess.GetLimitsForToolAsync(PdfToolIds.EditPdf);
             if (file.Length > limits.MaxFileSizeBytes)
                 return new EditSessionError($"File exceeds {limits.MaxFileSizeLabel} limit.");
 

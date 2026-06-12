@@ -62,13 +62,47 @@ _LO_CALC_PDF = (
 )
 
 
-def _lo_env() -> dict:
-    """Headless LibreOffice on Azure App Service needs a writable HOME."""
+def _lo_env(profile_dir: str) -> dict:
+    """Headless LibreOffice on Azure/Linux — no X11 display."""
     env = os.environ.copy()
-    env.setdefault("HOME", "/tmp")
-    env.setdefault("SAL_USE_VCLPLUGIN", "gen")
-    env.setdefault("LANG", "C.UTF-8")
+    env["HOME"] = "/tmp"
+    env["TMPDIR"] = "/tmp"
+    env["SAL_USE_VCLPLUGIN"] = "svp"
+    env["SAL_DISABLE_OPENCL"] = "1"
+    env["LANG"] = "C.UTF-8"
+    env.pop("DISPLAY", None)
+    env["LIBO_CONFIG_HOME"] = profile_dir
     return env
+
+
+def _conversion_timeout(input_path: str) -> int:
+    """Scale timeout with file size — up to 1 hour for very large office files."""
+    try:
+        size_mb = max(1, os.path.getsize(input_path) // (1024 * 1024))
+    except OSError:
+        size_mb = 1
+    return min(3600, max(120, size_mb * 45))
+
+
+def _run_soffice(args: list[str], env: dict, timeout: int) -> subprocess.CompletedProcess:
+    xvfb = shutil.which("xvfb-run")
+    if xvfb:
+        return subprocess.run(
+            [xvfb, "-a", "-s", "-screen 0 1280x1024x24"] + args,
+            check=True,
+            timeout=timeout,
+            capture_output=True,
+            text=True,
+            env=env,
+        )
+    return subprocess.run(
+        args,
+        check=True,
+        timeout=timeout,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
 
 
 def _libreoffice_convert(input_path: str, output_path: str, target_ext: str) -> bool:
@@ -80,27 +114,30 @@ def _libreoffice_convert(input_path: str, output_path: str, target_ext: str) -> 
     out_dir = os.path.dirname(os.path.abspath(output_path)) or "."
     os.makedirs(out_dir, exist_ok=True)
 
+    profile_dir = tempfile.mkdtemp(prefix="lo_profile_")
+    profile_uri = "file://" + profile_dir.replace("\\", "/")
+    timeout = _conversion_timeout(input_path)
+
     try:
-        result = subprocess.run(
+        result = _run_soffice(
             [
                 soffice,
                 "--headless",
                 "--invisible",
                 "--nologo",
                 "--nofirststartwizard",
+                "--norestore",
+                f"-env:UserInstallation={profile_uri}",
                 "--convert-to",
                 target_ext,
                 "--outdir",
                 out_dir,
                 os.path.abspath(input_path),
             ],
-            check=True,
-            timeout=600,
-            capture_output=True,
-            text=True,
-            env=_lo_env(),
+            _lo_env(profile_dir),
+            timeout,
         )
-        if result.stderr:
+        if result.stderr and "error" in result.stderr.lower():
             print(result.stderr, file=sys.stderr)
         base = os.path.splitext(os.path.basename(input_path))[0]
         produced = os.path.join(out_dir, base + "." + target_ext.split(":")[0])
@@ -113,6 +150,8 @@ def _libreoffice_convert(input_path: str, output_path: str, target_ext: str) -> 
         print(f"ERROR: soffice exit {exc.returncode}: {exc.stderr or exc.stdout}", file=sys.stderr)
     except Exception:
         traceback.print_exc(file=sys.stderr)
+    finally:
+        shutil.rmtree(profile_dir, ignore_errors=True)
     return False
 
 

@@ -10,8 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ratpdf.Data.AppDBContext;
 using ratpdf.Data.Entities;
+using ratpdf.Constants;
 using ratpdf.Models;
 using ratpdf.Services;
+using ratpdf.Services.PdfTools;
 using System.Text.RegularExpressions;
 namespace ratpdf.Controllers
 {
@@ -28,11 +30,14 @@ namespace ratpdf.Controllers
         private readonly RazorpayService _razorpayService;
         private readonly RatPDFDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly PdfToolsAccessService _toolAccess;
+
         public ToolsController(IHttpClientFactory httpClientFactory, AtsEngine atsEngine,
             PdfConversionService pdfConversionService,
             SearchConsoleService gsc, DecayCalculatorService calculator,
             GoogleOAuthService googleOAuth, RazorpayService razorpayService,
-            RatPDFDbContext context, IConfiguration configuration)
+            RatPDFDbContext context, IConfiguration configuration,
+            PdfToolsAccessService toolAccess)
         {
             _blobContainer = new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdf");
             _queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=ratpdfstorageaccount;AccountKey=F0sGPtubIGrYvUCOe9aCzNB1FUq0swKnh0x/egP6c3+XQcekNdQeMYJEIh6FL7Mrc2xXmSHZFqAT+ASts5qCKw==;EndpointSuffix=core.windows.net", "ratpdfai-queue");
@@ -45,6 +50,40 @@ namespace ratpdf.Controllers
             _razorpayService = razorpayService;
             _context = context;
             _configuration = configuration;
+            _toolAccess = toolAccess;
+        }
+
+        [HttpGet("/Tools/tool-access")]
+        public async Task<IActionResult> ToolAccess([FromQuery] string tool)
+        {
+            if (string.IsNullOrWhiteSpace(tool))
+                return BadRequest(new { error = "Tool id required" });
+
+            var status = await _toolAccess.GetStatusAsync(tool);
+            var limits = await _toolAccess.GetLimitsForToolAsync(tool);
+            return Ok(new
+            {
+                allowed = status.Allowed,
+                isPremium = status.IsPremium,
+                remaining = status.RemainingFreeUses,
+                denyReason = status.DenyReason,
+                maxFileSizeBytes = limits.MaxFileSizeBytes,
+                maxBatchFiles = limits.MaxBatchFiles,
+                maxFileSizeLabel = limits.MaxFileSizeLabel,
+                maxTotalBatchBytes = limits.MaxTotalBatchBytes,
+                maxTotalBatchLabel = limits.MaxTotalBatchLabel,
+            });
+        }
+
+        [HttpPost("/Tools/record-usage")]
+        public async Task<IActionResult> RecordToolUsage([FromQuery] string tool, [FromQuery] int count = 1)
+        {
+            if (string.IsNullOrWhiteSpace(tool))
+                return BadRequest(new { error = "Tool id required" });
+
+            await _toolAccess.RecordUsageAsync(tool, Math.Max(1, count));
+            var status = await _toolAccess.GetStatusAsync(tool);
+            return Ok(new { remaining = status.RemainingFreeUses, isPremium = status.IsPremium });
         }
         public IActionResult RingSizeConverter()
         {

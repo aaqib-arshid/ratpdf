@@ -86,18 +86,33 @@ namespace ratpdf.Services.PdfTools
             return new PdfToolAccessResult(remaining > 0, false, remaining);
         }
 
-        public async Task<PdfToolLimitsDto> GetLimitsAsync()
+        public async Task<PdfToolLimitsDto> GetLimitsAsync() =>
+            await GetLimitsForToolAsync(PdfToolIds.Compress);
+
+        public async Task<PdfToolLimitsDto> GetLimitsForToolAsync(string toolId)
         {
             var ctx = _httpContextAccessor.HttpContext;
             var isPremium = ctx != null && await IsPremiumUserAsync(ctx);
-            var maxBytes = isPremium ? PdfToolLimits.MaxPremiumFileSizeBytes : PdfToolLimits.MaxFileSizeBytes;
+            var perFileMax = isPremium ? PdfToolLimits.MaxPremiumFileSizeBytes : PdfToolLimits.MaxFileSizeBytes;
+            var isMerge = string.Equals(toolId, PdfToolIds.Merge, StringComparison.OrdinalIgnoreCase);
+
+            long? totalBatchMax = null;
+            string? totalBatchLabel = null;
+            if (isMerge && isPremium)
+            {
+                totalBatchMax = PdfToolLimits.MergeMaxTotalBatchBytesPremium;
+                totalBatchLabel = "4 GB combined";
+            }
+
             return new PdfToolLimitsDto
             {
                 IsPremium = isPremium,
-                MaxFileSizeBytes = maxBytes,
-                MaxBatchFiles = PdfToolLimits.MaxBatchFiles,
+                MaxFileSizeBytes = perFileMax,
+                MaxBatchFiles = PdfToolLimits.ResolveMaxBatchFiles(toolId),
+                MaxTotalBatchBytes = totalBatchMax,
+                MaxTotalBatchLabel = totalBatchLabel,
                 FreeUsesPerDay = PdfToolLimits.FreeUsesPerDay,
-                MaxFileSizeLabel = FormatBytes(maxBytes),
+                MaxFileSizeLabel = FormatBytes(perFileMax),
             };
         }
 

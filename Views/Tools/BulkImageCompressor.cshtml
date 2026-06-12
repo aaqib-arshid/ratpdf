@@ -49,6 +49,7 @@
             Compress multiple images at once – <strong>JPG, PNG, WebP, BMP</strong><br />
             All processing stays in your browser. Download as ZIP.
         </p>
+        <span id="imageUsageBadge" class="badge bg-secondary mb-2" data-image-tool-id="bulkimagecompress">3 free use(s) today</span>
         <div class="d-flex justify-content-center gap-2 flex-wrap">
             <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">📦 Bulk upload</span>
             <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🔒 No server</span>
@@ -256,6 +257,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
+    <script src="~/js/image-toolkit.js" asp-append-version="true"></script>
     <script>
         (function() {
             const dropZone = document.getElementById('dropZone');
@@ -350,6 +352,11 @@
                     return;
                 }
                 if (processing) return;
+                try {
+                    await ImageToolkit.ensureAccess('bulkimagecompress');
+                } catch (e) {
+                    return;
+                }
                 processing = true;
                 compressBtn.disabled = true;
                 downloadZipBtn.disabled = true;
@@ -384,6 +391,8 @@
                 downloadZipBtn.disabled = false;
                 compressBtn.disabled = false;
                 processing = false;
+                await ImageToolkit.recordUsage('bulkimagecompress');
+                await ImageToolkit.refreshBadge('bulkimagecompress');
             }
             
             function downloadZip() {

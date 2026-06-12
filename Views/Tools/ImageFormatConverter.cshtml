@@ -61,6 +61,7 @@
             Convert any image to JPG, PNG, WebP, or BMP – <strong>100% browser‑based, no upload, private</strong>.<br />
             Preserves original resolution and quality.
         </p>
+        <span id="imageUsageBadge" class="badge bg-secondary mb-2" data-image-tool-id="imageformatconverter">3 free use(s) today</span>
         <div class="d-flex justify-content-center gap-2 flex-wrap">
             <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">🔄 JPG ⇄ PNG ⇄ WebP</span>
             <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">🔒 No server upload</span>
@@ -224,6 +225,7 @@
 
 @section Scripts
 {
+    <script src="~/js/image-toolkit.js" asp-append-version="true"></script>
     <script type="application/ld+json">
 {
   "@@context": "https://schema.org",
@@ -372,6 +374,11 @@
                     showMessage('No image selected.', true);
                     return;
                 }
+                try {
+                    await ImageToolkit.ensureAccess('imageformatconverter');
+                } catch (e) {
+                    return;
+                }
                 convertBtn.disabled = true;
                 showMessage('Converting...', false);
                 
@@ -398,6 +405,8 @@
                     convertedPlaceholder.style.display = 'none';
                     downloadBtn.disabled = false;
                     showMessage('Conversion complete! You can now download.');
+                    await ImageToolkit.recordUsage('imageformatconverter');
+                    await ImageToolkit.refreshBadge('imageformatconverter');
                 } catch (err) {
                     console.error(err);
                     showMessage('Conversion failed: ' + err.message, true);

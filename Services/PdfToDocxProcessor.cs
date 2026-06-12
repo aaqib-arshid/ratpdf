@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ratpdf.Constants;
 using ratpdf.Services.PdfProcessing;
 
 namespace ratpdf.Services
@@ -122,7 +123,8 @@ namespace ratpdf.Services
             var stderrTask = process.StandardError.ReadToEndAsync(ct);
 
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-            cts.CancelAfter(TimeSpan.FromSeconds(_timeoutSeconds));
+            var timeoutSeconds = ResolveTimeoutSeconds(inputPdfPath);
+            cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
 
             try
             {
@@ -132,7 +134,7 @@ namespace ratpdf.Services
             {
                 try { process.Kill(entireProcessTree: true); } catch { }
                 throw new TimeoutException(
-                    $"PDF to DOCX conversion timed out after {_timeoutSeconds} seconds.");
+                    $"PDF to DOCX conversion timed out after {timeoutSeconds} seconds.");
             }
 
             var stdout = await stdoutTask;
@@ -152,6 +154,19 @@ namespace ratpdf.Services
             _logger.LogInformation(
                 "PDF to DOCX conversion succeeded for {FileName}. stdout: {Stdout}",
                 originalFileName ?? "upload", stdout.Trim());
+        }
+
+        private int ResolveTimeoutSeconds(string inputPdfPath)
+        {
+            try
+            {
+                var sizeMb = Math.Max(1, (int)(new FileInfo(inputPdfPath).Length / (1024 * 1024)));
+                return Math.Min(3600, Math.Max(_timeoutSeconds, sizeMb * 45));
+            }
+            catch
+            {
+                return _timeoutSeconds;
+            }
         }
     }
 }

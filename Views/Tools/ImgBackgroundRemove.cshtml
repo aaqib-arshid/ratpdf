@@ -59,10 +59,11 @@
 
             <img src="~/images/ratpdf-logo.png" height="60" class="mb-3" alt="RatPDF Logo" />
             <h2 class="fw-bold mb-3">AI Background Remover – Keep Same Resolution</h2>
-            <p class="text-muted mb-4">
+            <p class="text-muted mb-2">
                 Upload a JPG or PNG image and remove background instantly with AI.<br />
                 <strong>Output PNG has the exact same width & height as your original image.</strong>
             </p>
+            <span id="imageUsageBadge" class="badge bg-secondary mb-3" data-image-tool-id="bgremove">3 free use(s) today</span>
 
             <!-- File Upload Area -->
             <div class="mb-4">
@@ -262,6 +263,7 @@
         ]
     }
     </script>
+    <script src="~/js/image-toolkit.js" asp-append-version="true"></script>
     <script type="module" src="~/js/bgremover.js"></script>
      <script>
         const dropZone = document.getElementById('dropZone');
@@ -366,6 +368,12 @@
                 return;
             }
 
+            try {
+                await ImageToolkit.ensureAccess('bgremove');
+            } catch (e) {
+                return;
+            }
+
             removeBtn.disabled = true;
             downloadBtn.disabled = true;
             progressArea.classList.remove('d-none');
@@ -399,6 +407,8 @@
                 downloadBtn.disabled = false;
                 updateProgress(100, 'Complete!');
                 showMessage(`✅ Background removed! Output size: ${originalDimensions.width}×${originalDimensions.height} (same as original).`);
+                await ImageToolkit.recordUsage('bgremove');
+                await ImageToolkit.refreshBadge('bgremove');
 
                 resultPreview.onload = () => URL.revokeObjectURL(resultUrl);
                 setTimeout(() => {

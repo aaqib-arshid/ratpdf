@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using ratpdf.Constants;
 using ratpdf.Services.PdfProcessing;
 
 namespace ratpdf.Services
@@ -36,9 +37,12 @@ namespace ratpdf.Services
 
             try
             {
-                _jobStore.SetProgress(jobId, 5, "Preparing conversion…");
                 var total = inputs.Count;
                 var inputSize = inputs.Sum(x => x.Size);
+                var prepMsg = inputSize >= PdfToolLimits.LargeFileWarningBytes
+                    ? PdfToolLimits.LargeFileWarningMessage
+                    : "Preparing conversion…";
+                _jobStore.SetProgress(jobId, 5, prepMsg);
                 metrics.Checkpoint("inputs-staged", inputSize);
 
                 for (var i = 0; i < total; i++)

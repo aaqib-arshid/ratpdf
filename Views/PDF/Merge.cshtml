@@ -12,8 +12,9 @@
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
             <h2 class="fw-bold mb-3">Merge PDFs</h2>
-            <p class="text-muted mb-2">Upload two or more PDF files to merge them into a single document.</p>
+            <p class="text-muted mb-2">Upload two or more PDF files to merge them into a single document. Free: 200 MB per file. Pro: up to 4 GB combined.</p>
             @await Html.PartialAsync("_PdfToolUsageBadge")
+            @await Html.PartialAsync("_PdfToolTrustPills")
 
             <!-- Validation Errors -->
             @if (!ViewData.ModelState.IsValid)
@@ -35,8 +36,7 @@
                     </div>
                 </div>
 
-                <!-- Preview Selected Files -->
-                <ul id="preview" class="list-group list-group-flush mb-3"></ul>
+                @await Html.PartialAsync("_PdfFilePreviewCard")
                 <p id="limitHint" class="text-muted small text-start mb-2"></p>
                 <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
                 @await Html.PartialAsync("_PdfProgressBar")
@@ -45,6 +45,7 @@
                     <i class="bi bi-file-earmark-pdf-fill me-2"></i> Merge PDFs
                 </button>
             </form>
+            @await Html.PartialAsync("_PdfToolTrustFooter")
         </div>
     </div>
 </div>
@@ -295,64 +296,30 @@
         }
     </script>
     <script>
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const preview = document.getElementById('preview');
-
-        dropZone.addEventListener('click', () => fileInput.click());
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-primary', 'bg-light');
-            fileInput.files = e.dataTransfer.files;
-            showPreview();
-        });
-
-        fileInput.addEventListener('change', showPreview);
-
-        let mergeLimits = { maxFiles: 3, maxSizeBytes: 200 * 1024 * 1024 };
+        let mergeLimits = { maxFiles: 30, maxSizeBytes: 200 * 1024 * 1024, maxTotalBytes: null, maxTotalBatchLabel: null };
 
         async function loadLimits() {
             const access = await PdfToolkit.checkToolAccess('merge');
             mergeLimits = {
-                maxFiles: access.maxBatchFiles || 3,
+                maxFiles: access.maxBatchFiles || 30,
                 maxSizeBytes: access.maxFileSizeBytes || mergeLimits.maxSizeBytes,
+                maxTotalBytes: access.maxTotalBatchBytes || null,
+                maxTotalBatchLabel: access.maxTotalBatchLabel || null,
             };
             const hint = document.getElementById('limitHint');
             if (hint) {
-                hint.textContent = `2–${mergeLimits.maxFiles} PDFs · ${access.maxFileSizeLabel || PdfToolkit.fmtBytes(mergeLimits.maxSizeBytes)} per file`;
+                if (access.isPremium && mergeLimits.maxTotalBatchLabel) {
+                    hint.textContent = `2–${mergeLimits.maxFiles} PDFs · up to ${mergeLimits.maxTotalBatchLabel} · ${access.maxFileSizeLabel || '4 GB'} per file`;
+                } else {
+                    hint.textContent = `2–${mergeLimits.maxFiles} PDFs · ${access.maxFileSizeLabel || PdfToolkit.fmtBytes(mergeLimits.maxSizeBytes)} per file (Pro: 4 GB combined)`;
+                }
             }
         }
         loadLimits();
 
-        function showPreview() {
-            preview.innerHTML = '';
-            const err = document.getElementById('errorArea');
-            const v = PdfToolkit.validatePdfFiles(fileInput.files, mergeLimits);
-            if (!v.ok) {
-                if (err) { err.textContent = v.error; err.classList.remove('d-none'); }
-                return;
-            }
-            err?.classList.add('d-none');
-            v.files.forEach(f => {
-                const li = document.createElement('li');
-                li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                li.textContent = f.name;
-                preview.appendChild(li);
-            });
-        }
-
         $('#mergeForm').on('submit', function (e) {
             e.preventDefault();
+            const fileInput = document.getElementById('fileInput');
             const v = PdfToolkit.validatePdfFiles(fileInput.files, { ...mergeLimits, multiple: true });
             if (!v.ok || v.files.length < 2) {
                 const err = document.getElementById('errorArea');

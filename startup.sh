@@ -42,6 +42,10 @@ if [ -z "${LIBREOFFICE_PATH:-}" ]; then
   done
 fi
 export TESSERACT_CMD="${TESSERACT_CMD:-/usr/bin/tesseract}"
+export HOME="${HOME:-/tmp}"
+export SAL_USE_VCLPLUGIN="${SAL_USE_VCLPLUGIN:-svp}"
+export SAL_DISABLE_OPENCL="${SAL_DISABLE_OPENCL:-1}"
+unset DISPLAY 2>/dev/null || true
 
 log "Launching dotnet python=${PdfToDocx__PythonExecutable:-unset} libreoffice=${LIBREOFFICE_PATH:-installing...}"
 exec dotnet "$DIR/ratpdf.dll"

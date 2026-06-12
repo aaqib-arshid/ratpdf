@@ -12,6 +12,7 @@
             <h2 class="fw-bold mb-3">Split PDF</h2>
             <p class="text-muted mb-2">Upload a PDF and extract specific pages into a new PDF file.</p>
             @await Html.PartialAsync("_PdfToolUsageBadge")
+            @await Html.PartialAsync("_PdfToolTrustPills")
 
             <!-- Validation Errors -->
             @if (!ViewData.ModelState.IsValid)
@@ -34,6 +35,8 @@
                     </div>
                 </div>
 
+                @await Html.PartialAsync("_PdfFilePreviewCard")
+
                 <!-- Page Range Inputs -->
                 <div class="row mb-3 g-2">
                     <div class="col">
@@ -52,15 +55,11 @@
                     <i class="bi bi-scissors me-2"></i> Split PDF
                 </button>
             </form>
+            @await Html.PartialAsync("_PdfToolTrustFooter")
         </div>
     </div>
     </div>
-    <section class="related-tools">
-        <h3>Related Tools</h3>
-        <ul>
-            <li><a href="/PDF/Compress">Compress PDF</a></li>
-        </ul>
-    </section>
+@await Html.PartialAsync("_PdfToolInternalLinks")
 <div class="container py-5">
     <div class="card shadow-sm p-4" style="border-radius: 12px;">
         <h2 class="fw-bold mb-3">How to Split a PDF Online</h2>
@@ -296,25 +295,6 @@
 }");
     </script>
     <script>
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-
-        dropZone.addEventListener('click', () => fileInput.click());
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-primary', 'bg-light');
-            fileInput.files = e.dataTransfer.files;
-        });
         $('#splitForm').on('submit', function (e) {
             e.preventDefault();
             submitWithLoader('splitForm', 'Splitting…', 'split.pdf');

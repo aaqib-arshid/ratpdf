@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Compress Image Online Free";
     ViewData["Description"] = "Compress JPG, PNG, or WebP images online for free. Reduce file size without losing quality. Fast and secure image compression tool.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <head>
@@ -16,14 +17,15 @@
 
             <img src="~/images/ratpdf-logo.png" height="60" class="mb-3" />
             <h2 class="fw-bold mb-3">Image Compressor</h2>
-            <p class="text-muted mb-4">Compress JPG, PNG, or WebP images instantly without losing visible quality.</p>
+            <p class="text-muted mb-2">Compress JPG, PNG, or WebP images instantly without losing visible quality.</p>
+            <span id="imageUsageBadge" class="badge bg-secondary mb-3" data-image-tool-id="imagecompress">3 free use(s) today</span>
 
             <div class="mb-3">
                 <input type="file" id="imageInput" class="form-control" accept="image/png, image/jpeg, image/webp">
             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-3">
-                <button class="btn btn-primary" onclick="compressImage()">Compress</button>
+                <button class="btn btn-primary" onclick="compressImageAction()">Compress</button>
                 <button class="btn btn-outline-secondary" onclick="clearAll()">Clear</button>
             </div>
             <div id="outputSection" class="mt-4 d-none">
@@ -209,7 +211,23 @@
       ]
     }")
     </script>
+    <script src="~/js/image-toolkit.js" asp-append-version="true"></script>
     <script>
+        async function compressImageAction() {
+            try {
+                await ImageToolkit.runWithAccess('imagecompress', () => {
+                    compressImage();
+                    return Promise.resolve();
+                });
+            } catch (e) {
+                if (!e.paywall) {
+                    const errorBox = document.getElementById("errorBox");
+                    errorBox.innerText = e.message || "Something went wrong.";
+                    errorBox.classList.remove("d-none");
+                }
+            }
+        }
+
         function compressImage() {
             const input = document.getElementById("imageInput");
             const errorBox = document.getElementById("errorBox");

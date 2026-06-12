@@ -9,6 +9,22 @@ window.PdfToolkit = (function () {
         maxSizeBytes: 200 * 1024 * 1024,
     };
 
+    const LARGE_FILE_BYTES = 10 * 1024 * 1024;
+    const LARGE_FILE_MSG = 'This file is greater than 10 MB and may take some time to process. Please keep this tab open.';
+
+    function getLargeFileMessage(files) {
+        if (!files?.length) return null;
+        const max = Math.max(...files.map(f => f.size || 0));
+        return max >= LARGE_FILE_BYTES ? LARGE_FILE_MSG : null;
+    }
+
+    function showLargeFileNotice(files) {
+        const el = document.getElementById('largeFileNotice');
+        if (!el) return;
+        const show = getLargeFileMessage(files);
+        el.classList.toggle('d-none', !show);
+    }
+
     function sanitizeErrorMessage(msg) {
         if (!msg || typeof msg !== 'string') return 'Something went wrong. Please try again.';
         const technical = /([A-Za-z]:\\|\/home\/|Pdf-Engine|Traceback|ModuleNotFoundError|Exception:|at \w+\.|blob\.core|Script not found|stderr|Ghostscript)/i;
@@ -50,6 +66,13 @@ window.PdfToolkit = (function () {
                 return { ok: false, error: `"${f.name}" exceeds the ${fmtBytes(opts.maxSizeBytes)} limit.` };
             }
         }
+        if (opts.maxTotalBytes && opts.maxTotalBytes > 0) {
+            const total = files.reduce((s, f) => s + (f.size || 0), 0);
+            if (total > opts.maxTotalBytes) {
+                const label = opts.maxTotalBatchLabel || fmtBytes(opts.maxTotalBytes);
+                return { ok: false, error: `Combined file size exceeds ${label}.` };
+            }
+        }
         return { ok: true, files };
     }
 
@@ -58,6 +81,178 @@ window.PdfToolkit = (function () {
             extensions: ['.pdf'],
             typeLabel: 'PDF',
             ...options,
+        });
+    }
+
+    function escapeHtml(text) {
+        const el = document.createElement('div');
+        el.textContent = text ?? '';
+        return el.innerHTML;
+    }
+
+    function resolveEl(el) {
+        if (!el) return null;
+        return typeof el === 'string' ? document.getElementById(el) : el;
+    }
+
+    /** Assign File objects to an input (drag-drop safe). */
+    function assignFilesToInput(input, files) {
+        const el = resolveEl(input);
+        if (!el) return;
+        const dt = new DataTransfer();
+        for (const f of files || []) {
+            if (f instanceof File) dt.items.add(f);
+        }
+        el.files = dt.files;
+    }
+
+    /** Compress-style file preview card. */
+    function renderPdfFilePreview(container, files, options = {}) {
+        const el = resolveEl(container);
+        if (!el) return;
+        const list = Array.from(files || []);
+        if (!list.length) {
+            el.innerHTML = '';
+            el.classList.add('d-none');
+            return;
+        }
+        el.classList.remove('d-none');
+
+        const totalSize = list.reduce((s, f) => s + (f.size || 0), 0);
+        const multi = list.length > 1;
+        const title = multi ? `${list.length} files selected` : list[0].name;
+        const meta = multi
+            ? `Total: ${fmtBytes(totalSize)} · ${list.map(f => f.name).join(', ')}`
+            : fmtBytes(list[0].size);
+        const showClear = options.showClear !== false;
+        const iconClass = options.iconClass || 'bi-file-earmark-pdf text-danger';
+
+        el.innerHTML = `
+            <div class="card border" style="border-radius:10px;background:#f8f9fa;">
+                <div class="card-body py-3 px-3 d-flex align-items-center gap-3">
+                    <div style="width:56px;height:72px;flex-shrink:0;border-radius:6px;overflow:hidden;background:#fff;border:1px solid #dee2e6;display:flex;align-items:center;justify-content:center;">
+                        <i class="bi ${iconClass}" style="font-size:1.8rem;"></i>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden min-w-0">
+                        <p class="mb-1 fw-semibold text-truncate" style="font-size:0.9rem;" title="${escapeHtml(title)}">${escapeHtml(title)}</p>
+                        <p class="mb-0 text-muted" style="font-size:0.78rem;word-break:break-word;">${escapeHtml(meta)}</p>
+                    </div>
+                    ${showClear ? '<button type="button" class="btn btn-sm btn-outline-secondary pdf-preview-clear" style="border-radius:50%;width:30px;height:30px;padding:0;flex-shrink:0;" title="Remove file(s)" aria-label="Remove file(s)"><i class="bi bi-x"></i></button>' : ''}
+                </div>
+            </div>`;
+
+        if (showClear && options.onClear) {
+            el.querySelector('.pdf-preview-clear')?.addEventListener('click', options.onClear);
+        }
+    }
+
+    /** Wire drop zone + file input to preview card (Merge, Split, etc.). */
+    async function bindPdfUpload(cfg) {
+        const fileInput = resolveEl(cfg.fileInput);
+        const dropZone = resolveEl(cfg.dropZone);
+        const previewContainer = resolveEl(cfg.previewContainer);
+        const errorArea = resolveEl(cfg.errorArea);
+        const toolId = cfg.toolId;
+        if (!fileInput || !previewContainer || fileInput.dataset.pdfPreviewBound === '1') return;
+        fileInput.dataset.pdfPreviewBound = '1';
+
+        const multiple = cfg.multiple !== false && fileInput.hasAttribute('multiple');
+        let limits = {
+            maxFiles: cfg.maxFiles || DEFAULTS.maxFiles,
+            maxSizeBytes: cfg.maxSizeBytes || DEFAULTS.maxSizeBytes,
+            maxTotalBytes: cfg.maxTotalBytes || null,
+            maxTotalBatchLabel: cfg.maxTotalBatchLabel || null,
+            multiple,
+        };
+
+        if (toolId) {
+            try {
+                const access = await checkToolAccess(toolId);
+                limits.maxFiles = access.maxBatchFiles || limits.maxFiles;
+                limits.maxSizeBytes = access.maxFileSizeBytes || limits.maxSizeBytes;
+                limits.maxTotalBytes = access.maxTotalBatchBytes || limits.maxTotalBytes;
+                limits.maxTotalBatchLabel = access.maxTotalBatchLabel || limits.maxTotalBatchLabel;
+            } catch { /* ignore */ }
+        }
+
+        function clearFiles() {
+            assignFilesToInput(fileInput, []);
+            renderPdfFilePreview(previewContainer, [], {});
+            showLargeFileNotice([]);
+            errorArea?.classList.add('d-none');
+            cfg.onChange?.([]);
+        }
+
+        async function handleRawFiles(rawFiles) {
+            const files = Array.from(rawFiles || []);
+            if (!files.length) {
+                clearFiles();
+                return;
+            }
+
+            const accept = (fileInput.getAttribute('accept') || '').toLowerCase();
+            const isPdf = accept.includes('.pdf') || accept.includes('application/pdf');
+            let v;
+            if (isPdf) {
+                v = validatePdfFiles(files, limits);
+            } else {
+                const extensions = accept.split(',').map(a => a.trim()).filter(a => a.startsWith('.'));
+                v = validateFiles(files, {
+                    ...limits,
+                    extensions: extensions.length ? extensions : null,
+                    typeLabel: 'file',
+                });
+            }
+            if (!v.ok) {
+                if (errorArea) {
+                    errorArea.textContent = sanitizeErrorMessage(v.error);
+                    errorArea.classList.remove('d-none');
+                }
+                return;
+            }
+
+            errorArea?.classList.add('d-none');
+            assignFilesToInput(fileInput, v.files);
+            const previewIcon = isPdf ? 'bi-file-earmark-pdf text-danger' : 'bi-file-earmark-text text-primary';
+            renderPdfFilePreview(previewContainer, v.files, { onClear: clearFiles, iconClass: previewIcon });
+            showLargeFileNotice(v.files);
+            cfg.onChange?.(v.files);
+        }
+
+        if (dropZone) {
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', e => {
+                e.preventDefault();
+                dropZone.classList.add('border-primary', 'bg-light');
+            });
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('border-primary', 'bg-light');
+            });
+            dropZone.addEventListener('drop', e => {
+                e.preventDefault();
+                dropZone.classList.remove('border-primary', 'bg-light');
+                handleRawFiles(e.dataTransfer.files);
+            });
+        }
+
+        fileInput.addEventListener('change', () => handleRawFiles(fileInput.files));
+    }
+
+    function initFormUploadPreviews() {
+        document.querySelectorAll('form[data-pdf-tool]').forEach(form => {
+            if (form.dataset.pdfPreviewInit === '1') return;
+            const fileInput = form.querySelector('input[type="file"]');
+            const previewContainer = form.querySelector('.pdf-file-preview');
+            if (!fileInput || !previewContainer) return;
+            form.dataset.pdfPreviewInit = '1';
+            bindPdfUpload({
+                fileInput,
+                dropZone: form.querySelector('#dropZone') || form.querySelector('[id^="dropZone"]'),
+                previewContainer,
+                errorArea: form.querySelector('#errorArea'),
+                toolId: form.dataset.pdfTool,
+                multiple: fileInput.hasAttribute('multiple'),
+            });
         });
     }
 
@@ -140,7 +335,8 @@ window.PdfToolkit = (function () {
                         reject(new Error('Processing timed out. Please try again.'));
                         return;
                     }
-                    setTimeout(tick, 5000);
+                    const delay = attempts <= 15 ? 2000 : 5000;
+                    setTimeout(tick, delay);
                 } catch (err) {
                     reject(err);
                 }
@@ -151,7 +347,7 @@ window.PdfToolkit = (function () {
 
     async function checkToolAccess(toolId) {
         const res = await fetch(`/PDF/tool-access?tool=${encodeURIComponent(toolId)}`);
-        if (!res.ok) return { allowed: true, remaining: 3, isPremium: false, maxFileSizeBytes: DEFAULTS.maxSizeBytes, maxBatchFiles: 3, maxFileSizeLabel: '200 MB' };
+        if (!res.ok) return { allowed: true, remaining: 3, isPremium: false, maxFileSizeBytes: DEFAULTS.maxSizeBytes, maxBatchFiles: 3, maxFileSizeLabel: '200 MB', maxTotalBatchBytes: null, maxTotalBatchLabel: null };
         return res.json();
     }
 
@@ -204,6 +400,12 @@ window.PdfToolkit = (function () {
         const formData = new FormData(form);
 
         setProgress(elements, 2, 'Starting…');
+        const uploadFiles = [];
+        for (const [, v] of formData.entries()) {
+            if (v instanceof File) uploadFiles.push(v);
+        }
+        const largeMsg = getLargeFileMessage(uploadFiles);
+        if (largeMsg) setProgress(elements, 5, largeMsg);
 
         let procTimer = null;
         let procPct = 52;
@@ -320,10 +522,21 @@ window.PdfToolkit = (function () {
         }
 
         setProgress(elements, 2, 'Starting…');
-        const accepted = await uploadWithProgress(url, formData, (p) => setProgress(elements, p, 'Uploading…'));
+        const uploadFiles = [];
+        for (const [, v] of formData.entries()) {
+            if (v instanceof File) uploadFiles.push(v);
+        }
+        const uploadMsg = getLargeFileMessage(uploadFiles);
+        if (uploadMsg) setProgress(elements, 5, uploadMsg);
+
+        const accepted = await uploadWithProgress(url, formData, (p) => {
+            const msg = uploadMsg || 'Uploading…';
+            setProgress(elements, p, p > 35 ? msg : 'Uploading…');
+        });
         if (!accepted?.jobId) throw new Error('Invalid server response');
 
-        setProgress(elements, 45, 'Converting with high-fidelity engine…');
+        const convertMsg = uploadMsg || 'Converting with high-fidelity engine…';
+        setProgress(elements, 45, convertMsg);
         const result = await pollJob(statusUrl || accepted.statusUrl, elements);
         setProgress(elements, 98, 'Downloading…');
 
@@ -374,6 +587,8 @@ window.PdfToolkit = (function () {
         const limits = {
             maxFiles: access.maxBatchFiles || 3,
             maxSizeBytes: access.maxFileSizeBytes || DEFAULTS.maxSizeBytes,
+            maxTotalBytes: access.maxTotalBatchBytes || null,
+            maxTotalBatchLabel: access.maxTotalBatchLabel || null,
             extensions: cfg.extensions,
             typeLabel: cfg.typeLabel || 'file',
             multiple: cfg.multiple !== false,
@@ -382,7 +597,8 @@ window.PdfToolkit = (function () {
         const hint = document.getElementById(cfg.limitHintId);
         if (hint) {
             const batch = limits.maxFiles > 1 ? `Up to ${limits.maxFiles} files · ` : '';
-            hint.textContent = `${batch}${access.maxFileSizeLabel || fmtBytes(limits.maxSizeBytes)} per file`;
+            const totalNote = limits.maxTotalBatchLabel ? ` · ${limits.maxTotalBatchLabel} on Pro` : '';
+            hint.textContent = `${batch}${access.maxFileSizeLabel || fmtBytes(limits.maxSizeBytes)} per file${totalNote}`;
         }
 
         const badge = document.getElementById(cfg.badgeId || 'usageBadge');
@@ -415,17 +631,19 @@ window.PdfToolkit = (function () {
         function renderFileList() {
             if (!fileList) return;
             if (!selectedFiles.length) {
-                fileList.innerHTML = '';
+                renderPdfFilePreview(fileList, [], {});
                 if (convertBtn) convertBtn.disabled = true;
                 return;
             }
-            fileList.innerHTML = selectedFiles.map(f =>
-                `<div class="d-flex align-items-center gap-2 p-2 border rounded mb-1">
-                    <i class="bi bi-file-earmark text-primary"></i>
-                    <span class="flex-grow-1 text-truncate">${f.name}</span>
-                    <span class="text-muted small">${fmtBytes(f.size)}</span>
-                </div>`
-            ).join('');
+            renderPdfFilePreview(fileList, selectedFiles, {
+                onClear: () => {
+                    selectedFiles = [];
+                    assignFilesToInput(fileInput, []);
+                    renderFileList();
+                    showLargeFileNotice([]);
+                    clearError();
+                },
+            });
             if (convertBtn) convertBtn.disabled = false;
         }
 
@@ -435,6 +653,11 @@ window.PdfToolkit = (function () {
             clearError();
             selectedFiles = v.files;
             renderFileList();
+            showLargeFileNotice(selectedFiles);
+            const largeMsg = getLargeFileMessage(selectedFiles);
+            if (largeMsg && progressElements?.msg) {
+                progressElements.msg.textContent = largeMsg;
+            }
         }
 
         dropZone?.addEventListener('click', () => fileInput?.click());
@@ -443,7 +666,8 @@ window.PdfToolkit = (function () {
         dropZone?.addEventListener('drop', e => {
             e.preventDefault();
             dropZone.style.background = '#f8fafc';
-            setFiles(e.dataTransfer.files);
+            const dt = e.dataTransfer?.files;
+            if (dt?.length) setFiles(dt);
         });
         fileInput?.addEventListener('change', () => setFiles(fileInput.files));
 
@@ -460,6 +684,9 @@ window.PdfToolkit = (function () {
             }
 
             try {
+                const largeMsg = getLargeFileMessage(selectedFiles);
+                if (largeMsg) setProgress(progressElements, 8, largeMsg);
+
                 await runJobFlow({
                     url: cfg.convertUrl,
                     formData,
@@ -481,12 +708,19 @@ window.PdfToolkit = (function () {
         });
     }
 
-    document.addEventListener('DOMContentLoaded', refreshUsageBadges);
+    document.addEventListener('DOMContentLoaded', () => {
+        refreshUsageBadges();
+        initFormUploadPreviews();
+    });
 
     return {
         fmtBytes,
         validateFiles,
         validatePdfFiles,
+        assignFilesToInput,
+        renderPdfFilePreview,
+        bindPdfUpload,
+        initFormUploadPreviews,
         setProgress,
         hideProgress,
         uploadWithProgress,
@@ -502,5 +736,8 @@ window.PdfToolkit = (function () {
         initJobTool,
         refreshUsageBadges,
         sanitizeErrorMessage,
+        getLargeFileMessage,
+        showLargeFileNotice,
+        LARGE_FILE_MSG,
     };
 })();

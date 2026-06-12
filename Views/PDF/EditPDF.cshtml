@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Professional PDF Editor";
     ViewData["Description"] = "Edit PDFs online with in-place text, whiteout, highlights, images, and object-level export. Up to 200 MB per file.";
+    ViewData["PdfToolId"] = "editpdf";
     var modelJson = Context.Session.GetString("PdfEditModelJson") ?? "{}";
 }
 @section Head {
@@ -118,10 +119,14 @@
         </div>
     </div>
 
-    <div id="emptyState" class="@(Model.HasDocument ? "d-none" : "")">
+    <div id="emptyState" class="@(Model.HasDocument ? "d-none" : "") text-center py-4">
         <i class="bi bi-file-earmark-pdf d-block mb-3" style="font-size:4rem;color:#94a3b8;"></i>
         <h4>Professional PDF Editor</h4>
-        <p class="mb-0">Open a PDF to edit text in place, white out content, add annotations, and download a polished result.<br>Supports files up to 200 MB with full page rendering and thumbnail navigation.</p>
+        <p class="mb-3">Open a PDF to edit text in place, white out content, add annotations, and download a polished result.<br>Supports files up to 200 MB with full page rendering and thumbnail navigation.</p>
+        <div class="d-flex justify-content-center mb-2">
+            @await Html.PartialAsync("_PdfToolTrustPills")
+        </div>
+        @await Html.PartialAsync("_PdfToolTrustFooter")
     </div>
 
     <div id="editorWorkspace" class="editor-shell @(Model.HasDocument ? "" : "d-none")">
@@ -132,6 +137,8 @@
     <div id="editorStatus"></div>
     <input type="file" id="imageStampInput" accept="image/*" class="d-none">
 </div>
+
+@await Html.PartialAsync("_PdfToolInternalLinks")
 
 @section Scripts {
     <script src="~/js/pdf-editor-studio.js" asp-append-version="true"></script>

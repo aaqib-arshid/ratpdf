@@ -1,14 +1,15 @@
 ﻿@using ratpdf.Constants
 @using static ratpdf.Constants.SubscriptionPricing
 @{
-    ViewData["Title"] = "PDF Tools Pricing — Free & Pro Plans | RatPDF";
-    ViewData["Description"] = "Free PDF tools: 3 uses/day, 200 MB per file. Pro " + SubscriptionPricing.FormatProDisplay() + ": unlimited tools, 4 GB uploads, Adobe-quality PDF to Word & Excel.";
+    ViewData["Title"] = "Pricing — PDF & Image Tools | RatPDF";
+    ViewData["Description"] = "Free: 3 uses/day per PDF and image tool, 200 MB files. Pro " + SubscriptionPricing.FormatProDisplay() + ": unlimited PDF + image tools, 4 GB uploads.";
     ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/Subscription/Plans");
+    var fromImageTools = string.Equals(Context.Request.Query["source"], "image-tools", StringComparison.OrdinalIgnoreCase);
 }
 
 @section Head {
-    <meta property="og:title" content="RatPDF Pricing — Free PDF Tools &amp; Pro @SubscriptionPricing.FormatProDisplay()" />
-    <meta property="og:description" content="3 free PDF tool uses per day. Pro unlocks unlimited merge, compress, convert, and edit." />
+    <meta property="og:title" content="RatPDF Pricing — PDF &amp; Image Tools, Pro @SubscriptionPricing.FormatProDisplay()" />
+    <meta property="og:description" content="3 free uses per day on every PDF and image tool. Pro unlocks unlimited compress, convert, edit, background removal, and more." />
     <meta property="og:url" content="https://ratpdf.com/Subscription/Plans" />
     <meta property="og:type" content="website" />
     <style>
@@ -113,12 +114,20 @@
 
 <!-- Hero Section -->
 <div class="container">
+    @if (fromImageTools)
+    {
+        <div class="alert alert-warning border-0 shadow-sm rounded-4 mb-3" role="alert">
+            <strong><i class="bi bi-image me-1"></i> Daily image tool limit reached.</strong>
+            Upgrade to Pro for unlimited background removal, image compression, resizing, and format conversion.
+        </div>
+    }
     <div class="pricing-header text-center">
-        <h1 class="display-5 fw-bold">PDF tools &amp; invoices — one plan</h1>
-        <p class="lead mt-2 opacity-90">Professional PDF conversion, editing, and invoicing. Free to start — upgrade for 4 GB files &amp; unlimited tools.</p>
+        <h1 class="display-5 fw-bold">PDF &amp; image tools — one plan</h1>
+        <p class="lead mt-2 opacity-90">Professional PDF conversion, editing, image processing, and invoicing. Free to start — upgrade for 4 GB files &amp; unlimited tools.</p>
         <div class="mt-3 d-flex flex-wrap gap-2 justify-content-center">
             <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-file-earmark-word"></i> PDF ↔ Word</span>
-            <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-table"></i> PDF ↔ Excel</span>
+            <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-lightning-charge"></i> Compress PDF</span>
+            <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-image"></i> Image tools</span>
             <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-pencil-square"></i> Edit PDF</span>
             <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-hdd"></i> Up to 4 GB (Pro)</span>
         </div>
@@ -137,7 +146,8 @@
                     <hr class="my-4">
                     <ul class="feature-list">
                         <li><i class="bi bi-check-lg"></i> PDF tools: <strong>3 uses/day</strong> per tool</li>
-                        <li><i class="bi bi-check-lg"></i> <strong>200 MB</strong> max file size</li>
+                        <li><i class="bi bi-check-lg"></i> Image tools: <strong>3 uses/day</strong> per tool</li>
+                        <li><i class="bi bi-check-lg"></i> <strong>200 MB</strong> max file size (PDF uploads)</li>
                         <li><i class="bi bi-check-lg"></i> Real-time progress bar on conversions</li>
                         <li><i class="bi bi-check-lg"></i> Unlimited invoices</li>
                         <li><i class="bi bi-check-lg"></i> PDF download</li>
@@ -161,9 +171,10 @@
                     <p class="small text-muted mb-0">@SubscriptionPricing.FormatProTagline()</p>
                     <hr class="my-4">
                     <ul class="feature-list">
-                        <li><i class="bi bi-check-lg"></i> <strong>Unlimited</strong> PDF tools (no daily cap)</li>
-                        <li><i class="bi bi-check-lg"></i> <strong>4 GB</strong> per file upload</li>
+                        <li><i class="bi bi-check-lg"></i> <strong>Unlimited</strong> PDF &amp; image tools (no daily cap)</li>
+                        <li><i class="bi bi-check-lg"></i> <strong>4 GB</strong> per file upload (PDF tools)</li>
                         <li><i class="bi bi-check-lg"></i> High-fidelity PDF↔Word &amp; PDF↔Excel</li>
+                        <li><i class="bi bi-check-lg"></i> Unlimited image compress, resize, convert &amp; BG remove</li>
                         <li><i class="bi bi-check-lg"></i> Batch up to 3 files per job</li>
                         <li><i class="bi bi-check-lg"></i> Everything in Free</li>
                         <li><i class="bi bi-check-lg"></i> No watermark</li>
@@ -197,7 +208,7 @@
                     <p class="small text-muted mb-0">@SubscriptionPricing.FormatBusinessTagline()</p>
                     <hr class="my-4">
                     <ul class="feature-list">
-                        <li><i class="bi bi-check-lg"></i> Everything in Pro (4 GB, unlimited tools)</li>
+                        <li><i class="bi bi-check-lg"></i> Everything in Pro (4 GB PDF, unlimited PDF &amp; image tools)</li>
                         <li><i class="bi bi-check-lg"></i> <strong>Unlimited</strong> invoice templates</li>
                         <li><i class="bi bi-check-lg"></i> Priority conversion queue</li>
                         <li><i class="bi bi-check-lg"></i> Full invoice history (forever)</li>
@@ -218,6 +229,21 @@
                     }
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image tools included -->
+<div class="container mb-5">
+    <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm">
+        <h2 class="fw-bold mb-3 text-center"><i class="bi bi-image text-primary me-2"></i> Image tools on every plan</h2>
+        <p class="text-muted text-center mb-4">Same 3 free uses per day on Free — unlimited on Pro and Business.</p>
+        <div class="row g-3">
+            <div class="col-md-4 col-6"><a href="/PDF/ImageCompressor" class="text-decoration-none d-block p-3 border rounded-3 h-100 text-dark"><strong>Image Compressor</strong><br /><span class="small text-muted">JPG, PNG, WebP</span></a></div>
+            <div class="col-md-4 col-6"><a href="/Tools/ImgBackgroundRemove" class="text-decoration-none d-block p-3 border rounded-3 h-100 text-dark"><strong>Background Remover</strong><br /><span class="small text-muted">AI, same resolution</span></a></div>
+            <div class="col-md-4 col-6"><a href="/image-resizer" class="text-decoration-none d-block p-3 border rounded-3 h-100 text-dark"><strong>Image Resizer</strong><br /><span class="small text-muted">Custom dimensions</span></a></div>
+            <div class="col-md-4 col-6"><a href="/bulk-image-compressor" class="text-decoration-none d-block p-3 border rounded-3 h-100 text-dark"><strong>Bulk Compressor</strong><br /><span class="small text-muted">ZIP download</span></a></div>
+            <div class="col-md-4 col-6"><a href="/image-format-converter" class="text-decoration-none d-block p-3 border rounded-3 h-100 text-dark"><strong>Format Converter</strong><br /><span class="small text-muted">JPG, PNG, WebP, BMP</span></a></div>
         </div>
     </div>
 </div>
@@ -285,9 +311,15 @@
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq6">
-                        <span>How many free PDF tool uses do I get?</span> <i class="bi bi-chevron-down"></i>
+                        <span>How many free PDF and image tool uses do I get?</span> <i class="bi bi-chevron-down"></i>
                     </div>
-                    <div id="faq6" class="collapse mt-2 text-muted">Free users get 3 uses per day across each PDF tool. Pro at @SubscriptionPricing.FormatProDisplay() removes all limits and raises uploads to 4 GB.</div>
+                    <div id="faq6" class="collapse mt-2 text-muted">Free users get <strong>3 uses per day</strong> on each PDF tool and each image tool (compress, background remover, resizer, bulk compress, format converter). Pro at @SubscriptionPricing.FormatProDisplay() removes all limits and raises PDF uploads to 4 GB.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq7">
+                        <span>Are image tools included in Pro?</span> <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div id="faq7" class="collapse mt-2 text-muted">Yes. Pro and Business include unlimited use of all image tools — same subscription as PDF merge, compress, Word conversion, and edit PDF.</div>
                 </div>
             </div>
         </div>
@@ -297,8 +329,8 @@
 <!-- Call to Action -->
 <div class="container text-center my-5 py-4">
     <div class="bg-primary bg-opacity-10 p-5 rounded-4">
-        <h2 class="fw-bold">Start creating professional invoices today</h2>
-        <p class="lead mb-4">No credit card required for the Free plan.</p>
+        <h2 class="fw-bold">Unlock unlimited PDF &amp; image tools</h2>
+        <p class="lead mb-4">No credit card required for the Free plan — 3 uses per tool per day.</p>
         <a asp-controller="Invoice" asp-action="Create" class="btn btn-primary btn-lg rounded-pill px-5">Create Your First Invoice →</a>
     </div>
 </div>
@@ -312,7 +344,7 @@
       "@@type": "Product",
       "name": "RatPDF Invoice Generator",
       "image": "https://ratpdf.com/images/hero-invoice.svg",
-      "description": "Free PDF tools (3/day) and invoices. Pro ($8.99/mo display): unlimited PDF merge, compress, convert, edit. Business ($35.99/mo display): unlimited templates.",
+      "description": "Free PDF and image tools (3/day each). Pro: unlimited merge, compress, convert, edit, background removal, image resize. Business: unlimited templates.",
       "aggregateRating": {
         "@@type": "AggregateRating",
         "ratingValue": "4.8",
@@ -327,7 +359,7 @@
           "price": "0",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
-          "description": "3 PDF tool uses per day, unlimited invoices, watermark included"
+          "description": "3 PDF and image tool uses per day per tool, unlimited invoices, watermark included"
         },
         {
           "@@type": "Offer",
@@ -335,7 +367,7 @@
           "price": "@SubscriptionPricing.ProMonthlyUsd",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
-          "description": "Unlimited PDF tools, 4 GB per file, high-fidelity PDF↔Word/Excel, 1 template, no watermark"
+          "description": "Unlimited PDF and image tools, 4 GB per file, high-fidelity PDF↔Word/Excel, 1 template, no watermark"
         },
         {
           "@@type": "Offer",
@@ -387,7 +419,7 @@
         "price": "@SubscriptionPricing.ProMonthlyUsd",
         "priceCurrency": "USD"
       },
-      "featureList": "Merge PDF, Split PDF, Compress PDF, PDF to Word, Edit PDF, Watermark, Password protect"
+      "featureList": "Merge PDF, Split PDF, Compress PDF, PDF to Word, Edit PDF, Image Compressor, Background Remover, Image Resizer, Bulk Image Compress, Format Converter"
     },
     {
       "@@type": "BreadcrumbList",

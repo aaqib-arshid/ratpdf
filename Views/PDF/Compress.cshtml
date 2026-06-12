@@ -16,6 +16,7 @@
                 <h2 class="fw-bold mb-3">Compress PDF</h2>
                 <p class="text-muted mb-2">Upload a PDF to reduce its file size. Choose your compression level below.</p>
                 @await Html.PartialAsync("_PdfToolUsageBadge")
+                @await Html.PartialAsync("_PdfToolTrustPills")
 
                 <div>
 
@@ -87,15 +88,14 @@
                             </div>
                         </div>
                     </div>
-                    <div id="fileSizeWarning" class="alert alert-warning py-2 mb-3 d-none text-start"
-                         role="alert" style="font-size: 0.85rem;">
-                    </div>
+                    @await Html.PartialAsync("_PdfLargeFileNotice")
                     <button type="button" class="btn btn-primary btn-lg w-100"
                             id="compressBtn" disabled>
                         <i class="bi bi-speedometer2 me-2"></i>Compress PDF
                     </button>
 
 
+                    @{ ViewData["HideLargeFileNotice"] = true; }
                     @await Html.PartialAsync("_PdfProgressBar")
                     <p id="limitHint" class="text-muted small text-center mb-0"></p>
 
@@ -107,6 +107,7 @@
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
                         <span id="errorMsg"></span>
                     </div>
+                    @await Html.PartialAsync("_PdfToolTrustFooter")
                 </div>
             </div>
         </div>
@@ -124,6 +125,8 @@
             <li><a href="/pdf-optimization-guide">PDF Optimization Guide</a></li>
         </ul>
     </section>
+
+    @await Html.PartialAsync("_PdfToolInternalLinks")
 
     <div class="container py-5">
         <div class="card shadow-sm p-4" style="border-radius: 12px;">
@@ -654,7 +657,7 @@
         const errorMsgEl = document.getElementById('errorMsg');
         const passwordSection = document.getElementById('passwordSection');
         const pdfPasswordInput = document.getElementById('pdfPassword');
-        const fileSizeWarning = document.getElementById('fileSizeWarning');
+        const largeFileNotice = document.getElementById('largeFileNotice');
 
         let currentFiles = [];             // array of File objects
         let isSingleProtected = false;    // true when 1 file is selected and it's encrypted
@@ -696,7 +699,7 @@
         downloadContainer.style.display = 'none';
         downloadContainer.innerHTML = '';
         clearError();
-        fileSizeWarning.classList.add('d-none');
+        if (largeFileNotice) largeFileNotice.classList.add('d-none');
         passwordSection.classList.add('d-none');
         pdfPasswordInput.value = '';
         }
@@ -705,10 +708,6 @@
         //clearAll();
         const files = Array.from(fileList);
         if (files.length === 0) return;
-        if (files.length > 3) {
-        showError('You can upload a maximum of 3 files at once.');
-        return;
-        }
 
         const v = PdfToolkit.validatePdfFiles(files, {
             maxFiles: compressLimits.maxFiles,
@@ -755,17 +754,23 @@
 
         compressBtn.disabled = false;
 
-        // Warn if total size is large
+        updateLargeFileNotice();
+        }
+
+        function updateLargeFileNotice() {
+        if (!largeFileNotice) return;
         const totalSize = currentFiles.reduce((acc, f) => acc + f.size, 0);
+        const maxFileSize = Math.max(...currentFiles.map(f => f.size), 0);
         if (totalSize > 200 * 1024 * 1024) {
-        fileSizeWarning.textContent =
-        'Large files detected. Compression may take several minutes per file. Keep this tab open.';
-        fileSizeWarning.classList.remove('d-none');
-        } else if (totalSize > 10 * 1024 * 1024) {
-        fileSizeWarning.textContent = '⏳ Total size >10 MB – compression may take a while.';
-        fileSizeWarning.classList.remove('d-none');
+        largeFileNotice.innerHTML =
+        '<i class="bi bi-hourglass-split me-1"></i> Large files detected. Compression may take several minutes per file. Keep this tab open.';
+        largeFileNotice.classList.remove('d-none');
+        } else if (window.PdfToolkit) {
+        PdfToolkit.showLargeFileNotice(currentFiles);
+        } else if (maxFileSize > 10 * 1024 * 1024 || totalSize > 10 * 1024 * 1024) {
+        largeFileNotice.classList.remove('d-none');
         } else {
-        fileSizeWarning.classList.add('d-none');
+        largeFileNotice.classList.add('d-none');
         }
         }
 

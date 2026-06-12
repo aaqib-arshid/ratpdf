@@ -5,11 +5,7 @@
             <div class="card shadow-lg border-0 rp-tool-hero">
                 <div class="card-body p-4 p-md-5">
                     <div class="mb-3 text-center text-md-start">
-                        <div class="mb-2">
-                            <span class="rp-tool-pill"><i class="bi bi-shield-lock"></i> SSL encrypted</span>
-                            <span class="rp-tool-pill"><i class="bi bi-trash"></i> Auto-delete</span>
-                            <span class="rp-tool-pill"><i class="bi bi-stars"></i> Adobe-quality engine</span>
-                        </div>
+                        @await Html.PartialAsync("_PdfToolTrustPills")
                         <h1 class="h2 fw-bold mb-1">@ViewData["ToolTitle"]</h1>
                         <p class="text-muted mb-2">@ViewData["ToolSubtitle"]</p>
                         @await Html.PartialAsync("_PdfToolUsageBadge")
@@ -24,6 +20,7 @@
                     </div>
 
                     <div id="fileList" class="mb-3"></div>
+                    @await Html.PartialAsync("_PdfLargeFileNotice")
                     <div id="errorArea" class="alert alert-danger d-none" role="alert"></div>
 
                     <div id="progressArea" class="mb-3" style="display:none;">
@@ -42,14 +39,10 @@
                         <i class="bi @ViewData["BtnIcon"] me-2"></i>@ViewData["BtnLabel"]
                     </button>
 
-                    <div class="rp-trust-row d-flex flex-wrap justify-content-center gap-3 mt-3">
-                        <span><i class="bi bi-check-circle-fill me-1"></i>No watermark on output</span>
-                        <span><i class="bi bi-check-circle-fill me-1"></i>Works in browser</span>
-                        <span><i class="bi bi-check-circle-fill me-1"></i><a href="/Subscription/Plans" class="text-decoration-none">Pro</a> @ratpdf.Constants.SubscriptionPricing.FormatProDisplay()</span>
-                    </div>
+                    @await Html.PartialAsync("_PdfToolTrustFooter")
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+

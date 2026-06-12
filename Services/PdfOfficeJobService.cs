@@ -1,3 +1,4 @@
+using ratpdf.Constants;
 using ratpdf.Services.PdfProcessing;
 
 namespace ratpdf.Services
@@ -42,6 +43,10 @@ namespace ratpdf.Services
                 _jobStore.SetProgress(jobId, 10, "Preparing file…");
                 metrics.Checkpoint("staging-read", inputSize);
 
+                var progressMsg = inputSize >= PdfToolLimits.LargeFileWarningBytes
+                    ? PdfToolLimits.LargeFileWarningMessage
+                    : "Running high-fidelity conversion…";
+
                 var inputExt = kind switch
                 {
                     OfficeConversionKind.DocxToPdf => ".docx",
@@ -59,7 +64,7 @@ namespace ratpdf.Services
                 tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlobName, inputExt, ct);
                 tempOutput = Path.Combine(Path.GetTempPath(), $"ratpdf_office_{Guid.NewGuid():N}{outputExt}");
 
-                _jobStore.SetProgress(jobId, 25, "Running high-fidelity conversion…");
+                _jobStore.SetProgress(jobId, 25, progressMsg);
                 var result = await _processor.ConvertFileAsync(
                     kind, tempInput, tempOutput, originalName, ct);
 

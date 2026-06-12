@@ -15,6 +15,7 @@ APT_PACKAGES=(
   python3 python3-pip python3-venv curl
   ghostscript
   libreoffice libreoffice-writer libreoffice-calc libreoffice-impress
+  xvfb
   tesseract-ocr tesseract-ocr-eng
   libgdiplus fontconfig fonts-liberation fonts-dejavu-core
 )

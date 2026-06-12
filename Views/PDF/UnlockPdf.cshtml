@@ -29,21 +29,22 @@
     const toolId = 'unlockpdf';
     const access = await PdfToolkit.checkToolAccess(toolId);
     const limits = { maxFiles: 1, maxSizeBytes: access.maxFileSizeBytes || 200*1024*1024, extensions: ['.pdf'], typeLabel: 'PDF', multiple: false };
-    const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
-    const fileList = document.getElementById('fileList');
     const convertBtn = document.getElementById('convertBtn');
     const errorArea = document.getElementById('errorArea');
     const elements = { area: document.getElementById('progressArea'), bar: document.getElementById('progressBar'), msg: document.getElementById('progressMsg'), pct: document.getElementById('progressPct') };
     let selected = null;
-    dropZone?.addEventListener('click', () => fileInput?.click());
-    fileInput?.addEventListener('change', () => {
-        const v = PdfToolkit.validatePdfFiles(fileInput.files, limits);
-        if (!v.ok) { errorArea.textContent = v.error; errorArea.classList.remove('d-none'); return; }
-        errorArea.classList.add('d-none');
-        selected = v.files[0];
-        fileList.innerHTML = `<div class="p-2 border rounded">${selected.name}</div>`;
-        convertBtn.disabled = false;
+    await PdfToolkit.bindPdfUpload({
+        fileInput,
+        dropZone: document.getElementById('dropZone'),
+        previewContainer: document.getElementById('fileList'),
+        errorArea,
+        toolId,
+        multiple: false,
+        onChange: (files) => {
+            selected = files[0] || null;
+            convertBtn.disabled = !selected;
+        },
     });
     convertBtn?.addEventListener('click', async () => {
         if (!selected) return;
