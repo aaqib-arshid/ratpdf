@@ -83,8 +83,12 @@
             a.click();
             URL.revokeObjectURL(url);
         } else {
-            const errorText = await response.text();
-            alert('Error: ' + errorText);
+            let msg = 'Upload failed. Please check your file and try again.';
+            try {
+                const j = JSON.parse(await response.text());
+                if (j.error) msg = j.error;
+            } catch { /* use default */ }
+            alert(window.PdfToolkit?.sanitizeErrorMessage?.(msg) || msg);
         }
     };
 </script>

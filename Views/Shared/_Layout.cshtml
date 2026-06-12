@@ -442,10 +442,10 @@
                 if (!err.paywall) {
                     const errEl = document.getElementById('errorArea');
                     if (errEl) {
-                        errEl.textContent = err.message || 'Processing failed.';
+                        errEl.textContent = PdfToolkit.sanitizeErrorMessage(err.message || 'Processing failed.');
                         errEl.classList.remove('d-none');
                     } else {
-                        alert(err.message || 'Processing failed.');
+                        alert(PdfToolkit.sanitizeErrorMessage(err.message || 'Processing failed.'));
                     }
                 }
                 PdfToolkit.hideProgress(elements);

@@ -9,6 +9,15 @@ window.PdfToolkit = (function () {
         maxSizeBytes: 200 * 1024 * 1024,
     };
 
+    function sanitizeErrorMessage(msg) {
+        if (!msg || typeof msg !== 'string') return 'Something went wrong. Please try again.';
+        const technical = /([A-Za-z]:\\|\/home\/|Pdf-Engine|Traceback|ModuleNotFoundError|Exception:|at \w+\.|blob\.core|Script not found|stderr|Ghostscript)/i;
+        if (technical.test(msg) || msg.length > 300) {
+            return 'We couldn\'t process your file. Please check the file and try again.';
+        }
+        return msg;
+    }
+
     function fmtBytes(b) {
         if (b < 1024) return b + ' B';
         if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
@@ -91,7 +100,7 @@ window.PdfToolkit = (function () {
                 if (xhr.status >= 200 && xhr.status < 300) {
                     resolve(xhr.response);
                 } else {
-                    const err = xhr.response?.error || xhr.response?.message || `Server error (${xhr.status})`;
+                    const err = sanitizeErrorMessage(xhr.response?.error || xhr.response?.message || `Server error (${xhr.status})`);
                     reject(new Error(err));
                 }
             });
@@ -124,7 +133,7 @@ window.PdfToolkit = (function () {
                         return;
                     }
                     if (data.status === 'Failed') {
-                        reject(new Error(data.error || 'Conversion failed'));
+                        reject(new Error(sanitizeErrorMessage(data.error || 'Conversion failed')));
                         return;
                     }
                     if (attempts >= maxAttempts) {
@@ -250,7 +259,7 @@ window.PdfToolkit = (function () {
                         xhr.response.text().then((text) => {
                             try {
                                 const j = JSON.parse(text);
-                                reject(new Error(j.error || j.message || 'Processing failed'));
+                                reject(new Error(sanitizeErrorMessage(j.error || j.message || 'Processing failed')));
                             } catch {
                                 reject(new Error('Processing failed'));
                             }
@@ -271,7 +280,7 @@ window.PdfToolkit = (function () {
                 xhr.response.text().then((text) => {
                     try {
                         const j = JSON.parse(text);
-                        reject(new Error(j.error || j.message || `Server error (${xhr.status})`));
+                        reject(new Error(sanitizeErrorMessage(j.error || j.message || `Server error (${xhr.status})`)));
                     } catch {
                         reject(new Error(`Server error (${xhr.status})`));
                     }
@@ -398,7 +407,7 @@ window.PdfToolkit = (function () {
 
         function showError(msg) {
             if (!errorArea) return;
-            errorArea.textContent = msg;
+            errorArea.textContent = sanitizeErrorMessage(msg);
             errorArea.classList.remove('d-none');
         }
         function clearError() { errorArea?.classList.add('d-none'); }
@@ -464,7 +473,7 @@ window.PdfToolkit = (function () {
                 }
             } catch (err) {
                 if (err.paywall) showPaywall(err.message);
-                else showError(err.message || 'Conversion failed.');
+                else showError(sanitizeErrorMessage(err.message || 'Conversion failed.'));
                 hideProgress(progressElements);
             } finally {
                 convertBtn.disabled = selectedFiles.length > 0;
@@ -492,5 +501,6 @@ window.PdfToolkit = (function () {
         runJobFlow,
         initJobTool,
         refreshUsageBadges,
+        sanitizeErrorMessage,
     };
 })();

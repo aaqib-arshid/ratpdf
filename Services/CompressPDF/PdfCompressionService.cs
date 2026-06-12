@@ -1,4 +1,5 @@
 ﻿using iText.Kernel.Pdf;
+using ratpdf.Services;
 using System.Diagnostics;
 
 namespace ratpdf.Services.CompressPDF
@@ -200,7 +201,7 @@ namespace ratpdf.Services.CompressPDF
                 }
                 catch { }
             }
-            throw new InvalidOperationException("Ghostscript not found.");
+            throw new InvalidOperationException(UserFacingErrorMapper.ServiceUnavailable);
         }
 
 

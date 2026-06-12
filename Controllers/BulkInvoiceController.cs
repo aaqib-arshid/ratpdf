@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ratpdf.Data.AppDBContext;
 using ratpdf.Data.Entities;
 using ratpdf.Models.Invoice;
+using ratpdf.Services;
 using ratpdf.Services.Invoice;
 using ratpdf.Services.Invoice.Feature;
 using System.IO.Compression;
@@ -135,7 +136,7 @@ namespace ratpdf.Controllers
                     }
                     catch (Exception ex)
                     {
-                        errors.Add($"Row {rowNumber}: {ex.Message}");
+                        errors.Add($"Row {rowNumber}: Could not process this row. Check required fields and try again.");
                     }
                 }
 
@@ -158,7 +159,7 @@ namespace ratpdf.Controllers
                     }
                     catch (Exception ex)
                     {
-                        errors.Add($"PDF generation failed for Invoice {invoice.InvoiceNumber}: {ex.Message}");
+                        errors.Add($"PDF generation failed for invoice {invoice.InvoiceNumber}. Please check the invoice data.");
                     }
                 }
 
@@ -195,7 +196,7 @@ namespace ratpdf.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Upload failed: {ex.Message}");
+                ModelState.AddModelError("", UserFacingErrorMapper.UploadFailed);
 
                 return View("Index");
             }

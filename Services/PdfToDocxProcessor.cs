@@ -26,44 +26,8 @@ namespace ratpdf.Services
             _timeoutSeconds = configuration.GetValue("PdfToDocx:ConversionTimeoutSeconds", 600);
         }
 
-        private static string ExtractConversionError(string stderr)
-        {
-            if (string.IsNullOrWhiteSpace(stderr))
-                return "PDF to DOCX conversion failed. Please try a different file or upgrade to Pro.";
-
-            var lines = stderr.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-            var errorLine = lines.LastOrDefault(l =>
-                l.StartsWith("ERROR:", StringComparison.OrdinalIgnoreCase));
-            if (errorLine != null)
-            {
-                var msg = errorLine["ERROR:".Length..].Trim();
-                return msg.Length > 500 ? msg[..500] + "…" : msg;
-            }
-
-            var relevant = lines
-                .Where(l =>
-                    l.Contains("ModuleNotFoundError", StringComparison.OrdinalIgnoreCase)
-                    || l.Contains("RuntimeError", StringComparison.OrdinalIgnoreCase)
-                    || l.Contains("Tesseract", StringComparison.OrdinalIgnoreCase)
-                    || l.Contains("tesseract", StringComparison.OrdinalIgnoreCase)
-                    || l.Contains("OCR hybrid", StringComparison.OrdinalIgnoreCase)
-                    || l.Contains("conversion failed", StringComparison.OrdinalIgnoreCase)
-                    || l.Contains("Attempts:", StringComparison.OrdinalIgnoreCase))
-                .TakeLast(6)
-                .ToList();
-
-            if (relevant.Count > 0)
-            {
-                var msg = string.Join(" ", relevant);
-                return msg.Length > 500 ? msg[..500] + "…" : msg;
-            }
-
-            var tail = string.Join(" ", lines.TakeLast(4));
-            return string.IsNullOrWhiteSpace(tail)
-                ? "PDF to DOCX conversion failed."
-                : (tail.Length > 500 ? tail[..500] + "…" : tail);
-        }
+        private static string ExtractConversionError(string stderr) =>
+            UserFacingErrorMapper.FromPythonStderr(stderr, "PDF to Word conversion");
 
         /// <summary>
         /// Converts PDF to DOCX on disk. Caller owns output path cleanup.
@@ -78,7 +42,10 @@ namespace ratpdf.Services
                 throw new ArgumentException("PDF stream is null.");
 
             if (!File.Exists(_pythonScriptPath))
-                throw new FileNotFoundException($"PDF to DOCX script not found at {_pythonScriptPath}");
+            {
+                _logger.LogError("PDF to DOCX script missing: {Path}", _pythonScriptPath);
+                throw new InvalidOperationException(UserFacingErrorMapper.ServiceUnavailable);
+            }
 
             string? tempPdfPath = null;
 

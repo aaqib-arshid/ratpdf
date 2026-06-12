@@ -42,7 +42,10 @@ namespace ratpdf.Services
             string? expectOutputFile = null)
         {
             if (!File.Exists(_pythonScriptPath))
-                throw new FileNotFoundException($"PDF edit engine not found at {_pythonScriptPath}");
+            {
+                _logger.LogError("PDF edit engine missing: {Path}", _pythonScriptPath);
+                throw new InvalidOperationException(UserFacingErrorMapper.ServiceUnavailable);
+            }
 
             var psi = PythonRuntime.CreateStartInfo(
                 _pythonExecutable,
@@ -65,7 +68,7 @@ namespace ratpdf.Services
             catch (OperationCanceledException)
             {
                 try { process.Kill(entireProcessTree: true); } catch { }
-                throw new TimeoutException($"PDF edit operation timed out after {_timeoutSeconds}s.");
+                throw new TimeoutException(UserFacingErrorMapper.Timeout);
             }
 
             var stdout = await stdoutTask;
@@ -74,13 +77,13 @@ namespace ratpdf.Services
             if (process.ExitCode != 0)
             {
                 _logger.LogError("PDF edit engine failed: {Stderr}", stderr);
-                throw new InvalidOperationException($"PDF edit engine failed: {stderr.Trim()}");
+                throw new InvalidOperationException(UserFacingErrorMapper.FromPythonStderr(stderr, "edit"));
             }
 
             if (expectOutputFile != null)
             {
                 if (!File.Exists(expectOutputFile) || new FileInfo(expectOutputFile).Length == 0)
-                    throw new InvalidOperationException("PDF edit engine produced no output.");
+                    throw new InvalidOperationException(UserFacingErrorMapper.ProcessingFailed);
                 return expectOutputFile;
             }
 

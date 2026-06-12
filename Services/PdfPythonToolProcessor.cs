@@ -39,7 +39,10 @@ public class PdfPythonToolProcessor
     {
         var scriptPath = Path.Combine(_engineRoot, scriptName);
         if (!File.Exists(scriptPath))
-            throw new FileNotFoundException($"Script not found: {scriptPath}");
+        {
+            _logger.LogError("PDF script missing: {ScriptPath}", scriptPath);
+            throw new InvalidOperationException(UserFacingErrorMapper.ServiceUnavailable);
+        }
 
         var psi = PythonRuntime.CreateStartInfo(
             _pythonExecutable,
@@ -62,7 +65,7 @@ public class PdfPythonToolProcessor
         catch (OperationCanceledException)
         {
             try { process.Kill(entireProcessTree: true); } catch { }
-            throw new TimeoutException($"{scriptName} timed out after {_timeoutSeconds}s.");
+            throw new TimeoutException(UserFacingErrorMapper.Timeout);
         }
 
         var stdout = await stdoutTask;
@@ -72,14 +75,14 @@ public class PdfPythonToolProcessor
         {
             _logger.LogError("{Script} failed: {Stderr}", scriptName, stderr);
             throw new InvalidOperationException(
-                string.IsNullOrWhiteSpace(stderr) ? $"{scriptName} failed." : stderr.Trim());
+                UserFacingErrorMapper.FromPythonStderr(stderr, scriptName.Replace(".py", "").Replace('_', ' ')));
         }
 
         if (expectedOutputPath != null && (!File.Exists(expectedOutputPath) || new FileInfo(expectedOutputPath).Length == 0))
-            throw new InvalidOperationException($"{scriptName} produced no output file.");
+            throw new InvalidOperationException(UserFacingErrorMapper.ProcessingFailed);
 
         if (expectedOutputDirectory != null && !Directory.EnumerateFileSystemEntries(expectedOutputDirectory).Any())
-            throw new InvalidOperationException($"{scriptName} produced no output files.");
+            throw new InvalidOperationException(UserFacingErrorMapper.ProcessingFailed);
 
         _logger.LogDebug("{Script} OK: {Stdout}", scriptName, stdout.Trim());
     }

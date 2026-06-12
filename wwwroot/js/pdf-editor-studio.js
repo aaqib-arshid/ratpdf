@@ -478,7 +478,7 @@ window.PdfStudioEditor = (function () {
                     return;
                 }
                 if (xhr.status < 200 || xhr.status >= 300) {
-                    reject(new Error(xhr.response?.error || 'Upload failed (' + xhr.status + ')'));
+                    reject(new Error(PdfToolkit.sanitizeErrorMessage(xhr.response?.error || 'Upload failed. Please try again.')));
                     return;
                 }
                 prog.bar.style.width = '95%';
@@ -581,7 +581,7 @@ window.PdfStudioEditor = (function () {
             const b = $('editUsageBadge');
             if (b) b.textContent = s.isPremium ? 'Pro · Unlimited' : s.remaining + ' free today';
         } catch (err) {
-            setStatus('Export failed: ' + err.message);
+            setStatus('Export failed: ' + PdfToolkit.sanitizeErrorMessage(err.message));
         } finally {
             $('exportProgressArea').style.display = 'none';
         }

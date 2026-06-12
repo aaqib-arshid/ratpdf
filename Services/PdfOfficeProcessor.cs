@@ -60,10 +60,13 @@ namespace ratpdf.Services
             CancellationToken ct = default)
         {
             if (!File.Exists(_pythonScriptPath))
-                throw new FileNotFoundException($"Office converter not found at {_pythonScriptPath}");
+            {
+                _logger.LogError("Office converter missing: {Path}", _pythonScriptPath);
+                throw new InvalidOperationException(UserFacingErrorMapper.ServiceUnavailable);
+            }
 
             if (!File.Exists(inputPath))
-                throw new FileNotFoundException("Input file not found.", inputPath);
+                throw new FileNotFoundException(UserFacingErrorMapper.ProcessingFailed);
 
             var command = kind switch
             {
@@ -94,7 +97,7 @@ namespace ratpdf.Services
             catch (OperationCanceledException)
             {
                 try { process.Kill(entireProcessTree: true); } catch { }
-                throw new TimeoutException($"Office conversion timed out after {_timeoutSeconds}s.");
+                throw new TimeoutException(UserFacingErrorMapper.Timeout);
             }
 
             var stderr = await stderrTask;
@@ -104,9 +107,7 @@ namespace ratpdf.Services
             {
                 _logger.LogError("Office conversion failed for {File}: {Stderr}", originalFileName, stderr);
                 throw new InvalidOperationException(
-                    string.IsNullOrWhiteSpace(stderr)
-                        ? "Office conversion failed."
-                        : stderr.Trim());
+                    UserFacingErrorMapper.FromPythonStderr(stderr, "office conversion"));
             }
 
             return new PdfConversionFileResult(outputPath, new FileInfo(outputPath).Length);

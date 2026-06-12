@@ -64,9 +64,9 @@ namespace ratpdf.Controllers
 
                 return View("Checkout", checkoutModel);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest($"Subscription creation failed: {ex.Message}");
+                return BadRequest(new { error = UserFacingErrorMapper.PaymentFailed });
             }
         }
         public IActionResult Success()

@@ -96,7 +96,7 @@ namespace ratpdf.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Office job {JobId} ({Kind}) failed", jobId, jobKind);
-                _jobStore.SetFailed(jobId, ex.Message);
+                _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
             }
             finally
             {

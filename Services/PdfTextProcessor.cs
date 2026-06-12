@@ -29,7 +29,10 @@ namespace ratpdf.Services
         public async Task<string> ExtractTextAsync(Stream pdfStream, string? originalFileName = null, CancellationToken ct = default)
         {
             if (!File.Exists(_pythonScriptPath))
-                throw new FileNotFoundException($"PDF text extractor not found at {_pythonScriptPath}");
+            {
+                _logger.LogError("PDF text extractor missing: {Path}", _pythonScriptPath);
+                throw new InvalidOperationException(UserFacingErrorMapper.ServiceUnavailable);
+            }
 
             string? tempInput = null;
             string? tempOutput = null;
@@ -65,7 +68,7 @@ namespace ratpdf.Services
                 catch (OperationCanceledException)
                 {
                     try { process.Kill(entireProcessTree: true); } catch { }
-                    throw new TimeoutException($"PDF text extraction timed out after {_timeoutSeconds}s.");
+                    throw new TimeoutException(UserFacingErrorMapper.Timeout);
                 }
 
                 var stderr = await stderrTask;
@@ -73,7 +76,7 @@ namespace ratpdf.Services
                 {
                     _logger.LogError("PDF text extraction failed for {File}: {Stderr}", originalFileName, stderr);
                     throw new InvalidOperationException(
-                        string.IsNullOrWhiteSpace(stderr) ? "PDF text extraction failed." : stderr.Trim());
+                        UserFacingErrorMapper.FromPythonStderr(stderr, "text extraction"));
                 }
 
                 return await File.ReadAllTextAsync(tempOutput, Encoding.UTF8, ct);

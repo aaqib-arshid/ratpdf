@@ -61,7 +61,7 @@ public class PdfExtendedToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Metadata job {JobId} failed", jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {
@@ -95,7 +95,7 @@ public class PdfExtendedToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "OCR job {JobId} failed", jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {
@@ -157,7 +157,7 @@ public class PdfExtendedToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "{JobKind} job {JobId} failed", jobKind, jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {
@@ -202,7 +202,7 @@ public class PdfExtendedToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "{JobKind} job {JobId} failed", jobKind, jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {

@@ -107,7 +107,7 @@ namespace ratpdf.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "PDF to DOCX job {JobId} failed", jobId);
-                _jobStore.SetFailed(jobId, ex.Message);
+                _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
             }
             finally
             {

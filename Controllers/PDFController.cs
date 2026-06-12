@@ -4,6 +4,7 @@ using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Data;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ratpdf.Constants;
 using ratpdf.Models;
 using ratpdf.Services;
@@ -240,7 +241,9 @@ namespace ratpdf.Controllers
                 }
                 catch (Exception ex)
                 {
-                    resultStore.SetFailed(jobId, ex.Message);
+                    scope.ServiceProvider.GetRequiredService<ILogger<PDFController>>()
+                        .LogError(ex, "Compress job {JobId} failed", jobId);
+                    resultStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
                 }
                 finally
                 {
@@ -275,7 +278,7 @@ namespace ratpdf.Controllers
                 reductionPercent = job.ReductionPercent,
                 outputFileName = job.OutputFileName,
                 outputMimeType = job.OutputMimeType,
-                error = job.ErrorMessage
+                error = UserFacingErrorMapper.Sanitize(job.ErrorMessage)
             });
         }
 
@@ -854,7 +857,7 @@ namespace ratpdf.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Error converting image: " + ex.Message);
+                ModelState.AddModelError(string.Empty, UserFacingErrorMapper.ImageConversionFailed);
                 return View();
             }
         }
@@ -883,8 +886,8 @@ namespace ratpdf.Controllers
             if (error != null)
             {
                 if (error.Paywall)
-                    return StatusCode(402, new { error = error.Message, paywall = true });
-                return BadRequest(new { error = error.Message });
+                    return StatusCode(402, new { error = UserFacingErrorMapper.Sanitize(error.Message), paywall = true });
+                return BadRequest(new { error = UserFacingErrorMapper.Sanitize(error.Message) });
             }
 
             var sessionId = HttpContext.Session.GetString("PdfEditSessionId")!;
@@ -961,6 +964,10 @@ namespace ratpdf.Controllers
                     FileOptions.DeleteOnClose | FileOptions.Asynchronous);
                 return File(stream, "application/pdf", downloadName, enableRangeProcessing: true);
             }
+            catch (Exception)
+            {
+                return BadRequest(new { error = UserFacingErrorMapper.ProcessingFailed });
+            }
             finally
             {
                 if (editsPath != null) try { System.IO.File.Delete(editsPath); } catch { }
@@ -976,8 +983,8 @@ namespace ratpdf.Controllers
             if (error != null)
             {
                 if (error.Paywall)
-                    return BadRequest(error.Message);
-                return BadRequest(error.Message);
+                    return BadRequest(new { error = UserFacingErrorMapper.Sanitize(error.Message) });
+                return BadRequest(new { error = UserFacingErrorMapper.Sanitize(error.Message) });
             }
             return RedirectToAction(nameof(EditPDF));
         }
@@ -1047,7 +1054,7 @@ namespace ratpdf.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(new { error = UserFacingErrorMapper.FromException(ex) });
             }
             finally
             {
@@ -1204,7 +1211,7 @@ namespace ratpdf.Controllers
             catch (Exception ex)
             {
                 try { System.IO.File.Delete(tempPath); } catch { }
-                return new EditSessionError("Could not open PDF: " + ex.Message);
+                return new EditSessionError(UserFacingErrorMapper.PdfUnreadable);
             }
         }
 

@@ -660,7 +660,7 @@
         }
         function clearError() { errorArea.classList.add('d-none'); }
         function showError(msg) {
-        errorMsgEl.textContent = msg;
+        errorMsgEl.textContent = window.PdfToolkit?.sanitizeErrorMessage?.(msg) || msg;
         errorArea.classList.remove('d-none');
         }
 

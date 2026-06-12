@@ -51,7 +51,7 @@ public class PdfItextToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Merge job {JobId} failed", jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {
@@ -88,7 +88,7 @@ public class PdfItextToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Split job {JobId} failed", jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {
@@ -156,7 +156,7 @@ public class PdfItextToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Convert images job {JobId} failed", jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {
@@ -199,7 +199,7 @@ public class PdfItextToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Text to PDF job {JobId} failed", jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {
@@ -229,7 +229,7 @@ public class PdfItextToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "PDF to text job {JobId} failed", jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {
@@ -267,7 +267,7 @@ public class PdfItextToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "{JobKind} job {JobId} failed", jobKind, jobId);
-            _jobStore.SetFailed(jobId, ex.Message);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally
         {

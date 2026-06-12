@@ -53,7 +53,7 @@
         try {
             await PdfToolkit.runJobFlow({ url: '/PDF/UnlockPdf', formData, elements, toolId, defaultFileName: 'unlocked.pdf' });
         } catch (e) {
-            errorArea.textContent = e.message || 'Failed';
+            errorArea.textContent = PdfToolkit.sanitizeErrorMessage(e.message || 'Failed');
             errorArea.classList.remove('d-none');
         }
     });
