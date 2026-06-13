@@ -141,7 +141,6 @@ namespace ratpdf.Services.Seo
             var sitemaps = new[]
             {
                 $"{PdfToolSeo.SiteUrl}/sitemap.xml",
-                $"{PdfToolSeo.SiteUrl}/sitemaps/compress-pdf-index.xml",
             };
 
             var client = _httpClientFactory.CreateClient(nameof(IndexNowSubmissionService));

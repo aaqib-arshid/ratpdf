@@ -1,3 +1,5 @@
+using ratpdf.Constants;
+
 namespace ratpdf.Services.Seo
 {
     /// <summary>Warm compress SEO caches and notify search engines on startup.</summary>
@@ -53,9 +55,10 @@ namespace ratpdf.Services.Seo
 
             _ = sitemaps.GetCompressSitemapChunks();
             _ = sitemaps.GetCompressChunkXml(1);
+            var compressChunks = sitemaps.GetCompressSitemapChunks();
             _ = sitemaps.GetOrBuildSitemapIndex(
-                "sitemap:compress:index",
-                sitemaps.GetCompressSitemapChunks(),
+                $"sitemap:main:index:c{compressChunks.Count}",
+                SitemapCatalog.BuildMainIndexChildren(compressChunks),
                 TimeSpan.FromHours(6));
 
             seo.WarmCuratedPages(_env.WebRootPath);

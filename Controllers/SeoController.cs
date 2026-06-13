@@ -26,8 +26,10 @@ namespace ratpdf.Controllers
         [OutputCache(PolicyName = "Sitemap")]
         public ContentResult SitemapIndex()
         {
-            var children = SitemapCatalog.AllChildPaths().ToList();
-            var xml = _sitemaps.GetOrBuildSitemapIndex("sitemap:main:index", children, IndexTtl);
+            var compressChunks = _sitemaps.GetCompressSitemapChunks();
+            var children = SitemapCatalog.BuildMainIndexChildren(compressChunks);
+            var cacheKey = $"sitemap:main:index:c{compressChunks.Count}";
+            var xml = _sitemaps.GetOrBuildSitemapIndex(cacheKey, children, IndexTtl);
             return XmlContent(xml);
         }
 
@@ -49,7 +51,7 @@ namespace ratpdf.Controllers
         public IActionResult SitemapCompressLegacy() =>
             RedirectPermanent("/sitemaps/compress-pdf-index.xml");
 
-        /// <summary>Static compress index + chunks in wwwroot; SeoController routes are fallback.</summary>
+        /// <summary>Standalone compress index (optional direct URL). Not referenced by /sitemap.xml — avoids nested sitemap indexes.</summary>
         [HttpGet("/sitemaps/compress-pdf-index.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]

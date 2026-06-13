@@ -31,6 +31,5 @@ User-agent: cohere-ai
 Allow: /
 
 Sitemap: https://ratpdf.com/sitemap.xml
-Sitemap: https://ratpdf.com/sitemaps/compress-pdf-index.xml
 
 # LLM site guide: https://ratpdf.com/llms.txt

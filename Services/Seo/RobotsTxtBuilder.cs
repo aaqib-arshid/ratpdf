@@ -15,7 +15,6 @@ namespace ratpdf.Services.Seo
             sb.AppendLine("Disallow: /Error/");
             sb.AppendLine("Disallow: /*-keywords.txt");
             sb.AppendLine($"Sitemap: {PdfToolSeo.SiteUrl}/sitemap.xml");
-            sb.AppendLine($"Sitemap: {PdfToolSeo.SiteUrl}/sitemaps/compress-pdf-index.xml");
             return sb.ToString();
         }
 

@@ -11,9 +11,9 @@ namespace ratpdf.Constants
         ];
 
         /// <summary>Static urlsets in wwwroot/sitemaps/ (regenerate via --generate-compress-sitemap).</summary>
+        /// <remarks>Compress chunks (compress-pdf-001.xml, …) are merged into the root index at runtime — do not list compress-pdf-index.xml here (nested index).</remarks>
         public static readonly string[] StaticChildren =
         [
-            "/sitemaps/compress-pdf-index.xml",
             "/sitemaps/sitemaptools.xml",
             "/sitemaps/sitemap-pdf-to-word.xml",
             "/sitemaps/sitemap_pdf_to_txt.xml",
@@ -32,5 +32,13 @@ namespace ratpdf.Constants
 
         public static IEnumerable<string> AllChildPaths() =>
             DynamicChildren.Concat(StaticChildren);
+
+        /// <summary>Child urlsets for /sitemap.xml — compress chunks are urlsets, not a nested sitemap index.</summary>
+        public static List<string> BuildMainIndexChildren(IReadOnlyList<string> compressSitemapChunks) =>
+            DynamicChildren
+                .Concat(StaticChildren)
+                .Concat(compressSitemapChunks)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
     }
 }
