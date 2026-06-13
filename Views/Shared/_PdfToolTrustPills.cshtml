@@ -1,5 +1,7 @@
-<div class="mb-2">
-    <span class="rp-tool-pill"><i class="bi bi-shield-lock"></i> SSL encrypted</span>
-    <span class="rp-tool-pill"><i class="bi bi-trash"></i> Auto-delete</span>
-    <span class="rp-tool-pill"><i class="bi bi-stars"></i> Adobe-quality engine</span>
+@using ratpdf.Constants
+<div class="rp-trust-pills mb-2">
+    <a href="@SiteEntity.SecurityPath" class="rp-tool-pill text-decoration-none"><i class="bi bi-shield-lock"></i> TLS encrypted</a>
+    <a href="@SiteEntity.SecurityPath" class="rp-tool-pill text-decoration-none"><i class="bi bi-trash"></i> Auto-delete</a>
+    <a href="@SiteEntity.PrivacyPath" class="rp-tool-pill text-decoration-none"><i class="bi bi-globe-europe-africa"></i> GDPR-aware</a>
+    <span class="rp-tool-pill"><i class="bi bi-stars"></i> Production PDF engines</span>
 </div>

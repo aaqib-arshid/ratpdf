@@ -1,0 +1,63 @@
+@model IReadOnlyList<ratpdf.Constants.SiteAuthor>
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    ViewData["Title"] = "Editorial Team — PDF & Document Experts | RatPDF";
+    ViewData["Description"] = "Meet the RatPDF editorial team: PDF conversion specialists, business document editors, and security reviewers who write and fact-check our guides.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(SiteAuthors.HubPath);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "RatPDF Editorial Team",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical(SiteAuthors.HubPath),
+        "CollectionPage",
+        new[] { "h1", ".lead" }))
+    </script>
+}
+
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <h1 class="fw-bold mb-3">Editorial team</h1>
+        <p class="lead text-muted">
+            @SiteEntity.Name guides are written and reviewed by specialists who test PDF tools on real documents —
+            bank statements, GST invoices, scanned contracts, and multi-file merges.
+        </p>
+
+        @await Html.PartialAsync("_AiCitationBlock")
+
+        <div class="row g-4 mt-2">
+            @foreach (var author in Model)
+            {
+                <div class="col-md-4">
+                    <article class="card h-100 border-0 bg-light" itemscope itemtype="https://schema.org/Person">
+                        <div class="card-body p-4">
+                            <div class="rp-author-avatar rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center mb-3" style="width:56px;height:56px;">
+                                <span class="fw-bold text-primary" aria-hidden="true">@author.Name.Split(' ').Select(n => n[0]).Take(2).Aggregate("", (a, c) => a + c)</span>
+                            </div>
+                            <h2 class="h5 fw-bold mb-1" itemprop="name">
+                                <a href="@SiteAuthors.HubPath/@author.Slug" class="text-decoration-none text-dark" itemprop="url">@author.Name</a>
+                            </h2>
+                            <p class="small text-primary fw-semibold mb-2" itemprop="jobTitle">@author.JobTitle</p>
+                            <p class="small text-muted mb-3" itemprop="description">@author.Bio</p>
+                            <p class="small mb-2"><strong>Expertise:</strong> @string.Join(", ", author.Expertise.Take(3))</p>
+                            <a href="@SiteAuthors.HubPath/@author.Slug" class="btn btn-outline-primary btn-sm rounded-pill">View profile →</a>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+
+        <section class="mt-5 pt-4 border-top" aria-labelledby="trust-links">
+            <h2 id="trust-links" class="h5 fw-semibold">Trust &amp; editorial standards</h2>
+            <ul class="small mb-0">
+                <li><a href="@SiteEntity.EditorialPolicyPath">Editorial policy</a> — how we research, write, and update content</li>
+                <li><a href="@SiteEntity.TrustHubPath">Trust center</a> — security, privacy, and corrections</li>
+                <li><a href="@SiteEntity.AboutPath">About RatPDF</a> — entity facts and processing overview</li>
+            </ul>
+        </section>
+    </div>
+</article>

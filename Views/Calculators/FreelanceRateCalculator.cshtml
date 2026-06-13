@@ -1,0 +1,94 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "Freelance Hourly Rate Calculator",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/freelance-rate-calculator"),
+        "WebPage"))
+    </script>
+}
+
+<article class="rp-content-page">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small mb-0">
+            <li class="breadcrumb-item"><a href="@LinkBuildingCatalog.HubPath">Resources</a></li>
+            <li class="breadcrumb-item active">Freelance rate calculator</li>
+        </ol>
+    </nav>
+
+    <header class="text-center mb-4 col-lg-8 mx-auto">
+        <span class="rp-badge">Calculator</span>
+        <h1 class="fw-bold mt-2">Freelance hourly rate calculator</h1>
+        <p class="text-muted">Minimum billable rate to hit your target income after taxes, expenses, and non-billable time.</p>
+    </header>
+
+    <div class="card border-0 shadow-sm p-4 p-md-5 col-lg-8 mx-auto mb-4" style="border-radius:16px;">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="targetIncome">Target annual income (after tax) <span class="text-muted fw-normal">USD/INR/etc.</span></label>
+                <input type="number" id="targetIncome" class="form-control form-control-lg" value="60000" min="0" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="billableHours">Billable hours per week</label>
+                <input type="number" id="billableHours" class="form-control form-control-lg" value="25" min="1" max="80" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="weeksOff">Weeks off per year</label>
+                <input type="number" id="weeksOff" class="form-control" value="4" min="0" max="12" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="taxRate">Effective tax rate (%)</label>
+                <input type="number" id="taxRate" class="form-control" value="25" min="0" max="60" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="expenses">Annual business expenses</label>
+                <input type="number" id="expenses" class="form-control" value="5000" min="0" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="utilization">Billable utilization (% of work time)</label>
+                <input type="number" id="utilization" class="form-control" value="75" min="10" max="100" />
+            </div>
+        </div>
+        <button type="button" id="calcBtn" class="btn btn-primary btn-lg w-100 rounded-pill mt-4 fw-semibold">Calculate hourly rate</button>
+        <div id="rateResult" class="mt-4 d-none text-center p-4 bg-light rounded-4">
+            <p class="text-muted small mb-1">Minimum hourly rate</p>
+            <p class="display-5 fw-bold text-primary mb-1" id="hourlyRate">—</p>
+            <p class="small text-muted mb-0" id="rateDetail"></p>
+        </div>
+    </div>
+
+    <p class="text-center">
+        <a href="/Invoice/Create" class="btn btn-outline-primary rounded-pill">Create invoice with this rate →</a>
+    </p>
+</article>
+
+@section Scripts {
+<script>
+(function () {
+    document.getElementById('calcBtn').addEventListener('click', () => {
+        const income = parseFloat(document.getElementById('targetIncome').value) || 0;
+        const hoursWeek = parseFloat(document.getElementById('billableHours').value) || 25;
+        const weeksOff = parseFloat(document.getElementById('weeksOff').value) || 4;
+        const tax = (parseFloat(document.getElementById('taxRate').value) || 0) / 100;
+        const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+        const util = (parseFloat(document.getElementById('utilization').value) || 75) / 100;
+
+        const weeksWorked = 52 - weeksOff;
+        const grossNeeded = (income / (1 - tax)) + expenses;
+        const billableHoursYear = hoursWeek * weeksWorked * util;
+        const rate = billableHoursYear > 0 ? grossNeeded / billableHoursYear : 0;
+
+        document.getElementById('rateResult').classList.remove('d-none');
+        document.getElementById('hourlyRate').textContent = rate.toFixed(2) + '/hr';
+        document.getElementById('rateDetail').textContent =
+            `Based on ${Math.round(billableHoursYear)} billable hours/year at ${(util*100).toFixed(0)}% utilization.`;
+    });
+})();
+</script>
+}

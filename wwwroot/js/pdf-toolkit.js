@@ -180,6 +180,10 @@ window.PdfToolkit = (function () {
             renderPdfFilePreview(previewContainer, [], {});
             showLargeFileNotice([]);
             errorArea?.classList.add('d-none');
+            const submitBtn = fileInput.closest('form')?.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+            updateSubmitHint(false);
+            syncStickyCtaState();
             cfg.onChange?.([]);
         }
 
@@ -216,6 +220,10 @@ window.PdfToolkit = (function () {
             const previewIcon = isPdf ? 'bi-file-earmark-pdf text-danger' : 'bi-file-earmark-text text-primary';
             renderPdfFilePreview(previewContainer, v.files, { onClear: clearFiles, iconClass: previewIcon });
             showLargeFileNotice(v.files);
+            const submitBtn = fileInput.closest('form')?.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = false;
+            updateSubmitHint(true);
+            syncStickyCtaState();
             cfg.onChange?.(v.files);
         }
 
@@ -566,15 +574,101 @@ window.PdfToolkit = (function () {
         return true;
     }
 
+    function updateSubmitHint(hasFiles) {
+        const hint = document.getElementById('submitHint');
+        if (!hint) return;
+        hint.classList.toggle('is-hidden', !!hasFiles);
+    }
+
+    function syncStickyCtaState() {
+        const sticky = document.getElementById('rpStickyToolCta');
+        const stickyBtn = document.getElementById('stickyConvertBtn');
+        const stickyHint = document.getElementById('stickyCtaHint');
+        const mainBtn = document.getElementById('convertBtn') || document.querySelector('form[data-pdf-tool] button[type="submit"]');
+        if (!sticky || !stickyBtn || !mainBtn) return;
+
+        const disabled = mainBtn.disabled;
+        stickyBtn.disabled = false;
+        if (stickyHint) {
+            stickyHint.textContent = disabled ? 'Upload to start' : 'Ready — tap to convert';
+        }
+    }
+
+    function initStickyMobileCta() {
+        const sticky = document.getElementById('rpStickyToolCta');
+        if (!sticky) return;
+
+        const mainBtn = document.getElementById('convertBtn') || document.querySelector('form[data-pdf-tool] button[type="submit"]');
+        const stickyBtn = document.getElementById('stickyConvertBtn');
+        const hero = document.getElementById('rpToolHero') || document.querySelector('.rp-legacy-tool-card') || document.getElementById('dropZone');
+        if (!mainBtn || !stickyBtn) return;
+
+        stickyBtn.addEventListener('click', () => {
+            if (mainBtn.disabled) {
+                document.getElementById('dropZone')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                document.getElementById('fileInput')?.click() || mainBtn.closest('form')?.querySelector('input[type="file"]')?.click();
+            } else {
+                mainBtn.click();
+            }
+        });
+
+        if (hero && 'IntersectionObserver' in window) {
+            const obs = new IntersectionObserver(entries => {
+                const visible = entries.some(e => e.isIntersecting);
+                sticky.hidden = visible;
+                document.body.classList.toggle('rp-has-sticky-cta', !visible);
+            }, { threshold: 0.05 });
+            obs.observe(hero);
+        } else {
+            sticky.hidden = false;
+            document.body.classList.add('rp-has-sticky-cta');
+        }
+
+        sticky.hidden = false;
+        syncStickyCtaState();
+    }
+
+    function initUpgradeNudge() {
+        const nudge = document.getElementById('rpUpgradeNudge');
+        const textEl = document.getElementById('upgradeNudgeText');
+        const badge = document.getElementById('usageBadge');
+        if (!nudge || !badge) return;
+
+        const check = async () => {
+            const toolId = badge.dataset.pdfUsageBadge;
+            if (!toolId) return;
+            try {
+                const s = await checkToolAccess(toolId);
+                if (s.isPremium || s.remaining > 1) {
+                    nudge.classList.add('d-none');
+                    return;
+                }
+                if (textEl) {
+                    textEl.textContent = s.remaining === 1
+                        ? '1 free use left today'
+                        : `${s.remaining} free uses left today`;
+                }
+                nudge.classList.remove('d-none');
+            } catch { /* ignore */ }
+        };
+        check();
+        document.addEventListener('pdf-usage-updated', check);
+    }
+
+    function setUsageBadgeEl(el, access) {
+        if (!el) return;
+        el.textContent = access.isPremium ? 'Pro · Unlimited' : `${access.remaining} free today`;
+        el.className = access.isPremium ? 'badge bg-warning text-dark' : 'badge bg-secondary';
+    }
+
     function refreshUsageBadges() {
+        document.dispatchEvent(new CustomEvent('pdf-usage-updated'));
         document.querySelectorAll('[data-pdf-usage-badge]').forEach(async (el) => {
             const toolId = el.dataset.pdfUsageBadge;
             if (!toolId) return;
             try {
                 const s = await checkToolAccess(toolId);
-                el.textContent = s.isPremium ? 'Pro · Unlimited' : `${s.remaining} free today`;
-                el.classList.toggle('bg-success', !!s.isPremium);
-                el.classList.toggle('bg-secondary', !s.isPremium);
+                setUsageBadgeEl(el, s);
             } catch { /* ignore */ }
         });
     }
@@ -602,10 +696,7 @@ window.PdfToolkit = (function () {
         }
 
         const badge = document.getElementById(cfg.badgeId || 'usageBadge');
-        if (badge) {
-            badge.textContent = access.isPremium ? 'Premium · Unlimited' : `${access.remaining} free use(s) today`;
-            badge.className = access.isPremium ? 'badge bg-warning text-dark' : 'badge bg-secondary';
-        }
+        if (badge) setUsageBadgeEl(badge, access);
 
         const dropZone = document.getElementById(cfg.dropZoneId);
         const fileInput = document.getElementById(cfg.fileInputId);
@@ -633,6 +724,8 @@ window.PdfToolkit = (function () {
             if (!selectedFiles.length) {
                 renderPdfFilePreview(fileList, [], {});
                 if (convertBtn) convertBtn.disabled = true;
+                updateSubmitHint(false);
+                syncStickyCtaState();
                 return;
             }
             renderPdfFilePreview(fileList, selectedFiles, {
@@ -645,6 +738,8 @@ window.PdfToolkit = (function () {
                 },
             });
             if (convertBtn) convertBtn.disabled = false;
+            updateSubmitHint(true);
+            syncStickyCtaState();
         }
 
         function setFiles(fileListObj) {
@@ -695,15 +790,14 @@ window.PdfToolkit = (function () {
                     defaultFileName: cfg.defaultFileName,
                 });
                 const s = await checkToolAccess(cfg.toolId);
-                if (badge) {
-                    badge.textContent = s.isPremium ? 'Premium · Unlimited' : `${s.remaining} free use(s) today`;
-                }
+                if (badge) setUsageBadgeEl(badge, s);
             } catch (err) {
                 if (err.paywall) showPaywall(err.message);
                 else showError(sanitizeErrorMessage(err.message || 'Conversion failed.'));
                 hideProgress(progressElements);
             } finally {
-                convertBtn.disabled = selectedFiles.length > 0;
+                convertBtn.disabled = selectedFiles.length === 0;
+                syncStickyCtaState();
             }
         });
     }
@@ -711,6 +805,14 @@ window.PdfToolkit = (function () {
     document.addEventListener('DOMContentLoaded', () => {
         refreshUsageBadges();
         initFormUploadPreviews();
+        initStickyMobileCta();
+        initUpgradeNudge();
+        document.querySelectorAll('form[data-pdf-tool] button[type="submit"]').forEach(btn => {
+            const form = btn.closest('form');
+            const input = form?.querySelector('input[type="file"]');
+            if (input && !input.files?.length) btn.disabled = true;
+        });
+        syncStickyCtaState();
     });
 
     return {

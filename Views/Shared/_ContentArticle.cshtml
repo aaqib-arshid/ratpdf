@@ -26,20 +26,21 @@
                     <h1 class="rp-article-title mt-2">@Model.Title</h1>
                     <p class="rp-article-lead">@Model.Description</p>
                     <p class="text-muted small mb-0">
-                        <i class="bi bi-calendar3 me-1"></i>@Model.Published.ToString("MMMM d, yyyy")
+                        <i class="bi bi-calendar3 me-1"></i>Published @Model.Published.ToString("MMMM d, yyyy")
                         · @Math.Max(1, Model.BodyHtml.Split(' ').Length / 200) min read
                     </p>
                 </header>
 
+                @await Html.PartialAsync("_AuthorByline", Model)
+
+                @await Html.PartialAsync("_AiCitationBlock")
+
                 @if (!string.IsNullOrEmpty(Model.ToolUrl))
                 {
-                    <div class="rp-cta-inline mb-4">
-                        <div>
-                            <strong>Try it free</strong>
-                            <p class="small text-muted mb-0">3 uses per day · 200 MB · no signup required</p>
-                        </div>
-                        <a href="@Model.ToolUrl" class="btn btn-primary btn-sm rounded-pill px-4">@Model.ToolCtaLabel</a>
-                    </div>
+                    ViewData["ToolUrl"] = Model.ToolUrl;
+                    ViewData["ToolCtaLabel"] = Model.ToolCtaLabel;
+                    ViewData["ToolCtaTitle"] = "Try it free — no signup";
+                    @await Html.PartialAsync("_ToolTryCta")
                 }
 
                 <div class="rp-prose">
@@ -59,6 +60,8 @@
                         }
                     </section>
                 }
+
+                @await Html.PartialAsync("_ContentSources", Model)
             </div>
 
             <aside class="col-lg-4">
@@ -71,8 +74,13 @@
                         }
                     </ul>
                     <hr />
-                    <p class="small text-muted mb-2">Explore all @ContentLibrary.Guides.Count() tutorials</p>
-                    <a href="/guides" class="btn btn-outline-primary btn-sm w-100">Guides hub</a>
+                    <p class="small text-muted mb-2">Explore topical hubs</p>
+                    <a href="@TopicalAuthority.PdfToolsHubPath" class="btn btn-outline-primary btn-sm w-100 mb-2">PDF tools hub</a>
+                    @if (TopicalAuthority.IsSecureTool(Model.ToolUrl))
+                    {
+                        <a href="@TopicalAuthority.SecureWorkflowPath" class="btn btn-outline-secondary btn-sm w-100 mb-2">Secure PDF workflow</a>
+                    }
+                    <a href="/guides" class="btn btn-outline-primary btn-sm w-100">All @ContentLibrary.Guides.Count() guides</a>
                     <a href="/blog" class="btn btn-link btn-sm w-100 mt-1">Read the blog</a>
                 </div>
             </aside>

@@ -1,0 +1,22 @@
+@using ratpdf.Constants
+@{
+    var toolId = ViewData["PdfToolId"] as string;
+    if (string.IsNullOrEmpty(toolId)) return;
+    var label = ViewData["BtnLabel"] as string ?? ViewData["StickyCtaLabel"] as string ?? "Convert & download";
+    var source = Uri.EscapeDataString(toolId);
+}
+<div id="rpStickyToolCta" class="rp-sticky-tool-cta d-md-none" hidden aria-label="Quick action">
+    <div class="rp-sticky-tool-cta-inner">
+        <div class="rp-sticky-tool-cta-meta">
+            <span id="stickyUsageBadge" class="badge bg-secondary" data-pdf-usage-badge="@toolId">…</span>
+            <span class="text-muted" id="stickyCtaHint">Upload to start</span>
+        </div>
+        <button type="button" id="stickyConvertBtn" class="btn btn-primary btn-sm rounded-pill px-3 fw-semibold">
+            @label
+        </button>
+    </div>
+</div>
+<a href="/Subscription/Plans?source=@source" id="rpUpgradeNudge" class="rp-upgrade-nudge d-none" aria-label="Upgrade to Pro">
+    <span><i class="bi bi-stars me-1"></i><span id="upgradeNudgeText">1 free use left today</span></span>
+    <span class="fw-semibold">Go Pro →</span>
+</a>

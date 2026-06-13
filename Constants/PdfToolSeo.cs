@@ -12,29 +12,34 @@ namespace ratpdf.Constants
 
         public static readonly (string Name, string Url, string Keyword)[] AllTools =
         [
-            ("Merge PDF", "/PDF/Merge", "merge pdf online"),
-            ("Split PDF", "/PDF/Split", "split pdf online"),
+            ("Merge PDF", "/pdf/merge", "merge pdf online"),
+            ("Split PDF", "/pdf/split", "split pdf online"),
             ("Compress PDF", "/pdf/compress", "compress pdf online"),
-            ("PDF to Word", "/PDF/PdfToDoc", "pdf to word converter"),
-            ("Word to PDF", "/PDF/DocToPdf", "word to pdf converter"),
-            ("PDF to Excel", "/PDF/PdfToExcel", "pdf to excel converter"),
-            ("Excel to PDF", "/PDF/ExcelToPdf", "excel to pdf converter"),
-            ("Edit PDF", "/PDF/EditPDF", "edit pdf online"),
-            ("PDF to Text", "/PDF/PdfToText", "pdf to text converter"),
-            ("Text to PDF", "/PDF/TextToPdf", "text to pdf converter"),
-            ("Watermark PDF", "/PDF/Watermark", "add watermark to pdf"),
-            ("Protect PDF", "/PDF/Password", "password protect pdf"),
-            ("Sign PDF", "/PDF/SignText", "sign pdf online"),
-            ("Rotate PDF", "/PDF/RotateOrRemove", "rotate pdf pages"),
-            ("Images to PDF", "/PDF/ConvertImages", "convert images to pdf"),
-            ("Unlock PDF", "/PDF/UnlockPdf", "unlock pdf remove password"),
-            ("Flatten PDF", "/PDF/FlattenPdf", "flatten pdf forms"),
-            ("PDF to Images", "/PDF/PdfToImages", "pdf to png images"),
-            ("Extract Images", "/PDF/ExtractImages", "extract images from pdf"),
-            ("OCR PDF", "/PDF/OcrPdf", "ocr pdf searchable"),
-            ("Page Numbers", "/PDF/PageNumbers", "add page numbers pdf"),
-            ("PDF Metadata", "/PDF/PdfMetadata", "pdf metadata viewer"),
+            ("PDF to Word", "/pdf/pdftodoc", "pdf to word converter"),
+            ("Word to PDF", "/pdf/doctopdf", "word to pdf converter"),
+            ("PDF to Excel", "/pdf/pdftoexcel", "pdf to excel converter"),
+            ("Excel to PDF", "/pdf/exceltopdf", "excel to pdf converter"),
+            ("Edit PDF", "/pdf/editpdf", "edit pdf online"),
+            ("PDF to Text", "/pdf/pdftotext", "pdf to text converter"),
+            ("Text to PDF", "/pdf/texttopdf", "text to pdf converter"),
+            ("Watermark PDF", "/pdf/watermark", "add watermark to pdf"),
+            ("Protect PDF", "/pdf/password", "password protect pdf"),
+            ("Sign PDF", "/pdf/signtext", "sign pdf online"),
+            ("Rotate PDF", "/pdf/rotateorremove", "rotate pdf pages"),
+            ("Images to PDF", "/pdf/convertimages", "convert images to pdf"),
+            ("Unlock PDF", "/pdf/unlockpdf", "unlock pdf remove password"),
+            ("Flatten PDF", "/pdf/flattenpdf", "flatten pdf forms"),
+            ("PDF to Images", "/pdf/pdftoimages", "pdf to png images"),
+            ("Extract Images", "/pdf/extractimages", "extract images from pdf"),
+            ("OCR PDF", "/pdf/ocrpdf", "ocr pdf searchable"),
+            ("Page Numbers", "/pdf/pagenumbers", "add page numbers pdf"),
+            ("PDF Metadata", "/pdf/pdfmetadata", "pdf metadata viewer"),
         ];
+
+        /// <summary>Number of core PDF tools in <see cref="AllTools"/> (display as e.g. "22+").</summary>
+        public static int ToolCount => AllTools.Length;
+
+        public static string ToolCountLabel => $"{ToolCount}+";
 
         /// <summary>All public URLs (path only), including long-tail landing pages.</summary>
         public static IReadOnlyList<string> SitemapPaths() =>
@@ -55,32 +60,47 @@ namespace ratpdf.Constants
                 "/Invoice/Create",
                 "/InvoiceHome/Index",
                 "/Home/About",
+                "/Home/EditorialPolicy",
+                "/Home/Security",
+                "/Home/Corrections",
+                SiteEntity.TrustHubPath,
+                SiteAuthors.HubPath,
                 "/Home/Contact",
                 "/Home/Privacy",
                 "/Home/Terms",
                 "/Home/Disclaimer",
             };
 
+            foreach (var author in SiteAuthors.All)
+                paths.Add($"{SiteAuthors.HubPath}/{author.Slug}");
+
             foreach (var tool in AllTools)
                 paths.Add(tool.Url);
 
             paths.AddRange(ContentLibrary.AllContentPaths());
 
+            paths.AddRange(CompetitiveSeoCatalog.AllComparePaths());
+
+            paths.AddRange(LinkBuildingCatalog.SitemapPaths());
+
             paths.AddRange([
                 "/compress-pdf",
-                "/PDF/ImgToBase64",
-                "/PDF/HtmlFormatter",
-                "/PDF/JsonFormatter",
-                "/PDF/JwtDecoder",
-                "/Tools/ImgBackgroundRemove",
-                "/Tools/WhatIsMyIP",
-                "/Tools/WordCounter",
-                "/Tools/QRGenerator",
-                "/Tools/IpLookup",
-                "/Tools/DnsLookup",
-                "/Calculators/LoanCalculator",
-                "/PaySlip/Index",
-                "/RentReceipt/Index",
+                "/compare",
+                "/guides/pdf-tools",
+                "/guides/secure-pdf-workflow",
+                "/pdf/imgtobase64",
+                "/pdf/htmlformatter",
+                "/pdf/jsonformatter",
+                "/pdf/jwtdecoder",
+                "/tools/imgbackgroundremove",
+                "/tools/whatismyip",
+                "/tools/wordcounter",
+                "/tools/qrgenerator",
+                "/tools/iplookup",
+                "/tools/dnslookup",
+                "/calculators/loancalculator",
+                "/payslip/index",
+                "/rentreceipt/index",
                 "/password-generator",
                 "/qr-code-generator",
                 "/free-payslip-generator",
@@ -108,7 +128,29 @@ namespace ratpdf.Constants
             return paths.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         }
 
-        public static string Canonical(string path) =>
-            path.StartsWith("http") ? path : SiteUrl.TrimEnd('/') + path;
+        private static readonly HashSet<string> CasePreservedPrefixes = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "/account/", "/invoice/", "/invoicedashboard/", "/subscription/", "/error/",
+        };
+
+        public static string Canonical(string path)
+        {
+            if (path.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                return path;
+
+            if (!path.StartsWith('/'))
+                path = "/" + path;
+
+            return SiteUrl.TrimEnd('/') + NormalizePath(path);
+        }
+
+        /// <summary>Lowercase path segments to match SeoUrlNormalizationMiddleware (preserves exempt prefixes).</summary>
+        public static string NormalizePath(string path)
+        {
+            if (CasePreservedPrefixes.Any(p => path.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                return path;
+
+            return path.ToLowerInvariant();
+        }
     }
 }

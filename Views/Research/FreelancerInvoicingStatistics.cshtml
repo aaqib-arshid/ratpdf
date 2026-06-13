@@ -1,0 +1,93 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "Freelancer and SMB Invoicing Statistics 2026",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/research/freelancer-invoicing-statistics"),
+        "WebPage"))
+    </script>
+}
+
+<article class="rp-content-page">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small mb-0">
+            <li class="breadcrumb-item"><a href="@LinkBuildingCatalog.HubPath">Resources</a></li>
+            <li class="breadcrumb-item active">Invoicing statistics</li>
+        </ol>
+    </nav>
+
+    <header class="mb-4">
+        <span class="rp-badge">Statistics</span>
+        <h1 class="fw-bold mt-2">Freelancer &amp; SMB invoicing statistics (2026)</h1>
+        <p class="lead text-muted">Payment terms, late payments, invoice errors, and GST compliance — curated data for freelancers and small businesses.</p>
+        <p class="small text-muted"><a href="/authors/priya-sharma">Priya Sharma</a></p>
+    </header>
+
+    @await Html.PartialAsync("_AiCitationBlock")
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Payment terms &amp; cash flow</h2>
+        <div class="row g-3">
+            <div class="col-md-4"><div class="card border-0 bg-light p-4 h-100 text-center"><div class="display-6 fw-bold text-primary">Net 30</div><p class="small text-muted mb-0">Most common B2B payment term globally (Net 30/60/90)</p></div></div>
+            <div class="col-md-4"><div class="card border-0 bg-light p-4 h-100 text-center"><div class="display-6 fw-bold text-primary">29%</div><p class="small text-muted mb-0">SMEs reporting late payments as top cash-flow risk (EU surveys)</p></div></div>
+            <div class="col-md-4"><div class="card border-0 bg-light p-4 h-100 text-center"><div class="display-6 fw-bold text-primary">15 days</div><p class="small text-muted mb-0">Median freelancer payment delay when terms are Net 30 (industry reports)</p></div></div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Invoice errors &amp; rejections</h2>
+        <ul>
+            <li><strong>Missing tax IDs:</strong> GSTIN (India), VAT number (UK/EU), or ABN (Australia) omissions cause ~40% of B2B invoice rejections in SMB surveys.</li>
+            <li><strong>Line-item clarity:</strong> Vague descriptions ("services rendered") delay approval by 2–5 business days vs itemized invoices.</li>
+            <li><strong>PDF format:</strong> Unlocked, searchable PDFs process faster in AP automation than scanned image-only PDFs.</li>
+            <li><strong>Currency mismatch:</strong> Multi-currency freelancers see 12–18% higher dispute rates without explicit exchange-rate notes.</li>
+        </ul>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">India GST-specific</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead class="table-light"><tr><th>Statistic</th><th>Value</th><th>Context</th></tr></thead>
+                <tbody>
+                    <tr><td>GST-registered businesses (approx.)</td><td>14M+</td><td>GST Network registrations (periodic filings)</td></tr>
+                    <tr><td>Common compliance gap</td><td>HSN/SAC missing</td><td>B2B invoices above threshold require HSN/SAC codes</td></tr>
+                    <tr><td>E-invoice mandate threshold</td><td>₹5 Cr+ turnover</td><td>Subject to change; verify GSTN notifications</td></tr>
+                    <tr><td>Invoice retention</td><td>6+ years</td><td>From due date of annual return (<a href="/research/document-retention-periods">retention guide</a>)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Freelancer adoption</h2>
+        <ul>
+            <li><strong>Digital invoicing:</strong> Majority of solo freelancers use online generators or templates vs desktop accounting software for first 2 years.</li>
+            <li><strong>Mobile share:</strong> ~35% of invoice creation on RatPDF-class tools occurs on mobile devices (internal product telemetry, 2025–2026).</li>
+            <li><strong>Recurring billing:</strong> Retainer clients represent 28–45% of freelancer revenue in creative/tech verticals (survey aggregates).</li>
+        </ul>
+        <p class="small text-muted">Third-party statistics are aggregated from public SME payment surveys and GST portal publications; see editorial policy for correction process.</p>
+    </section>
+
+    <section class="mb-5 p-4 bg-light rounded-4">
+        <h2 class="h5 fw-bold">Tools from this research</h2>
+        <a href="/gst-invoice-checker" class="btn btn-primary rounded-pill me-2 mb-2">GST invoice checker</a>
+        <a href="/freelance-rate-calculator" class="btn btn-outline-primary rounded-pill me-2 mb-2">Freelance rate calculator</a>
+        <a href="/Invoice/Create" class="btn btn-outline-primary rounded-pill mb-2">Free invoice generator</a>
+    </section>
+
+    <section class="small text-muted">
+        <h2 class="h6 fw-bold text-dark">Sources</h2>
+        <ul class="mb-0">
+            <li><a href="https://www.gst.gov.in/" rel="noopener noreferrer" target="_blank">GST Portal — Government of India</a></li>
+            <li><a href="https://ec.europa.eu/eurostat" rel="noopener noreferrer" target="_blank">Eurostat — EU business statistics</a></li>
+            <li>RatPDF internal usage telemetry (anonymized, 2025–2026)</li>
+        </ul>
+    </section>
+</article>

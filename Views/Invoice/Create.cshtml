@@ -1,4 +1,5 @@
-﻿@using ratpdf.Models.Invoice
+﻿@using ratpdf.Constants
+@using ratpdf.Models.Invoice
 @model InvoiceFormViewModel
 @{
     ViewData["Title"] = "Create Invoice | RatPDF Invoice Generator";
@@ -200,6 +201,23 @@
             border-radius: 1.25rem;
             padding: 1.2rem;
         }
+
+        .invoice-sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1040;
+            background: #fff;
+            border-top: 1px solid #e2e8f0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            padding: 0.75rem 1rem;
+            padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+        }
+
+        @@media (min-width: 768px) {
+            .invoice-sticky-cta { display: none !important; }
+        }
     </style>
 }
 
@@ -213,11 +231,16 @@
                     <i class="bi bi-file-pdf-fill"></i> PDF Generator
                 </div>
                 <h1 class="hero-title">Create Professional Invoice</h1>
-                <p class="mt-2 opacity-90 mb-0">Generate & download a ready-to-use PDF invoice in seconds.<br>Free, no registration required.</p>
+                <p class="mt-2 opacity-90 mb-2">Generate &amp; download a ready-to-use PDF invoice in seconds.<br>Free, no registration required.</p>
+                <p class="small opacity-75 mb-0">
+                    <i class="bi bi-shield-check me-1"></i>Instant PDF download
+                    · <i class="bi bi-globe me-1"></i>50+ currencies
+                    · <i class="bi bi-file-pdf me-1"></i>GST/VAT ready
+                </p>
             </div>
-            <div class="mt-3 mt-md-0 text-end">
+            <div class="mt-3 mt-md-0 text-end d-none d-md-block">
                 <span class="hero-badge">
-                    <i class="bi bi-star-fill"></i> 4.8/5 (1,250+ reviews)
+                    <i class="bi bi-lightning-charge-fill"></i> No signup
                 </span>
             </div>
         </div>
@@ -470,7 +493,7 @@
                     {
                         <div></div>
                     }
-                    <button type="submit" class="btn btn-primary-custom px-5 py-2">
+                    <button type="submit" class="btn btn-primary-custom px-5 py-2" id="downloadInvoiceBtn">
                         <i class="bi bi-download"></i> Download PDF Invoice
                     </button>
                 </div>
@@ -559,17 +582,50 @@
                 </div>
             </div>
 
-            <!-- trust / rating badge -->
+            <!-- trust -->
             <div class="mt-4 text-center small text-muted">
-                <i class="bi bi-shield-check text-success"></i> Secure & encrypted · Used by 5k+ freelancers
+                <i class="bi bi-shield-check text-success"></i> Secure HTTPS · No signup required ·
+                <a href="@SiteEntity.TrustHubPath">Trust center</a>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="invoice-sticky-cta d-md-none" id="invoiceStickyCta">
+    <div class="d-flex align-items-center justify-content-between gap-3">
+        <div class="small text-muted">
+            <strong class="text-dark d-block" id="stickyInvoiceTotal">Total: 0.00</strong>
+            Free PDF · no signup
+        </div>
+        <button type="button" class="btn btn-primary-custom px-4 py-2" id="stickyDownloadBtn">
+            <i class="bi bi-download"></i> Download PDF
+        </button>
     </div>
 </div>
 
 @section Scripts {
     <script src="~/js/invoice.builder.js" asp-append-version="true"></script>
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('invoiceForm');
+            var stickyBtn = document.getElementById('stickyDownloadBtn');
+            var totalEl = document.getElementById('totalDisplay');
+            var stickyTotal = document.getElementById('stickyInvoiceTotal');
+            if (stickyBtn && form) {
+                stickyBtn.addEventListener('click', function () {
+                    form.requestSubmit ? form.requestSubmit() : form.submit();
+                });
+            }
+            if (totalEl && stickyTotal) {
+                var sync = function () {
+                    stickyTotal.textContent = 'Total: ' + (totalEl.textContent || '0.00');
+                };
+                sync();
+                new MutationObserver(sync).observe(totalEl, { childList: true, characterData: true, subtree: true });
+            }
+        });
+    </script>
 }
 
 <!-- JSON-LD Structured Data for Rich Snippets (Stars, Price, FAQ, Breadcrumbs) -->
@@ -582,13 +638,6 @@
     "name": "RatPDF Invoice Generator",
     "image": "https://ratpdf.com/images/hero-invoice.svg",
     "description": "Create and download professional PDF invoices online for free. Features custom line items, tax calculation, multiple currencies.",
-    "aggregateRating": {
-    "@@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "1254",
-    "bestRating": "5",
-    "worstRating": "1"
-    },
     "offers": {
     "@@type": "Offer",
     "price": "0",

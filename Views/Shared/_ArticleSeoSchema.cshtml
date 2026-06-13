@@ -1,0 +1,24 @@
+@model ratpdf.Models.ContentEntry
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    var canonical = PdfToolSeo.Canonical(Model.Path);
+    var faqs = Model.FaqQuestions != null && Model.FaqAnswers != null && Model.FaqQuestions.Length > 0
+        ? Model.FaqQuestions.Zip(Model.FaqAnswers).Select(x => (x.First, x.Second)).ToList()
+        : null;
+    var articleType = Model.Kind == ratpdf.Models.ContentKind.Blog ? "BlogPosting" : "TechArticle";
+}
+<script type="application/ld+json">
+@Html.Raw(SchemaHelper.BuildArticleGraphLdJson(
+    Model.Title,
+    Model.Description,
+    canonical,
+    Model.Published,
+    Model.LastReviewed ?? Model.Published,
+    articleType,
+    faqs,
+    Model.AuthorSlug,
+    Model.ReviewerSlug,
+    Model.LastReviewed,
+    Model.Sources))
+</script>

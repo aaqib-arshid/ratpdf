@@ -1,0 +1,28 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    var toolId = ViewData["PdfToolId"] as string;
+    if (ViewData["SkipAutoToolSchema"] as bool? == true || string.IsNullOrEmpty(toolId))
+    {
+        return;
+    }
+
+    var metaEntry = PdfToolSeoMeta.Get(toolId);
+    var catalog = PdfToolSchemaCatalog.Get(toolId);
+    if (metaEntry == null && catalog == null) return;
+
+    var canonical = ViewData["CanonicalUrl"] as string
+        ?? PdfToolSeo.Canonical(metaEntry?.ToolPath ?? catalog!.ToolPath);
+    var toolName = ViewData["SchemaAppName"] as string ?? metaEntry?.AppName ?? catalog?.ToolName ?? "PDF Tool";
+    var description = ViewData["Description"] as string ?? metaEntry?.Description ?? $"Use {toolName} online free on RatPDF.";
+    var faqs = ViewData["SchemaFaqs"] as (string Question, string Answer)[]
+        ?? metaEntry?.Faqs
+        ?? catalog?.Faqs
+        ?? Array.Empty<(string, string)>();
+    var howTo = (catalog?.HowToSteps ?? Array.Empty<string>())
+        .Select((s, i) => ($"Step {i + 1}", s))
+        .ToList();
+}
+<script type="application/ld+json">
+@Html.Raw(SchemaHelper.BuildToolPageGraphLdJson(toolName, canonical, description, howTo, faqs))
+</script>

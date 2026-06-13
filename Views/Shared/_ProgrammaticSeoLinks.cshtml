@@ -1,0 +1,60 @@
+@using ratpdf.Constants
+@using ratpdf.Content
+@using ratpdf.Services
+@model ratpdf.Models.SEOPageModel
+@{
+    var toolHref = PdfToolSeo.Canonical(Model.ToolUrl);
+    var workflow = TopicalAuthority.GetWorkflowLinks(Model.ToolUrl);
+    var blog = TopicalAuthority.GetBlogForTool(Model.ToolUrl);
+    var toolGuide = ContentLibrary.GetGuideForToolUrl(Model.ToolUrl);
+    var clusterLinks = PdfToolSeoLandingGenerator.GetSiblingClusterLinks(Model.RoutePrefix, Model.Slug, max: 3);
+    var isSecure = TopicalAuthority.IsSecureTool(Model.ToolUrl);
+}
+<nav class="container pb-4" aria-label="Related topics">
+    <div class="card border-0 shadow-sm" style="border-radius:12px;">
+        <div class="card-body p-4">
+            <p class="small text-muted mb-2">
+                <a href="@TopicalAuthority.PdfToolsHubPath">PDF tools hub</a>
+                <span class="mx-1">·</span>
+                <a href="@toolHref">@Model.ToolLinkText</a>
+                @if (isSecure)
+                {
+                    <span class="mx-1">·</span>
+                    <a href="@TopicalAuthority.SecureWorkflowPath">Secure PDF workflow</a>
+                }
+            </p>
+
+            @if (toolGuide != null)
+            {
+                <p class="small mb-3"><a href="@toolGuide.Path" class="fw-semibold">Full guide: @toolGuide.Title</a></p>
+            }
+
+            @if (clusterLinks.Count > 0)
+            {
+                <h2 class="h6 fw-bold mb-2">Related topics</h2>
+                <ul class="small mb-3 ps-3">
+                    @foreach (var link in clusterLinks)
+                    {
+                        <li class="mb-1"><a href="@link.Href">@link.Label</a></li>
+                    }
+                </ul>
+            }
+
+            @if (workflow.Count > 0)
+            {
+                <h2 class="h6 fw-bold mb-2">Continue your workflow</h2>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    @foreach (var link in workflow)
+                    {
+                        <a href="@link.Url" class="btn btn-outline-secondary btn-sm rounded-pill">@link.Name</a>
+                    }
+                </div>
+            }
+
+            @if (blog != null)
+            {
+                <p class="small mb-0"><a href="@blog.Path">@blog.Title</a></p>
+            }
+        </div>
+    </div>
+</nav>

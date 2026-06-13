@@ -1,4 +1,5 @@
-﻿using ratpdf.Models;
+﻿using ratpdf.Constants;
+using ratpdf.Models;
 using System.Text.Json;
 
 namespace ratpdf.Services.JwtSeo
@@ -11,13 +12,6 @@ namespace ratpdf.Services.JwtSeo
     }
     public class SchemaGenerator : ISchemaGenerator
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public SchemaGenerator(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         public string GenerateFaqSchema(List<FaqItem> faqs)
         {
             if (faqs == null || faqs.Count == 0)
@@ -39,10 +33,7 @@ namespace ratpdf.Services.JwtSeo
 
         public string GenerateBreadcrumbSchema(string slug, string headingH1)
         {
-            var request = _httpContextAccessor.HttpContext?.Request;
-            if (request == null) return "";
-
-            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var baseUrl = PdfToolSeo.SiteUrl;
             var items = new[]
             {
             new { @type = "ListItem", position = 1, name = "Home", item = baseUrl },
@@ -61,10 +52,7 @@ namespace ratpdf.Services.JwtSeo
 
         public string GenerateTechArticleSchema(JwtPageContent content)
         {
-            var request = _httpContextAccessor.HttpContext?.Request;
-            if (request == null) return "";
-
-            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var baseUrl = PdfToolSeo.SiteUrl;
             var article = new
             {
                 @context = "https://schema.org",

@@ -1,3 +1,6 @@
+dotnet run -- --fix-seo-head
+dotnet run -- --generate-vertical-sitemaps
+dotnet run -- --generate-compress-sitemap
 taskkill /IM ratpdf.exe /F
 apt-get update
 

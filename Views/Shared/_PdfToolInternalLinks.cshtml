@@ -1,31 +1,97 @@
 @using ratpdf.Constants
 @using ratpdf.Content
+@using ratpdf.Services
 @{
     var current = Context.Request.Path.Value ?? "";
-    var related = PdfToolSeo.AllTools.Where(t => !current.Equals(t.Url, StringComparison.OrdinalIgnoreCase)).Take(8);
     var toolGuide = ContentLibrary.GetGuideForToolUrl(current);
+    var workflow = TopicalAuthority.GetWorkflowLinks(current);
+    var blog = TopicalAuthority.GetBlogForTool(current);
+    var clusterHub = TopicalAuthority.GetClusterHubPath(current);
+    var clusterLinks = TopicalAuthority.GetFeaturedClusterLinks(current);
+    var isSecure = TopicalAuthority.IsSecureTool(current);
 }
-<nav class="container py-4" aria-label="Related PDF tools">
+<nav class="container py-4" aria-label="PDF topical links">
     <div class="card border-0 shadow-sm" style="border-radius:12px;">
         <div class="card-body p-4">
-            <h2 class="h5 fw-bold mb-3">More free PDF tools on @PdfToolSeo.SiteName</h2>
+            <p class="small text-muted mb-2">
+                <a href="@TopicalAuthority.PdfToolsHubPath"><i class="bi bi-grid-3x3-gap me-1"></i>PDF tools hub</a>
+                <span class="mx-1">·</span>
+                <a href="@TopicalAuthority.CompareHubPath"><i class="bi bi-bar-chart me-1"></i>Compare vs iLovePDF &amp; Smallpdf</a>
+                @if (isSecure)
+                {
+                    <span class="mx-1">·</span>
+                    <a href="@TopicalAuthority.SecureWorkflowPath"><i class="bi bi-shield-lock me-1"></i>Secure PDF workflow</a>
+                }
+            </p>
+
             @if (toolGuide != null)
             {
-                <p class="small mb-3"><i class="bi bi-journal-text text-primary me-1"></i><a href="@toolGuide.Path" class="fw-semibold">Read the full guide: @toolGuide.Title</a></p>
+                <p class="small mb-3">
+                    <i class="bi bi-journal-text text-primary me-1"></i>
+                    <a href="@toolGuide.Path" class="fw-semibold">Guide: @toolGuide.Title</a>
+                </p>
             }
+            @if (isSecure)
+            {
+                <p class="small mb-3">
+                    <a href="/guides/watermark-vs-password-pdf">Watermark vs password</a>
+                    <span class="mx-1">·</span>
+                    <a href="/guides/sign-pdf-legally">Sign PDF legally</a>
+                </p>
+            }
+
+            @if (workflow.Count > 0)
+            {
+                <h2 class="h6 fw-bold mb-2">Next steps in your workflow</h2>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    @for (var wi = 0; wi < workflow.Count; wi++)
+                    {
+                        var link = workflow[wi];
+                        var btnClass = wi == 0 ? "btn btn-primary btn-sm rounded-pill" : "btn btn-outline-secondary btn-sm rounded-pill";
+                        <a href="@link.Url" class="@btnClass">@link.Name →</a>
+                    }
+                </div>
+            }
+
+            @if (clusterLinks.Count > 0)
+            {
+                <h2 class="h6 fw-bold mb-2">Popular guides for this tool</h2>
+                <ul class="small mb-3 ps-3">
+                    @foreach (var cluster in clusterLinks)
+                    {
+                        <li class="mb-1"><a href="@cluster.Href">@cluster.Label</a></li>
+                    }
+                    @if (clusterHub != null)
+                    {
+                        <li class="mb-1"><a href="@clusterHub">Browse all related topics →</a></li>
+                    }
+                </ul>
+            }
+
+            @if (blog != null)
+            {
+                <p class="small mb-3">
+                    <i class="bi bi-newspaper text-primary me-1"></i>
+                    <a href="@blog.Path">@blog.Title</a>
+                </p>
+            }
+
+            <h2 class="h6 fw-bold mb-2">More free PDF tools</h2>
             <div class="row g-2">
-                @foreach (var tool in related)
+                @foreach (var tool in PdfToolSeo.AllTools.Where(t => !current.Equals(t.Url, StringComparison.OrdinalIgnoreCase)).Take(6))
                 {
-                    <div class="col-6 col-md-3">
-                        <a href="@tool.Url" class="text-decoration-none small d-block p-2 rounded bg-light hover-shadow" title="@tool.Keyword">
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <a href="@tool.Url" class="text-decoration-none small d-block p-2 rounded bg-light" title="@tool.Keyword">
                             @tool.Name
                         </a>
                     </div>
                 }
             </div>
+
             <p class="small text-muted mt-3 mb-0">
-                <a href="/Subscription/Plans">View Pro plans</a> — unlimited tools, 4 GB uploads, high-fidelity PDF to Word &amp; Excel.
-                · <a href="/Invoice/Create">Free invoice generator</a>
+                <a href="/Subscription/Plans" class="fw-semibold">Pro plans</a> — 4 GB uploads, unlimited tools.
+                · <a href="/Invoice/Create">Invoice generator</a>
+                · <a href="@SiteEntity.TrustHubPath">Trust center</a>
             </p>
         </div>
     </div>

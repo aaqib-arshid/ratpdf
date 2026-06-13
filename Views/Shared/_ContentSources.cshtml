@@ -1,0 +1,30 @@
+@model ratpdf.Models.ContentEntry
+
+@if (Model.Sources is { Length: > 0 })
+{
+    <section class="rp-sources mt-5 pt-4 border-top" aria-labelledby="sources-heading">
+        <h2 id="sources-heading" class="h5 fw-bold mb-3">Sources &amp; references</h2>
+        <p class="small text-muted mb-3">
+            Primary references used when researching and fact-checking this guide.
+            See our <a href="@ratpdf.Constants.SiteEntity.EditorialPolicyPath">editorial methodology</a>.
+        </p>
+        <ol class="small mb-0">
+            @foreach (var source in Model.Sources)
+            {
+                <li class="mb-2" itemscope itemtype="https://schema.org/CreativeWork">
+                    <a href="@source.Url" rel="noopener noreferrer" target="_blank" itemprop="url">
+                        <span itemprop="name">@source.Title</span>
+                    </a>
+                    @if (!string.IsNullOrEmpty(source.Publisher))
+                    {
+                        <span class="text-muted"> — @source.Publisher</span>
+                    }
+                    @if (!string.IsNullOrEmpty(source.AccessNote))
+                    {
+                        <br /><span class="text-muted">@source.AccessNote</span>
+                    }
+                </li>
+            }
+        </ol>
+    </section>
+}

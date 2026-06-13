@@ -2,10 +2,14 @@
 @using ratpdf.Constants
 @if (ViewData["PdfToolId"] is string toolId && !string.IsNullOrEmpty(toolId))
 {
+    @await Html.PartialAsync("_PdfToolSocialProof")
+    var source = Uri.EscapeDataString(toolId);
     <p class="text-muted small mb-3">
-        <span id="usageBadge" class="badge bg-secondary" data-pdf-usage-badge="@toolId">3 free today</span>
+        <span id="usageBadge" class="badge bg-light text-dark border" data-pdf-usage-badge="@toolId">
+            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" style="width:0.65rem;height:0.65rem;"></span>Checking free uses…
+        </span>
         · Up to 200 MB per file ·
-        <a href="/Subscription/Plans">Pro @SubscriptionPricing.FormatProShort()</a> · 4 GB uploads · unlimited tools
+        <a href="/Subscription/Plans?source=@source">Pro @SubscriptionPricing.FormatProShort()</a> · 4 GB · unlimited
     </p>
 }
 @if (ViewBag.ShowPaywall == true)

@@ -1,4 +1,5 @@
 using ratpdf.Content;
+using ratpdf.Constants;
 using ratpdf.Models;
 
 namespace ratpdf.Content
@@ -54,6 +55,12 @@ namespace ratpdf.Content
                 ("watermark-pdf", "Add Watermark to PDF — Draft & Confidential Marks", "Diagonal watermarks for drafts, samples, and confidential packs. Combine with password protection.", "PDF", "/PDF/Watermark", null, null),
                 ("password-protect-pdf", "Password Protect PDF — Encryption Guide", "Encrypt sensitive PDFs before email. Password length, sharing hygiene, and recovery limits.", "PDF", "/PDF/Password", null, null),
                 ("sign-pdf", "Sign PDF with Text — Business Approval Workflow", "Add typed signature blocks to quotes and SOWs. Difference vs qualified e-signatures.", "PDF", "/PDF/SignText", null, null),
+                ("sign-pdf-legally", "Sign PDF Legally — Typed Signatures, E-Sign & Compliance", "When typed PDF signatures are enough for business, and when you need qualified e-signatures under eIDAS, ESIGN, or local law.", "PDF", "/PDF/SignText",
+                    ["Is a typed name on a PDF legally binding?", "Do I need DocuSign instead of RatPDF?"],
+                    ["Often yes for routine B2B contracts when combined with email evidence — but high-value or regulated deals may need qualified e-signatures or wet ink.", "Use dedicated platforms for audit trails and QES; RatPDF typed signatures suit internal approvals and many freelancer workflows."]),
+                ("watermark-vs-password-pdf", "Watermark vs Password on PDF — When to Use Each", "Watermarks mark status visually; passwords encrypt content. Learn when to use DRAFT labels, encryption, or both.", "PDF", null,
+                    ["Can a watermark replace a password?", "Should I watermark and password the same PDF?"],
+                    ["No — watermarks are visible only and do not encrypt. Anyone who opens the file can still copy content.", "Yes for sensitive drafts: watermark for status during review, then password-protect the final before external sharing."]),
                 ("rotate-pdf", "Rotate PDF Pages — Fix Scan Orientation", "Fix 90°/180° scans without re-scanning. Rotate vs remove blank pages.", "PDF", "/PDF/RotateOrRemove", null, null),
                 ("images-to-pdf", "Convert Images to PDF — JPG, PNG, WEBP", "Combine receipts and photos into one PDF. Sort order, compression, and margin tips.", "PDF", "/PDF/ConvertImages", null, null),
                 ("background-remover", "Remove Image Background Online — Free Guide", "AI cutouts for e-commerce and headshots. When it works, PNG export, and catalogue PDFs.", "Image", "/Tools/ImgBackgroundRemove", null, null),
@@ -70,12 +77,16 @@ namespace ratpdf.Content
                 ("ocr-pdf", "OCR PDF — Make Scanned Documents Searchable", "Add a Tesseract text layer to image PDFs. Scan tips, accuracy, and follow-up conversion tools.", "PDF", "/PDF/OcrPdf", null, null),
                 ("add-page-numbers", "Add Page Numbers to PDF — Footer Format", "Stamp Page {page} of {total} footers on reports and manuals. Tokens, margins, and merge-first tips.", "PDF", "/PDF/PageNumbers", null, null),
                 ("pdf-metadata", "PDF Metadata Viewer — Document Properties", "Inspect title, author, dates, and page count. JSON export for audits and ECM migration.", "PDF", "/PDF/PdfMetadata", null, null),
+                ("pdf-tool-alternatives", "Best PDF Tool Alternatives — iLovePDF, Smallpdf & Adobe Compared", "Honest comparison of top PDF sites vs RatPDF: free limits, security, schema-rich guides, and migration checklist.", "PDF", null,
+                    ["What is the best iLovePDF alternative?", "Is RatPDF better than Smallpdf for daily use?"],
+                    ["RatPDF — one site for merge, compress, convert, sign, and invoice PDFs with transparent free limits.", "Smallpdf limits free users to 2 tasks/day; RatPDF offers 3 uses per tool with a full comparison at /compare."]),
             };
 
             foreach (var m in meta)
             {
                 var body = GuideBodies.Get(m.Slug);
                 if (body == null) continue;
+                var (author, reviewer) = SiteAuthors.ResolveForContent(m.Slug, m.Cat);
                 yield return new ContentEntry
                 {
                     Slug = m.Slug,
@@ -85,7 +96,11 @@ namespace ratpdf.Content
                     ToolUrl = m.Tool,
                     BodyHtml = body,
                     Published = new DateTime(2025, 6, 1),
+                    LastReviewed = new DateTime(2026, 1, 15),
                     Kind = ContentKind.Guide,
+                    AuthorSlug = author,
+                    ReviewerSlug = reviewer,
+                    Sources = ContentSourcesCatalog.GetForSlug(m.Slug),
                     FaqQuestions = m.Fq,
                     FaqAnswers = m.Fa,
                 };
@@ -111,6 +126,7 @@ namespace ratpdf.Content
             {
                 var body = BlogBodies.Get(m.Slug);
                 if (body == null) continue;
+                var (author, reviewer) = SiteAuthors.ResolveForContent(m.Slug, m.Cat);
                 yield return new ContentEntry
                 {
                     Slug = m.Slug,
@@ -120,7 +136,11 @@ namespace ratpdf.Content
                     ToolUrl = null,
                     BodyHtml = body,
                     Published = published,
+                    LastReviewed = new DateTime(2026, 1, 15),
                     Kind = ContentKind.Blog,
+                    AuthorSlug = author,
+                    ReviewerSlug = reviewer,
+                    Sources = ContentSourcesCatalog.GetForSlug(m.Slug),
                 };
                 published = published.AddDays(4);
             }

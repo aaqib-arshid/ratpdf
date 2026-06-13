@@ -6,16 +6,39 @@
     var description = ViewData["Description"] as string ?? "Free online PDF tools — merge, split, compress, convert PDF to Word, Excel, and more. Adobe-quality conversion with RatPDF.";
     var ogImage = ViewData["OgImage"] as string ?? PdfToolSeo.DefaultOgImage;
     var robots = ViewData["Robots"] as string ?? "index, follow, max-image-preview:large, max-snippet:-1";
+    var pageKeywords = ViewData["Keywords"] as string;
+    var ogLocale = ViewData["OgLocale"] as string;
+    var geoRegion = ViewData["GeoRegion"] as string;
+    var geoCountry = ViewData["GeoCountry"] as string;
 }
 <link rel="canonical" href="@canonical" />
 <meta name="robots" content="@robots" />
+@if (!string.IsNullOrEmpty(pageKeywords))
+{
+<meta name="keywords" content="@pageKeywords" />
+}
+@if (!string.IsNullOrEmpty(geoRegion))
+{
+<meta name="geo.region" content="@geoRegion" />
+}
+@if (!string.IsNullOrEmpty(geoCountry))
+{
+<meta name="geo.country" content="@geoCountry" />
+}
 <meta property="og:site_name" content="@PdfToolSeo.SiteName" />
 <meta property="og:title" content="@title" />
 <meta property="og:description" content="@description" />
 <meta property="og:url" content="@canonical" />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="@ogImage" />
+@if (!string.IsNullOrEmpty(ogLocale))
+{
+<meta property="og:locale" content="@ogLocale" />
+}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="@title" />
 <meta name="twitter:description" content="@description" />
 <meta name="twitter:image" content="@ogImage" />
+<link rel="alternate" type="text/plain" href="/llms.txt" title="LLM site guide" />
+<link rel="author" href="@PdfToolSeo.Canonical(SiteEntity.AboutPath)" />
+<meta name="publisher" content="@SiteEntity.Name" />

@@ -1,0 +1,39 @@
+@model ratpdf.Models.ContentEntry
+@using ratpdf.Constants
+
+@{
+    var author = SiteAuthors.Get(Model.AuthorSlug);
+    var reviewer = SiteAuthors.Get(Model.ReviewerSlug);
+    if (author == null) return;
+}
+
+<div class="rp-author-byline d-flex flex-wrap align-items-center gap-3 mb-3 pb-3 border-bottom" itemprop="author" itemscope itemtype="https://schema.org/Person">
+    <div class="flex-shrink-0">
+        <div class="rp-author-avatar rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+            <span class="fw-bold text-primary" aria-hidden="true">@author.Name.Split(' ').Select(n => n[0]).Take(2).Aggregate("", (a, c) => a + c)</span>
+        </div>
+    </div>
+    <div class="flex-grow-1">
+        <p class="small mb-0">
+            Written by
+            <a href="@SiteAuthors.HubPath/@author.Slug" class="fw-semibold text-decoration-none" itemprop="url">
+                <span itemprop="name">@author.Name</span>
+            </a>
+            <span class="text-muted">· @author.JobTitle</span>
+        </p>
+        @if (reviewer != null && reviewer.Slug != author.Slug)
+        {
+            <p class="small text-muted mb-0">
+                Reviewed by
+                <a href="@SiteAuthors.HubPath/@reviewer.Slug" class="text-decoration-none">@reviewer.Name</a>
+            </p>
+        }
+        @if (Model.LastReviewed.HasValue)
+        {
+            <p class="small text-muted mb-0">
+                <i class="bi bi-check-circle me-1"></i>Last reviewed @Model.LastReviewed.Value.ToString("MMMM d, yyyy")
+                · <a href="@SiteEntity.EditorialPolicyPath">Editorial policy</a>
+            </p>
+        }
+    </div>
+</div>

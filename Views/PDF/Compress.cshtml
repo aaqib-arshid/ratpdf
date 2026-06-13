@@ -13,7 +13,7 @@
         <div class="card-body text-center">
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
-                <h2 class="fw-bold mb-3">Compress PDF</h2>
+                <h1 class="fw-bold mb-3">Compress PDF</h1>
                 <p class="text-muted mb-2">Upload a PDF to reduce its file size. Choose your compression level below.</p>
                 @await Html.PartialAsync("_PdfToolUsageBadge")
                 @await Html.PartialAsync("_PdfToolTrustPills")
@@ -131,7 +131,7 @@
     <div class="container py-5">
         <div class="card shadow-sm p-4" style="border-radius: 12px;">
         
-            <h2 class="fw-bold mb-3">How to Compress a PDF File Online – The Complete Guide</h2>
+            <h1 class="fw-bold mb-3">How to Compress a PDF File Online – The Complete Guide</h1>
             <p>
                 Large PDF files are one of the most common friction points in modern digital workflows.
                 Whether you’re trying to send a report to a colleague, upload a portfolio to a job portal,
@@ -567,58 +567,6 @@
 
     @section Scripts {
 
-        <script type="application/ld+json">
-            {
-            "@@context": "https://schema.org",
-            "@@type": "SoftwareApplication",
-            "name": "Compress PDF File Online",
-            "applicationCategory": "UtilityApplication",
-            "operatingSystem": "Web",
-            "url": "https://ratpdf.com/PDF/Compress",
-            "description": "Reduce PDF file size online without losing quality. Browser-side rat pdf compression.",
-            "offers": { "@@type": "Offer", "price": "0", "priceCurrency": "USD" },
-              "aggregateRating": {
-                "@@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "ratingCount": "1450",
-                "bestRating": "5",
-                "worstRating": "1"
-              }
-            }
-        </script>
-
-        <script type="application/ld+json">
-            @Html.Raw(@"{
-  ""@context"": ""https://schema.org"",
-  ""@type"": ""FAQPage"",
-  ""mainEntity"": [
-    {
-      ""@type"": ""Question"",
-      ""name"": ""How do I compress a PDF file online?"",
-      ""acceptedAnswer"": { ""@type"": ""Answer"",
-        ""text"": ""Drag and drop your PDF into the upload area, choose a compression level, and click Compress PDF. The compressed file downloads automatically."" }
-    },
-    {
-      ""@type"": ""Question"",
-      ""name"": ""Is my PDF file secure?"",
-      ""acceptedAnswer"": { ""@type"": ""Answer"",
-        ""text"": ""Yes. Files are sent over HTTPS, compressed immediately, returned to you, and then deleted from our servers."" }
-    },
-    {
-      ""@type"": ""Question"",
-      ""name"": ""Can I use this on mobile?"",
-      ""acceptedAnswer"": { ""@type"": ""Answer"",
-        ""text"": ""Yes, the tool works on all devices including Windows, Mac, Android, and iOS."" }
-    },
-    {
-      ""@type"": ""Question"",
-      ""name"": ""Do I need to register?"",
-      ""acceptedAnswer"": { ""@type"": ""Answer"",
-        ""text"": ""No registration or installation required."" }
-    }
-  ]
-}")
-        </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <script>

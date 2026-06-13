@@ -1,31 +1,22 @@
 @using System.Text.Json
 @using ratpdf.Constants
+@using ratpdf.Helpers
 @model ratpdf.Models.SEOPageModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var canonical = $"{PdfToolSeo.SiteUrl}/{Model.RoutePrefix}/{Model.Slug}";
     var toolHref = PdfToolSeo.Canonical(Model.ToolUrl);
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.Description;
+    ViewData["CanonicalUrl"] = canonical;
+    ViewData["LightLayout"] = true;
+    ViewData["SeoToolUrl"] = toolHref;
+    ViewData["SeoToolLabel"] = $"Start {Model.ToolLinkText} free";
 }
 
 @section Head {
-    <title>@Model.Title</title>
-    <meta name="description" content="@Model.Description" />
-    <link rel="canonical" href="@canonical" />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
     <script type="application/ld+json">
-    {
-      "@@context": "https://schema.org",
-      "@@type": "Article",
-      "headline": @Html.Raw(JsonSerializer.Serialize(Model.Title)),
-      "description": @Html.Raw(JsonSerializer.Serialize(Model.Description)),
-      "author": { "@@type": "Organization", "name": "RatPDF" },
-      "publisher": {
-        "@@type": "Organization",
-        "name": "RatPDF",
-        "logo": { "@@type": "ImageObject", "url": "@PdfToolSeo.DefaultOgImage" }
-      },
-      "mainEntityOfPage": { "@@type": "WebPage", "@@id": @Html.Raw(JsonSerializer.Serialize(canonical)) }
-    }
+    @Html.Raw(SchemaHelper.BuildSoftwareApplicationLdJson(Model.ToolLinkText, toolHref, Model.Description))
     </script>
     @if (Model.FAQ.Count > 0)
     {
@@ -52,21 +43,30 @@
     }
 }
 
-<article class="container py-5">
+<article class="container py-4 py-md-5">
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="@Model.ToolUrl">@Model.ToolLinkText</a></li>
+            <li class="breadcrumb-item"><a href="@TopicalAuthority.PdfToolsHubPath">PDF tools</a></li>
+            <li class="breadcrumb-item"><a href="@toolHref">@Model.ToolLinkText</a></li>
             <li class="breadcrumb-item active" aria-current="page">@Model.Slug</li>
         </ol>
     </nav>
-    <h1 class="fw-bold mb-3">@Model.Title</h1>
+
+    @await Html.PartialAsync("_PdfToolSocialProof")
+    @await Html.PartialAsync("_PdfToolTrustPills")
+
+    <h1 class="fw-bold mb-3">@Model.Title.Replace(" | RatPDF", "")</h1>
     <p class="lead text-muted">@Model.Description</p>
-    <div class="mb-4">
-        <a href="@toolHref" class="btn btn-primary btn-lg">
-            <i class="bi bi-lightning-charge-fill me-2"></i>Use @Model.ToolLinkText
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a href="@toolHref" class="btn btn-primary btn-lg rounded-pill px-4 fw-semibold">
+            <i class="bi bi-lightning-charge-fill me-2"></i>@Model.ToolLinkText — free
         </a>
+        <a href="/Subscription/Plans?source=seo-landing" class="btn btn-outline-primary btn-lg rounded-pill px-4">Pro @SubscriptionPricing.FormatProShort()</a>
     </div>
+    <p class="small text-muted mb-4">3 uses/day · 200 MB · no signup · TLS encrypted · <a href="@SiteEntity.TrustHubPath">Trust center</a></p>
+
     <div class="seo-landing-body">@Html.Raw(Model.FullContentHtml)</div>
 
     @if (Model.FAQ.Count > 0)
@@ -79,9 +79,11 @@
         }
     }
 
-    <p class="mt-4">
-        Ready to start? Open the <a href="@toolHref">@Model.ToolLinkText</a> — free to try, no signup required.
-    </p>
+    @await Html.PartialAsync("_SeoLandingCtaBand")
 </article>
 
-@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_ProgrammaticSeoLinks", Model)
+
+<div class="rp-sticky-seo-cta d-md-none">
+    <a href="@toolHref" class="btn btn-primary w-100 rounded-pill fw-semibold">@Model.ToolLinkText — free</a>
+</div>

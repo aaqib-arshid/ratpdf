@@ -1,0 +1,58 @@
+@model IReadOnlyList<ratpdf.Constants.CompetitiveSeoCatalog.ComparePage>
+@using ratpdf.Constants
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hub = PdfToolSeo.Canonical(CompetitiveSeoCatalog.CompareHubPath);
+}
+
+@section Head {
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "CollectionPage",
+      "name": "PDF Tool Comparisons",
+      "description": "@ViewData["Description"]",
+      "url": "@hub"
+    }
+    </script>
+}
+
+<article class="rp-content-page">
+    @await Html.PartialAsync("_AiCitationBlock")
+
+    <header class="text-center mb-5 col-lg-9 mx-auto">
+        <span class="rp-badge mb-2">Comparisons</span>
+        <h1 class="fw-bold display-6 mt-2">RatPDF vs popular PDF tools</h1>
+        <p class="lead text-muted">
+            Honest side-by-side comparisons with iLovePDF, Smallpdf, PDF24, Adobe, Sejda, and Foxit —
+            features, free limits, and when RatPDF is the better fit.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a href="/pdf/compress" class="btn btn-primary rounded-pill px-4 fw-semibold">Try RatPDF free</a>
+            <a href="@TopicalAuthority.PdfToolsHubPath" class="btn btn-outline-primary rounded-pill px-4">PDF tools hub</a>
+        </div>
+        <p class="small text-muted mt-3 mb-0">3 uses/day · no signup · <a href="@SiteEntity.TrustHubPath">Trust center</a></p>
+    </header>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Compare RatPDF with…</h2>
+        <div class="row g-3">
+            @foreach (var cmp in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <a href="@CompetitiveSeoCatalog.CompareHubPath/@cmp.Slug" class="rp-guide-card d-block text-decoration-none h-100">
+                        <h3 class="h6 fw-bold text-dark mb-1">RatPDF vs @cmp.CompetitorName</h3>
+                        <p class="small text-muted mb-0">@cmp.HeroSummary</p>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h5 fw-bold mb-2">Related guide</h2>
+        <p class="small text-muted mb-2"><a href="/guides/pdf-tool-alternatives">Best PDF tool alternatives in 2026</a> — how to choose and migrate from another service.</p>
+    </section>
+
+    @await Html.PartialAsync("_SeoLandingCtaBand", new ViewDataDictionary(ViewData) { { "SeoToolUrl", "/pdf/compress" }, { "SeoToolLabel", "Try RatPDF free" } })
+</article>

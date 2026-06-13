@@ -1,86 +1,89 @@
 ﻿@using ratpdf.Constants
 @using ratpdf.Content
+@using ratpdf.Helpers
 @{
     ViewData["FullWidth"] = true;
     var featuredGuides = ContentLibrary.Guides.Take(6).ToList();
     var latestPosts = ContentLibrary.Blogs.OrderByDescending(b => b.Published).Take(4).ToList();
     ViewData["Title"] = "Free PDF Tools Online — Compress, Merge, PDF to Word | RatPDF";
-    ViewData["Description"] = "RatPDF: 40+ free PDF tools with Ghostscript, LibreOffice & pdf2docx engines. Compress, merge, split, convert PDF to Word/Excel. Guides, invoices & Pro from $8.99/mo.";
+    ViewData["Description"] = $"RatPDF: {PdfToolSeo.ToolCountLabel} free PDF tools with Ghostscript, LibreOffice & pdf2docx engines. Compress, merge, split, convert PDF to Word/Excel. Guides, invoices & Pro from $8.99/mo.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/");
 }
 
 @section Head {
-    <link rel="canonical" href="https://ratpdf.com/" />
-    <meta property="og:title" content="Free PDF Tools Online — Compress, Merge, PDF to Word | RatPDF" />
-    <meta property="og:description" content="Professional PDF toolkit: compress, merge, convert PDF to Word & Excel, plus step-by-step guides. Free tier: 3 uses/day. Pro $8.99/mo." />
-    <meta property="og:image" content="https://ratpdf.com/images/ratpdf-logo.png" />
-    <meta property="og:url" content="https://ratpdf.com/" />
-    <meta property="og:type" content="website" />
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        ViewData["Title"]!.ToString()!,
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/"),
+        "WebPage",
+        new[] { "h1", ".lead", ".rp-ai-summary" }))
+    </script>
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildItemListLdJson(
+        "RatPDF Free PDF Tools",
+        PdfToolSeo.AllTools.Take(12).Select(t => (t.Name, PdfToolSeo.Canonical(t.Url)))))
+    </script>
 }
-
-<script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@type": "WebSite",
-        "name": "Rat PDF",
-        "url": "https://ratpdf.com",
-        "potentialAction": {
-            "@@type": "SearchAction",
-            "target": "https://ratpdf.com/PDF?search={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
-    }
-</script>
-<script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@type": "Organization",
-        "name": "Rat PDF",
-        "url": "https://ratpdf.com",
-        "logo": "https://ratpdf.com/images/ratpdf-logo.png",
-        "sameAs": ["https://twitter.com/ratpdf", "https://facebook.com/ratpdf"]
-    }
-</script>
-<script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@type": "ItemList",
-        "name": "Free PDF Tools",
-        "itemListElement": [
-            { "@@type": "SoftwareApplication", "name": "Compress PDF", "applicationCategory": "Utility" },
-            { "@@type": "SoftwareApplication", "name": "Merge PDF", "applicationCategory": "Utility" },
-            { "@@type": "SoftwareApplication", "name": "Split PDF", "applicationCategory": "Utility" },
-            { "@@type": "SoftwareApplication", "name": "Image to PDF", "applicationCategory": "Utility" },
-            { "@@type": "SoftwareApplication", "name": "PDF to Word", "applicationCategory": "Utility" },
-            { "@@type": "SoftwareApplication", "name": "Unlock PDF", "applicationCategory": "Utility" },
-            { "@@type": "SoftwareApplication", "name": "OCR PDF", "applicationCategory": "Utility" },
-            { "@@type": "SoftwareApplication", "name": "PDF to Images", "applicationCategory": "Utility" },
-            { "@@type": "SoftwareApplication", "name": "Flatten PDF", "applicationCategory": "Utility" }
-        ]
-    }
-</script>
 
 <div class="rp rp-home">
     <section class="rp-home-hero">
-        <p class="rp-hero-eyebrow"><i class="bi bi-stars"></i> @ContentLibrary.Guides.Count() guides · @ContentLibrary.Blogs.Count() articles · 40+ tools</p>
+        @* Speakable / AI summary — visually hidden; keeps schema target without cluttering hero *@
+        <div class="visually-hidden rp-ai-summary" aria-hidden="true">
+            <p>@SiteEntity.Description</p>
+            <p>@SiteEntity.CitePageWithDate("Free PDF Tools Online", "/", DateTime.UtcNow)</p>
+        </div>
+        <p class="rp-hero-eyebrow"><i class="bi bi-stars"></i> @ContentLibrary.Guides.Count() guides · @ContentLibrary.Blogs.Count() articles · @PdfToolSeo.ToolCountLabel PDF tools</p>
         <h1>Professional PDF tools &amp; tutorials you can trust</h1>
         <p class="lead">Compress, merge, and convert documents with production-grade engines — plus step-by-step guides for every tool.</p>
         <div class="rp-hero-actions">
             <a href="/pdf/compress" class="rp-tool-pill-home primary"><i class="bi bi-lightning-charge-fill"></i> Compress PDF</a>
-            <a href="/compress-pdf" class="rp-tool-pill-home"><i class="bi bi-collection"></i> Compression Hub</a>
-            <a href="/PDF/PdfToDoc" class="rp-tool-pill-home"><i class="bi bi-file-earmark-word"></i> PDF to Word</a>
-            <a href="/PDF/Merge" class="rp-tool-pill-home"><i class="bi bi-files"></i> Merge PDF</a>
-            <a href="/guides" class="rp-tool-pill-home"><i class="bi bi-journal-richtext"></i> Guides</a>
+            <a href="/pdf/merge" class="rp-tool-pill-home"><i class="bi bi-files"></i> Merge PDF</a>
+            <a href="/pdf/pdftodoc" class="rp-tool-pill-home"><i class="bi bi-file-earmark-word"></i> PDF to Word</a>
+            <a href="/invoice/create" class="rp-tool-pill-home"><i class="bi bi-receipt"></i> Invoice Generator</a>
+            <a href="/guides/pdf-tools" class="rp-tool-pill-home"><i class="bi bi-grid-3x3-gap"></i> PDF Tools Hub</a>
         </div>
         <a href="#all-pdf-tools" class="btn btn-outline-primary rounded-pill px-4">Browse all tools</a>
     </section>
 
     <div class="rp-trust-row">
-        <div class="rp-trust-item"><strong>40+</strong><span>Tools</span></div>
+        <div class="rp-trust-item"><strong>@PdfToolSeo.ToolCountLabel</strong><span>PDF tools</span></div>
         <div class="rp-trust-item"><strong>@ContentLibrary.Guides.Count()</strong><span>Guides</span></div>
         <div class="rp-trust-item"><strong>200 MB</strong><span>Free upload</span></div>
         <div class="rp-trust-item"><strong>4 GB</strong><span>Pro upload</span></div>
         <div class="rp-trust-item"><strong>@SubscriptionPricing.FormatProShort()</strong><span>Pro plan</span></div>
     </div>
+
+    <section class="rp-section-home">
+        <div class="rp-section-head">
+            <span class="rp-sec-label">Topical hubs</span>
+            <h2>Start with a workflow pillar</h2>
+            <p>Five high-intent entry points — each links to tools, guides, and long-tail topics.</p>
+        </div>
+        <div class="row g-3">
+            @foreach (var pillar in TopicalAuthority.Pillars)
+            {
+                var guide = ContentLibrary.GetGuideForToolUrl(pillar.Path);
+                <div class="col-md-6 col-lg-4">
+                    <a href="@pillar.Path" class="rp-guide-card d-block text-decoration-none h-100">
+                        <h3 class="h6 fw-bold text-dark mb-1">@pillar.Label</h3>
+                        <p class="small text-muted mb-0">@pillar.Description</p>
+                        @if (guide != null)
+                        {
+                            <span class="small text-primary d-block mt-2">Includes step-by-step guide →</span>
+                        }
+                    </a>
+                </div>
+            }
+            <div class="col-md-6 col-lg-4">
+                <a href="@TopicalAuthority.SecureWorkflowPath" class="rp-guide-card d-block text-decoration-none h-100">
+                    <h3 class="h6 fw-bold text-dark mb-1">Secure PDF workflow</h3>
+                    <p class="small text-muted mb-0">Watermark, sign, password-protect, and unlock — the full security silo.</p>
+                </a>
+            </div>
+        </div>
+        <div class="text-center mt-3"><a href="@TopicalAuthority.CompareHubPath" class="btn btn-outline-secondary rounded-pill px-4 me-2">Compare vs competitors</a><a href="@TopicalAuthority.PdfToolsHubPath" class="btn btn-outline-primary rounded-pill px-4">Browse all @PdfToolSeo.AllTools.Length tools</a></div>
+    </section>
 
     <section class="rp-section-home">
         <div class="rp-section-head">
@@ -487,7 +490,8 @@
     <section class="rp-cta-band">
         <h2>Start free — upgrade when you need more</h2>
         <p>3 uses per tool per day. Pro at @SubscriptionPricing.FormatProDisplay() — unlimited tools, 4 GB uploads.</p>
-        <a href="/pdf/compress" class="btn btn-light rounded-pill px-4">Compress PDF</a>
+        <a href="/pdf/compress" class="btn btn-light rounded-pill px-4 fw-semibold">Compress PDF free</a>
+        <a href="/Subscription/Plans" class="btn btn-outline-light rounded-pill px-4">View Pro plans</a>
         <a href="/guides" class="btn btn-outline-light rounded-pill px-4">Read guides</a>
     </section>
 </div>

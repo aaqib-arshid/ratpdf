@@ -1,0 +1,103 @@
+@using ratpdf.Constants
+@using ratpdf.Content
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hub = TopicalAuthority.CanonicalSecureHub();
+}
+
+@section Head {
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "CollectionPage",
+      "name": "Secure PDF Workflow — RatPDF",
+      "description": "@ViewData["Description"]",
+      "url": "@hub"
+    }
+    </script>
+}
+
+<div class="rp-content-page">
+    <header class="text-center mb-5 col-lg-9 mx-auto">
+        <nav aria-label="breadcrumb" class="mb-3 text-start">
+            <ol class="breadcrumb small mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="@TopicalAuthority.PdfToolsHubPath">PDF tools hub</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Secure PDF workflow</li>
+            </ol>
+        </nav>
+        <span class="rp-badge mb-2">Security silo</span>
+        <h1 class="fw-bold display-6 mt-2">Secure PDF workflow</h1>
+        <p class="lead text-muted">
+            Share documents safely: mark drafts with watermarks, encrypt with passwords, add typed signatures, or unlock files you own.
+        </p>
+        <a href="@TopicalAuthority.PdfToolsHubPath" class="btn btn-outline-primary btn-sm rounded-pill mt-2">← All PDF tools</a>
+    </header>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Recommended workflow</h2>
+        <ol class="rp-prose">
+            <li><strong>Draft review</strong> — add a diagonal watermark so recipients know the file is not final.</li>
+            <li><strong>Approval</strong> — add a typed signature block for quotes, SOWs, and internal sign-off.</li>
+            <li><strong>Distribution</strong> — password-protect the final PDF before email or portal upload.</li>
+            <li><strong>Archive</strong> — compress the locked PDF if attachment size limits apply.</li>
+        </ol>
+    </section>
+
+    <section class="mb-5">
+        <div class="row g-3">
+            @foreach (var tool in TopicalAuthority.SecureTools)
+            {
+                var guide = tool.GuideSlug == null ? null : ContentLibrary.GetGuide(tool.GuideSlug);
+                <div class="col-md-6 col-lg-4">
+                    <div class="rp-guide-card h-100 d-flex flex-column">
+                        <h3 class="h6 fw-bold mb-2"><a href="@tool.Url" class="text-dark text-decoration-none">@tool.Name</a></h3>
+                        @if (guide != null)
+                        {
+                            <p class="small text-muted flex-grow-1 mb-2">@guide.Description</p>
+                            <p class="small mb-1"><a href="@guide.Path">Read guide →</a></p>
+                        }
+                        else
+                        {
+                            <p class="small text-muted flex-grow-1 mb-2">Permanently hide sensitive text before sharing externally.</p>
+                        }
+                        <a href="@tool.Url" class="small fw-semibold text-primary">Open tool →</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Related workflow tools</h2>
+        <div class="row g-2">
+            @foreach (var link in TopicalAuthority.GetWorkflowLinks("/pdf/password"))
+            {
+                <div class="col-6 col-md-3">
+                    <a href="@link.Url" class="d-block p-2 rounded bg-light text-decoration-none small text-dark">@link.Name</a>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h5 fw-bold mb-3">Further reading</h2>
+        <ul class="list-unstyled">
+            @{
+                var posts = new[] { "secure-pdf-password-best-practices", "small-business-pdf-workflow" };
+            }
+            @foreach (var slug in posts)
+            {
+                var blog = ContentLibrary.GetBlog(slug);
+                if (blog == null) { continue; }
+                <li class="mb-2"><a href="@blog.Path">@blog.Title</a></li>
+            }
+            <li class="mb-2"><a href="/guides/password-protect-pdf">Password protect PDF guide</a></li>
+            <li class="mb-2"><a href="/guides/watermark-pdf">Watermark PDF guide</a></li>
+            <li class="mb-2"><a href="/guides/watermark-vs-password-pdf">Watermark vs password</a></li>
+            <li class="mb-2"><a href="/guides/sign-pdf-legally">Sign PDF legally</a></li>
+            <li><a href="/guides/sign-pdf">Sign PDF guide</a></li>
+        </ul>
+    </section>
+</div>

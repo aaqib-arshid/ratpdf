@@ -1,0 +1,15 @@
+@* Set ViewData: ToolUrl (required), ToolCtaLabel (optional), ToolCtaTitle (optional) *@
+@using ratpdf.Constants
+@{
+    var toolUrl = ViewData["ToolUrl"] as string;
+    if (string.IsNullOrEmpty(toolUrl)) return;
+    var label = ViewData["ToolCtaLabel"] as string ?? "Use free tool →";
+    var title = ViewData["ToolCtaTitle"] as string ?? "Try it free — no signup";
+}
+<div class="rp-cta-inline mb-4">
+    <div>
+        <strong>@title</strong>
+        <p class="small text-muted mb-0">3 uses per day · 200 MB · TLS encrypted · auto-delete</p>
+    </div>
+    <a href="@toolUrl" class="btn btn-primary rounded-pill px-4 fw-semibold">@label</a>
+</div>

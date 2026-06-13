@@ -16,7 +16,7 @@
     @if (Model.Rating != null)
     {
         <script type="application/ld+json">
-            @Html.Raw(SchemaHelper.BuildRatingLdJson(Model.Rating, "RatPDF PDF Compressor", toolHref))
+            @Html.Raw(SchemaHelper.BuildSoftwareApplicationLdJson("RatPDF PDF Compressor", toolHref, Model.MetaDescription))
         </script>
     }
     @if (Model.Organization != null)

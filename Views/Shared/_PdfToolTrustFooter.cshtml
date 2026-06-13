@@ -1,5 +1,18 @@
-<div class="rp-trust-row d-flex flex-wrap justify-content-center gap-3 mt-3 small">
-    <span><i class="bi bi-check-circle-fill me-1"></i>No watermark on output</span>
-    <span><i class="bi bi-check-circle-fill me-1"></i>Works in browser</span>
-    <span><i class="bi bi-check-circle-fill me-1"></i><a href="/Subscription/Plans" class="text-decoration-none">Pro</a> @ratpdf.Constants.SubscriptionPricing.FormatProDisplay()</span>
+@using ratpdf.Constants
+@{
+    var source = ViewData["PdfToolId"] is string tid && !string.IsNullOrEmpty(tid)
+        ? Uri.EscapeDataString(tid) : "tool";
+}
+<div class="rp-trust-footer mt-4 pt-3 border-top">
+    <div class="rp-trust-row d-flex flex-wrap justify-content-center gap-2 gap-md-3 small text-center">
+        <span><i class="bi bi-check-circle-fill text-success me-1"></i>No watermark</span>
+        <span><i class="bi bi-check-circle-fill text-success me-1"></i>No signup required</span>
+        <span><i class="bi bi-check-circle-fill text-success me-1"></i>Works in browser</span>
+    </div>
+    <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-3">
+        <a href="/Subscription/Plans?source=@source" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
+            Pro @SubscriptionPricing.FormatProShort() — 4 GB · unlimited
+        </a>
+        <a href="@SiteEntity.TrustHubPath" class="small text-muted text-decoration-none">Security &amp; privacy →</a>
+    </div>
 </div>

@@ -11,7 +11,11 @@ namespace ratpdf.Models
         public string? ToolUrl { get; init; }
         public required string BodyHtml { get; init; }
         public DateTime Published { get; init; }
+        public DateTime? LastReviewed { get; init; }
         public ContentKind Kind { get; init; }
+        public string? AuthorSlug { get; init; }
+        public string? ReviewerSlug { get; init; }
+        public ContentSource[]? Sources { get; init; }
         public string[]? FaqQuestions { get; init; }
         public string[]? FaqAnswers { get; init; }
 

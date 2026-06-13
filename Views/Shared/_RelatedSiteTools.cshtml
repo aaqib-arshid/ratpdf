@@ -24,6 +24,10 @@
     }
     else if (category is SiteToolCategories.Developer or SiteToolCategories.Network or SiteToolCategories.Utilities)
     {
-        <p class="small text-muted mb-0 mt-2">Need PDFs? Try <a href="/PDF/Merge">Merge PDF</a>, <a href="/PDF/PdfToDoc">PDF to Word</a>, or <a href="/guides">all guides</a>.</p>
+        <p class="small text-muted mb-0 mt-2">Document workflows: <a href="@TopicalAuthority.PdfToolsHubPath">PDF tools hub</a>, <a href="/pdf/merge">Merge PDF</a>, <a href="/pdf/pdftodoc">PDF to Word</a>.</p>
+    }
+    else if (category is SiteToolCategories.Business)
+    {
+        <p class="small text-muted mb-0 mt-2">After creating documents: <a href="/pdf/compress">Compress PDF</a>, <a href="/pdf/merge">Merge PDF</a>, <a href="@TopicalAuthority.PdfToolsHubPath">PDF tools hub</a>.</p>
     }
 </section>

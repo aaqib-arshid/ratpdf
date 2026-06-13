@@ -17,6 +17,24 @@ namespace ratpdf.Controllers
             return View(ContentLibrary.Guides.OrderBy(g => g.Category).ThenBy(g => g.Title).ToList());
         }
 
+        [HttpGet("pdf-tools")]
+        public IActionResult PdfTools()
+        {
+            ViewData["Title"] = "All PDF Tools Online — Complete Hub | RatPDF";
+            ViewData["Description"] = "Browse every RatPDF tool by workflow: compress, merge, convert, edit, OCR, and secure PDFs. Free tier + Pro up to 4 GB.";
+            ViewData["CanonicalUrl"] = TopicalAuthority.CanonicalHub();
+            return View();
+        }
+
+        [HttpGet("secure-pdf-workflow")]
+        public IActionResult SecurePdfWorkflow()
+        {
+            ViewData["Title"] = "Secure PDF Workflow — Sign, Watermark & Encrypt | RatPDF";
+            ViewData["Description"] = "Protect PDFs before sharing: watermark drafts, password encrypt, sign approvals, and unlock when needed. Step-by-step guides included.";
+            ViewData["CanonicalUrl"] = TopicalAuthority.CanonicalSecureHub();
+            return View();
+        }
+
         [HttpGet("{slug}")]
         public IActionResult Article(string slug)
         {

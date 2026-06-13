@@ -46,8 +46,7 @@ namespace ratpdf.Controllers
 
         private string GenerateBreadcrumbSchema(string slug, string headingH1)
         {
-            var request = HttpContext.Request;
-            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var baseUrl = ratpdf.Constants.PdfToolSeo.SiteUrl;
             var items = new[]
             {
             new { @type = "ListItem", position = 1, name = "Home", item = baseUrl },

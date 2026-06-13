@@ -18,39 +18,39 @@ namespace ratpdf.Constants
     {
         public static readonly SiteNavTool[] PdfEditTools =
         [
-            new("Edit PDF", "/PDF/EditPDF"),
-            new("Merge PDF", "/PDF/Merge"),
-            new("Split PDF", "/PDF/Split"),
-            new("Unlock PDF", "/PDF/UnlockPdf"),
-            new("Flatten PDF", "/PDF/FlattenPdf"),
-            new("OCR PDF", "/PDF/OcrPdf"),
-            new("PDF to Images", "/PDF/PdfToImages"),
-            new("Extract Images", "/PDF/ExtractImages"),
-            new("Page Numbers", "/PDF/PageNumbers"),
-            new("PDF Metadata", "/PDF/PdfMetadata"),
+            new("Edit PDF", "/pdf/editpdf"),
+            new("Merge PDF", "/pdf/merge"),
+            new("Split PDF", "/pdf/split"),
+            new("Unlock PDF", "/pdf/unlockpdf"),
+            new("Flatten PDF", "/pdf/flattenpdf"),
+            new("OCR PDF", "/pdf/ocrpdf"),
+            new("PDF to Images", "/pdf/pdftoimages"),
+            new("Extract Images", "/pdf/extractimages"),
+            new("Page Numbers", "/pdf/pagenumbers"),
+            new("PDF Metadata", "/pdf/pdfmetadata"),
             new("PDF Redaction", "/pdf-redaction"),
-            new("Add Watermark", "/PDF/Watermark"),
-            new("Protect PDF", "/PDF/Password"),
-            new("Sign PDF", "/PDF/SignText"),
-            new("Rotate / Remove Pages", "/PDF/RotateOrRemove"),
+            new("Add Watermark", "/pdf/watermark"),
+            new("Protect PDF", "/pdf/password"),
+            new("Sign PDF", "/pdf/signtext"),
+            new("Rotate / Remove Pages", "/pdf/rotateorremove"),
         ];
 
         public static readonly SiteNavTool[] PdfConvertTools =
         [
-            new("Image to PDF", "/PDF/ConvertImages"),
-            new("Word to PDF", "/PDF/DocToPdf"),
-            new("PDF to Word", "/PDF/PdfToDoc"),
-            new("PDF to Excel", "/PDF/PdfToExcel"),
-            new("Excel to PDF", "/PDF/ExcelToPdf"),
-            new("Text to PDF", "/PDF/TextToPdf"),
-            new("PDF to Text", "/PDF/PdfToText"),
-            new("Img to Base64", "/PDF/ImgToBase64"),
+            new("Image to PDF", "/pdf/convertimages"),
+            new("Word to PDF", "/pdf/doctopdf"),
+            new("PDF to Word", "/pdf/pdftodoc"),
+            new("PDF to Excel", "/pdf/pdftoexcel"),
+            new("Excel to PDF", "/pdf/exceltopdf"),
+            new("Text to PDF", "/pdf/texttopdf"),
+            new("PDF to Text", "/pdf/pdftotext"),
+            new("Img to Base64", "/pdf/imgtobase64"),
         ];
 
         public static readonly SiteNavTool[] ImageTools =
         [
-            new("Background Remover", "/Tools/ImgBackgroundRemove"),
-            new("Compress Image", "/PDF/ImageCompressor"),
+            new("Background Remover", "/tools/imgbackgroundremove"),
+            new("Compress Image", "/pdf/imagecompressor"),
             new("Bulk Image Compressor", "/bulk-image-compressor"),
             new("Image Resizer", "/image-resizer"),
             new("Image Format Converter", "/image-format-converter"),
@@ -82,32 +82,32 @@ namespace ratpdf.Constants
 
         public static readonly SiteNavTool[] DeveloperTools =
         [
-            new("HTML Formatter", "/PDF/HtmlFormatter"),
-            new("JSON Formatter", "/PDF/JsonFormatter"),
-            new("JWT Decoder", "/PDF/JwtDecoder"),
-            new("Img to Base64", "/PDF/ImgToBase64"),
+            new("HTML Formatter", "/pdf/htmlformatter"),
+            new("JSON Formatter", "/pdf/jsonformatter"),
+            new("JWT Decoder", "/pdf/jwtdecoder"),
+            new("Img to Base64", "/pdf/imgtobase64"),
             new("Browser OCR Tool", "/ocr-tool"),
             new("Binary to Decimal", "/binary-to-decimal"),
             new("Decimal to Binary", "/decimal-to-binary"),
             new("URL Encoder", "/url-encoder"),
             new("URL Decoder", "/url-decoder"),
             new("Text Comparer", "/text-comparer"),
-            new("DNS Lookup", "/Tools/DnsLookup"),
+            new("DNS Lookup", "/tools/dnslookup"),
         ];
 
         public static readonly SiteNavTool[] NetworkTools =
         [
-            new("What Is My IP", "/Tools/WhatIsMyIP"),
-            new("IP Lookup", "/Tools/IpLookup"),
-            new("DNS Lookup", "/Tools/DnsLookup"),
+            new("What Is My IP", "/tools/whatismyip"),
+            new("IP Lookup", "/tools/iplookup"),
+            new("DNS Lookup", "/tools/dnslookup"),
         ];
 
         public static readonly SiteNavTool[] Utilities =
         [
-            new("Word Counter", "/Tools/WordCounter"),
+            new("Word Counter", "/tools/wordcounter"),
             new("QR Code Generator", "/qr-code-generator"),
             new("Password Generator", "/password-generator"),
-            new("Ring Size Converter", "/Tools/RingSizeConverter"),
+            new("Ring Size Converter", "/tools/ringsizeconverter"),
         ];
 
         public static readonly SiteNavTool[] BusinessTools =

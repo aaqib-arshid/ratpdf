@@ -4,5 +4,33 @@ Disallow: /Account/
 Disallow: /InvoiceDashboard/
 Disallow: /Error/
 Disallow: /*-keywords.txt
+
+# AI search & answer engine crawlers (discoverability)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
 Sitemap: https://ratpdf.com/sitemap.xml
 Sitemap: https://ratpdf.com/sitemaps/compress-pdf-index.xml
+
+# LLM site guide: https://ratpdf.com/llms.txt

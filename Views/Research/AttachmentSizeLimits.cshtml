@@ -1,0 +1,106 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "PDF and Email Attachment Size Limits 2026",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/research/attachment-size-limits"),
+        "WebPage",
+        new[] { "h1", "table" }))
+    </script>
+}
+
+<article class="rp-content-page">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small mb-0">
+            <li class="breadcrumb-item"><a href="@LinkBuildingCatalog.HubPath">Resources</a></li>
+            <li class="breadcrumb-item active">Attachment size limits</li>
+        </ol>
+    </nav>
+
+    <header class="mb-4">
+        <span class="rp-badge">Reference data</span>
+        <h1 class="fw-bold mt-2">PDF &amp; email attachment size limits (2026)</h1>
+        <p class="lead text-muted">Upload limits for Gmail, Outlook, messaging apps, job portals, and government sites — with links to official documentation.</p>
+        <p class="small text-muted">Last reviewed: June 2026 · <a href="/authors/ethan-brooks">Ethan Brooks</a></p>
+    </header>
+
+    @await Html.PartialAsync("_AiCitationBlock")
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Email providers</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm" id="limitsTable">
+                <thead class="table-light">
+                    <tr><th>Service</th><th>Max attachment</th><th>Notes</th><th>Source</th></tr>
+                </thead>
+                <tbody>
+                    <tr data-limit-mb="25"><td>Gmail</td><td><strong>25 MB</strong></td><td>Per message; total message size includes encoding overhead (~33 MB raw file theoretical max before encoding)</td><td><a href="https://support.google.com/mail/answer/6584" rel="noopener noreferrer" target="_blank">Google Help</a></td></tr>
+                    <tr data-limit-mb="20"><td>Outlook / Microsoft 365</td><td><strong>20–34 MB</strong></td><td>Default 20 MB; admins can raise to 34 MB (150 MB with OneDrive large attachment)</td><td><a href="https://learn.microsoft.com/en-us/exchange/mail-flow/message-size-limits" rel="noopener noreferrer" target="_blank">Microsoft Docs</a></td></tr>
+                    <tr data-limit-mb="25"><td>Yahoo Mail</td><td><strong>25 MB</strong></td><td>Per email attachment</td><td><a href="https://help.yahoo.com/kb/SLN4556.html" rel="noopener noreferrer" target="_blank">Yahoo Help</a></td></tr>
+                    <tr data-limit-mb="10"><td>Proton Mail (Free)</td><td><strong>25 MB</strong> (paid) / <strong>1 MB</strong> free tier</td><td>Varies by plan</td><td><a href="https://proton.me/support/attachment-limit" rel="noopener noreferrer" target="_blank">Proton Support</a></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Messaging &amp; collaboration</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead class="table-light"><tr><th>Platform</th><th>Max file</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr data-limit-mb="100"><td>WhatsApp</td><td><strong>100 MB</strong> (documents)</td><td>Images/video limits differ; PDF sent as document</td></tr>
+                    <tr data-limit-mb="25"><td>Slack (Free/Pro)</td><td><strong>1 GB</strong> (paid) / <strong>5 MB</strong> free</td><td>Plan-dependent</td></tr>
+                    <tr data-limit-mb="10"><td>LinkedIn messaging</td><td><strong>20 MB</strong> (approx.)</td><td>Attachment limits not always published; compress for reliability</td></tr>
+                    <tr data-limit-mb="25"><td>Microsoft Teams</td><td><strong>250 GB</strong> (SharePoint) / chat ~<strong>250 MB</strong></td><td>Large files use SharePoint link</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Job portals &amp; applications</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead class="table-light"><tr><th>Portal</th><th>Typical PDF cap</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr data-limit-mb="2"><td>Many ATS / career pages</td><td><strong>2–5 MB</strong></td><td>Resume PDFs; compress aggressively</td></tr>
+                    <tr data-limit-mb="5"><td>Indeed (employer upload)</td><td><strong>Varies by employer</strong></td><td>Often 2–10 MB for applications</td></tr>
+                    <tr data-limit-mb="10"><td>Government job portals (India)</td><td><strong>1–10 MB</strong></td><td>UPSC, SSC, state portals often specify per notification</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Government &amp; tax portals (India focus)</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead class="table-light"><tr><th>Portal</th><th>Typical limit</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr data-limit-mb="5"><td>GST Portal (supporting docs)</td><td><strong>5 MB</strong> (common)</td><td>Per document type; verify current GSTN circular</td></tr>
+                    <tr data-limit-mb="2"><td>Income Tax e-filing</td><td><strong>2–5 MB</strong></td><td>Form attachments vary by ITR type</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="small text-muted">Always verify limits on the live portal — caps change with policy updates.</p>
+    </section>
+
+    <section class="mb-5 p-4 bg-light rounded-4">
+        <h2 class="h5 fw-bold mb-3">Quick check: will my PDF fit?</h2>
+        <p class="small text-muted">Use our interactive checker or compress if you're over the limit.</p>
+        <a href="/pdf-size-checker" class="btn btn-primary rounded-pill me-2">PDF size checker</a>
+        <a href="/pdf/compress" class="btn btn-outline-primary rounded-pill">Compress PDF free</a>
+    </section>
+
+    <section class="small text-muted">
+        <h2 class="h6 fw-bold text-dark">Methodology</h2>
+        <p>Limits sourced from official vendor documentation and portal help pages as of June 2026. Where vendors publish ranges, we show the conservative figure for PDF uploads. Report corrections via <a href="@SiteEntity.ContactPath">contact</a>.</p>
+    </section>
+</article>

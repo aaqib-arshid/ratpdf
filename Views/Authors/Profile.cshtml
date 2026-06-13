@@ -1,0 +1,87 @@
+@model ratpdf.Models.AuthorProfilePageModel
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    var author = Model.Author;
+    ViewData["Title"] = $"{author.Name} — {author.JobTitle} | RatPDF";
+    ViewData["Description"] = author.Bio;
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical($"{SiteAuthors.HubPath}/{author.Slug}");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var authoredItems = Model.Articles
+        .Select(a => (a.Title, PdfToolSeo.Canonical(a.Path)))
+        .ToList();
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildPersonProfileLdJson(author, authoredItems))
+    </script>
+}
+
+<article class="container my-5" itemscope itemtype="https://schema.org/Person">
+    <link itemprop="url" href="@SiteAuthors.ProfileUrl(author.Slug)" />
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small mb-0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="@SiteAuthors.HubPath">Authors</a></li>
+            <li class="breadcrumb-item active" aria-current="page" itemprop="name">@author.Name</li>
+        </ol>
+    </nav>
+
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <div class="d-flex flex-wrap align-items-start gap-4 mb-4">
+            <div class="rp-author-avatar rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center flex-shrink-0" style="width:80px;height:80px;">
+                <span class="fs-3 fw-bold text-primary" aria-hidden="true">@author.Name.Split(' ').Select(n => n[0]).Take(2).Aggregate("", (a, c) => a + c)</span>
+            </div>
+            <div>
+                <h1 class="fw-bold mb-1" itemprop="name">@author.Name</h1>
+                <p class="text-primary fw-semibold mb-2" itemprop="jobTitle">@author.JobTitle</p>
+                <p class="text-muted mb-2" itemprop="description">@author.Bio</p>
+                @if (!string.IsNullOrEmpty(author.Email))
+                {
+                    <p class="small mb-0">
+                        <a href="mailto:@author.Email" itemprop="email">@author.Email</a>
+                        · <span itemprop="worksFor" itemscope itemtype="https://schema.org/Organization"><span itemprop="name">@SiteEntity.Name</span></span>
+                    </p>
+                }
+            </div>
+        </div>
+
+        <section aria-labelledby="expertise">
+            <h2 id="expertise" class="h5 fw-semibold">Areas of expertise</h2>
+            <ul class="small">
+                @foreach (var area in author.Expertise)
+                {
+                    <li itemprop="knowsAbout">@area</li>
+                }
+            </ul>
+        </section>
+
+        @if (Model.Articles.Count > 0)
+        {
+            <section class="mt-4" aria-labelledby="articles">
+                <h2 id="articles" class="h5 fw-semibold">Articles by @author.Name</h2>
+                <ul class="small mb-0">
+                    @foreach (var article in Model.Articles)
+                    {
+                        <li class="mb-2">
+                            <a href="@article.Path">@article.Title</a>
+                            <span class="text-muted"> — @article.Category</span>
+                            @if (article.LastReviewed.HasValue)
+                            {
+                                <span class="text-muted"> · reviewed @article.LastReviewed.Value.ToString("MMM yyyy")</span>
+                            }
+                        </li>
+                    }
+                </ul>
+            </section>
+        }
+
+        <section class="mt-4 pt-4 border-top">
+            <p class="small text-muted mb-0">
+                Report a factual error in any article by this author via our
+                <a href="@SiteEntity.CorrectionsPath">corrections policy</a>.
+            </p>
+        </section>
+    </div>
+</article>

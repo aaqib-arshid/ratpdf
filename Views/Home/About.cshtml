@@ -1,70 +1,132 @@
-﻿@{
+﻿@using ratpdf.Constants
+@{
     ViewData["Title"] = "About RatPDF — Online PDF Tools & Document Utilities";
     ViewData["Description"] = "RatPDF provides free and Pro PDF tools: compress, merge, convert PDF to Word, Excel, and more. Learn how we process files securely and what makes our converters different.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(SiteEntity.AboutPath);
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<head>
-    <meta name="robots" content="index, follow">
-</head>
+@section Head {
+    @using ratpdf.Helpers
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "About RatPDF",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical(SiteEntity.AboutPath),
+        "AboutPage",
+        new[] { "h1", ".lead", ".rp-ai-summary" }))
+    </script>
+}
 
-<article class="container my-5">
+<article class="container my-5" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="@SiteEntity.Name" />
+    <meta itemprop="url" content="@SiteEntity.SiteUrl" />
+    <link itemprop="sameAs" href="https://twitter.com/ratpdf" />
+    <link itemprop="sameAs" href="https://facebook.com/ratpdf" />
+
     <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
-        <h1 class="fw-bold mb-3">About RatPDF</h1>
-        <p class="lead text-muted">
-            RatPDF is a document productivity platform for individuals, freelancers, and small businesses
+        <h1 class="fw-bold mb-3" itemprop="legalName">About @SiteEntity.Name</h1>
+        <p class="lead text-muted" itemprop="description">
+            @SiteEntity.Name is a document productivity platform for individuals, freelancers, and small businesses
             who need reliable PDF workflows without installing desktop software.
         </p>
 
-        <h2 class="h4 fw-semibold mt-4">What we offer</h2>
-        <p>
-            The site combines <strong>40+ browser-accessible tools</strong> in one place: compress and merge PDFs,
-            convert between PDF, Word, and Excel, extract text, add watermarks, protect files with passwords,
-            and generate business documents such as invoices and payslips.
-        </p>
-        <p>
-            Heavy conversions (PDF↔Office, OCR, Ghostscript compression) run on our cloud servers using
-            open-source engines including <strong>pdf2docx</strong>, <strong>PyMuPDF</strong>, <strong>LibreOffice</strong>,
-            <strong>Ghostscript</strong>, and <strong>iText</strong>. Lighter utilities may run entirely in your browser.
-        </p>
+        @await Html.PartialAsync("_AiCitationBlock")
 
-        <h2 class="h4 fw-semibold mt-4">Why we built it</h2>
-        <p>
-            Most “free PDF converters” strip tables, drop logos, or fail on scanned documents.
-            RatPDF was designed around <em>layout fidelity</em>: when a bank statement, GST invoice, or client proposal
-            must look correct in Word or Excel, our multi-engine pipeline tries structured extraction first and
-            falls back to high-resolution page rendering when necessary.
-        </p>
+        <section aria-labelledby="entity-facts">
+            <h2 id="entity-facts" class="h4 fw-semibold mt-4">Entity facts</h2>
+            <dl class="row small">
+                <dt class="col-sm-3">Product</dt>
+                <dd class="col-sm-9">Browser-based PDF tools + business document generators</dd>
+                <dt class="col-sm-3">Website</dt>
+                <dd class="col-sm-9"><a href="@SiteEntity.SiteUrl">@SiteEntity.SiteUrl</a></dd>
+                <dt class="col-sm-3">Founded</dt>
+                <dd class="col-sm-9">@SiteEntity.FoundingDate</dd>
+                <dt class="col-sm-3">Engines</dt>
+                <dd class="col-sm-9">Ghostscript, LibreOffice, pdf2docx, PyMuPDF, iText, Tesseract OCR</dd>
+                <dt class="col-sm-3">Free tier</dt>
+                <dd class="col-sm-9">3 uses/tool/day · 200 MB/file · HTTPS · auto-delete after download</dd>
+                <dt class="col-sm-3">Pro tier</dt>
+                <dd class="col-sm-9">Unlimited daily use · 4 GB uploads · <a href="/Subscription/Plans">Plans</a></dd>
+            </dl>
+        </section>
 
-        <h2 class="h4 fw-semibold mt-4">How file processing works</h2>
-        <ol>
-            <li>You upload a file over encrypted HTTPS.</li>
-            <li>Our servers process it in an isolated job (temporary disk + optional Azure Blob storage for download).</li>
-            <li>You receive a download link; background jobs delete stale files automatically.</li>
-            <li>We do not sell uploaded documents or use them for advertising profiling.</li>
-        </ol>
-        <p>
-            Read the full details in our <a href="/Home/Privacy">Privacy Policy</a>.
-        </p>
+        <section aria-labelledby="what-we-offer">
+            <h2 id="what-we-offer" class="h4 fw-semibold mt-4">What we offer</h2>
+            <p>
+                The site combines <strong>@PdfToolSeo.ToolCountLabel PDF tools</strong> in one place: compress and merge PDFs,
+                convert between PDF, Word, and Excel, extract text, add watermarks, protect files with passwords,
+                and generate business documents such as invoices and payslips.
+            </p>
+            <p>
+                Heavy conversions (PDF↔Office, OCR, Ghostscript compression) run on our cloud servers using
+                open-source engines listed above. Lighter utilities may run entirely in your browser.
+            </p>
+        </section>
 
-        <h2 class="h4 fw-semibold mt-4">Free and Pro plans</h2>
-        <p>
-            Core tools remain free with daily limits (3 uses per tool, 200 MB per file).
-            <a href="/Subscription/Plans">Pro subscribers</a> get unlimited conversions, 4 GB uploads, and
-            high-fidelity Office conversions suited to agency and finance teams.
-        </p>
+        <section aria-labelledby="why-built">
+            <h2 id="why-built" class="h4 fw-semibold mt-4">Why we built it</h2>
+            <p>
+                Most “free PDF converters” strip tables, drop logos, or fail on scanned documents.
+                @SiteEntity.Name was designed around <em>layout fidelity</em>: when a bank statement, GST invoice, or client proposal
+                must look correct in Word or Excel, our multi-engine pipeline tries structured extraction first and
+                falls back to high-resolution page rendering when necessary.
+            </p>
+        </section>
 
-        <h2 class="h4 fw-semibold mt-4">Editorial content</h2>
-        <p>
-            Beyond one-click tools, we publish practical guides — for example
-            <a href="/guides/compress-pdf-guide">how to compress PDFs without visible quality loss</a> and
-            <a href="/guides/pdf-txt-guide">extracting text from scanned documents</a> — written for real
-            office workflows, not keyword stuffing.
-        </p>
+        <section aria-labelledby="processing">
+            <h2 id="processing" class="h4 fw-semibold mt-4">How file processing works</h2>
+            <ol>
+                <li>You upload a file over encrypted HTTPS (TLS).</li>
+                <li>Our servers process it in an isolated job (temporary disk + optional cloud storage for download).</li>
+                <li>You receive a download link; background jobs delete stale files automatically.</li>
+                <li>We do not sell uploaded documents or use them for advertising profiling.</li>
+            </ol>
+            <p>Read the full details in our <a href="@SiteEntity.PrivacyPath">Privacy Policy</a>.</p>
+        </section>
 
-        <h2 class="h4 fw-semibold mt-4">Contact &amp; feedback</h2>
-        <p>
-            Feature requests and bug reports help us prioritize engine upgrades and new tools.
-            Reach us via the <a href="/Home/Contact">contact page</a>.
-        </p>
+        <section aria-labelledby="editorial">
+            <h2 id="editorial" class="h4 fw-semibold mt-4">Editorial content &amp; E-E-A-T</h2>
+            <p>
+                We publish practical guides and comparisons — for example
+                <a href="/guides/compress-pdf-guide">compressing PDFs without visible quality loss</a>,
+                <a href="/compare">PDF tool comparisons</a>, and
+                <a href="/guides/pdf-tool-alternatives">alternatives to iLovePDF and Smallpdf</a>.
+                See our <a href="@SiteEntity.EditorialPolicyPath">editorial policy</a> for how content is produced and reviewed.
+            </p>
+            <p>
+                Every guide lists a named author, reviewer, last-reviewed date, and primary sources.
+                Meet the <a href="@SiteAuthors.HubPath">editorial team</a> or visit the
+                <a href="@SiteEntity.TrustHubPath">trust center</a> for security and corrections policies.
+            </p>
+        </section>
+
+        <section aria-labelledby="team">
+            <h2 id="team" class="h4 fw-semibold mt-4">Editorial team</h2>
+            <div class="row g-3">
+                @foreach (var author in SiteAuthors.All)
+                {
+                    <div class="col-md-4">
+                        <div class="border rounded-3 p-3 h-100">
+                            <h3 class="h6 fw-bold mb-1">
+                                <a href="@SiteAuthors.HubPath/@author.Slug">@author.Name</a>
+                            </h3>
+                            <p class="small text-primary mb-1">@author.JobTitle</p>
+                            <p class="small text-muted mb-0">@author.Bio.Substring(0, Math.Min(120, author.Bio.Length))@(author.Bio.Length > 120 ? "…" : "")</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <p class="mt-3 mb-0"><a href="@SiteAuthors.HubPath">View all author profiles →</a></p>
+        </section>
+
+        <section aria-labelledby="contact">
+            <h2 id="contact" class="h4 fw-semibold mt-4">Contact &amp; feedback</h2>
+            <p itemprop="email">
+                Feature requests and bug reports help us prioritize engine upgrades and new tools.
+                Reach us via the <a href="@SiteEntity.ContactPath">contact page</a> or email
+                <a href="mailto:@SiteEntity.ContactEmail">@SiteEntity.ContactEmail</a>.
+            </p>
+        </section>
     </div>
 </article>

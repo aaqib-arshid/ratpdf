@@ -1,0 +1,85 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    ViewData["Title"] = "Corrections Policy — RatPDF";
+    ViewData["Description"] = "How to report factual errors in RatPDF guides and comparisons. Our correction process, update cadence, and last-reviewed dates.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(SiteEntity.CorrectionsPath);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "RatPDF Corrections Policy",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical(SiteEntity.CorrectionsPath),
+        "WebPage",
+        new[] { "h1", ".lead", "section" }))
+    </script>
+}
+
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb small mb-0">
+                <li class="breadcrumb-item"><a href="@SiteEntity.TrustHubPath">Trust center</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Corrections</li>
+            </ol>
+        </nav>
+
+        <h1 class="fw-bold mb-3">Corrections policy</h1>
+        <p class="lead text-muted">
+            We aim for accurate, testable claims in every guide and comparison. When something is wrong, we fix it.
+        </p>
+
+        @await Html.PartialAsync("_AiCitationBlock")
+
+        <section aria-labelledby="report">
+            <h2 id="report" class="h5 fw-semibold mt-4">How to report an error</h2>
+            <ol>
+                <li>Email <a href="mailto:@SiteEntity.ContactEmail">@SiteEntity.ContactEmail</a> or use the <a href="@SiteEntity.ContactPath">contact form</a>.</li>
+                <li>Include the page URL, the incorrect statement, and a source or test case if available.</li>
+                <li>We acknowledge reports within 2 business days and prioritize factual errors affecting tool behavior or pricing.</li>
+            </ol>
+        </section>
+
+        <section aria-labelledby="process">
+            <h2 id="process" class="h5 fw-semibold mt-4">What happens next</h2>
+            <ul>
+                <li><strong>Verify</strong> — The assigned editor re-tests the claim against RatPDF tools or primary sources.</li>
+                <li><strong>Update</strong> — Corrected text is published to the live page.</li>
+                <li><strong>Review date</strong> — Material corrections update the "Last reviewed" date on the article byline.</li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="scope">
+            <h2 id="scope" class="h5 fw-semibold mt-4">What we correct</h2>
+            <ul>
+                <li>Incorrect free-tier limits, file size caps, or pricing</li>
+                <li>Wrong engine behavior (e.g., compression output, OCR accuracy claims)</li>
+                <li>Outdated competitor feature tables</li>
+                <li>Broken or redirected source links in our references section</li>
+            </ul>
+            <p class="small text-muted">
+                We do not typically "correct" subjective opinions (e.g., "best tool for freelancers") unless they contain factual errors.
+            </p>
+        </section>
+
+        <section aria-labelledby="review-cadence">
+            <h2 id="review-cadence" class="h5 fw-semibold mt-4">Proactive review cadence</h2>
+            <p>
+                Guides show a <strong>last reviewed</strong> date in the author byline.
+                High-traffic guides (compress, merge, PDF to Word, comparisons) are re-checked when product limits or engines change.
+            </p>
+        </section>
+
+        <section aria-labelledby="related">
+            <h2 id="related" class="h5 fw-semibold mt-4">Related</h2>
+            <ul class="small mb-0">
+                <li><a href="@SiteEntity.EditorialPolicyPath">Editorial policy</a></li>
+                <li><a href="@SiteAuthors.HubPath">Editorial team</a></li>
+                <li><a href="@SiteEntity.TrustHubPath">Trust center</a></li>
+            </ul>
+        </section>
+    </div>
+</article>

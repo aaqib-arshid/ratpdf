@@ -2,42 +2,15 @@
     ViewData["Title"] = "Free Invoice Generator India | Online Invoice Maker for Indian Businesses";
     ViewData["Description"] = "Create professional invoices online in India for free. Generate GST invoices, tax invoices, PDF bills, and business invoices instantly with RatPDF.";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-india";
+    ViewData["CanonicalUrl"] = "https://ratpdf.com/invoice/invoice-generator-india";
+    ViewData["OgImage"] = "https://ratpdf.com/images/hero-invoice.svg";
+    ViewData["Keywords"] = "invoice generator India, GST invoice generator India, online invoice maker India, free invoice generator, tax invoice generator India, invoice software India, business invoice creator, GST billing software, PDF invoice generator India";
+    ViewData["GeoRegion"] = "IN";
+    ViewData["GeoCountry"] = "India";
+    ViewData["OgLocale"] = "en_IN";
 }
 
 @section Head {
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Free Invoice Generator India | Online Invoice Maker for Indian Businesses</title>
-    <meta name="title" content="Free Invoice Generator India | Online Invoice Maker for Indian Businesses" />
-    <meta name="description" content="Create professional invoices online in India for free. Generate GST invoices, tax invoices, PDF bills, and business invoices instantly with RatPDF." />
-    <meta name="keywords" content="invoice generator India, GST invoice generator India, online invoice maker India, free invoice generator, tax invoice generator India, invoice software India, business invoice creator, GST billing software, PDF invoice generator India" />
-    <meta name="author" content="RatPDF" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="language" content="English" />
-    <meta name="geo.region" content="IN" />
-    <meta name="geo.country" content="India" />
-
-    <link rel="canonical" href="@canonicalUrl" />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="@canonicalUrl" />
-    <meta property="og:title" content="Free Invoice Generator India | RatPDF" />
-    <meta property="og:description" content="Generate GST invoices and business invoices online instantly in India." />
-    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
-    <meta property="og:site_name" content="RatPDF" />
-    <meta property="og:locale" content="en_IN" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="@canonicalUrl" />
-    <meta name="twitter:title" content="Free Invoice Generator India | RatPDF" />
-    <meta name="twitter:description" content="Create professional GST and tax invoices online in India with instant PDF download support." />
-    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
-
     <!-- Structured Data -->
     <script type="application/ld+json">
         {
@@ -53,11 +26,6 @@
         "@@type": "Offer",
         "price": "0",
         "priceCurrency": "INR"
-        },
-        "aggregateRating": {
-        "@@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "5184"
         },
         "publisher": {
         "@@type": "Organization",
@@ -182,7 +150,8 @@
             <img src="/images/hero-invoice.svg"
                  alt="Invoice Generator India"
                  class="img-fluid rounded shadow-lg"
-                 loading="lazy" />
+                 width="480"
+                 height="320" />
         </div>
     </div>
 

@@ -1,0 +1,82 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "GST Invoice Compliance Checker India",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/gst-invoice-checker"),
+        "WebPage"))
+    </script>
+}
+
+<article class="rp-content-page">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small mb-0">
+            <li class="breadcrumb-item"><a href="@LinkBuildingCatalog.HubPath">Resources</a></li>
+            <li class="breadcrumb-item"><a href="/research/freelancer-invoicing-statistics">Invoicing stats</a></li>
+            <li class="breadcrumb-item active">GST checker</li>
+        </ol>
+    </nav>
+
+    <header class="text-center mb-4 col-lg-8 mx-auto">
+        <span class="rp-badge">Calculator</span>
+        <h1 class="fw-bold mt-2">GST invoice compliance checker (India)</h1>
+        <p class="text-muted">Check mandatory fields on your tax invoice before sending to clients or filing.</p>
+    </header>
+
+    <div class="card border-0 shadow-sm p-4 p-md-5 col-lg-8 mx-auto mb-4" style="border-radius:16px;">
+        <form id="gstForm">
+            @foreach (var (id, label) in new[] {
+                ("supplierName", "Supplier legal name & address"),
+                ("supplierGstin", "Supplier GSTIN (15 characters)"),
+                ("invoiceNumber", "Sequential invoice number"),
+                ("invoiceDate", "Invoice date"),
+                ("customerName", "Recipient name & address"),
+                ("customerGstin", "Recipient GSTIN (if B2B registered)"),
+                ("hsnSac", "HSN/SAC code on line items"),
+                ("taxBreakup", "CGST/SGST or IGST breakup shown"),
+                ("taxableValue", "Taxable value per line or total"),
+                ("totalAmount", "Total invoice value"),
+                ("placeOfSupply", "Place of supply (for IGST vs CGST/SGST)"),
+            })
+            {
+                <div class="form-check mb-2">
+                    <input class="form-check-input gst-field" type="checkbox" id="@id" />
+                    <label class="form-check-label" for="@id">@label</label>
+                </div>
+            }
+            <button type="button" id="scoreBtn" class="btn btn-primary btn-lg w-100 rounded-pill mt-3 fw-semibold">Calculate compliance score</button>
+        </form>
+        <div id="gstResult" class="mt-4 d-none"></div>
+    </div>
+
+    <p class="text-center small text-muted">
+        Not legal advice. See <a href="https://www.gst.gov.in/" rel="noopener noreferrer" target="_blank">GST Portal</a>.
+        <a href="/Invoice/Create" class="ms-1">Generate GST invoice PDF →</a>
+    </p>
+</article>
+
+@section Scripts {
+<script>
+(function () {
+    document.getElementById('scoreBtn').addEventListener('click', () => {
+        const fields = document.querySelectorAll('.gst-field');
+        const checked = [...fields].filter(f => f.checked).length;
+        const total = fields.length;
+        const pct = Math.round((checked / total) * 100);
+        const el = document.getElementById('gstResult');
+        el.classList.remove('d-none');
+        let cls = pct >= 90 ? 'success' : pct >= 70 ? 'warning' : 'danger';
+        let msg = pct >= 90 ? 'Strong compliance — review GSTIN format before sending.'
+            : pct >= 70 ? 'Partial compliance — fix missing fields to avoid rejection.'
+            : 'Major gaps — invoice may not qualify as valid tax invoice.';
+        el.innerHTML = `<div class="alert alert-${cls}"><strong>${pct}%</strong> (${checked}/${total} fields) — ${msg}</div>`;
+    });
+})();
+</script>
+}

@@ -1,0 +1,102 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "Will My PDF Fit - Attachment Size Checker",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/pdf-size-checker"),
+        "WebPage"))
+    </script>
+}
+
+<article class="rp-content-page">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small mb-0">
+            <li class="breadcrumb-item"><a href="@LinkBuildingCatalog.HubPath">Resources</a></li>
+            <li class="breadcrumb-item"><a href="/research/attachment-size-limits">Size limits table</a></li>
+            <li class="breadcrumb-item active">Size checker</li>
+        </ol>
+    </nav>
+
+    <header class="text-center mb-4 col-lg-8 mx-auto">
+        <span class="rp-badge">Interactive tool</span>
+        <h1 class="fw-bold mt-2">Will my PDF fit?</h1>
+        <p class="text-muted">Pick a destination and enter your file size — instant pass/fail with compress recommendation.</p>
+    </header>
+
+    <div class="card border-0 shadow-sm p-4 p-md-5 col-lg-8 mx-auto mb-4" style="border-radius:16px;">
+        <div class="mb-3">
+            <label class="form-label fw-semibold" for="destination">Where are you uploading?</label>
+            <select id="destination" class="form-select form-select-lg">
+                <option value="25">Gmail (25 MB)</option>
+                <option value="20">Outlook default (20 MB)</option>
+                <option value="25">Yahoo Mail (25 MB)</option>
+                <option value="100">WhatsApp document (100 MB)</option>
+                <option value="2">Job portal / ATS (2 MB)</option>
+                <option value="5">Government portal (5 MB)</option>
+                <option value="10">LinkedIn / messaging (10 MB)</option>
+                <option value="custom">Custom limit…</option>
+            </select>
+        </div>
+        <div class="mb-3" id="customLimitWrap" style="display:none;">
+            <label class="form-label" for="customLimit">Custom limit (MB)</label>
+            <input type="number" id="customLimit" class="form-control" min="0.1" step="0.1" value="5" />
+        </div>
+        <div class="mb-4">
+            <label class="form-label fw-semibold" for="fileSize">Your PDF size (MB)</label>
+            <input type="number" id="fileSize" class="form-control form-control-lg" min="0.01" step="0.01" placeholder="e.g. 8.5" />
+            <p class="small text-muted mt-1">Or drop a PDF to auto-detect size:</p>
+            <input type="file" id="pdfDrop" class="form-control" accept="application/pdf,.pdf" />
+        </div>
+        <button type="button" id="checkBtn" class="btn btn-primary btn-lg w-100 rounded-pill fw-semibold">Check size</button>
+        <div id="result" class="mt-4 d-none" role="status"></div>
+    </div>
+
+    <p class="text-center small text-muted">
+        Full limits table: <a href="/research/attachment-size-limits">Attachment size limits 2026</a>
+        · <a href="/research/pdf-compression-benchmark">Compression benchmark</a>
+    </p>
+</article>
+
+@section Scripts {
+<script>
+(function () {
+    const dest = document.getElementById('destination');
+    const customWrap = document.getElementById('customLimitWrap');
+    const fileSize = document.getElementById('fileSize');
+    const pdfDrop = document.getElementById('pdfDrop');
+    const result = document.getElementById('result');
+
+    dest.addEventListener('change', () => {
+        customWrap.style.display = dest.value === 'custom' ? 'block' : 'none';
+    });
+
+    pdfDrop.addEventListener('change', () => {
+        const f = pdfDrop.files[0];
+        if (f) fileSize.value = (f.size / (1024 * 1024)).toFixed(2);
+    });
+
+    function getLimitMb() {
+        if (dest.value === 'custom') return parseFloat(document.getElementById('customLimit').value) || 0;
+        return parseFloat(dest.value);
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', () => {
+        const size = parseFloat(fileSize.value);
+        const limit = getLimitMb();
+        if (!size || size <= 0) { alert('Enter a valid file size in MB.'); return; }
+        const pct = (size / limit) * 100;
+        const ok = size <= limit;
+        result.classList.remove('d-none');
+        result.innerHTML = ok
+            ? `<div class="alert alert-success mb-0"><strong>✓ Fits!</strong> ${size} MB is under the ${limit} MB limit (${pct.toFixed(0)}% of cap).</div>`
+            : `<div class="alert alert-warning mb-0"><strong>Over limit</strong> by ${(size - limit).toFixed(2)} MB (${pct.toFixed(0)}% of ${limit} MB cap). <a href="/pdf/compress" class="alert-link fw-semibold">Compress PDF free →</a></div>`;
+    });
+})();
+</script>
+}

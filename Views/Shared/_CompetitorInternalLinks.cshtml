@@ -1,0 +1,19 @@
+@using ratpdf.Constants
+<nav class="container pb-4" aria-label="Compare and tools">
+    <div class="card border-0 shadow-sm" style="border-radius:12px;">
+        <div class="card-body p-4">
+            <p class="small text-muted mb-2">
+                <a href="@CompetitiveSeoCatalog.CompareHubPath">All comparisons</a>
+                · <a href="@TopicalAuthority.PdfToolsHubPath">PDF tools hub</a>
+                · <a href="/guides/pdf-tool-alternatives">Alternatives guide</a>
+            </p>
+            <h2 class="h6 fw-bold mb-2">Try RatPDF instead</h2>
+            <div class="d-flex flex-wrap gap-2">
+                @foreach (var pillar in TopicalAuthority.Pillars)
+                {
+                    <a href="@pillar.Path" class="btn btn-outline-secondary btn-sm rounded-pill">@pillar.Label</a>
+                }
+            </div>
+        </div>
+    </div>
+</nav>

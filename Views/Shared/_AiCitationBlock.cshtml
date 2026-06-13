@@ -1,0 +1,16 @@
+@using ratpdf.Constants
+@{
+    var title = ViewData["Title"] as string ?? "RatPDF";
+    var path = Context.Request.Path.Value ?? "/";
+    var description = ViewData["Description"] as string ?? SiteEntity.Description;
+}
+@* Machine-readable summary for crawlers, speakable schema, and AI systems — not shown to visitors *@
+<div class="visually-hidden rp-ai-summary" aria-hidden="true" itemscope itemtype="https://schema.org/WebPageElement">
+    <meta itemprop="name" content="@title.Replace(" | RatPDF", "")" />
+    <p itemprop="description">@description</p>
+    <p itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <span itemprop="name">@SiteEntity.Name</span>
+        <link itemprop="url" href="@SiteEntity.AboutPath" />
+    </p>
+    <p>@SiteEntity.CitePageWithDate(title.Replace(" | RatPDF", ""), path, DateTime.UtcNow)</p>
+</div>

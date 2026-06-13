@@ -1,0 +1,80 @@
+@model IReadOnlyList<ratpdf.Constants.LinkBuildingCatalog.LinkAsset>
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var live = Model.Where(a => a.IsLive).ToList();
+    string TypeLabel(LinkAssetType t) => t switch
+    {
+        LinkAssetType.Statistics => "Statistics & data",
+        LinkAssetType.IndustryStudy => "Research",
+        LinkAssetType.Calculator => "Calculators",
+        LinkAssetType.InteractiveTool => "Interactive tools",
+        LinkAssetType.ReferenceGuide => "Guides",
+        LinkAssetType.FreeTool => "PDF tools",
+        LinkAssetType.TemplateGallery => "Templates",
+        _ => "Resources",
+    };
+    string TypeIcon(LinkAssetType t) => t switch
+    {
+        LinkAssetType.Statistics => "bi-table",
+        LinkAssetType.IndustryStudy => "bi-graph-up",
+        LinkAssetType.Calculator => "bi-calculator",
+        LinkAssetType.InteractiveTool => "bi-ui-checks",
+        LinkAssetType.ReferenceGuide => "bi-journal-text",
+        LinkAssetType.FreeTool => "bi-grid-3x3-gap",
+        _ => "bi-file-earmark-text",
+    };
+    var groups = live.GroupBy(a => a.Type).OrderBy(g => g.Key);
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "Free PDF & Business Document Resources",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical(LinkBuildingCatalog.HubPath),
+        "CollectionPage"))
+    </script>
+}
+
+<article class="rp-content-page">
+    @await Html.PartialAsync("_AiCitationBlock")
+
+    <header class="text-center mb-5 col-lg-9 mx-auto">
+        <span class="rp-badge mb-2">Free resources</span>
+        <h1 class="fw-bold display-6 mt-2">Research, calculators &amp; reference tools</h1>
+        <p class="lead text-muted">
+            Statistics, benchmarks, and interactive helpers for PDF workflows, invoicing, and small-business documents —
+            free to use, no signup required.
+        </p>
+    </header>
+
+    @foreach (var group in groups)
+    {
+        <section class="mb-5" aria-labelledby="group-@group.Key">
+            <h2 id="group-@group.Key" class="h5 fw-bold mb-3">
+                <i class="bi @TypeIcon(group.Key) me-2 text-primary"></i>@TypeLabel(group.Key)
+            </h2>
+            <div class="row g-3">
+                @foreach (var asset in group.OrderBy(a => a.Title))
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <a href="@asset.Path" class="rp-guide-card d-block text-decoration-none h-100 p-4">
+                            <h3 class="h6 fw-bold text-dark mb-2">@asset.Title</h3>
+                            <p class="small text-muted mb-0">@asset.Description</p>
+                            <span class="small text-primary d-block mt-2">Open →</span>
+                        </a>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    <section class="p-4 bg-light rounded-4 text-center">
+        <h2 class="h5 fw-bold mb-2">Need a PDF tool instead?</h2>
+        <p class="small text-muted mb-3">Compress, merge, convert, and more — @PdfToolSeo.ToolCountLabel free PDF tools in the browser.</p>
+        <a href="/guides/pdf-tools" class="btn btn-primary rounded-pill me-2">PDF tools hub</a>
+        <a href="/pdf/compress" class="btn btn-outline-primary rounded-pill">Compress PDF</a>
+    </section>
+</article>

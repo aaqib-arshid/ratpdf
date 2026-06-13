@@ -2,42 +2,15 @@
     ViewData["Title"] = "Free Invoice Generator UK | Online VAT Invoice Maker for UK Businesses";
     ViewData["Description"] = "Create professional invoices online in the UK for free. Generate VAT invoices, tax invoices, PDF bills, and business invoices instantly with RatPDF – HMRC friendly.";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var canonicalUrl = "https://ratpdf.com/invoice/invoice-generator-uk";
+    ViewData["CanonicalUrl"] = "https://ratpdf.com/invoice/invoice-generator-uk";
+    ViewData["OgImage"] = "https://ratpdf.com/images/hero-invoice.svg";
+    ViewData["Keywords"] = "invoice generator UK, VAT invoice generator UK, online invoice maker UK, free invoice generator, tax invoice generator UK, invoice software UK, business invoice creator, HMRC compliant invoice, PDF invoice generator UK, self employed invoice";
+    ViewData["GeoRegion"] = "GB";
+    ViewData["GeoCountry"] = "United Kingdom";
+    ViewData["OgLocale"] = "en_GB";
 }
 
 @section Head {
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Free Invoice Generator UK | Online VAT Invoice Maker for UK Businesses</title>
-    <meta name="title" content="Free Invoice Generator UK | Online VAT Invoice Maker for UK Businesses" />
-    <meta name="description" content="Create professional invoices online in the UK for free. Generate VAT invoices, tax invoices, PDF bills, and business invoices instantly with RatPDF – HMRC friendly." />
-    <meta name="keywords" content="invoice generator UK, VAT invoice generator UK, online invoice maker UK, free invoice generator, tax invoice generator UK, invoice software UK, business invoice creator, HMRC compliant invoice, PDF invoice generator UK, self employed invoice" />
-    <meta name="author" content="RatPDF" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="language" content="English" />
-    <meta name="geo.region" content="GB" />
-    <meta name="geo.country" content="United Kingdom" />
-
-    <link rel="canonical" href="@canonicalUrl" />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="@canonicalUrl" />
-    <meta property="og:title" content="Free Invoice Generator UK | RatPDF" />
-    <meta property="og:description" content="Generate VAT invoices and business invoices online instantly in the UK." />
-    <meta property="og:image" content="https://ratpdf.com/images/hero-invoice.svg" />
-    <meta property="og:site_name" content="RatPDF" />
-    <meta property="og:locale" content="en_GB" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="@canonicalUrl" />
-    <meta name="twitter:title" content="Free Invoice Generator UK | RatPDF" />
-    <meta name="twitter:description" content="Create professional VAT and tax invoices online in the UK with instant PDF download support." />
-    <meta name="twitter:image" content="https://ratpdf.com/images/hero-invoice.svg" />
-
     <!-- Structured Data -->
     <script type="application/ld+json">
         {
@@ -53,11 +26,6 @@
         "@@type": "Offer",
         "price": "0",
         "priceCurrency": "GBP"
-        },
-        "aggregateRating": {
-        "@@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "2147"
         },
         "publisher": {
         "@@type": "Organization",
@@ -181,7 +149,8 @@
             <img src="/images/hero-invoice.svg"
                  alt="Invoice Generator UK"
                  class="img-fluid rounded shadow-lg"
-                 loading="lazy" />
+                 width="480"
+                 height="320" />
         </div>
     </div>
 </div>

@@ -1,0 +1,106 @@
+@model ratpdf.Constants.CompetitiveSeoCatalog.ComparePage
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonical = ViewData["CanonicalUrl"] as string ?? PdfToolSeo.Canonical($"{CompetitiveSeoCatalog.CompareHubPath}/{Model.Slug}");
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildSoftwareApplicationLdJson(
+        $"RatPDF — {Model.CompetitorName} Alternative",
+        canonical,
+        Model.Description))
+    </script>
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildFaqLdJson(Model.Faqs.Select(f => new ratpdf.Models.CompressPdfSeo.FaqItem { Question = f.Question, Answer = f.Answer }).ToList()))
+    </script>
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildBreadcrumbLdJson([
+        new ratpdf.Models.CompressPdfSeo.BreadcrumbItem { Name = "Home", Url = PdfToolSeo.SiteUrl },
+        new ratpdf.Models.CompressPdfSeo.BreadcrumbItem { Name = "Compare", Url = PdfToolSeo.Canonical(CompetitiveSeoCatalog.CompareHubPath) },
+        new ratpdf.Models.CompressPdfSeo.BreadcrumbItem { Name = Model.CompetitorName, Url = canonical },
+    ]))
+    </script>
+}
+
+<article class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="@CompetitiveSeoCatalog.CompareHubPath">Compare</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.CompetitorName</li>
+        </ol>
+    </nav>
+
+    <h1 class="fw-bold mb-3">@Model.Title.Replace(" | RatPDF", "")</h1>
+    <p class="lead text-muted">@Model.HeroSummary</p>
+
+    @await Html.PartialAsync("_AiCitationBlock")
+
+    <div class="mb-4">
+        <a href="@TopicalAuthority.PdfToolsHubPath" class="btn btn-primary btn-sm rounded-pill me-2">Try RatPDF free</a>
+        <a href="/Subscription/Plans" class="btn btn-outline-secondary btn-sm rounded-pill">Pro plans</a>
+    </div>
+
+    <h2 class="h4 fw-semibold mt-4">RatPDF vs @Model.CompetitorName</h2>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered">
+            <thead><tr><th>Feature</th><th>RatPDF</th><th>@Model.CompetitorName</th></tr></thead>
+            <tbody>
+                @foreach (var row in Model.ComparisonRows)
+                {
+                    <tr><td>@row.Feature</td><td>@row.RatPdf</td><td>@row.Competitor</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (Model.KeywordGaps.Length > 0)
+    {
+        <h2 class="h5 fw-semibold">Keywords @Model.CompetitorName ranks for — our coverage</h2>
+        <ul class="mb-4">
+            @foreach (var kw in Model.KeywordGaps)
+            {
+                var gap = CompetitiveSeoCatalog.KeywordGaps.FirstOrDefault(g => g.Keyword.Equals(kw, StringComparison.OrdinalIgnoreCase));
+                <li>
+                    <strong>@kw</strong>
+                    @if (gap != null)
+                    {
+                        <span> → <a href="@gap.RatPdfUrl">@gap.RatPdfUrl</a></span>
+                    }
+                </li>
+            }
+        </ul>
+    }
+
+    <h2 class="h5 fw-semibold">Recommended RatPDF tools</h2>
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        @foreach (var pillar in TopicalAuthority.Pillars.Take(5))
+        {
+            <a href="@pillar.Path" class="btn btn-outline-primary btn-sm rounded-pill">@pillar.Label</a>
+        }
+    </div>
+
+    <h2 class="h5 fw-semibold">Other comparisons</h2>
+    <ul class="small mb-4">
+        @foreach (var other in CompetitiveSeoCatalog.ComparePages.Where(p => p.Slug != Model.Slug))
+        {
+            <li><a href="@CompetitiveSeoCatalog.CompareHubPath/@other.Slug">RatPDF vs @other.CompetitorName</a></li>
+        }
+    </ul>
+
+    <h2 class="h5 fw-semibold">FAQ</h2>
+    @foreach (var faq in Model.Faqs)
+    {
+        <h3 class="h6 fw-semibold mt-3">@faq.Question</h3>
+        <p class="text-muted small">@faq.Answer</p>
+    }
+
+    <p class="small text-muted mt-4 mb-0">
+        Share this comparison: <code>@canonical</code>
+    </p>
+</article>
+
+@await Html.PartialAsync("_CompetitorInternalLinks")

@@ -1,0 +1,129 @@
+@using ratpdf.Constants
+@using ratpdf.Content
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hub = TopicalAuthority.CanonicalHub();
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildSoftwareApplicationLdJson(
+        "RatPDF PDF Tools Hub",
+        hub,
+        "Complete hub for compress, merge, convert, edit, OCR, and secure PDF workflows."))
+    </script>
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "CollectionPage",
+      "name": "All PDF Tools — RatPDF Hub",
+      "description": "@ViewData["Description"]",
+      "url": "@hub",
+      "numberOfItems": @PdfToolSeo.AllTools.Length
+    }
+    </script>
+}
+
+<div class="rp-content-page">
+    <header class="text-center mb-5 col-lg-9 mx-auto">
+        <span class="rp-badge mb-2">Topical hub</span>
+        <h1 class="fw-bold display-6 mt-2">All PDF tools — organized by workflow</h1>
+        <p class="lead text-muted">
+            Every RatPDF tool in one place. Pick a job — compress for email, merge contracts, convert to Word, or secure before sharing.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+            @foreach (var pillar in TopicalAuthority.Pillars)
+            {
+                <a href="@pillar.Path" class="btn btn-outline-primary btn-sm rounded-pill">@pillar.Label</a>
+            }
+        </div>
+    </header>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold text-primary mb-3">Start with a pillar workflow</h2>
+        <div class="row g-3">
+            @foreach (var pillar in TopicalAuthority.Pillars)
+            {
+                var guide = ContentLibrary.GetGuideForToolUrl(pillar.Path);
+                <div class="col-md-6 col-lg-4">
+                    <div class="rp-guide-card h-100 d-flex flex-column">
+                        <h3 class="h6 fw-bold mb-2"><a href="@pillar.Path" class="text-dark text-decoration-none">@pillar.Label</a></h3>
+                        <p class="small text-muted flex-grow-1 mb-2">@pillar.Description</p>
+                        @if (guide != null)
+                        {
+                            <p class="small mb-2"><a href="@guide.Path">Read guide →</a></p>
+                        }
+                        <a href="@pillar.Path" class="small fw-semibold text-primary">Open tool →</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    @foreach (var group in TopicalAuthority.PdfToolGroups)
+    {
+        <section class="mb-5">
+            <h2 class="h5 fw-bold mb-1">@group.Name</h2>
+            <p class="text-muted small mb-3">@group.Description</p>
+            <div class="row g-3">
+                @foreach (var tool in group.Tools)
+                {
+                    var guide = ContentLibrary.GetGuideForToolUrl(tool.Url);
+                    <div class="col-sm-6 col-lg-4">
+                        <a href="@tool.Url" class="rp-guide-card text-decoration-none h-100 d-flex flex-column">
+                            <h3 class="h6 fw-bold text-dark mb-1">@tool.Name</h3>
+                            <p class="small text-muted mb-2 flex-grow-1">@tool.Blurb</p>
+                            @if (guide != null)
+                            {
+                                <span class="small text-primary">Guide available →</span>
+                            }
+                            else
+                            {
+                                <span class="small fw-semibold text-primary">Open tool →</span>
+                            }
+                        </a>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    <section class="mb-5">
+        <div class="card border-0 shadow-sm" style="border-radius:12px;">
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold mb-2">Protect PDFs before sharing</h2>
+                <p class="text-muted small mb-3">Watermark drafts, encrypt sensitive files, add typed signatures, or unlock when you have the password.</p>
+                <ul class="small mb-3 ps-3">
+                    <li class="mb-1"><a href="/guides/watermark-vs-password-pdf">Watermark vs password — when to use each</a></li>
+                    <li class="mb-1"><a href="/guides/sign-pdf-legally">Sign PDF legally — compliance overview</a></li>
+                </ul>
+                <a href="@TopicalAuthority.SecureWorkflowPath" class="btn btn-primary btn-sm rounded-pill">View secure PDF hub →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h5 fw-bold mb-3">Business documents</h2>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <a href="/invoice/create" class="rp-guide-card d-block text-decoration-none h-100">
+                    <h3 class="h6 fw-bold text-dark">Invoice generator</h3>
+                    <p class="small text-muted mb-0">GST, VAT, and freelancer invoices — download as PDF, then compress to email.</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/free-payslip-generator" class="rp-guide-card d-block text-decoration-none h-100">
+                    <h3 class="h6 fw-bold text-dark">Payslip generator</h3>
+                    <p class="small text-muted mb-0">Salary slips for HR teams — PDF output ready to share.</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/guides/invoice-generator-guide" class="rp-guide-card d-block text-decoration-none h-100">
+                    <h3 class="h6 fw-bold text-dark">Invoice guide</h3>
+                    <p class="small text-muted mb-0">Line items, logos, tax fields, and PDF download workflow.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>

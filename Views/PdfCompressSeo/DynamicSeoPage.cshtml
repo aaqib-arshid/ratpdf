@@ -19,7 +19,7 @@
     @if (Model.Rating != null)
     {
         <script type="application/ld+json">
-            @Html.Raw(SchemaHelper.BuildRatingLdJson(Model.Rating, Model.Title, Model.CanonicalUrl))
+            @Html.Raw(SchemaHelper.BuildSoftwareApplicationLdJson(Model.Title, Model.CanonicalUrl, Model.MetaDescription))
         </script>
     }
     @if (Model.Organization != null)

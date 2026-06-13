@@ -32,6 +32,9 @@ namespace ratpdf.Content
             "ocr-pdf" => OcrPdf,
             "add-page-numbers" => PageNumbers,
             "pdf-metadata" => PdfMetadata,
+            "watermark-vs-password-pdf" => WatermarkVsPassword,
+            "sign-pdf-legally" => SignPdfLegally,
+            "pdf-tool-alternatives" => PdfToolAlternatives,
             _ => null
         };
 
@@ -214,7 +217,7 @@ namespace ratpdf.Content
             <li>Company name — brand protection on leaks</li>
             </ul>
             <h2>Combine with protection</h2>
-            <p>Watermarks are visual deterrents, not encryption. For sensitive data, also <a href="/guides/password-protect-pdf">password-protect</a> the file.</p>
+            <p>Watermarks are visual deterrents, not encryption. For sensitive data, also <a href="/guides/password-protect-pdf">password-protect</a> the file. Not sure which to use first? Read our <a href="/guides/watermark-vs-password-pdf">watermark vs password guide</a>.</p>
             <p><a href="/PDF/Watermark">Add watermark →</a></p>
             """;
 
@@ -227,6 +230,7 @@ namespace ratpdf.Content
             <li>Do not reuse banking passwords for document encryption.</li>
             <li>Remind recipients they cannot recover the file if they lose the password.</li>
             </ul>
+            <p>Watermarks and passwords solve different problems — see <a href="/guides/watermark-vs-password-pdf">when to watermark vs encrypt</a>.</p>
             <p><a href="/PDF/Password">Protect PDF →</a></p>
             """;
 
@@ -234,7 +238,7 @@ namespace ratpdf.Content
             <h2>Add signature text to PDFs</h2>
             <p>Typed name, title, and date blocks formalise acceptance on quotes, SOWs, and internal approvals when wet ink is not required.</p>
             <h2>Not the same as eIDAS digital signatures</h2>
-            <p>RatPDF adds visible signature <em>text</em> — suitable for many business workflows. Regulated qualified electronic signatures may need specialised providers.</p>
+            <p>RatPDF adds visible signature <em>text</em> — suitable for many business workflows. Regulated qualified electronic signatures may need specialised providers. For jurisdiction-specific rules, read <a href="/guides/sign-pdf-legally">sign PDF legally</a>.</p>
             <p><a href="/PDF/SignText">Sign PDF →</a></p>
             """;
 
@@ -393,6 +397,128 @@ namespace ratpdf.Content
             <p>PDFs store title, author, creator app, dates, and page count in metadata — critical for legal filings and archive migration.</p>
             <h2>Export</h2>
             <p>The <a href="/PDF/PdfMetadata">PDF Metadata Viewer</a> returns JSON you can save or feed into audit scripts.</p>
+            """;
+
+        private const string WatermarkVsPassword = """
+            <h2>Two different security layers</h2>
+            <p>A <strong>watermark</strong> is visible text or imagery stamped on every page — it tells the reader the document is a draft, confidential sample, or not for redistribution. A <strong>password</strong> encrypts the PDF so the file cannot be opened without the passphrase. They solve different problems and are often used together in a sensible order: watermark for status, password for access control.</p>
+            <h2>When a watermark is enough</h2>
+            <ul>
+            <li><strong>Internal review</strong> — mark packs DRAFT or FOR DISCUSSION before the board sees a final version.</li>
+            <li><strong>Agency concepts</strong> — SAMPLE or agency name on pitch PDFs discourages reuse without replacing encryption overhead.</li>
+            <li><strong>Low-risk external sharing</strong> — sending a pricing PDF to a prospect where the main risk is misunderstanding, not data theft.</li>
+            <li><strong>Already-public content</strong> — whitepapers or brochures where you only need to show version status.</li>
+            </ul>
+            <p>Watermarks do <em>not</em> stop someone from opening, copying, or removing the mark with editing software. Treat them as communication and deterrence, not encryption.</p>
+            <h2>When you need a password</h2>
+            <ul>
+            <li><strong>Personal data</strong> — payslips, medical summaries, tax returns, bank statements.</li>
+            <li><strong>Regulated industries</strong> — client financials, legal discovery packs, HR disciplinary files.</li>
+            <li><strong>Email exposure</strong> — any PDF that would cause harm if the wrong inbox received it.</li>
+            <li><strong>Portal uploads</strong> — some government and tender systems expect encrypted attachments.</li>
+            </ul>
+            <p>Use our <a href="/PDF/Password">Password Protect PDF tool</a> and share the passphrase on a separate channel (SMS, password manager, phone call).</p>
+            <h2>Recommended workflow: both</h2>
+            <ol>
+            <li>Finalize content in Word or your <a href="/invoice/create">invoice generator</a>, export to PDF.</li>
+            <li><a href="/PDF/Watermark">Add a watermark</a> while the file is still in draft review (DRAFT, CONFIDENTIAL).</li>
+            <li>After approval, remove or replace the watermark if needed, then <a href="/PDF/Password">password-protect</a> the final PDF.</li>
+            <li><a href="/guides/compress-pdf-guide">Compress</a> if the encrypted file exceeds email limits.</li>
+            </ol>
+            <h2>Quick decision table</h2>
+            <ul>
+            <li><strong>Draft only, trusted recipients</strong> → watermark</li>
+            <li><strong>Final file, sensitive content</strong> → password</li>
+            <li><strong>Draft + sensitive</strong> → watermark first, password before external send</li>
+            <li><strong>Public marketing PDF</strong> → usually neither; use <a href="/guides/compress-pdf-guide">compression</a> instead</li>
+            </ul>
+            <h2>Related guides</h2>
+            <p>Deeper dives: <a href="/guides/watermark-pdf">watermark PDF guide</a>, <a href="/guides/password-protect-pdf">password protect PDF guide</a>, and the full <a href="/guides/secure-pdf-workflow">secure PDF workflow hub</a>.</p>
+            """;
+
+        private const string SignPdfLegally = """
+            <h2>What “signing a PDF” can mean</h2>
+            <p>Colloquially, signing a PDF means showing that someone approved the document — often with a handwritten scan, a typed name and date, or a platform like DocuSign. Legally, the weight of that signature depends on <strong>local law</strong>, <strong>document type</strong>, and <strong>signature technology</strong>, not on the PDF format alone.</p>
+            <h2>Typed signatures (what RatPDF provides)</h2>
+            <p>RatPDF’s <a href="/PDF/SignText">Sign PDF tool</a> adds a visible block — typically name, title, and date — to a fixed page. This matches everyday business practice for:</p>
+            <ul>
+            <li>Internal approvals (purchase orders, expense sign-off)</li>
+            <li>Freelancer quotes and statements of work</li>
+            <li>HR offer letters where local law accepts simple electronic consent</li>
+            <li>Vendor acknowledgements and change requests</li>
+            </ul>
+            <p>A typed block proves <em>intent to approve</em> in many jurisdictions when combined with email threads, audit logs, or contract management records. It is not the same as a cryptographically sealed qualified signature.</p>
+            <h2>Simple e-sign vs qualified e-signatures</h2>
+            <ul>
+            <li><strong>Simple / advanced electronic signatures</strong> — common in US (ESIGN, UETA), UK, India, Australia, and EU for many B2B contracts. Often satisfied by click-to-accept, typed name, or drawn signature on a reputable platform.</li>
+            <li><strong>Qualified electronic signatures (QES)</strong> — required for some EU public-sector and regulated transactions under eIDAS. Uses certificate-based crypto and identity verification from a trusted provider.</li>
+            <li><strong>Wet ink</strong> — still required for some property transfers, wills, and notarized documents depending on country and state law.</li>
+            </ul>
+            <p>When in doubt on high-value or regulated deals (real estate, lending, healthcare consent), consult local counsel — do not rely on a free browser tool alone.</p>
+            <h2>When RatPDF typed signatures are appropriate</h2>
+            <ul>
+            <li>Low-to-medium value B2B agreements with existing business relationship</li>
+            <li>PDFs that already went through negotiation via email</li>
+            <li>Documents where your jurisdiction treats PDF + identity evidence as sufficient</li>
+            <li>Internal policies where HR/legal has approved electronic acceptance</li>
+            </ul>
+            <h2>When to use a dedicated e-sign platform</h2>
+            <ul>
+            <li>Multi-party signing order and reminders</li>
+            <li>Tamper-evident audit trail with signer IP, timestamp, and certificate</li>
+            <li>Regulated QES or identity-verified signing</li>
+            <li>Consumer contracts where local law mandates specific disclosure steps</li>
+            </ul>
+            <h2>Practical workflow on RatPDF</h2>
+            <ol>
+            <li>Export or <a href="/PDF/Merge">merge</a> the final contract PDF.</li>
+            <li>Optional: <a href="/PDF/Watermark">watermark</a> as DRAFT until all parties agree.</li>
+            <li>Open <a href="/PDF/SignText">Sign PDF</a>, place name, title, and date on the signature line.</li>
+            <li><a href="/PDF/Password">Password-protect</a> before email if the file contains personal or financial data.</li>
+            <li>Keep the signing email thread and download record as supporting evidence.</li>
+            </ol>
+            <h2>India, UK, and US quick notes</h2>
+            <p><strong>India</strong> — the IT Act recognises electronic signatures for many commercial documents; stamp duty and specific statutes may still require physical execution for some instruments.</p>
+            <p><strong>United Kingdom</strong> — electronic signatures are generally valid for contracts under the Electronic Communications Act and common law, subject to document type.</p>
+            <p><strong>United States</strong> — ESIGN and state UETA frameworks support electronic records for most commercial agreements; real estate, UCC goods over certain thresholds, and wills often have exceptions.</p>
+            <p>This is general information, not legal advice.</p>
+            <h2>Related reading</h2>
+            <p>Tool walkthrough: <a href="/guides/sign-pdf">sign PDF guide</a>. Security layer: <a href="/guides/watermark-vs-password-pdf">watermark vs password</a>. Full hub: <a href="/guides/secure-pdf-workflow">secure PDF workflow</a>.</p>
+            <p><a href="/PDF/SignText">Sign PDF now →</a></p>
+            """;
+
+        private const string PdfToolAlternatives = """
+            <h2>Why PDF tool alternatives matter</h2>
+            <p>iLovePDF, Smallpdf, PDF24, Adobe Acrobat Online, Sejda, and Foxit dominate head terms like <em>merge pdf</em>, <em>compress pdf</em>, and <em>pdf to word</em>. RatPDF targets the same jobs with transparent free limits, production engines, and editorial guides — not thin single-purpose landings.</p>
+            <h2>Quick comparison matrix</h2>
+            <div class="table-responsive"><table class="table table-bordered">
+            <thead><tr><th>Vendor</th><th>Free tier pain point</th><th>RatPDF angle</th></tr></thead>
+            <tbody>
+            <tr><td><a href="/compare/ilovepdf-alternative">iLovePDF</a></td><td>Daily limits; Pro for OCR/e-sign</td><td>22+ tools + guides on one domain</td></tr>
+            <tr><td><a href="/compare/smallpdf-alternative">Smallpdf</a></td><td>2 tasks/day across all tools</td><td>3 uses per tool/day; 4 GB Pro uploads</td></tr>
+            <tr><td><a href="/compare/pdf24-alternative">PDF24</a></td><td>Dated UX; desktop upsell</td><td>Modern hub + invoice PDF workflow</td></tr>
+            <tr><td><a href="/compare/adobe-acrobat-alternative">Adobe Acrobat</a></td><td>Account + very limited free</td><td>No install; free tier without Adobe ID</td></tr>
+            <tr><td><a href="/compare/sejda-alternative">Sejda</a></td><td>3 tasks/hour; page caps</td><td>Merge + compress + convert silo</td></tr>
+            <tr><td><a href="/compare/foxit-alternative">Foxit</a></td><td>Desktop-first funnel</td><td>Browser-first SMB workflow</td></tr>
+            </tbody></table></div>
+            <h2>Keyword gaps we cover</h2>
+            <ul>
+            <li><strong>Organize / combine PDF</strong> — <a href="/pdf/merge">Merge PDF</a> + <a href="/guides/merge-pdf">guide</a></li>
+            <li><strong>Compress to 100KB / 1MB</strong> — <a href="/compress-pdf-to-100kb">100KB landing</a>, <a href="/compress-pdf-to-1mb">1MB landing</a></li>
+            <li><strong>PDF to JPG</strong> — <a href="/pdf/pdftoimages">PDF to Images</a></li>
+            <li><strong>Alternative queries</strong> — dedicated <a href="/compare">comparison hub</a></li>
+            <li><strong>Business PDFs</strong> — <a href="/invoice/create">Invoice generator</a> → compress → email</li>
+            </ul>
+            <h2>Migration checklist</h2>
+            <ol>
+            <li>Bookmark <a href="/guides/pdf-tools">PDF tools hub</a> and your top 3 tools.</li>
+            <li>Run one representative file on the free tier (size, scans, forms).</li>
+            <li>Read the relevant <a href="/compare">comparison page</a> for your old vendor.</li>
+            <li>Upgrade to Pro if you hit daily limits or need 4 GB uploads.</li>
+            </ol>
+            <h2>Compare PDF tools</h2>
+            <p>See feature tables and FAQs for RatPDF vs iLovePDF, Smallpdf, Adobe, and others at <a href="/compare">ratpdf.com/compare</a>.</p>
+            <p><a href="/guides/pdf-tools">Browse all PDF tools →</a></p>
             """;
     }
 }

@@ -6,13 +6,13 @@
     ViewData["PdfToolId"] = "merge";
 }
 
-<div class="container py-5 d-flex justify-content-center align-items-start">
-    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
+<div class="container py-4 py-md-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-4 p-md-5 rp-legacy-tool-card" style="max-width: 600px; width: 100%;">
         <div class="card-body text-center">
 
             <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
-            <h2 class="fw-bold mb-3">Merge PDFs</h2>
-            <p class="text-muted mb-2">Upload two or more PDF files to merge them into a single document. Free: 200 MB per file. Pro: up to 4 GB combined.</p>
+            <h1 class="fw-bold mb-2">Merge PDFs</h1>
+            <p class="text-muted mb-2">Combine multiple PDFs into one document — free, secure, no signup.</p>
             @await Html.PartialAsync("_PdfToolUsageBadge")
             @await Html.PartialAsync("_PdfToolTrustPills")
 
@@ -29,9 +29,9 @@
 
             <form asp-action="Merge" method="post" enctype="multipart/form-data" id="mergeForm" data-pdf-tool="merge">
                 <div class="mb-3">
-                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
+                    <div id="dropZone" class="rp-dropzone border border-dashed rounded p-4 mb-3">
                         <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
-                        <p class="mb-0 text-muted">Drag & drop PDFs here or click to select</p>
+                        <p class="mb-0 text-muted">Drag &amp; drop PDFs here or tap to select</p>
                         <input type="file" name="files" multiple class="form-control form-control-lg d-none" id="fileInput" accept="application/pdf">
                     </div>
                 </div>
@@ -41,9 +41,10 @@
                 <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
                 @await Html.PartialAsync("_PdfProgressBar")
 
-                <button type="submit" class="btn btn-primary btn-lg w-100">
-                    <i class="bi bi-file-earmark-pdf-fill me-2"></i> Merge PDFs
+                <button type="submit" class="btn btn-primary btn-lg w-100 rp-tool-primary-btn" disabled>
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i> Merge &amp; download PDF
                 </button>
+                @await Html.PartialAsync("_PdfSubmitHint")
             </form>
             @await Html.PartialAsync("_PdfToolTrustFooter")
         </div>
@@ -230,71 +231,6 @@
 </p>
 </div>
 @section Scripts {
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "SoftwareApplication",
-  "name": "Merge PDF Files Online",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "url": "https://ratpdf.com/PDF/Merge",
-  "description": "Combine multiple PDF files into one document online for free. Quick and secure PDF merging.",
-  "offers": {
-    "@@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
-    <!-- FAQ JSON-LD -->
-    <script type="application/ld+json">
-        {
-          "@@context": "https://schema.org",
-          "@@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@@type": "Question",
-              "name": "How do I merge PDF files online?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Upload two or more PDF files using the drag & drop area or select them from your device, then click 'Merge PDFs' to combine them into a single PDF."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Is merging PDFs free?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Yes, our PDF merger is completely free to use with no watermarks or restrictions."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Do I need to register or install software?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "No registration or software download is required; the tool works entirely in your browser."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Are my files secure?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Yes, file processing is secure and private. Files are handled temporarily and are not stored permanently on our servers."
-              }
-            },
-            {
-              "@@type": "Question",
-              "name": "Can I merge PDFs on any device?",
-              "acceptedAnswer": {
-                "@@type": "Answer",
-                "text": "Yes, the PDF merger works on Windows, Mac, Android, and iOS devices directly in the browser."
-              }
-            }
-          ]
-        }
-    </script>
     <script>
         let mergeLimits = { maxFiles: 30, maxSizeBytes: 200 * 1024 * 1024, maxTotalBytes: null, maxTotalBatchLabel: null };
 

@@ -1,0 +1,13 @@
+@* Set ViewData: SeoToolUrl, SeoToolLabel *@
+@using ratpdf.Constants
+@{
+    var toolUrl = ViewData["SeoToolUrl"] as string ?? "/pdf/compress";
+    var toolLabel = ViewData["SeoToolLabel"] as string ?? "Open free tool";
+}
+<section class="rp-cta-band mt-5">
+    <h2 class="h4 fw-bold mb-2">Ready to try it?</h2>
+    <p class="mb-3">3 free uses per day · 200 MB · no signup · files deleted after download</p>
+    <a href="@toolUrl" class="btn btn-light rounded-pill px-4 fw-semibold me-2 mb-2">@toolLabel</a>
+    <a href="/Subscription/Plans" class="btn btn-outline-light rounded-pill px-4 mb-2">Pro — @SubscriptionPricing.FormatProShort()</a>
+    <a href="@SiteEntity.TrustHubPath" class="btn btn-outline-light rounded-pill px-4 mb-2">Trust center</a>
+</section>

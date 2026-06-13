@@ -1,8 +1,8 @@
-@* Shared conversion tool shell. Set ViewData: ToolTitle, ToolSubtitle, ToolId, AcceptHint *@
+@* Shared conversion tool shell. Set ViewData: ToolTitle, ToolSubtitle, ToolId, AcceptHint, BtnLabel, BtnIcon *@
 <div class="rp-content-page">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow-lg border-0 rp-tool-hero">
+            <div class="card shadow-lg border-0 rp-tool-hero" id="rpToolHero">
                 <div class="card-body p-4 p-md-5">
                     <div class="mb-3 text-center text-md-start">
                         @await Html.PartialAsync("_PdfToolTrustPills")
@@ -11,10 +11,9 @@
                         @await Html.PartialAsync("_PdfToolUsageBadge")
                     </div>
 
-                    <div id="dropZone" class="border border-2 border-dashed rounded-4 p-5 text-center mb-3"
-                         style="cursor:pointer;background:#fff;transition:all .2s;border-color:#cbd5e1;">
+                    <div id="dropZone" class="rp-dropzone border border-2 border-dashed rounded-4 p-4 p-md-5 text-center mb-3">
                         <i class="bi bi-cloud-arrow-up display-5 text-primary"></i>
-                        <p class="mb-1 fw-semibold mt-2">Drag &amp; drop here or click to browse</p>
+                        <p class="mb-1 fw-semibold mt-2">Drag &amp; drop here or tap to browse</p>
                         <p id="limitHint" class="text-muted small mb-0">@ViewData["AcceptHint"]</p>
                         <input type="file" id="fileInput" class="d-none" accept="@ViewData["AcceptAttr"]" @(ViewData["Multiple"] as bool? == true ? "multiple" : "")>
                     </div>
@@ -34,10 +33,10 @@
                         </div>
                     </div>
 
-                    <button type="button" id="convertBtn" class="btn btn-primary btn-lg w-100 py-3 fw-semibold" disabled
-                            style="border-radius:12px;background:linear-gradient(90deg,#4f46e5,#6366f1);border:none;">
+                    <button type="button" id="convertBtn" class="btn btn-primary btn-lg w-100 py-3 fw-semibold rp-tool-primary-btn" disabled>
                         <i class="bi @ViewData["BtnIcon"] me-2"></i>@ViewData["BtnLabel"]
                     </button>
+                    @await Html.PartialAsync("_PdfSubmitHint")
 
                     @await Html.PartialAsync("_PdfToolTrustFooter")
                 </div>
@@ -45,4 +44,3 @@
         </div>
     </div>
 </div>
-

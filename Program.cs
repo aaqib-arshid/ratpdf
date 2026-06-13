@@ -41,6 +41,34 @@ public partial class Program
             return;
         }
 
+        if (args.Contains("--fix-seo-head", StringComparer.OrdinalIgnoreCase))
+        {
+            var root = Directory.GetCurrentDirectory();
+            var viewsRoot = Path.Combine(root, "Views");
+            var webRoot = Path.Combine(root, "wwwroot");
+            Console.WriteLine("Fixing invoice duplicate head tags...");
+            Console.WriteLine($"  {InvoiceSeoHeadFixer.FixInvoiceViews(viewsRoot)} invoice views updated.");
+            Console.WriteLine("Fixing PDF tool H1 headings...");
+            Console.WriteLine($"  {InvoiceSeoHeadFixer.FixPdfToolH1(viewsRoot)} PDF views updated.");
+            Console.WriteLine("Fixing static sitemap URL casing...");
+            Console.WriteLine($"  {InvoiceSeoHeadFixer.FixStaticSitemapCasing(webRoot)} sitemap files updated.");
+            Console.WriteLine("Removing fabricated aggregateRating schema...");
+            Console.WriteLine($"  {InvoiceSeoHeadFixer.RemoveFabricatedAggregateRatings(viewsRoot)} views updated.");
+            Console.WriteLine("Fixing invoice hero images...");
+            Console.WriteLine($"  {InvoiceSeoHeadFixer.FixInvoiceHeroImages(viewsRoot)} invoice views updated.");
+            return;
+        }
+
+        if (args.Contains("--generate-vertical-sitemaps", StringComparer.OrdinalIgnoreCase))
+        {
+            var root = Directory.GetCurrentDirectory();
+            Console.WriteLine("Generating full vertical sitemaps...");
+            var result = VerticalSitemapFileGenerator.Generate(root, Path.Combine(root, "wwwroot"));
+            var total = result.Files.Sum(f => f.Count);
+            Console.WriteLine($"Done — {result.Files.Count} files, {total} total URLs.");
+            return;
+        }
+
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddHostedService<PythonBootstrapHostedService>();

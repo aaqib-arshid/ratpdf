@@ -1,0 +1,88 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    ViewData["Title"] = "Security & File Handling — RatPDF";
+    ViewData["Description"] = "How RatPDF secures file uploads: TLS encryption, temporary storage, automatic deletion, Azure hosting, and what we do not do with your documents.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(SiteEntity.SecurityPath);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "RatPDF Security Policy",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical(SiteEntity.SecurityPath),
+        "WebPage",
+        new[] { "h1", ".lead", "section" }))
+    </script>
+}
+
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb small mb-0">
+                <li class="breadcrumb-item"><a href="@SiteEntity.TrustHubPath">Trust center</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Security</li>
+            </ol>
+        </nav>
+
+        <h1 class="fw-bold mb-3">Security &amp; file handling</h1>
+        <p class="lead text-muted">
+            How @SiteEntity.Name processes uploaded documents on secure cloud infrastructure.
+        </p>
+
+        @await Html.PartialAsync("_AiCitationBlock")
+
+        <section aria-labelledby="transport">
+            <h2 id="transport" class="h5 fw-semibold mt-4">Transport encryption</h2>
+            <p>All uploads and downloads use <strong>HTTPS (TLS 1.2+)</strong>. Files are not transmitted over unencrypted HTTP.</p>
+        </section>
+
+        <section aria-labelledby="processing">
+            <h2 id="processing" class="h5 fw-semibold mt-4">Server-side processing</h2>
+            <ol>
+                <li>Your file arrives at our application servers (Microsoft Azure).</li>
+                <li>It is written to temporary disk storage for the duration of the conversion job.</li>
+                <li>Output files may be stored in private Azure Blob Storage until you download them or they expire.</li>
+                <li>Background cleanup jobs delete stale blobs and job metadata on a schedule.</li>
+            </ol>
+            <p>We do not manually read document contents except when investigating abuse or technical failures you report.</p>
+        </section>
+
+        <section aria-labelledby="client-side">
+            <h2 id="client-side" class="h5 fw-semibold mt-4">Client-side tools</h2>
+            <p>
+                Some utilities (formatters, counters, previews) may process data entirely in your browser without uploading files.
+                Each tool page describes whether processing is local or server-side.
+            </p>
+        </section>
+
+        <section aria-labelledby="what-we-dont">
+            <h2 id="what-we-dont" class="h5 fw-semibold mt-4">What we do not do</h2>
+            <ul>
+                <li>We do not sell uploaded documents to third parties.</li>
+                <li>We do not use document contents for advertising profiling.</li>
+                <li>We do not claim ISO 27001 or SOC 2 certification unless explicitly stated on a specific page.</li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="password-tools">
+            <h2 id="password-tools" class="h5 fw-semibold mt-4">Password &amp; encryption tools</h2>
+            <p>
+                PDF password protection uses standard PDF encryption (see
+                <a href="https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf" rel="noopener noreferrer" target="_blank">ISO 32000</a>).
+                Passwords are used only for the encryption job and are not stored after processing completes.
+            </p>
+        </section>
+
+        <section aria-labelledby="related">
+            <h2 id="related" class="h5 fw-semibold mt-4">Related policies</h2>
+            <ul class="small mb-0">
+                <li><a href="@SiteEntity.PrivacyPath">Privacy policy</a></li>
+                <li><a href="@SiteEntity.TrustHubPath">Trust center</a></li>
+                <li><a href="@SiteEntity.ContactPath">Contact us</a> to report a security concern</li>
+            </ul>
+        </section>
+    </div>
+</article>

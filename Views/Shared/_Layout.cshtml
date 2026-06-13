@@ -18,8 +18,9 @@
   }
   @if (!lightLayout)
   {
-        <!-- Prism.js Theme -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+        <!-- Prism.js Theme (non-render-blocking) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" /></noscript>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify-html.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js" defer></script>
@@ -28,29 +29,10 @@
   {
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
   }
-   <script type="application/ld+json">
-        {
-          "@@context": "https://schema.org",
-          "@@type": "WebSite",
-          "name": "Rat PDF",
-          "url": "https://ratpdf.com",
-                 "potentialAction": {
-          "@@type": "SearchAction",
-          "target": "https://ratpdf.com/PDF?search={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-        }
-    </script>
-
-    <script type="application/ld+json">
-        {
-          "@@context": "https://schema.org",
-          "@@type": "Organization",
-          "name": "Rat PDF",
-          "url": "https://ratpdf.com",
-          "logo": "https://ratpdf.com/images/ratpdf-logo.png"
-        }
-    </script>
+   @await Html.PartialAsync("_GlobalEntitySchema")
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://unpkg.com" crossorigin />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="PDF converter, merge PDF, split PDF, compress PDF, unlock PDF, flatten PDF, OCR PDF, PDF to images, extract images from PDF, add page numbers PDF, PDF metadata, img to pdf, pdf to img, PDF to Word, Word to PDF, doc to pdf, pdf to doc, docx to pdf, pdf to docx, pdf to xls, xls to pdf, excel to pdf, pdf to excel, edit pdf, free PDF tools" />
@@ -58,6 +40,7 @@
     <meta name="description" content="@(ViewData["Description"] ?? "Free online PDF tools — merge, split, compress, PDF to Word, Word to PDF, PDF to Excel. Adobe-quality conversion.")" />
     <title>@(ViewData["Title"] ?? "Free PDF Tools Online") | RatPDF</title>
     @await Html.PartialAsync("_TechnicalSeoHead")
+    @await Html.PartialAsync("_PdfToolSeoSchema")
     @RenderSection("Head", required: false)
     @* Fav Icons *@
     <link href="/favicon-48x48.png" rel="icon">
@@ -72,7 +55,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     @if (!lightLayout)
     {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /></noscript>
     }
     <style>
         /* Legacy navbar — rp-navbar uses ratpdf-theme.css */
@@ -168,7 +152,7 @@
 </head>
 <body class="rp-page">
     <!-- Global Loader -->
-    <div id="globalLoader" style="
+    <div id="globalLoader" role="status" aria-live="polite" aria-busy="true" aria-label="Processing" style="
     display: none;
     position: fixed;
     inset: 0;
@@ -214,11 +198,16 @@
                 <li class="nav-item d-xl-none">
                     <a class="nav-link btn-compress-nav" href="/pdf/compress"><i class="bi bi-lightning-charge-fill me-1"></i>Compress PDF</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/compare">Compare</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">PDF Tools</a>
                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item featured" href="/guides/pdf-tools"><i class="bi bi-grid-3x3-gap me-2"></i>All PDF Tools Hub</a></li>
                         <li><a class="dropdown-item featured" href="/pdf/compress"><i class="bi bi-lightning-charge-fill me-2"></i>Compress PDF</a></li>
                         <li><a class="dropdown-item" href="/compress-pdf"><i class="bi bi-collection me-2"></i>Compression Hub</a></li>
+                        <li><a class="dropdown-item" href="/guides/secure-pdf-workflow"><i class="bi bi-shield-lock me-2"></i>Secure PDF Workflow</a></li>
                         <li><hr class="dropdown-divider"></li>
                         @foreach (var tool in SiteToolNavigation.PdfEditTools)
                         {
@@ -234,18 +223,14 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Medical</a>
-                    <ul class="dropdown-menu">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More Tools</a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" style="min-width: 240px;">
+                        <li><h6 class="dropdown-header">Medical</h6></li>
                         @foreach (var tool in SiteToolNavigation.MedicalTools)
                         {
                             <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
                         }
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More Tools</a>
-                    <ul class="dropdown-menu dropdown-menu-lg-end" style="min-width: 240px;">
+                        <li><hr class="dropdown-divider"></li>
                         <li><h6 class="dropdown-header">Image</h6></li>
                         @foreach (var tool in SiteToolNavigation.ImageTools)
                         {
@@ -375,7 +360,19 @@
         </div>
     }
     @await Html.PartialAsync("_RelatedSiteTools")
+    @{
+        var reqPath = Context.Request.Path.Value ?? "";
+        if (reqPath.StartsWith("/invoice/", StringComparison.OrdinalIgnoreCase))
+        {
+            @await Html.PartialAsync("_InvoiceWorkflowLinks")
+        }
+    }
     </main>
+
+    @if (ViewData["PdfToolId"] is string pdfToolId && !string.IsNullOrEmpty(pdfToolId))
+    {
+        @await Html.PartialAsync("_PdfStickyMobileCta")
+    }
 
     <!-- Footer -->
     <footer class="py-5 mt-auto rp-footer">
@@ -389,22 +386,25 @@
                 <div class="col-6 col-lg-2 col-md-3">
                     <h6 class="fw-bold text-white mb-3">PDF Tools</h6>
                     <ul class="list-unstyled small">
+                        <li class="mb-1"><a href="/guides/pdf-tools">All PDF tools hub</a></li>
                         <li class="mb-1"><a href="/pdf/compress">Compress PDF</a></li>
-                        <li class="mb-1"><a href="/PDF/Merge">Merge PDF</a></li>
-                        <li class="mb-1"><a href="/PDF/Split">Split PDF</a></li>
-                        <li class="mb-1"><a href="/PDF/PdfToDoc">PDF to Word</a></li>
-                        <li class="mb-1"><a href="/PDF/EditPDF">Edit PDF</a></li>
-                        <li class="mb-1"><a href="/PDF/OcrPdf">OCR PDF</a></li>
+                        <li class="mb-1"><a href="/pdf/merge">Merge PDF</a></li>
+                        <li class="mb-1"><a href="/pdf/split">Split PDF</a></li>
+                        <li class="mb-1"><a href="/pdf/pdftodoc">PDF to Word</a></li>
+                        <li class="mb-1"><a href="/pdf/editpdf">Edit PDF</a></li>
+                        <li class="mb-1"><a href="/pdf/ocrpdf">OCR PDF</a></li>
                         <li class="mb-1"><a href="/pdf-redaction">PDF Redaction</a></li>
                     </ul>
                 </div>
                 <div class="col-6 col-lg-2 col-md-3">
-                    <h6 class="fw-bold text-white mb-3">Medical</h6>
+                    <h6 class="fw-bold text-white mb-3">Business</h6>
                     <ul class="list-unstyled small">
-                        @foreach (var tool in SiteToolNavigation.MedicalTools.Take(7))
-                        {
-                            <li class="mb-1"><a href="@tool.Url">@tool.Name</a></li>
-                        }
+                        <li class="mb-1"><a href="/invoice/create">Invoice Generator</a></li>
+                        <li class="mb-1"><a href="/free-payslip-generator">Payslip Generator</a></li>
+                        <li class="mb-1"><a href="/rent-receipt-generator">Rent Receipt</a></li>
+                        <li class="mb-1"><a href="/invoice/invoice-generator-india">Invoice India</a></li>
+                        <li class="mb-1"><a href="/invoice/invoice-generator-uk">Invoice UK</a></li>
+                        <li class="mb-1"><a href="/guides/invoice-generator-guide">Invoice Guide</a></li>
                     </ul>
                 </div>
                 <div class="col-6 col-lg-2 col-md-3">
@@ -424,13 +424,21 @@
                 <div class="col-6 col-lg-3 col-md-6">
                     <h6 class="fw-bold text-white mb-3">Resources</h6>
                     <ul class="list-unstyled small">
+                        <li class="mb-1"><a href="/guides/pdf-tools">PDF Tools Hub</a></li>
+                        <li class="mb-1"><a href="/compare">Compare PDF Tools</a></li>
+                        <li class="mb-1"><a href="/guides/secure-pdf-workflow">Secure PDF Workflow</a></li>
                         <li class="mb-1"><a href="/blog">Blog</a></li>
                         <li class="mb-1"><a href="/guides">All Guides</a></li>
                         <li class="mb-1"><a href="/compress-pdf">Compress PDF Hub</a></li>
                         <li class="mb-1"><a href="/Invoice/Create">Invoice Generator</a></li>
                         <li class="mb-1"><a href="/free-payslip-generator">Payslip Generator</a></li>
                         <li class="mb-1"><a href="/rent-receipt-generator">Rent Receipt</a></li>
+                        <li class="mb-1"><a href="@LinkBuildingCatalog.HubPath">Research &amp; resources</a></li>
+                        <li class="mb-1"><a href="@SiteEntity.TrustHubPath">Trust Center</a></li>
                         <li class="mb-1"><a href="/Home/About">About Us</a></li>
+                        <li class="mb-1"><a href="/Home/EditorialPolicy">Editorial Policy</a></li>
+                        <li class="mb-1"><a href="@SiteEntity.SecurityPath">Security</a></li>
+                        <li class="mb-1"><a href="@SiteEntity.CorrectionsPath">Corrections</a></li>
                         <li class="mb-1"><a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
                         <li class="mb-1"><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                     </ul>

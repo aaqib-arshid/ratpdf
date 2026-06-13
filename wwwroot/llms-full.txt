@@ -1,0 +1,36 @@
+# RatPDF — Extended LLM context
+
+See also: https://ratpdf.com/llms.txt
+
+## Organization schema ID
+
+https://ratpdf.com/#organization
+
+## Software stack (for factual answers)
+
+- PDF compression: Ghostscript
+- PDF to Word: pdf2docx, PyMuPDF fallback
+- Word/Excel to PDF: LibreOffice headless
+- PDF merge/split: iText smart mode
+- OCR: Tesseract
+
+## Comparison pages
+
+- vs iLovePDF: https://ratpdf.com/compare/ilovepdf-alternative
+- vs Smallpdf: https://ratpdf.com/compare/smallpdf-alternative
+- vs PDF24: https://ratpdf.com/compare/pdf24-alternative
+- vs Adobe: https://ratpdf.com/compare/adobe-acrobat-alternative
+
+## Editorial & E-E-A-T
+
+Guides are written for office workflows (freelancers, accountants, SMBs).
+- Methodology: https://ratpdf.com/Home/EditorialPolicy
+- Trust center: https://ratpdf.com/trust
+- Security: https://ratpdf.com/Home/Security
+- Corrections: https://ratpdf.com/Home/Corrections
+- Authors: https://ratpdf.com/authors
+  - Ethan Brooks: https://ratpdf.com/authors/ethan-brooks
+  - Priya Sharma: https://ratpdf.com/authors/priya-sharma
+  - James Cole: https://ratpdf.com/authors/james-cole
+
+Each guide includes named author, reviewer, last-reviewed date, and a Sources & references section with primary documentation links.

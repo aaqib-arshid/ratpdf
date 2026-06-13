@@ -1,0 +1,90 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    ViewData["Title"] = "Trust Center — Security, Privacy & Editorial Standards | RatPDF";
+    ViewData["Description"] = "How RatPDF protects uploaded files, reviews content for accuracy, handles corrections, and publishes transparent editorial policies.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(SiteEntity.TrustHubPath);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "RatPDF Trust Center",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical(SiteEntity.TrustHubPath),
+        "WebPage",
+        new[] { "h1", ".lead", "section" }))
+    </script>
+}
+
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <h1 class="fw-bold mb-3">Trust center</h1>
+        <p class="lead text-muted">
+            @SiteEntity.Name is built for document workflows where accuracy and file safety matter.
+            This hub links our security practices, editorial standards, and correction process.
+        </p>
+
+        @await Html.PartialAsync("_AiCitationBlock")
+
+        <div class="row g-4 mt-2">
+            <div class="col-md-6">
+                <div class="card h-100 border-0 bg-light p-4">
+                    <h2 class="h5 fw-bold"><i class="bi bi-shield-lock me-2"></i>Security &amp; file handling</h2>
+                    <p class="small text-muted">TLS uploads, temporary server storage, automatic deletion, and Azure hosting details.</p>
+                    <a href="@SiteEntity.SecurityPath" class="btn btn-outline-primary btn-sm rounded-pill">Read security policy →</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 border-0 bg-light p-4">
+                    <h2 class="h5 fw-bold"><i class="bi bi-file-earmark-lock me-2"></i>Privacy</h2>
+                    <p class="small text-muted">What we collect, how uploaded files are processed, cookies, and third-party services.</p>
+                    <a href="@SiteEntity.PrivacyPath" class="btn btn-outline-primary btn-sm rounded-pill">Privacy policy →</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 border-0 bg-light p-4">
+                    <h2 class="h5 fw-bold"><i class="bi bi-journal-check me-2"></i>Editorial standards</h2>
+                    <p class="small text-muted">How guides are researched, tested against real PDF engines, and reviewed before publish.</p>
+                    <a href="@SiteEntity.EditorialPolicyPath" class="btn btn-outline-primary btn-sm rounded-pill">Editorial policy →</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 border-0 bg-light p-4">
+                    <h2 class="h5 fw-bold"><i class="bi bi-pencil-square me-2"></i>Corrections</h2>
+                    <p class="small text-muted">Report factual errors. We update live pages and show last-reviewed dates on guides.</p>
+                    <a href="@SiteEntity.CorrectionsPath" class="btn btn-outline-primary btn-sm rounded-pill">Corrections policy →</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 border-0 bg-light p-4">
+                    <h2 class="h5 fw-bold"><i class="bi bi-people me-2"></i>Editorial team</h2>
+                    <p class="small text-muted">Named authors and reviewers with expertise in PDF conversion, business documents, and security.</p>
+                    <a href="@SiteAuthors.HubPath" class="btn btn-outline-primary btn-sm rounded-pill">Meet the team →</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 border-0 bg-light p-4">
+                    <h2 class="h5 fw-bold"><i class="bi bi-building me-2"></i>About RatPDF</h2>
+                    <p class="small text-muted">Entity facts, processing engines, free vs Pro limits, and contact information.</p>
+                    <a href="@SiteEntity.AboutPath" class="btn btn-outline-primary btn-sm rounded-pill">About us →</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-5 pt-4 border-top" aria-labelledby="eeat-summary">
+            <h2 id="eeat-summary" class="h5 fw-semibold">E-E-A-T summary</h2>
+            <dl class="row small mb-0">
+                <dt class="col-sm-3">Experience</dt>
+                <dd class="col-sm-9">Guides describe hands-on PDF tasks tested on representative files (digital, scanned, multi-page).</dd>
+                <dt class="col-sm-3">Expertise</dt>
+                <dd class="col-sm-9">Authors document which engine (Ghostscript, pdf2docx, LibreOffice) handles each conversion.</dd>
+                <dt class="col-sm-3">Authoritativeness</dt>
+                <dd class="col-sm-9">Topical hubs organize @PdfToolSeo.ToolCountLabel PDF tools; comparisons cite competitor privacy pages.</dd>
+                <dt class="col-sm-3">Trustworthiness</dt>
+                <dd class="col-sm-9">Transparent limits, named authors, source references, and a published corrections process.</dd>
+            </dl>
+        </section>
+    </div>
+</article>

@@ -1,0 +1,24 @@
+@using ratpdf.Constants
+@using ratpdf.Content
+<nav class="container py-4" aria-label="Invoice PDF workflow">
+    <div class="card border-0 shadow-sm" style="border-radius:12px;">
+        <div class="card-body p-4">
+            <h2 class="h6 fw-bold mb-2">Complete your invoice PDF workflow</h2>
+            <p class="small text-muted mb-3">
+                Generate the invoice, then compress or merge PDFs before sending to clients or uploading to a portal.
+            </p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <a href="/invoice/create" class="btn btn-primary btn-sm rounded-pill">Invoice generator</a>
+                <a href="/pdf/compress" class="btn btn-outline-secondary btn-sm rounded-pill">Compress PDF</a>
+                <a href="/pdf/merge" class="btn btn-outline-secondary btn-sm rounded-pill">Merge PDF</a>
+                <a href="/pdf/watermark" class="btn btn-outline-secondary btn-sm rounded-pill">Watermark PDF</a>
+            </div>
+            <ul class="small mb-0 ps-3">
+                <li class="mb-1"><a href="/guides/invoice-generator-guide">Invoice generator guide</a></li>
+                <li class="mb-1"><a href="/blog/gst-invoice-pdf-checklist">GST invoice PDF checklist</a></li>
+                <li class="mb-1"><a href="@TopicalAuthority.PdfToolsHubPath">All PDF tools hub</a></li>
+                <li><a href="/free-payslip-generator">Payslip generator</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

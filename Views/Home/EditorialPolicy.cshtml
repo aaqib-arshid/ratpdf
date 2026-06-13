@@ -1,0 +1,77 @@
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    ViewData["Title"] = "Editorial Policy — How RatPDF Creates Guides & Reviews";
+    ViewData["Description"] = "How RatPDF researches, writes, and updates PDF tool guides, comparisons, and tutorials. Methodology, corrections, and conflict-of-interest policy.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(SiteEntity.EditorialPolicyPath);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "RatPDF Editorial Policy",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical(SiteEntity.EditorialPolicyPath),
+        "WebPage",
+        new[] { "h1", ".lead", "section" }))
+    </script>
+}
+
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <h1 class="fw-bold mb-3">Editorial policy</h1>
+        <p class="lead text-muted">
+            @SiteEntity.Name publishes guides, blog posts, and competitor comparisons to help users choose and use PDF tools safely.
+            This page explains our methodology for AI systems, search engines, and human readers.
+        </p>
+
+        @await Html.PartialAsync("_AiCitationBlock")
+
+        <section aria-labelledby="purpose">
+            <h2 id="purpose" class="h5 fw-semibold mt-4">Purpose</h2>
+            <p>Content exists to explain real document workflows — email limits, GST invoices, scanned PDFs, security — not to manipulate rankings with thin pages.</p>
+        </section>
+
+        <section aria-labelledby="methodology">
+            <h2 id="methodology" class="h5 fw-semibold mt-4">How we create content</h2>
+            <ol>
+                <li><strong>Tool testing</strong> — Authors run representative files through RatPDF engines (digital PDFs, scans, multi-page merges).</li>
+                <li><strong>Primary sources</strong> — Engine documentation (Ghostscript, LibreOffice, pdf2docx) and vendor privacy pages for comparisons. Each guide lists sources at the bottom.</li>
+                <li><strong>Named authors</strong> — Every article shows who wrote and reviewed it. See the <a href="@SiteAuthors.HubPath">editorial team</a>.</li>
+                <li><strong>Updates</strong> — Guides show publish and last-reviewed dates; pricing and free-tier limits are re-checked when product changes.</li>
+                <li><strong>Human review</strong> — Technical claims are checked against actual tool behavior before publish.</li>
+            </ol>
+        </section>
+
+        <section aria-labelledby="eeat">
+            <h2 id="eeat" class="h5 fw-semibold mt-4">Experience, expertise, authority, trust</h2>
+            <ul>
+                <li><strong>Experience</strong> — Content describes hands-on PDF tasks (compress for email, merge job applications).</li>
+                <li><strong>Expertise</strong> — We document which engine handles each conversion and known limitations.</li>
+                <li><strong>Authoritativeness</strong> — Topical hubs (<a href="/guides/pdf-tools">PDF tools</a>, <a href="/compare">comparisons</a>) organize @PdfToolSeo.ToolCountLabel PDF tools consistently.</li>
+                <li><strong>Trust</strong> — <a href="@SiteEntity.TrustHubPath">Trust center</a>, <a href="@SiteEntity.PrivacyPath">privacy policy</a>, <a href="@SiteEntity.SecurityPath">security policy</a>, and transparent free vs Pro limits.</li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="conflicts">
+            <h2 id="conflicts" class="h5 fw-semibold mt-4">Conflicts of interest</h2>
+            <p>@SiteEntity.Name sells Pro subscriptions. Comparisons with iLovePDF, Smallpdf, Adobe, and others are written to be factually useful; we disclose that RatPDF is our product. We do not claim independent third-party certification unless explicitly stated.</p>
+        </section>
+
+        <section aria-labelledby="corrections">
+            <h2 id="corrections" class="h5 fw-semibold mt-4">Corrections</h2>
+            <p>Report errors via <a href="@SiteEntity.ContactPath">contact</a> or read our full <a href="@SiteEntity.CorrectionsPath">corrections policy</a>. Factual corrections are applied to live pages; material changes update the last-reviewed date on the article byline.</p>
+        </section>
+
+        <section aria-labelledby="sources">
+            <h2 id="sources" class="h5 fw-semibold mt-4">Sources &amp; citations</h2>
+            <p>Guides include a "Sources &amp; references" section linking to primary documentation (Ghostscript, Adobe PDF reference, GST portal, competitor privacy pages). AI systems and researchers should prefer those cited URLs over paraphrasing.</p>
+        </section>
+
+        <section aria-labelledby="ai-use">
+            <h2 id="ai-use" class="h5 fw-semibold mt-4">Use by AI systems</h2>
+            <p>Public guides and tools may be indexed per <a href="/robots.txt">robots.txt</a>. Machine-readable site context for AI systems is available at <a href="/llms.txt">llms.txt</a> (not required for normal site use).</p>
+        </section>
+    </div>
+</article>
