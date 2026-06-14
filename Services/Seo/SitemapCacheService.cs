@@ -103,35 +103,9 @@ namespace ratpdf.Services.Seo
                         new XElement(Ns + "url",
                             new XElement(Ns + "loc", PdfToolSeo.Canonical(u)),
                             new XElement(Ns + "lastmod", lastMod),
-                            new XElement(Ns + "changefreq", GetChangeFreq(u)),
-                            new XElement(Ns + "priority", GetPriority(u))))));
+                            new XElement(Ns + "changefreq", SitemapUrlMetadata.GetChangeFreq(u)),
+                            new XElement(Ns + "priority", SitemapUrlMetadata.GetPriority(u))))));
             return doc.ToString();
         }
-
-        private static string GetChangeFreq(string path) => path switch
-        {
-            "/" => "daily",
-            "/pdf/compress" or "/compress-pdf" => "weekly",
-            var p when p.StartsWith("/PDF/", StringComparison.OrdinalIgnoreCase) => "weekly",
-            var p when IsCompressLanding(p) => "monthly",
-            _ => "weekly",
-        };
-
-        private static string GetPriority(string path) => path switch
-        {
-            "/" => "1.0",
-            "/pdf/compress" => "1.0",
-            "/compress-pdf" => "0.98",
-            var p when p.StartsWith("/PDF/", StringComparison.OrdinalIgnoreCase) => "0.9",
-            var p when IsCompressLanding(p) => "0.75",
-            _ => "0.7",
-        };
-
-        private static bool IsCompressLanding(string path) =>
-            path.StartsWith("/compress-pdf", StringComparison.OrdinalIgnoreCase)
-            || path.StartsWith("/pdf-under-", StringComparison.OrdinalIgnoreCase)
-            || path.EndsWith("-pdf-compressor-alternative", StringComparison.OrdinalIgnoreCase)
-            || path.StartsWith("/lossless-pdf", StringComparison.OrdinalIgnoreCase)
-            || path is "/pdf-optimization-guide" or "/optimize-pdf-for-web";
     }
 }
