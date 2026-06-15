@@ -1,10 +1,20 @@
 @using ratpdf.Constants
 @{
-    var canonical = ViewData["CanonicalUrl"] as string
-        ?? PdfToolSeo.Canonical(Context.Request.Path.Value ?? "/");
+    var toolId = ViewData["PdfToolId"] as string;
+    var canonical = ViewData["CanonicalUrl"] as string;
+    if (string.IsNullOrEmpty(canonical) && !string.IsNullOrEmpty(toolId))
+    {
+        var catalog = PdfToolSchemaCatalog.Get(toolId);
+        if (catalog != null)
+            canonical = PdfToolSeo.Canonical(catalog.ToolPath);
+    }
+    canonical ??= PdfToolSeo.Canonical(Context.Request.Path.Value ?? "/");
+
     var title = ViewData["Title"] as string ?? "Free PDF Tools Online";
     var description = ViewData["Description"] as string ?? "Free online PDF tools — merge, split, compress, convert PDF to Word, Excel, and more. Adobe-quality conversion with RatPDF.";
-    var ogImage = ViewData["OgImage"] as string ?? PdfToolSeo.DefaultOgImage;
+    var ogImage = ViewData["OgImage"] as string
+        ?? (!string.IsNullOrEmpty(toolId) ? PdfToolSeo.OgImageForToolId(toolId) : null)
+        ?? PdfToolSeo.DefaultOgImage;
     var robots = ViewData["Robots"] as string ?? "index, follow, max-image-preview:large, max-snippet:-1";
     var pageKeywords = ViewData["Keywords"] as string;
     var ogLocale = ViewData["OgLocale"] as string;
@@ -31,6 +41,8 @@
 <meta property="og:url" content="@canonical" />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="@ogImage" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 @if (!string.IsNullOrEmpty(ogLocale))
 {
 <meta property="og:locale" content="@ogLocale" />

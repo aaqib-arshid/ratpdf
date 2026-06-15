@@ -76,12 +76,22 @@
                 </p>
             }
 
-            <h2 class="h6 fw-bold mb-2">More free PDF tools</h2>
+            <h2 class="h6 fw-bold mb-2">Related tools</h2>
             <div class="row g-2">
-                @foreach (var tool in PdfToolSeo.AllTools.Where(t => !current.Equals(t.Url, StringComparison.OrdinalIgnoreCase)).Take(6))
+                @{
+                    var related = TopicalAuthority.GetWorkflowLinks(current);
+                    var relatedTools = related.Count >= 2
+                        ? related.Take(3).Select(r => (r.Name, r.Url)).ToList()
+                        : PdfToolSeo.AllTools
+                            .Where(t => !current.Equals(t.Url, StringComparison.OrdinalIgnoreCase))
+                            .Take(3)
+                            .Select(t => (t.Name, t.Url))
+                            .ToList();
+                }
+                @foreach (var tool in relatedTools)
                 {
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <a href="@tool.Url" class="text-decoration-none small d-block p-2 rounded bg-light" title="@tool.Keyword">
+                    <div class="col-6 col-md-4">
+                        <a href="@tool.Url" class="text-decoration-none small d-block p-2 rounded bg-light" title="@tool.Name">
                             @tool.Name
                         </a>
                     </div>

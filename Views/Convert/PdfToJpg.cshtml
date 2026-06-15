@@ -1,0 +1,30 @@
+@using ratpdf.Constants
+@{
+    Layout = "_Layout";
+}
+@await Html.PartialAsync("_PdfToolBreadcrumbs")
+
+<section class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            @await Html.PartialAsync("_PdfToolTrustPills")
+            <h1 class="h2 fw-bold mb-2">@ViewData["SeoH1"]</h1>
+            <p class="text-muted mb-4">@ViewData["SeoLead"]</p>
+
+            <div class="card border-0 shadow-sm mb-4" style="border-radius:12px;">
+                <div class="card-body p-4 text-center">
+                    <i class="bi bi-file-earmark-image display-4 text-primary mb-3"></i>
+                    <p class="mb-3">Open the PDF to Images tool to export JPG/PNG pages from your document.</p>
+                    <a href="/pdf/pdftoimages" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-arrow-right-circle me-2"></i>Convert PDF to JPG now
+                    </a>
+                    <p class="small text-muted mt-3 mb-0">Same tool — renders each page and packages images in a ZIP.</p>
+                </div>
+            </div>
+
+            @await Html.PartialAsync("_PdfToolSeoArticle", new ViewDataDictionary(ViewData) { { "ToolName", "PDF to JPG" } })
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_PdfToolInternalLinks")

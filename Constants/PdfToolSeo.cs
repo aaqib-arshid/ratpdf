@@ -19,9 +19,13 @@ namespace ratpdf.Constants
             ("Word to PDF", "/pdf/doctopdf", "word to pdf converter"),
             ("PDF to Excel", "/pdf/pdftoexcel", "pdf to excel converter"),
             ("Excel to PDF", "/pdf/exceltopdf", "excel to pdf converter"),
+            ("PDF to PowerPoint", "/pdf/pdftoppt", "pdf to powerpoint converter"),
+            ("PowerPoint to PDF", "/pdf/ppttopdf", "powerpoint to pdf converter"),
             ("Edit PDF", "/pdf/editpdf", "edit pdf online"),
             ("PDF to Text", "/pdf/pdftotext", "pdf to text converter"),
+            ("PDF to Markdown", "/pdf/pdftomarkdown", "pdf to markdown converter"),
             ("Text to PDF", "/pdf/texttopdf", "text to pdf converter"),
+            ("HTML to PDF", "/pdf/htmltopdf", "html to pdf converter"),
             ("Watermark PDF", "/pdf/watermark", "add watermark to pdf"),
             ("Protect PDF", "/pdf/password", "password protect pdf"),
             ("Sign PDF", "/pdf/signtext", "sign pdf online"),
@@ -56,19 +60,29 @@ namespace ratpdf.Constants
                 "/",
                 "/guides",
                 "/blog",
-                "/Subscription/Plans",
-                "/Invoice/Create",
-                "/InvoiceHome/Index",
-                "/Home/About",
-                "/Home/EditorialPolicy",
-                "/Home/Security",
-                "/Home/Corrections",
+                "/subscription/plans",
+                "/invoice/create",
+                "/invoicehome/index",
+                "/home/about",
+                "/home/editorialpolicy",
+                "/home/security",
+                "/home/corrections",
                 SiteEntity.TrustHubPath,
                 SiteAuthors.HubPath,
-                "/Home/Contact",
-                "/Home/Privacy",
-                "/Home/Terms",
-                "/Home/Disclaimer",
+                "/home/contact",
+                "/home/privacy",
+                "/home/terms",
+                "/home/disclaimer",
+                "/compare",
+                "/convert/pdf-to-jpg",
+                "/convert/html-to-pdf",
+                "/pdf/htmltopdf",
+                "/pdf/pdftomarkdown",
+                "/invoice/invoice-generator-usa",
+                "/compress-pdf-to-10mb",
+                "/pdf-tools-for-lawyers",
+                "/pdf-tools-for-students",
+                "/pdf-tools-for-accountants",
             };
 
             foreach (var author in SiteAuthors.All)
@@ -130,8 +144,25 @@ namespace ratpdf.Constants
 
         private static readonly HashSet<string> CasePreservedPrefixes = new(StringComparer.OrdinalIgnoreCase)
         {
-            "/account/", "/invoice/", "/invoicedashboard/", "/subscription/", "/error/",
+            "/invoicedashboard/", "/error/",
         };
+
+        public static string OgImageForToolId(string? toolId)
+        {
+            if (string.IsNullOrEmpty(toolId))
+                return DefaultOgImage;
+            return $"{SiteUrl}/images/og/{toolId.ToLowerInvariant()}.png";
+        }
+
+        /// <summary>Apply canonical + OG image when a PDF tool id is set on the page.</summary>
+        public static void ApplyToolViewData(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary viewData, string toolId)
+        {
+            viewData["PdfToolId"] = toolId;
+            var catalog = PdfToolSchemaCatalog.Get(toolId);
+            if (catalog != null)
+                viewData["CanonicalUrl"] = Canonical(catalog.ToolPath);
+            viewData["OgImage"] ??= OgImageForToolId(toolId);
+        }
 
         public static string Canonical(string path)
         {

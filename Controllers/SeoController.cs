@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using ratpdf.Constants;
+using ratpdf.Content;
 using ratpdf.Services;
 using ratpdf.Services.Seo;
 
@@ -38,6 +39,20 @@ namespace ratpdf.Controllers
         [OutputCache(PolicyName = "Sitemap")]
         public ContentResult SitemapSite() =>
             XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:site", PdfToolSeo.SitemapCorePaths, SitemapTtl));
+
+        [HttpGet("/sitemaps/guides.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapGuides() =>
+            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:guides",
+                () => ContentLibrary.Guides.Select(g => g.Path).ToList(), SitemapTtl));
+
+        [HttpGet("/sitemaps/blog.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapBlog() =>
+            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:blog",
+                () => ContentLibrary.Blogs.Select(b => b.Path).ToList(), SitemapTtl));
 
         [HttpGet("/sitemaps/pdf-tool-landings.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]

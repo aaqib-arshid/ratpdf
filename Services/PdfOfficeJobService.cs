@@ -52,12 +52,15 @@ namespace ratpdf.Services
                     OfficeConversionKind.DocxToPdf => ".docx",
                     OfficeConversionKind.PdfToXlsx => ".pdf",
                     OfficeConversionKind.XlsxToPdf => ".xlsx",
+                    OfficeConversionKind.PdfToPptx => ".pdf",
+                    OfficeConversionKind.PptxToPdf => ".pptx",
                     _ => ".bin",
                 };
 
                 var outputExt = kind switch
                 {
                     OfficeConversionKind.PdfToXlsx => ".xlsx",
+                    OfficeConversionKind.PdfToPptx => ".pptx",
                     _ => ".pdf",
                 };
 
@@ -75,6 +78,8 @@ namespace ratpdf.Services
                     OfficeConversionKind.DocxToPdf => Path.GetFileNameWithoutExtension(originalName) + ".pdf",
                     OfficeConversionKind.PdfToXlsx => Path.GetFileNameWithoutExtension(originalName) + ".xlsx",
                     OfficeConversionKind.XlsxToPdf => Path.GetFileNameWithoutExtension(originalName) + ".pdf",
+                    OfficeConversionKind.PdfToPptx => Path.GetFileNameWithoutExtension(originalName) + ".pptx",
+                    OfficeConversionKind.PptxToPdf => Path.GetFileNameWithoutExtension(originalName) + ".pdf",
                     _ => "converted" + outputExt,
                 };
 
@@ -82,6 +87,8 @@ namespace ratpdf.Services
                 {
                     OfficeConversionKind.PdfToXlsx =>
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    OfficeConversionKind.PdfToPptx =>
+                        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
                     _ => "application/pdf",
                 };
 

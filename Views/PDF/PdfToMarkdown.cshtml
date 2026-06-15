@@ -1,0 +1,23 @@
+@using ratpdf.Constants
+@{
+    ViewData["PdfToolId"] = "pdftomarkdown";
+    ViewData["Title"] = "PDF to Markdown Online Free — Export PDF as .md | RatPDF";
+    ViewData["Description"] = "Convert PDF to Markdown online. Extract text by page into a .md file — ideal for notes, docs, and GitHub. Free 200 MB uploads.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/pdftomarkdown");
+    ViewData["OgImage"] = PdfToolSeo.OgImageForToolId("pdftomarkdown");
+    ViewData["ToolTitle"] = "PDF to Markdown";
+    ViewData["ToolSubtitle"] = "Extract text into a structured Markdown file";
+    ViewData["AcceptHint"] = "Digital or OCR PDF";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-markdown";
+    ViewData["BtnLabel"] = "Convert to Markdown";
+}
+@await Html.PartialAsync("_PdfJobToolShell")
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+@section Scripts {
+<script>
+PdfToolkit.initJobTool({ toolId: 'pdftomarkdown', convertUrl: '/PDF/PdfToMarkdown', extensions: ['.pdf'], typeLabel: 'PDF', multiple: false, defaultFileName: 'document.md', dropZoneId: 'dropZone', fileInputId: 'fileInput', fileListId: 'fileList', convertBtnId: 'convertBtn', errorAreaId: 'errorArea', progressAreaId: 'progressArea', progressBarId: 'progressBar', progressMsgId: 'progressMsg', progressPctId: 'progressPct', badgeId: 'usageBadge', limitHintId: 'limitHint' });
+</script>
+}

@@ -12,7 +12,7 @@ namespace ratpdf.Content
             "secure-pdf-password-best-practices" => SecurePdf,
             "choose-pdf-compression-level" => CompressionLevel,
             "merge-pdf-without-quality-loss" => MergeQuality,
-            _ => null
+            _ => BlogBodiesExtended.Get(slug)
         };
 
         private const string SendLargePdf = """

@@ -86,6 +86,8 @@ public class PdfExtendedToolJobService
                 "pdf_ocr_searchable.py",
                 $"\"{tempInput}\" \"{outputPath}\"",
                 outputPath,
+                expectedOutputDirectory: null,
+                inputPathForTimeout: tempInput,
                 ct: ct);
 
             var size = new FileInfo(outputPath).Length;
@@ -103,15 +105,23 @@ public class PdfExtendedToolJobService
         }
     }
 
-    public async Task RunPdfToImagesJobAsync(string jobId, string stagingBlob, long inputSize, int dpi, CancellationToken ct)
+    public async Task RunPdfToImagesJobAsync(
+        string jobId,
+        string stagingBlob,
+        long inputSize,
+        int dpi,
+        string format = "jpg",
+        int jpegQuality = 90,
+        CancellationToken ct = default)
         => await RunDirectoryZipJobAsync(jobId, "pdftoimages", stagingBlob, inputSize, "pages.zip", "application/zip",
             "Rendering pages…", async (input, workDir) =>
             {
                 await _python.RunScriptAsync(
                     "pdf_to_images.py",
-                    $"\"{input}\" \"{workDir}\" --dpi {dpi}",
+                    $"\"{input}\" \"{workDir}\" --dpi {dpi} --format {format} --quality {jpegQuality}",
                     expectedOutputPath: null,
                     expectedOutputDirectory: workDir,
+                    inputPathForTimeout: input,
                     ct: ct);
             }, ct);
 
@@ -124,6 +134,7 @@ public class PdfExtendedToolJobService
                     $"\"{input}\" \"{workDir}\"",
                     expectedOutputPath: null,
                     expectedOutputDirectory: workDir,
+                    inputPathForTimeout: input,
                     ct: ct);
             }, ct);
 

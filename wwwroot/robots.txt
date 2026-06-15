@@ -1,8 +1,10 @@
 User-agent: *
 Allow: /
-Disallow: /Account/
-Disallow: /InvoiceDashboard/
-Disallow: /Error/
+Disallow: /account/
+Disallow: /invoicedashboard/
+Disallow: /subscription/
+Disallow: /api/
+Disallow: /error/
 Disallow: /*-keywords.txt
 
 # AI search & answer engine crawlers (discoverability)

@@ -1,151 +1,621 @@
 ﻿@model ratpdf.Models.PdfEditViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Professional PDF Editor";
-    ViewData["Description"] = "Edit PDFs online with in-place text, whiteout, highlights, images, and object-level export. Up to 200 MB per file.";
+    ViewData["Title"] = "Edit PDF — Simple & Free";
+    ViewData["Description"] = "Edit PDFs online like Canva — click to edit text, drag to move, download when done.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/editpdf");
     ViewData["PdfToolId"] = "editpdf";
-    var modelJson = Context.Session.GetString("PdfEditModelJson") ?? "{}";
 }
+
 @section Head {
-    <link rel="canonical" href="https://ratpdf.com/PDF/EditPDF" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
-        .edit-app {
-            width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
-            background: #e8eaf0; min-height: 85vh;
+        .cv-app {
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
+            background: #f4f5f7;
+            min-height: 88vh;
+            display: flex;
+            flex-direction: column;
         }
-        .edit-topbar {
-            background: #1e293b; color: #fff; padding: 10px 16px;
-            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+
+        .cv-topbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+            z-index: 50;
         }
-        .edit-topbar label { color: #94a3b8; font-size: 13px; margin: 0; }
-        .edit-topbar .btn { font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 6px; border: none; }
-        .edit-topbar .btn-primary { background: #3b82f6; color: #fff; }
-        .edit-topbar .btn-success { background: #22c55e; color: #fff; }
-        #toolbar {
-            background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 6px 12px;
-            display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
-            position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,.08);
+
+        .cv-topbar .cv-brand {
+            font-weight: 700;
+            font-size: 15px;
+            color: #111827;
+            margin-right: 8px;
         }
-        .tb-group { display: flex; align-items: center; gap: 3px; padding: 0 8px; border-right: 1px solid #cbd5e1; }
-        .tb-group:last-child { border-right: none; }
-        .tb-btn {
-            width: 32px; height: 32px; border: none; background: transparent; border-radius: 4px;
-            cursor: pointer; font-size: 14px; color: #334155;
-            display: flex; align-items: center; justify-content: center;
+
+        .cv-topbar .cv-btn {
+            border: none;
+            background: #f3f4f6;
+            color: #374151;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .tb-btn:hover { background: #e2e8f0; }
-        .tb-btn.active { background: #bfdbfe; color: #1d4ed8; }
-        .tb-select { height: 28px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px; }
-        .editor-shell { display: flex; min-height: calc(80vh - 100px); }
-        #pdfPageSidebar { width: 100px; background: #1e293b; overflow-y: auto; flex-shrink: 0; padding: 8px 4px; }
-        .pdf-page-thumb { position: relative; margin-bottom: 8px; cursor: pointer; border: 2px solid transparent; border-radius: 4px; overflow: hidden; }
-        .pdf-page-thumb:hover, .pdf-page-thumb.active { border-color: #3b82f6; }
-        .pdf-page-thumb canvas { width: 100%; display: block; }
-        .pdf-page-num { position: absolute; bottom: 2px; right: 4px; background: rgba(0,0,0,.65); color: #fff; font-size: 10px; padding: 1px 4px; border-radius: 3px; }
-        #pdfPageViewer {
-            flex: 1; overflow: auto; padding: 24px; background: #64748b;
-            display: flex; flex-direction: column; align-items: center; gap: 28px;
+
+        .cv-topbar .cv-btn:hover { background: #e5e7eb; }
+        .cv-topbar .cv-btn-primary { background: #6366f1; color: #fff; }
+        .cv-topbar .cv-btn-primary:hover { background: #4f46e5; }
+        .cv-topbar .cv-btn.active { background: #dbeafe; color: #1d4ed8; }
+
+        .cv-topbar.pending-text .cv-btn[data-action="text"],
+        .cv-topbar.pending-image .cv-btn[data-action="image"] {
+            background: #6366f1;
+            color: #fff;
         }
-        .pdf-page-view { position: relative; box-shadow: 0 4px 24px rgba(0,0,0,.3); background: #fff; }
-        .pdf-page-label { position: absolute; top: -22px; left: 0; font-size: 12px; color: #f1f5f9; font-weight: 600; }
-        .pdf-page-canvas { display: block; }
-        .pdf-page-overlay { position: absolute; left: 0; top: 0; }
-        #emptyState { padding: 80px 24px; text-align: center; color: #475569; }
+
+        #btnHighlight,
+        #highlightColorWrap,
+        .cv-highlight-color,
+        #propHighlightColor,
+        #btnWhiteout {
+            display: none !important;
+        }
+
+        .cv-spacer { flex: 1; }
+
+        #editCountBadge {
+            font-size: 12px;
+            color: #6b7280;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #f3f4f6;
+        }
+
+        #editCountBadge.has-edits { background: #dcfce7; color: #166534; }
+
+        .cv-body {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .cv-pages {
+            width: 96px;
+            background: #1f2937;
+            overflow-y: auto;
+            padding: 10px 6px;
+            flex-shrink: 0;
+        }
+
+        .cv-thumb {
+            position: relative;
+            display: block;
+            width: 100%;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            padding: 0;
+            margin-bottom: 8px;
+            cursor: grab;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        .cv-thumb:hover, .cv-thumb.active { border-color: #6366f1; }
+        .cv-thumb.deleted { opacity: 0.35; border-color: #ef4444; }
+        .cv-thumb.dragging { opacity: 0.5; }
+        .cv-thumb canvas { width: 100%; display: block; }
+
+        .cv-thumb-num {
+            position: absolute;
+            bottom: 3px;
+            right: 4px;
+            background: rgba(0,0,0,.7);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        .cv-thumb-actions {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            display: none;
+            gap: 2px;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .cv-thumb:hover .cv-thumb-actions { display: flex; }
+
+        .cv-thumb-act {
+            border: none;
+            background: rgba(255,255,255,.92);
+            color: #374151;
+            border-radius: 4px;
+            width: 22px;
+            height: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .cv-thumb-act:hover { background: #6366f1; color: #fff; }
+
+        .cv-thumb-simple {
+            min-height: 36px;
+            background: #374151;
+            color: #e5e7eb;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 4px;
+        }
+
+        .cv-canvas-wrap {
+            flex: 1;
+            overflow: auto;
+            padding: 32px 24px;
+            background: #9ca3af;
+        }
+
+        .cv-canvas-wrap:focus { outline: none; }
+
+        #canvasPanel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            min-height: 100%;
+        }
+
+        .cv-page, .cv-page-placeholder {
+            position: relative;
+            background: #fff;
+            box-shadow: 0 4px 24px rgba(0,0,0,.18);
+            border-radius: 2px;
+        }
+
+        .cv-page canvas {
+            pointer-events: none;
+            display: block;
+        }
+
+        .cv-overlay {
+            pointer-events: auto;
+        }
+
+        .cv-page-deleted { opacity: 0.3; pointer-events: none; }
+
+        .cv-page-skeleton {
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: cv-shimmer 1.2s infinite;
+        }
+
+        @@keyframes cv-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .cv-overlay {
+            position: absolute;
+            left: 0;
+            top: 0;
+            cursor: default;
+        }
+
+        .cv-text {
+            position: absolute;
+            padding: 0;
+            margin: 0;
+            cursor: text;
+            border-radius: 2px;
+            white-space: pre-wrap;
+            overflow: hidden;
+            z-index: 10;
+            box-sizing: border-box;
+            -webkit-user-drag: none;
+            user-select: none;
+            vertical-align: top;
+        }
+
+        .cv-text-mask {
+            position: absolute;
+            left: -5px;
+            top: -3px;
+            right: -5px;
+            bottom: -3px;
+            background: #fff;
+            border-radius: 2px;
+            z-index: -1;
+            pointer-events: none;
+            box-shadow: inset 0 0 0 1px #e5e7eb;
+        }
+
+        .cv-text:hover:not(.cv-editing):not(.cv-has-edit) {
+            outline: 2px dashed rgba(99, 102, 241, 0.55);
+            outline-offset: 1px;
+        }
+
+        .cv-text.cv-line-hit {
+            cursor: text;
+            z-index: 11;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            height: auto;
+        }
+
+        .cv-text.cv-line-hit.cv-editing,
+        .cv-text.cv-editing {
+            color: inherit;
+            -webkit-text-fill-color: currentcolor;
+        }
+
+        .cv-app.cv-pending-draw .cv-text,
+        .cv-app.cv-pending-draw .cv-editing,
+        .cv-app.cv-pending-draw .cv-box {
+            pointer-events: none !important;
+        }
+
+        .cv-app.cv-pending-draw .cv-overlay {
+            cursor: crosshair;
+        }
+
+        .cv-text.cv-editing {
+            z-index: 30;
+            outline: 2px solid #6366f1 !important;
+            outline-offset: 2px;
+            user-select: text;
+            -webkit-user-select: text;
+            caret-color: #6366f1;
+            cursor: text;
+            overflow: visible;
+            white-space: pre-wrap;
+            word-break: break-word;
+            width: auto !important;
+            max-width: none !important;
+        }
+
+        .cv-text.cv-editing a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        .cv-text.cv-has-edit {
+            z-index: 15;
+        }
+
+        .cv-text.cv-selected { box-shadow: none; }
+
+        .cv-box {
+            position: absolute;
+            z-index: 15;
+            cursor: move;
+            box-sizing: border-box;
+        }
+
+        .cv-box.cv-selected { box-shadow: 0 0 0 2px #6366f1; z-index: 25; }
+
+        .cv-draw-preview {
+            position: absolute;
+            border: 2px dashed #6366f1;
+            background: rgba(99,102,241,.08);
+            pointer-events: none;
+            z-index: 30;
+        }
+
+        .cv-props {
+            width: 0;
+            overflow: hidden;
+            background: #fff;
+            border-left: none;
+            padding: 0;
+            flex-shrink: 0;
+            transition: width .2s ease;
+        }
+
+        .cv-props.open {
+            width: 240px;
+            padding: 16px;
+            border-left: 1px solid #e5e7eb;
+        }
+
+        .cv-prop-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .cv-props label {
+            display: block;
+            font-size: 12px;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .cv-input {
+            display: block;
+            width: 100%;
+            margin-top: 4px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 13px;
+        }
+
+        .cv-prop-row { display: flex; gap: 6px; margin-top: 8px; }
+
+        .cv-chip {
+            border: 1px solid #d1d5db;
+            background: #fff;
+            border-radius: 6px;
+            width: 36px;
+            height: 32px;
+            cursor: pointer;
+        }
+
+        .cv-chip[aria-pressed="true"] { background: #6366f1; color: #fff; border-color: #6366f1; }
+
+        .cv-btn-danger {
+            width: 100%;
+            background: #fee2e2;
+            color: #b91c1c;
+            border: none;
+            border-radius: 8px;
+            padding: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        #floatBar {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,.15);
+            padding: 8px 12px;
+            z-index: 200;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 92vw;
+        }
+
+        #floatBar.visible { display: flex; }
+
+        #floatBar .fb-btn {
+            border: 1px solid #d1d5db;
+            background: #fff;
+            border-radius: 6px;
+            min-width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 0 8px;
+        }
+
+        #floatBar .fb-btn[aria-pressed="true"] { background: #6366f1; color: #fff; border-color: #6366f1; }
+
+        #floatBar select, #floatBar input[type="color"] {
+            height: 32px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        #floatBar .fb-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        #floatBar .fb-format {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        #floatBar .fb-format.fb-format-visible {
+            display: flex;
+        }
+
+        #floatBar .fb-sep {
+            width: 1px;
+            height: 24px;
+            background: #e5e7eb;
+            margin: 0 2px;
+            flex-shrink: 0;
+        }
+
+        #floatBar .fb-highlight-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #374151;
+            margin: 0;
+            padding: 0 4px;
+            border-radius: 6px;
+            height: 32px;
+        }
+
+        #floatBar .fb-highlight-label input[type="color"] {
+            width: 32px;
+            padding: 2px;
+            cursor: pointer;
+        }
+
+        #emptyState {
+            text-align: center;
+            padding: 48px 24px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        #emptyState h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        #emptyState p { color: #6b7280; line-height: 1.6; }
+
+        .cv-drop-zone {
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 24px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .cv-drop-zone:hover { border-color: #6366f1; background: #f5f3ff; }
+
         #editorStatus {
-            position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: #fff;
-            padding: 10px 16px; border-radius: 8px; font-size: 13px; display: none; z-index: 9999;
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+            padding: 6px;
+            min-height: 28px;
         }
-        .import-progress, .export-progress { display: none; padding: 8px 16px; background: #fff; border-bottom: 1px solid #e2e8f0; }
-        .zoom-label { color: #cbd5e1; font-size: 12px; min-width: 42px; text-align: center; }
+
+        #editorStatus.is-error { color: #dc2626; }
+
+        .import-progress, .export-progress {
+            display: none;
+            padding: 8px 16px;
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        @@media (max-width: 768px) {
+            .cv-props { display: none; }
+            .cv-props.open { display: block; position: fixed; right: 0; top: 56px; bottom: 0; z-index: 60; }
+        }
     </style>
 }
 
-<div class="edit-app">
-    <div class="edit-topbar">
-        <label>Open PDF</label>
-        <input type="file" id="pdfFileInput" accept="application/pdf" class="form-control form-control-sm" style="max-width:220px;">
-        <button type="button" class="btn btn-primary" id="importBtn"><i class="fa fa-upload"></i> Open</button>
-        <span id="editUsageBadge" class="badge bg-light text-dark border">…</span>
-        <div class="ms-auto d-flex align-items-center gap-2">
-            <button type="button" class="btn btn-outline-light btn-sm" id="zoomOutBtn" title="Zoom out"><i class="fa fa-search-minus"></i></button>
-            <span id="zoomLabel" class="zoom-label">135%</span>
-            <button type="button" class="btn btn-outline-light btn-sm" id="zoomInBtn" title="Zoom in"><i class="fa fa-search-plus"></i></button>
-            <button type="button" class="btn btn-success" onclick="exportPdf()"><i class="fa fa-download"></i> Download PDF</button>
-        </div>
-    </div>
+<div class="cv-app">
+    <header class="cv-topbar" id="topBar">
+        <span class="cv-brand">Edit PDF</span>
+        <input type="file" id="pdfFileInput" accept="application/pdf" class="d-none">
+        <button type="button" class="cv-btn" id="importBtn"><i class="fa fa-folder-open"></i> Open</button>
+        <button type="button" class="cv-btn" id="btnUndo" title="Undo"><i class="fa fa-undo"></i></button>
+        <button type="button" class="cv-btn" id="btnRedo" title="Redo"><i class="fa fa-redo"></i></button>
+        <button type="button" class="cv-btn" data-action="text" id="btnAddText"><i class="fa fa-font"></i> Text</button>
+        <button type="button" class="cv-btn" data-action="image" id="btnAddImage"><i class="fa fa-image"></i> Image</button>
+        <span id="editCountBadge">No changes</span>
+        <span class="cv-spacer"></span>
+        <span id="editUsageBadge" class="small text-muted"></span>
+        <button type="button" class="cv-btn" id="zoomOutBtn"><i class="fa fa-search-minus"></i></button>
+        <span id="zoomLabel">120%</span>
+        <button type="button" class="cv-btn" id="zoomInBtn"><i class="fa fa-search-plus"></i></button>
+        <button type="button" class="cv-btn cv-btn-primary" id="btnDownload"><i class="fa fa-download"></i> Download</button>
+    </header>
 
     <div class="import-progress" id="importProgressArea">
-        <div class="progress" style="height:8px;">
+        <div class="progress" style="height:6px;">
             <div id="importProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%"></div>
         </div>
-        <small id="importProgressMsg" class="text-muted">Opening document…</small>
+        <small id="importProgressMsg" class="text-muted">Opening…</small>
     </div>
+
     <div class="export-progress" id="exportProgressArea">
-        <div class="progress" style="height:8px;">
-            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width:100%"></div>
+        <div class="progress" style="height:6px;">
+            <div id="exportProgressBar" class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width:0%"></div>
         </div>
-        <small class="text-muted">Finalizing your edited PDF…</small>
+        <small id="exportProgressMsg" class="text-muted">Preparing download…</small>
     </div>
 
-    <div id="toolbar">
-        <div class="tb-group">
-            <button class="tb-btn active" data-tool="select" title="Select &amp; edit text" onclick="setTool('select', this)"><i class="fa fa-mouse-pointer"></i></button>
-            <button class="tb-btn" data-tool="pan" title="Pan (drag to scroll)" onclick="setTool('pan', this)"><i class="bi bi-arrows-move"></i></button>
-            <button class="tb-btn" data-tool="whiteout" title="Whiteout area" onclick="setTool('whiteout', this)"><i class="fa fa-eraser"></i></button>
-            <button class="tb-btn" data-tool="addText" title="Add text box" onclick="setTool('addText', this)"><i class="fa fa-font"></i></button>
-            <button class="tb-btn" data-tool="highlight" title="Highlight area" onclick="setTool('highlight', this)"><i class="fa fa-highlighter"></i></button>
-            <button class="tb-btn" title="Insert image" onclick="insertImageStamp()"><i class="fa fa-image"></i></button>
+    <div id="emptyState" class="@(Model.HasDocument ? "d-none" : "")">
+        <h1>Edit your PDF in seconds</h1>
+        <p>Click any text to edit inline. Double-click a line to edit it as one block.</p>
+        <div class="cv-drop-zone" onclick="document.getElementById('pdfFileInput').click()">
+            <i class="bi bi-cloud-upload" style="font-size:2rem;color:#6366f1;"></i>
+            <p class="mb-0 mt-2"><strong>Drop a PDF here</strong> or click to browse<br><small>Up to 50 MB (Pro: 100 MB) · 3 free opens per day</small></p>
         </div>
-        <div class="tb-group">
-            <button class="tb-btn" id="boldToggle" title="Bold" onclick="toggleStyle(this,'bold')"><i class="fa fa-bold"></i></button>
-            <button class="tb-btn" id="italicToggle" title="Italic" onclick="toggleStyle(this,'italic')"><i class="fa fa-italic"></i></button>
-            <select class="tb-select" id="fontFamilySelect" style="width:110px">
-                <option>Arial</option><option>Helvetica</option>
-                <option>Times New Roman</option><option>Courier New</option><option>Georgia</option>
+        @await Html.PartialAsync("_PdfToolTrustPills")
+    </div>
+
+    <div id="editorRoot" class="cv-body @(Model.HasDocument ? "" : "d-none")">
+        <aside class="cv-pages" id="pagePanel" aria-label="Pages"></aside>
+        <div class="cv-canvas-wrap" id="canvasWrap" tabindex="0">
+            <div id="canvasPanel"></div>
+        </div>
+        <aside class="cv-props" id="propsPanel">
+            <div id="propsContent">
+                <p class="cv-prop-title">Properties</p>
+                <p class="text-muted small">Select text or an object to edit</p>
+            </div>
+        </aside>
+    </div>
+
+    <div id="floatBar" aria-hidden="true">
+        <div class="fb-group fb-tools">
+            <button type="button" class="fb-btn" id="fbUndo" title="Undo"><i class="fa fa-undo"></i></button>
+            <button type="button" class="fb-btn" id="fbRedo" title="Redo"><i class="fa fa-redo"></i></button>
+            <span class="fb-sep" aria-hidden="true"></span>
+            <button type="button" class="fb-btn" id="fbAddText" title="Add text"><i class="fa fa-font"></i></button>
+            <button type="button" class="fb-btn" id="fbAddImage" title="Add image"><i class="fa fa-image"></i></button>
+            <label class="fb-highlight-label" title="Highlight selected text">
+                <i class="fa fa-highlighter"></i>
+                <input type="color" id="fbTextBg" value="#fef08a">
+            </label>
+        </div>
+        <span class="fb-sep fb-sep-main" aria-hidden="true"></span>
+        <div class="fb-group fb-format">
+            <button type="button" class="fb-btn" id="fbBold" title="Bold"><b>B</b></button>
+            <button type="button" class="fb-btn" id="fbItalic" title="Italic"><i>I</i></button>
+            <button type="button" class="fb-btn" id="fbLink" title="Add link"><i class="fa fa-link"></i></button>
+            <select id="fbFont" title="Font">
+                <option>Arial</option><option>Helvetica</option><option>Times New Roman</option>
+                <option>Georgia</option><option>Courier New</option>
             </select>
-            <select class="tb-select" id="fontSizeSelect" style="width:54px">
-                <option>10</option><option>11</option><option selected>12</option>
-                <option>14</option><option>16</option><option>18</option><option>24</option>
+            <select id="fbSize" title="Size">
+                <option value="8">8</option><option value="10">10</option><option value="11">11</option>
+                <option value="12">12</option><option value="14">14</option><option value="16">16</option>
+                <option value="18">18</option><option value="24">24</option><option value="32">32</option>
             </select>
-            <input type="color" id="textColor" value="#000000" class="tb-select" style="width:36px;padding:2px;" title="Text color">
-        </div>
-        <div class="tb-group">
-            <button class="tb-btn" title="Undo (Ctrl+Z)" onclick="undoEdit()"><i class="fa fa-undo"></i></button>
-            <button class="tb-btn" title="Redo (Ctrl+Y)" onclick="redoEdit()"><i class="fa fa-redo"></i></button>
-        </div>
-        <div class="tb-group small text-muted d-none d-md-flex">
-            Click text to edit · Drag to mark areas · Ctrl+scroll to zoom · Delete removes selection
+            <input type="color" id="fbColor" title="Text color" value="#000000">
         </div>
     </div>
-
-    <div id="emptyState" class="@(Model.HasDocument ? "d-none" : "") text-center py-4">
-        <i class="bi bi-file-earmark-pdf d-block mb-3" style="font-size:4rem;color:#94a3b8;"></i>
-        <h4>Professional PDF Editor</h4>
-        <p class="mb-3">Open a PDF to edit text in place, white out content, add annotations, and download a polished result.<br>Supports files up to 200 MB with full page rendering and thumbnail navigation.</p>
-        <div class="d-flex justify-content-center mb-2">
-            @await Html.PartialAsync("_PdfToolTrustPills")
-        </div>
-        @await Html.PartialAsync("_PdfToolTrustFooter")
-    </div>
-
-    <div id="editorWorkspace" class="editor-shell @(Model.HasDocument ? "" : "d-none")">
-        <div id="pdfPageSidebar"></div>
-        <div id="pdfPageViewer"></div>
-    </div>
-
     <div id="editorStatus"></div>
-    <input type="file" id="imageStampInput" accept="image/*" class="d-none">
+    <input type="file" id="imageInput" accept="image/*" class="d-none">
 </div>
 
 @await Html.PartialAsync("_PdfToolInternalLinks")
 
 @section Scripts {
-    <script src="~/js/pdf-editor-studio.js" asp-append-version="true"></script>
+    <script src="~/js/pdf-editor-canva.js" asp-append-version="true"></script>
     @if (Model.HasDocument)
     {
         <script>
-            PdfStudioEditor.initFromServer('@Model.SessionId', @Html.Raw(modelJson), '@Model.OriginalFileName');
+            PdfCanvaEditor.bootFromServer(
+                @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SessionId)),
+                @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.OriginalFileName ?? "document.pdf")));
         </script>
     }
 }

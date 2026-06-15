@@ -35,7 +35,7 @@ namespace ratpdf.Content
             "watermark-vs-password-pdf" => WatermarkVsPassword,
             "sign-pdf-legally" => SignPdfLegally,
             "pdf-tool-alternatives" => PdfToolAlternatives,
-            _ => null
+            _ => GuideBodiesExtended.Get(slug)
         };
 
         private const string CompressPdf = """
@@ -500,6 +500,8 @@ namespace ratpdf.Content
             <tr><td><a href="/compare/adobe-acrobat-alternative">Adobe Acrobat</a></td><td>Account + very limited free</td><td>No install; free tier without Adobe ID</td></tr>
             <tr><td><a href="/compare/sejda-alternative">Sejda</a></td><td>3 tasks/hour; page caps</td><td>Merge + compress + convert silo</td></tr>
             <tr><td><a href="/compare/foxit-alternative">Foxit</a></td><td>Desktop-first funnel</td><td>Browser-first SMB workflow</td></tr>
+            <tr><td><a href="/compare/sodapdf-alternative">Soda PDF</a></td><td>Watermark; subscription push</td><td>Transparent free tier + guides</td></tr>
+            <tr><td><a href="/compare/pdf-candy-alternative">PDF Candy</a></td><td>Fragmented tool pages</td><td>Unified hub + invoice workflow</td></tr>
             </tbody></table></div>
             <h2>Keyword gaps we cover</h2>
             <ul>

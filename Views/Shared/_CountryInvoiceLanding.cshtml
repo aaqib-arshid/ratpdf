@@ -1,0 +1,126 @@
+@model ratpdf.Models.Invoice.CountryInvoiceLandingModel
+@using ratpdf.Constants
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success mb-3 px-3 py-2">@Model.Badge</span>
+            <h1 class="display-4 fw-bold mb-3">@Model.H1</h1>
+            <p class="lead text-muted mb-4">@Model.Lead</p>
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a href="/invoice/create" class="btn btn-primary btn-lg px-4">Create Invoice Now</a>
+                <a href="#features" class="btn btn-outline-secondary btn-lg px-4">Explore Features</a>
+            </div>
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">4.9/5</h3>
+                        <p class="mb-0 small text-muted">Business Rating</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">2M+</h3>
+                        <p class="mb-0 small text-muted">Invoices Generated</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded p-3 text-center h-100">
+                        <h3 class="fw-bold text-primary mb-1">100% Free</h3>
+                        <p class="mb-0 small text-muted">No Installation Needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 text-center mt-5 mt-lg-0">
+            <img src="/images/hero-invoice.svg"
+                 alt="Invoice Generator @Model.CountryName"
+                 class="img-fluid rounded shadow-lg"
+                 width="480"
+                 height="320" />
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Features of Our Invoice Generator</h2>
+            <p class="text-muted">@Model.FeaturesSubtitle</p>
+        </div>
+        <div class="row g-4">
+            @for (var i = 0; i < Model.FeatureTitles.Length; i++)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h3 class="h5 fw-bold">@Model.FeatureTitles[i]</h3>
+                            <p class="text-muted mb-0">@Model.FeatureDescriptions[i]</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-4">Frequently Asked Questions</h2>
+                @foreach (var faq in Model.Faqs)
+                {
+                    <div class="mb-4">
+                        <h3 class="h5 fw-semibold">@faq.Question</h3>
+                        <p class="text-muted mb-0">@faq.Answer</p>
+                    </div>
+                }
+                <div class="text-center mt-5">
+                    <a href="/invoice/create" class="btn btn-primary btn-lg px-5">Start Invoicing Free</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SoftwareApplication",
+  "name": "Invoice Generator @Model.CountryName",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "@PdfToolSeo.Canonical(Model.RoutePath)",
+  "image": "https://ratpdf.com/images/hero-invoice.svg",
+  "description": "@Model.Lead.Replace("\"", "\\\"")",
+  "offers": { "@@type": "Offer", "price": "0", "priceCurrency": "@Model.CurrencyCode" },
+  "publisher": { "@@type": "Organization", "name": "RatPDF", "url": "@PdfToolSeo.SiteUrl" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "FAQPage",
+  "mainEntity": [
+    @for (var fi = 0; fi < Model.Faqs.Length; fi++)
+    {
+        var faq = Model.Faqs[fi];
+        @:{ "@@type": "Question", "name": "@faq.Question.Replace("\"", "\\\"")", "acceptedAnswer": { "@@type": "Answer", "text": "@faq.Answer.Replace("\"", "\\\"")" } }@(fi < Model.Faqs.Length - 1 ? "," : "")
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "@PdfToolSeo.SiteUrl" },
+    { "@@type": "ListItem", "position": 2, "name": "Invoice Tools", "item": "@PdfToolSeo.Canonical("/invoice/create")" },
+    { "@@type": "ListItem", "position": 3, "name": "@Model.H1.Replace("\"", "\\\"")", "item": "@PdfToolSeo.Canonical(Model.RoutePath)" }
+  ]
+}
+</script>

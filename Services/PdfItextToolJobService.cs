@@ -1,3 +1,4 @@
+using System.Text;
 using ratpdf.Services.PdfProcessing;
 
 namespace ratpdf.Services;
@@ -208,6 +209,52 @@ public class PdfItextToolJobService
         }
     }
 
+    public async Task RunHtmlToPdfJobAsync(
+        string jobId,
+        string? stagingBlob,
+        long inputSize,
+        string? htmlContent,
+        CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "htmltopdf", jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 20, "Rendering HTML to PDF…");
+            string html;
+            if (!string.IsNullOrEmpty(stagingBlob))
+            {
+                tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".html", ct);
+                html = await File.ReadAllTextAsync(tempInput, ct);
+            }
+            else
+            {
+                html = htmlContent ?? "<p></p>";
+            }
+
+            if (!html.Contains("<html", StringComparison.OrdinalIgnoreCase))
+                html = $"<html><head><meta charset=\"utf-8\"/></head><body>{html}</body></html>";
+
+            var result = _fileOps.ConvertHtmlToPdfFile(html);
+            outputPath = result.FilePath;
+            await UploadResultAsync(jobId, "htmltopdf", result.FilePath, "document.pdf", "application/pdf",
+                inputSize, result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputSize, result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "HTML to PDF job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
+        }
+        finally
+        {
+            var staging = stagingBlob == null ? Enumerable.Empty<string>() : new[] { stagingBlob };
+            Cleanup(tempInput, outputPath, staging, ct);
+        }
+    }
+
     public async Task RunPdfToTextJobAsync(
         string jobId, string stagingBlob, string originalName, long inputSize, CancellationToken ct)
     {
@@ -229,6 +276,40 @@ public class PdfItextToolJobService
         catch (Exception ex)
         {
             _logger.LogError(ex, "PDF to text job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
+        }
+        finally
+        {
+            Cleanup(tempInput, outputPath, new[] { stagingBlob }, ct);
+        }
+    }
+
+    public async Task RunPdfToMarkdownJobAsync(
+        string jobId, string stagingBlob, string originalName, long inputSize, CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "pdftomarkdown", jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Extracting text…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+            var textResult = await _fileOps.ExtractTextToFileAsync(tempInput, originalName, ct: ct);
+            var rawText = await File.ReadAllTextAsync(textResult.FilePath, ct);
+            var markdown = PdfMarkdownConverter.FromExtractedText(rawText, Path.GetFileNameWithoutExtension(originalName));
+
+            outputPath = PdfTempPaths.NewOutput(".md");
+            await File.WriteAllTextAsync(outputPath, markdown, Encoding.UTF8, ct);
+            var size = new FileInfo(outputPath).Length;
+
+            await UploadResultAsync(jobId, "pdftomarkdown", outputPath, "document.md", "text/markdown",
+                inputSize, size, ct);
+            metrics.Checkpoint("completed", inputSize, size);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "PDF to Markdown job {JobId} failed", jobId);
             _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
         }
         finally

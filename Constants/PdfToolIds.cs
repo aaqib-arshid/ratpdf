@@ -10,7 +10,9 @@ namespace ratpdf.Constants
         public const string EditPdf = "editpdf";
         public const string ConvertImages = "convertimages";
         public const string TextToPdf = "texttopdf";
+        public const string HtmlToPdf = "htmltopdf";
         public const string PdfToText = "pdftotext";
+        public const string PdfToMarkdown = "pdftomarkdown";
         public const string Watermark = "watermark";
         public const string Password = "password";
         public const string DocToPdf = "doctopdf";
@@ -18,6 +20,8 @@ namespace ratpdf.Constants
         public const string Rotate = "rotate";
         public const string PdfToExcel = "pdftoexcel";
         public const string ExcelToPdf = "exceltopdf";
+        public const string PdfToPpt = "pdftoppt";
+        public const string PptToPdf = "ppttopdf";
         public const string ImgToBase64 = "imgtobase64";
         public const string UnlockPdf = "unlockpdf";
         public const string FlattenPdf = "flattenpdf";

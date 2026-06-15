@@ -19,6 +19,7 @@ namespace ratpdf.Constants
         public static readonly SiteNavTool[] PdfEditTools =
         [
             new("Edit PDF", "/pdf/editpdf"),
+            new("Compress PDF", "/pdf/compress"),
             new("Merge PDF", "/pdf/merge"),
             new("Split PDF", "/pdf/split"),
             new("Unlock PDF", "/pdf/unlockpdf"),
@@ -42,6 +43,10 @@ namespace ratpdf.Constants
             new("PDF to Word", "/pdf/pdftodoc"),
             new("PDF to Excel", "/pdf/pdftoexcel"),
             new("Excel to PDF", "/pdf/exceltopdf"),
+            new("PDF to PowerPoint", "/pdf/pdftoppt"),
+            new("PowerPoint to PDF", "/pdf/ppttopdf"),
+            new("HTML to PDF", "/pdf/htmltopdf"),
+            new("PDF to Markdown", "/pdf/pdftomarkdown"),
             new("Text to PDF", "/pdf/texttopdf"),
             new("PDF to Text", "/pdf/pdftotext"),
             new("Img to Base64", "/pdf/imgtobase64"),

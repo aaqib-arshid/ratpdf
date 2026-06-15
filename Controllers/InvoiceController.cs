@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ratpdf.Constants;
 using ratpdf.Data.AppDBContext;
 using ratpdf.Data.Entities;
 using ratpdf.Models.Invoice;
@@ -199,6 +200,9 @@ namespace ratpdf.Controllers
         [HttpGet("invoice/tax-invoice-generator")] public async Task<IActionResult> TaxInvoiceGenerator() => View();
 
         [HttpGet("invoice/invoice-generator-uk")] public async Task<IActionResult> InvoiceGeneratorUk() => View();
+
+        [HttpGet("invoice/invoice-generator-usa")]
+        public IActionResult InvoiceGeneratorUsa() => View(CountryInvoiceCatalog.Usa);
 
         [HttpGet("invoice/invoice-generator-contractors")] public async Task<IActionResult> InvoiceGeneratorContractors() => View();
 

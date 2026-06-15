@@ -1,0 +1,44 @@
+@using ratpdf.Constants
+@{
+    ViewData["Title"] = "PDF to PowerPoint Converter Online Free — Slides | RatPDF";
+    ViewData["Description"] = "Convert PDF to PowerPoint (PPTX) online. Each page becomes an editable slide with layout preserved. Free 200 MB, Pro 4 GB.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/PDF/PdfToPpt");
+    ViewData["PdfToolId"] = "pdftoppt";
+    ViewData["ToolTitle"] = "PDF to PowerPoint";
+    ViewData["ToolSubtitle"] = "One slide per page · layout preserved";
+    ViewData["AcceptHint"] = "PDF files";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-file-earmark-slides";
+    ViewData["BtnLabel"] = "Convert to PowerPoint";
+    ViewData["SeoH1"] = "PDF to PowerPoint — Turn Pages Into Slides";
+    ViewData["SeoLead"] = "Convert PDF presentations, reports, and decks into PPTX slides you can edit in Microsoft PowerPoint or Google Slides.";
+}
+
+@await Html.PartialAsync("_PdfJobToolShell")
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+
+@section Scripts {
+<script>
+PdfToolkit.initJobTool({
+    toolId: 'pdftoppt',
+    convertUrl: '/PDF/PdfToPpt/convert',
+    extensions: ['.pdf'],
+    typeLabel: 'PDF',
+    multiple: false,
+    defaultFileName: 'converted.pptx',
+    dropZoneId: 'dropZone',
+    fileInputId: 'fileInput',
+    fileListId: 'fileList',
+    convertBtnId: 'convertBtn',
+    errorAreaId: 'errorArea',
+    progressAreaId: 'progressArea',
+    progressBarId: 'progressBar',
+    progressMsgId: 'progressMsg',
+    progressPctId: 'progressPct',
+    badgeId: 'usageBadge',
+    limitHintId: 'limitHint',
+});
+</script>
+}

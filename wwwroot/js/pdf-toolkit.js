@@ -6,7 +6,7 @@ window.PdfToolkit = (function () {
 
     const DEFAULTS = {
         maxFiles: 3,
-        maxSizeBytes: 200 * 1024 * 1024,
+        maxSizeBytes: 50 * 1024 * 1024,
     };
 
     const LARGE_FILE_BYTES = 10 * 1024 * 1024;
@@ -370,6 +370,74 @@ window.PdfToolkit = (function () {
         }
     }
 
+    function showEmailCapture() {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('pdfEmailCaptureModal');
+            if (!modal || !window.bootstrap) {
+                resolve();
+                return;
+            }
+            const onHidden = () => {
+                modal.removeEventListener('hidden.bs.modal', onHidden);
+                resolve();
+            };
+            modal.addEventListener('hidden.bs.modal', onHidden);
+            bootstrap.Modal.getOrCreateInstance(modal).show();
+        });
+    }
+
+    async function maybePromptEmailCapture(access) {
+        if (!access || access.isPremium || access.emailCaptured || access.emailDismissed) return;
+        const threshold = access.emailCaptureAfter ?? 2;
+        if ((access.usedToday ?? 0) >= threshold) {
+            await showEmailCapture();
+        }
+    }
+
+    async function onToolUseSuccess(toolId) {
+        if (!toolId) return;
+        const access = await checkToolAccess(toolId);
+        await maybePromptEmailCapture(access);
+    }
+
+    function initEmailCaptureModal() {
+        const form = document.getElementById('pdfEmailCaptureForm');
+        const submitBtn = document.getElementById('pdfEmailCaptureSubmit');
+        const skipBtn = document.getElementById('pdfEmailCaptureSkip');
+        const errEl = document.getElementById('pdfEmailCaptureError');
+        const emailInput = document.getElementById('pdfLeadEmail');
+        const modal = document.getElementById('pdfEmailCaptureModal');
+
+        submitBtn?.addEventListener('click', async () => {
+            const email = emailInput?.value?.trim();
+            if (!email) {
+                errEl.textContent = 'Please enter your email.';
+                errEl.classList.remove('d-none');
+                return;
+            }
+            submitBtn.disabled = true;
+            try {
+                const body = new URLSearchParams({ email });
+                const res = await fetch('/pdf/tool-lead', { method: 'POST', body, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+                if (!res.ok) {
+                    const j = await res.json().catch(() => ({}));
+                    throw new Error(j.error || 'Could not save email.');
+                }
+                if (modal && window.bootstrap) bootstrap.Modal.getInstance(modal)?.hide();
+                refreshUsageBadges();
+            } catch (e) {
+                errEl.textContent = sanitizeErrorMessage(e.message);
+                errEl.classList.remove('d-none');
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        skipBtn?.addEventListener('click', () => {
+            fetch('/pdf/tool-lead/dismiss', { method: 'POST' }).catch(() => {});
+        });
+    }
+
     function parseFileName(contentDisposition, fallback) {
         if (!contentDisposition) return fallback;
         const utf = /filename\*=UTF-8''([^;]+)/i.exec(contentDisposition);
@@ -402,6 +470,7 @@ window.PdfToolkit = (function () {
                 e.paywall = true;
                 throw e;
             }
+            await maybePromptEmailCapture(access);
         }
 
         const url = form.getAttribute('action') || form.action;
@@ -508,6 +577,7 @@ window.PdfToolkit = (function () {
         downloadBlob(result.blob, result.fileName);
         hideProgress(elements);
         refreshUsageBadges();
+        if (toolId) await onToolUseSuccess(toolId);
         return result;
     }
 
@@ -527,6 +597,7 @@ window.PdfToolkit = (function () {
                 showPaywall(access.denyReason || 'Free daily limit reached.');
                 return null;
             }
+            await maybePromptEmailCapture(access);
         }
 
         setProgress(elements, 2, 'Starting…');
@@ -562,6 +633,7 @@ window.PdfToolkit = (function () {
         URL.revokeObjectURL(a.href);
 
         hideProgress(elements);
+        if (toolId) await onToolUseSuccess(toolId);
         return blob;
     }
 
@@ -571,6 +643,7 @@ window.PdfToolkit = (function () {
             showPaywall(access.denyReason);
             return false;
         }
+        await maybePromptEmailCapture(access);
         return true;
     }
 
@@ -807,6 +880,7 @@ window.PdfToolkit = (function () {
         initFormUploadPreviews();
         initStickyMobileCta();
         initUpgradeNudge();
+        initEmailCaptureModal();
         document.querySelectorAll('form[data-pdf-tool] button[type="submit"]').forEach(btn => {
             const form = btn.closest('form');
             const input = form?.querySelector('input[type="file"]');

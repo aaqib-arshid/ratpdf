@@ -1,0 +1,18 @@
+@using ratpdf.Constants
+@{
+    var toolId = ViewData["PdfToolId"] as string;
+    var catalog = PdfToolSchemaCatalog.Get(toolId);
+    var toolName = ViewData["SeoH1"] as string
+        ?? catalog?.ToolName
+        ?? ViewData["Title"] as string
+        ?? "PDF Tool";
+    if (toolName.Contains('|'))
+        toolName = toolName.Split('|')[0].Trim();
+}
+<nav aria-label="breadcrumb" class="container pt-3 pb-0">
+    <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/guides/pdf-tools">PDF Tools</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@toolName</li>
+    </ol>
+</nav>

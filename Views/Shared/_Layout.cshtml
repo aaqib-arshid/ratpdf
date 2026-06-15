@@ -201,6 +201,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/compare">Compare</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/resources">Resources</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">PDF Tools</a>
                     <ul class="dropdown-menu">
@@ -293,10 +296,13 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Guides</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item featured" href="/guides">All guides</a></li>
+                        <li><a class="dropdown-item featured" href="/guides/choose-pdf-tool">Choose a PDF Tool</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/guides/compress-pdf-guide">Compress PDF</a></li>
                         <li><a class="dropdown-item" href="/guides/pdf-to-word">PDF to Word</a></li>
-                        <li><a class="dropdown-item" href="/guides/pdf-txt-guide">PDF to Text</a></li>
+                        <li><a class="dropdown-item" href="/guides/pdf-to-powerpoint">PDF to PowerPoint</a></li>
+                        <li><a class="dropdown-item" href="/guides/html-to-pdf">HTML to PDF</a></li>
+                        <li><a class="dropdown-item" href="/guides/pdf-tool-alternatives">PDF Tool Alternatives</a></li>
                         <li><a class="dropdown-item" href="/guides/invoice-generator-guide">Invoice Generator</a></li>
                     </ul>
                 </li>
@@ -433,6 +439,10 @@
                         <li class="mb-1"><a href="/Invoice/Create">Invoice Generator</a></li>
                         <li class="mb-1"><a href="/free-payslip-generator">Payslip Generator</a></li>
                         <li class="mb-1"><a href="/rent-receipt-generator">Rent Receipt</a></li>
+                        <li class="mb-1"><a href="/guides/choose-pdf-tool">Choose a PDF Tool</a></li>
+                        <li class="mb-1"><a href="/research/pdf-tool-market-comparison">PDF Market Study</a></li>
+                        <li class="mb-1"><a href="/pdf-tools-for-lawyers">PDF for Lawyers</a></li>
+                        <li class="mb-1"><a href="/pdf-tools-for-accountants">PDF for Accountants</a></li>
                         <li class="mb-1"><a href="@LinkBuildingCatalog.HubPath">Research &amp; resources</a></li>
                         <li class="mb-1"><a href="@SiteEntity.TrustHubPath">Trust Center</a></li>
                         <li class="mb-1"><a href="/Home/About">About Us</a></li>
@@ -461,6 +471,7 @@
     <script src="~/js/pdf-toolkit.js" asp-append-version="true"></script>
     }
     @await Html.PartialAsync("_PdfPaywallModal")
+    @await Html.PartialAsync("_PdfEmailCaptureModal")
     @await RenderSectionAsync("Scripts", required: false)
     <script>
         function showLoader(message = 'Processing...') {

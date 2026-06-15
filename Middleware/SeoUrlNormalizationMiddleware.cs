@@ -7,7 +7,7 @@ namespace ratpdf.Middleware
     {
         private static readonly HashSet<string> SkipPrefixes = new(StringComparer.OrdinalIgnoreCase)
         {
-            "/account/", "/invoice/", "/invoicedashboard/", "/subscription/", "/error/",
+            "/invoicedashboard/", "/error/",
         };
 
         private static readonly Dictionary<string, string> PermanentRedirects =
@@ -16,6 +16,11 @@ namespace ratpdf.Middleware
                 ["/PDF/Compress"] = "/pdf/compress",
                 ["/pdf/compress/"] = "/pdf/compress",
                 ["/compress-pdf/"] = "/compress-pdf",
+                ["/Account/Login"] = "/account/login",
+                ["/Account/Register"] = "/account/register",
+                ["/Subscription/Plans"] = "/subscription/plans",
+                ["/Invoice/Create"] = "/invoice/create",
+                ["/Home/About"] = "/home/about",
             };
 
         private static readonly Regex MultiSlash = new(@"/{2,}", RegexOptions.Compiled);

@@ -8,6 +8,8 @@ namespace ratpdf.Constants
             "doctopdf" => DocToPdf,
             "pdftoexcel" => PdfToExcel,
             "exceltopdf" => ExcelToPdf,
+            "pdftoppt" => PdfToPpt,
+            "ppttopdf" => PptToPdf,
             "compress" => Compress,
             "merge" => Merge,
             "split" => Split,
@@ -19,8 +21,32 @@ namespace ratpdf.Constants
             "ocrpdf" => OcrPdf,
             "pagenumbers" => PageNumbers,
             "pdfmetadata" => PdfMetadata,
+            "htmltopdf" => HtmlToPdf,
+            "pdftomarkdown" => PdfToMarkdown,
             _ => null
         };
+
+        private const string PdfToMarkdown = """
+            <h2 class='h4 fw-semibold mt-4'>When PDF to Markdown helps</h2>
+            <p>Move documentation, research papers, and exported reports into GitHub, Notion, or static site generators. RatPDF extracts text page-by-page into <code>.md</code> sections.</p>
+            <h2 class='h4 fw-semibold mt-4'>Best results</h2>
+            <ul>
+            <li>Digital PDFs with a real text layer convert cleanly.</li>
+            <li>Run <strong>OCR PDF</strong> first on scanned documents.</li>
+            <li>Complex layouts may need manual heading cleanup after export.</li>
+            </ul>
+            """;
+
+        private const string HtmlToPdf = """
+            <h2 class='h4 fw-semibold mt-4'>When to use HTML to PDF</h2>
+            <p>Export email templates, landing-page snippets, or saved .html files as PDFs for client sign-off, archival, or print. RatPDF uses the <strong>iText html2pdf</strong> engine with embedded Noto fonts for reliable Unicode rendering.</p>
+            <h2 class='h4 fw-semibold mt-4'>Tips for clean output</h2>
+            <ul>
+            <li>Include a full HTML document with <code>&lt;html&gt;</code> and <code>&lt;body&gt;</code> for complex CSS.</li>
+            <li>Use inline or embedded CSS — external stylesheets may not resolve unless paths are absolute.</li>
+            <li>For invoices or reports, test once with your brand colors before batch conversion.</li>
+            </ul>
+            """;
 
         private const string DocToPdf = """
             <h2 class='h4 fw-semibold mt-4'>When Word to PDF goes wrong</h2>
@@ -70,6 +96,28 @@ namespace ratpdf.Constants
             </ul>
             <h2 class='h4 fw-semibold mt-4'>Common workflows</h2>
             <p>Finance teams publish monthly P&amp;L PDFs for leadership, recruiters share read-only compensation bands, and operations attach equipment checklists to work orders. After PDF export, <a href='/PDF/Compress'>compress</a> large workbooks or <a href='/PDF/Password'>password-protect</a> sensitive packs.</p>
+            """;
+
+        private const string PdfToPpt = """
+            <h2 class='h4 fw-semibold mt-4'>When PDF to PowerPoint helps</h2>
+            <p>Reuse content from PDF reports, pitch decks, and training materials in editable slides. RatPDF converts each PDF page into a PowerPoint slide so you can annotate, reorder, or present without rebuilding from scratch.</p>
+            <h2 class='h4 fw-semibold mt-4'>Best results</h2>
+            <ul>
+            <li>Landscape PDFs map cleanly to standard slide dimensions.</li>
+            <li>Digital PDFs with vector text convert faster than heavy scan files.</li>
+            <li>For scanned decks, run <a href='/pdf/ocrpdf'>OCR PDF</a> first if you need searchable text on slides.</li>
+            </ul>
+            """;
+
+        private const string PptToPdf = """
+            <h2 class='h4 fw-semibold mt-4'>Share slides as fixed-layout PDF</h2>
+            <p>RatPDF exports PPTX to PDF using LibreOffice Impress with high-quality image compression and preserved slide aspect ratio — ideal for client email, print handouts, and tender submissions.</p>
+            <h2 class='h4 fw-semibold mt-4'>Before you upload</h2>
+            <ul>
+            <li>Embed fonts in PowerPoint (<em>File → Options → Save → Embed fonts</em>) for consistent PDF typography.</li>
+            <li>Hide speaker notes if you only want slide content in the PDF.</li>
+            <li>Compress the result with <a href='/pdf/compress'>Compress PDF</a> for email attachments.</li>
+            </ul>
             """;
 
         private const string Compress = """

@@ -1,0 +1,25 @@
+@using ratpdf.Constants
+@{
+    var author = SiteAuthors.Get(SiteAuthors.DefaultAuthorSlug);
+    var reviewer = SiteAuthors.Get(SiteAuthors.DefaultReviewerSlug);
+    if (author == null) return;
+    var lastReviewed = new DateTime(2026, 1, 15);
+}
+<div class="rp-author-byline d-flex flex-wrap align-items-center gap-3 mb-3 pb-3 border-bottom small">
+    <div class="flex-shrink-0">
+        <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+            <span class="fw-bold text-primary" aria-hidden="true">@author.Name.Split(' ').Select(n => n[0]).Take(2).Aggregate("", (a, c) => a + c)</span>
+        </div>
+    </div>
+    <div>
+        <span class="text-muted">Reviewed by </span>
+        <a href="@SiteAuthors.HubPath/@author.Slug" class="fw-semibold text-decoration-none">@author.Name</a>
+        @if (reviewer != null && reviewer.Slug != author.Slug)
+        {
+            <span class="text-muted"> · Technical review: </span>
+            <a href="@SiteAuthors.HubPath/@reviewer.Slug" class="text-decoration-none">@reviewer.Name</a>
+        }
+        <span class="text-muted"> · Last reviewed @lastReviewed.ToString("MMMM d, yyyy")</span>
+        · <a href="@SiteEntity.TrustHubPath">Trust center</a>
+    </div>
+</div>

@@ -7,6 +7,8 @@ namespace ratpdf.Constants
         public static readonly string[] DynamicChildren =
         [
             "/sitemaps/site.xml",
+            "/sitemaps/guides.xml",
+            "/sitemaps/blog.xml",
             "/sitemaps/pdf-tool-landings.xml",
         ];
 

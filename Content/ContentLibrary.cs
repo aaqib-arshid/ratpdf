@@ -80,6 +80,22 @@ namespace ratpdf.Content
                 ("pdf-tool-alternatives", "Best PDF Tool Alternatives — iLovePDF, Smallpdf & Adobe Compared", "Honest comparison of top PDF sites vs RatPDF: free limits, security, schema-rich guides, and migration checklist.", "PDF", null,
                     ["What is the best iLovePDF alternative?", "Is RatPDF better than Smallpdf for daily use?"],
                     ["RatPDF — one site for merge, compress, convert, sign, and invoice PDFs with transparent free limits.", "Smallpdf limits free users to 2 tasks/day; RatPDF offers 3 uses per tool with a full comparison at /compare."]),
+                ("pdf-to-powerpoint", "PDF to PowerPoint — Convert Pages to Editable Slides", "Turn PDF decks and reports into PPTX slides. Page-to-slide mapping, LibreOffice import, and presentation tips.", "PDF", "/pdf/pdftoppt",
+                    ["Can I edit text after PDF to PPT?", "Will slide aspect ratio match my PDF?"],
+                    ["Image-heavy PDFs become one slide per page — ideal for presenting archived decks; digital PDFs may import as editable objects via LibreOffice.", "RatPDF preserves page aspect ratio when building slides."]),
+                ("powerpoint-to-pdf", "PowerPoint to PDF — Export Slides for Print & Email", "Convert PPTX to print-ready PDF with LibreOffice Impress. Font embedding, slide size, and tender submission tips.", "PDF", "/pdf/ppttopdf", null, null),
+                ("html-to-pdf", "HTML to PDF — Convert Web Pages & Templates", "Render HTML, email templates, and saved .html files as PDF with iText html2pdf and Unicode font support.", "PDF", "/pdf/htmltopdf", null, null),
+                ("pdf-to-markdown", "PDF to Markdown — Export Docs for Git & Notion", "Extract PDF text into .md files with page sections for GitHub, Obsidian, and static site workflows.", "PDF", "/pdf/pdftomarkdown", null, null),
+                ("pdf-redaction", "PDF Redaction — Permanently Remove Sensitive Text", "True redaction vs black boxes. When to redact, legal disclosure workflows, and verification steps.", "PDF", "/pdf-redaction",
+                    ["Is black marker redaction secure?", "Can redacted PDFs be recovered?"],
+                    ["No — visual black boxes often leave copyable text underneath. Use permanent redaction.", "Proper redaction removes content from the PDF object stream; always verify with search after export."]),
+                ("compress-pdf-email-limits", "Compress PDF for Email — Attachment Size Guide", "Fit PDFs under Gmail, Outlook, and portal limits. Compression levels, split fallback, and size checker tool.", "PDF", "/pdf/compress", null, null),
+                ("pdf-tools-for-lawyers", "PDF Tools for Lawyers — Merge, Redact, Convert & File", "Curated legal PDF workflow: exhibit merge, redaction, e-filing compression, and PDF to Word for redlines.", "PDF", "/pdf-tools-for-lawyers", null, null),
+                ("pdf-tools-for-accountants", "PDF Tools for Accountants — Statements, GST & Reports", "Bank PDF to Excel, invoice PDFs, board pack export, and GST compliance checkers for finance teams.", "PDF", "/pdf-tools-for-accountants", null, null),
+                ("pdf-tools-for-students", "PDF Tools for Students — Merge Readings, OCR & Citations", "Merge lecture PDFs, OCR scans for search, PDF to Word/Markdown for essays and research notes.", "PDF", "/pdf-tools-for-students", null, null),
+                ("choose-pdf-tool", "How to Choose a PDF Tool — 2026 Buyer Guide", "Compare free limits, file caps, security, and toolkit breadth. Links to RatPDF vs iLovePDF, Smallpdf, Adobe, and more.", "PDF", "/compare",
+                    ["What is the best free PDF tool?", "RatPDF vs Adobe Acrobat Online?"],
+                    ["Depends on daily volume and file size — see our comparison hub for feature tables.", "RatPDF is browser-only with 3 free uses per tool; Adobe requires account and has stricter free limits."]),
             };
 
             foreach (var m in meta)
@@ -103,6 +119,7 @@ namespace ratpdf.Content
                     Sources = ContentSourcesCatalog.GetForSlug(m.Slug),
                     FaqQuestions = m.Fq,
                     FaqAnswers = m.Fa,
+                    HowToSteps = GuideHowToSteps.Get(m.Slug)?.ToArray(),
                 };
             }
         }
@@ -119,6 +136,14 @@ namespace ratpdf.Content
                 ("secure-pdf-password-best-practices", "PDF Password Security — Do's and Don'ts", "Strong passphrases, channel separation, and limits of visual watermarks.", "Security"),
                 ("choose-pdf-compression-level", "Which PDF Compression Level Should You Choose?", "Low vs medium vs high — decision tree for legal, email, and portal uploads.", "PDF"),
                 ("merge-pdf-without-quality-loss", "Merge PDF Without Losing Quality", "Why some merge tools blur logos and how vector-preserving merge works.", "PDF"),
+                ("free-vs-paid-pdf-tools-2026", "Free vs Paid PDF Tools — When to Upgrade in 2026", "Daily limits, file size caps, and ROI of Pro tiers for agencies and legal teams.", "PDF"),
+                ("pdf-editing-mistakes", "5 PDF Editing Mistakes That Cause Compliance Problems", "Scanned PDF edits, fake redaction, and losing source files — avoid these errors.", "PDF"),
+                ("remote-work-pdf-security", "Remote Work PDF Security — Policies That Actually Work", "Password hygiene, watermark review cycles, and safe sharing from home offices.", "Security"),
+                ("powerpoint-from-pdf-tips", "PDF to PowerPoint — Tips for Editable Slide Decks", "Page-as-slide expectations, OCR for scans, and round-trip PDF export.", "PDF"),
+                ("html-to-pdf-developers", "HTML to PDF for Developers — CSS & Font Pitfalls", "Inline CSS, @page rules, and when to use browser tools vs server libraries.", "Developer"),
+                ("pdf-redaction-vs-password", "PDF Redaction vs Password — Which Control Do You Need?", "Encryption, watermarks, and permanent redaction explained for legal and HR teams.", "Security"),
+                ("accountant-pdf-workflow", "Accountant PDF Workflow — Month-End Close Checklist", "Statement extraction, board packs, merge, and email-safe compression.", "Business"),
+                ("ilovepdf-vs-smallpdf-vs-ratpdf", "iLovePDF vs Smallpdf vs RatPDF — 2026 Comparison", "Three-way feature table: free limits, uploads, invoice tools, and compare depth.", "PDF"),
             };
 
             var published = new DateTime(2025, 5, 15);

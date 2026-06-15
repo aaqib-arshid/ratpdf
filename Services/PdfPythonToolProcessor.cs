@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ratpdf.Services.PdfProcessing;
 
 namespace ratpdf.Services;
 
@@ -28,13 +29,22 @@ public class PdfPythonToolProcessor
         string arguments,
         string? expectedOutputPath = null,
         CancellationToken ct = default)
-        => RunScriptAsync(scriptName, arguments, expectedOutputPath, null, ct);
+        => RunScriptAsync(scriptName, arguments, expectedOutputPath, null, null, ct);
+
+    public Task RunScriptAsync(
+        string scriptName,
+        string arguments,
+        string? expectedOutputPath,
+        string? expectedOutputDirectory,
+        CancellationToken ct = default)
+        => RunScriptAsync(scriptName, arguments, expectedOutputPath, expectedOutputDirectory, null, ct);
 
     public async Task RunScriptAsync(
         string scriptName,
         string arguments,
         string? expectedOutputPath,
         string? expectedOutputDirectory,
+        string? inputPathForTimeout,
         CancellationToken ct = default)
     {
         var scriptPath = Path.Combine(_engineRoot, scriptName);
@@ -56,7 +66,8 @@ public class PdfPythonToolProcessor
         var stderrTask = process.StandardError.ReadToEndAsync(ct);
 
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-        cts.CancelAfter(TimeSpan.FromSeconds(_timeoutSeconds));
+        var timeoutSeconds = ConversionTimeoutHelper.ResolveSeconds(inputPathForTimeout, _timeoutSeconds);
+        cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
 
         try
         {

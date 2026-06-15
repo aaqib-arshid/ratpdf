@@ -86,6 +86,10 @@ namespace ratpdf.Services
                 "Reduce PDF file size to 5MB or less. Ideal for corporate email limits and LMS uploads.",
                 PageCategory.SizeTarget, "compress pdf to 5mb",
                 ["compress-pdf-to-2mb", "compress-pdf-for-website-upload", "compress-pdf-without-losing-quality"]),
+            new("compress-pdf-to-10mb", "Compress PDF to 10MB", "Compress PDF to 10MB Online Free | RatPDF",
+                "Shrink large PDFs under 10MB for enterprise email gateways and cloud uploads. Three compression presets.",
+                PageCategory.SizeTarget, "compress pdf to 10mb",
+                ["compress-pdf-to-5mb", "compress-pdf-for-email", "compress-pdf-without-losing-quality"]),
 
             // ── Under-size intent ──
             new("compress-pdf-under-100kb", "Compress PDF Under 100KB", "Compress PDF Under 100KB — Strict Limit Tool | RatPDF",
@@ -868,6 +872,7 @@ namespace ratpdf.Services
             if (slug.Contains("1mb", StringComparison.OrdinalIgnoreCase)) return "1 MB";
             if (slug.Contains("2mb", StringComparison.OrdinalIgnoreCase)) return "2 MB";
             if (slug.Contains("5mb", StringComparison.OrdinalIgnoreCase)) return "5 MB";
+            if (slug.Contains("10mb", StringComparison.OrdinalIgnoreCase)) return "10 MB";
             return "your target size";
         }
 

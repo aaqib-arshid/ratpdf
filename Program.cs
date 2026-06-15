@@ -69,12 +69,24 @@ public partial class Program
             return;
         }
 
+        if (args.Contains("--generate-og-images", StringComparer.OrdinalIgnoreCase))
+        {
+            var webRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var result = OgImageGenerator.GenerateAll(webRoot);
+            Console.WriteLine($"Generated {result.Count} OG PNG images in {result.OutputDirectory}");
+            foreach (var file in result.Files)
+                Console.WriteLine($"  - {file}");
+            return;
+        }
+
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddHostedService<PythonBootstrapHostedService>();
         builder.Services.AddControllersWithViews();
         builder.Services.Configure<RouteOptions>(options =>
         {
+            options.LowercaseUrls = true;
+            options.LowercaseQueryStrings = false;
             options.ConstraintMap.Add("compressSeo", typeof(CompressSeoSlugConstraint));
         });
 
@@ -149,7 +161,9 @@ public partial class Program
         builder.Services.AddScoped<PdfTextProcessor>();
         builder.Services.AddScoped<ratpdf.Services.PdfTools.PdfToolsAccessService>();
         builder.Services.AddSingleton<IPdfEditSessionStore, PdfEditSessionStore>();
+        builder.Services.AddHostedService<PdfEditSessionCleanupHostedService>();
         builder.Services.AddScoped<PdfEditProcessor>();
+        builder.Services.AddScoped<PdfEditExportJobService>();
         builder.Services.AddScoped<LayoutEngineProcessor>();
         builder.Services.AddScoped<HtmlReconstructionService>();
         builder.Services.AddSingleton<PayslipPdfService>();

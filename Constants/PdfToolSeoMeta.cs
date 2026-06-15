@@ -171,6 +171,7 @@ namespace ratpdf.Constants
             viewData["Description"] = meta.Description;
             viewData["CanonicalUrl"] = PdfToolSeo.Canonical(meta.ToolPath);
             viewData["PdfToolId"] = meta.ToolId;
+            viewData["OgImage"] = PdfToolSeo.OgImageForToolId(meta.ToolId);
             viewData["SeoH1"] = meta.H1;
             viewData["SeoLead"] = meta.Lead;
             viewData["SchemaAppName"] = meta.AppName;

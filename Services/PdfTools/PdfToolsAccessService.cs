@@ -10,13 +10,20 @@ namespace ratpdf.Services.PdfTools
         bool Allowed,
         bool IsPremium,
         int RemainingFreeUses,
-        string? DenyReason = null);
+        string? DenyReason = null,
+        int UsedToday = 0,
+        bool EmailCaptured = false,
+        bool EmailDismissed = false);
 
     /// <summary>
     /// Freemium gate for PDF tools: 3 free uses/day per tool, unlimited for subscribers.
+    /// Email capture prompt after 2nd use (before paywall on 4th attempt).
     /// </summary>
     public class PdfToolsAccessService
     {
+        private const string EmailCapturedKey = "pdf_tool_email_captured";
+        private const string EmailDismissedKey = "pdf_tool_email_dismissed";
+        public const int EmailCaptureAfterUses = 2;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly SubscriptionManager _subscriptionManager;
         private readonly UserManager<User> _userManager;
@@ -38,12 +45,13 @@ namespace ratpdf.Services.PdfTools
 
             if (await IsPremiumUserAsync(ctx))
             {
-                return new PdfToolAccessResult(true, true, int.MaxValue);
+                return new PdfToolAccessResult(true, true, int.MaxValue, UsedToday: 0, EmailCaptured: true);
             }
 
-            var key = BuildUsageKey(toolId);
-            var used = ctx.Session.GetInt32(key) ?? 0;
+            var used = GetUsedToday(ctx, toolId);
             var remaining = Math.Max(0, PdfToolLimits.FreeUsesPerDay - used);
+            var emailCaptured = HasEmailCaptured(ctx);
+            var emailDismissed = HasEmailDismissed(ctx);
 
             if (used + requestedUses > PdfToolLimits.FreeUsesPerDay)
             {
@@ -51,10 +59,13 @@ namespace ratpdf.Services.PdfTools
                     false,
                     false,
                     remaining,
-                    $"Free limit reached ({PdfToolLimits.FreeUsesPerDay}/day). Subscribe for unlimited access.");
+                    $"Free limit reached ({PdfToolLimits.FreeUsesPerDay}/day). Subscribe for unlimited access.",
+                    used,
+                    emailCaptured,
+                    emailDismissed);
             }
 
-            return new PdfToolAccessResult(true, false, remaining - requestedUses + 1);
+            return new PdfToolAccessResult(true, false, remaining - requestedUses + 1, null, used, emailCaptured, emailDismissed);
         }
 
         public async Task RecordUsageAsync(string toolId, int count = 1)
@@ -78,12 +89,69 @@ namespace ratpdf.Services.PdfTools
                 return new PdfToolAccessResult(true, false, PdfToolLimits.FreeUsesPerDay);
 
             if (await IsPremiumUserAsync(ctx))
-                return new PdfToolAccessResult(true, true, int.MaxValue);
+                return new PdfToolAccessResult(true, true, int.MaxValue, EmailCaptured: true);
 
-            var key = BuildUsageKey(toolId);
-            var used = ctx.Session.GetInt32(key) ?? 0;
+            var used = GetUsedToday(ctx, toolId);
             var remaining = Math.Max(0, PdfToolLimits.FreeUsesPerDay - used);
-            return new PdfToolAccessResult(remaining > 0, false, remaining);
+            return new PdfToolAccessResult(
+                remaining > 0,
+                false,
+                remaining,
+                UsedToday: used,
+                EmailCaptured: HasEmailCaptured(ctx),
+                EmailDismissed: HasEmailDismissed(ctx));
+        }
+
+        public bool ShouldPromptEmailCapture(HttpContext? ctx, string toolId)
+        {
+            if (ctx == null) return false;
+            if (HasEmailCaptured(ctx) || HasEmailDismissed(ctx)) return false;
+            return GetUsedToday(ctx, toolId) >= EmailCaptureAfterUses;
+        }
+
+        public bool SaveLeadEmail(string email)
+        {
+            var ctx = _httpContextAccessor.HttpContext;
+            if (ctx == null || string.IsNullOrWhiteSpace(email)) return false;
+
+            email = email.Trim();
+            if (!email.Contains('@') || email.Length < 5) return false;
+
+            ctx.Session.SetString(EmailCapturedKey, "1");
+            ctx.Session.SetString("pdf_tool_lead_email", email);
+            AppendLeadToFile(email);
+            return true;
+        }
+
+        public void DismissEmailCapture()
+        {
+            var ctx = _httpContextAccessor.HttpContext;
+            ctx?.Session.SetString(EmailDismissedKey, "1");
+        }
+
+        private static int GetUsedToday(HttpContext ctx, string toolId) =>
+            ctx.Session.GetInt32(BuildUsageKey(toolId)) ?? 0;
+
+        private static bool HasEmailCaptured(HttpContext ctx) =>
+            ctx.Session.GetString(EmailCapturedKey) == "1"
+            || (ctx.User?.Identity?.IsAuthenticated == true);
+
+        private static bool HasEmailDismissed(HttpContext ctx) =>
+            ctx.Session.GetString(EmailDismissedKey) == "1";
+
+        private static void AppendLeadToFile(string email)
+        {
+            try
+            {
+                var dir = Path.Combine(Directory.GetCurrentDirectory(), "App_Data");
+                Directory.CreateDirectory(dir);
+                var line = $"{DateTime.UtcNow:O},{email}{Environment.NewLine}";
+                File.AppendAllText(Path.Combine(dir, "tool-leads.csv"), line);
+            }
+            catch
+            {
+                // Non-critical — session flag still set.
+            }
         }
 
         public async Task<PdfToolLimitsDto> GetLimitsAsync() =>

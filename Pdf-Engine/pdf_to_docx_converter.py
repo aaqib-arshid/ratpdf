@@ -255,6 +255,44 @@ def _is_image_heavy(pdf_path: str) -> bool:
         doc.close()
 
 
+def _pdf_likely_has_tables(pdf_path: str) -> bool:
+    """Fast vector-line heuristic — avoids running all pdf2docx passes on plain text PDFs."""
+    doc = fitz.open(pdf_path)
+    try:
+        pages_to_check = min(3, doc.page_count)
+        for page_idx in range(pages_to_check):
+            page = doc[page_idx]
+            h_lines = v_lines = 0
+            for drawing in page.get_drawings():
+                for item in drawing.get("items", []):
+                    if not item or item[0] != "l":
+                        continue
+                    x0, y0, x1, y1 = item[1:5]
+                    if abs(y1 - y0) < 1.5 and abs(x1 - x0) > 24:
+                        h_lines += 1
+                    elif abs(x1 - x0) < 1.5 and abs(y1 - y0) > 24:
+                        v_lines += 1
+            if h_lines >= 3 and v_lines >= 3:
+                return True
+        return False
+    finally:
+        doc.close()
+
+
+def _pdf2docx_passes(pdf_path: str, *, scanned: bool, image_heavy: bool) -> list[tuple[str, dict]]:
+    """Pick conversion strategies by document type — fewer passes = faster on large files."""
+    if scanned:
+        return []
+    if image_heavy:
+        return [("pdf2docx low-img", _PDF2DOCX_LOW_IMG)]
+    if _pdf_likely_has_tables(pdf_path):
+        return [
+            ("pdf2docx tables", _PDF2DOCX_TABLES),
+            ("pdf2docx safe", _PDF2DOCX_SAFE),
+        ]
+    return [("pdf2docx safe", _PDF2DOCX_SAFE)]
+
+
 def _cleanup_temp(paths: list[str], keep: str | None = None) -> None:
     keep_abs = os.path.abspath(keep) if keep else None
     for path in paths:
@@ -292,11 +330,7 @@ def convert(pdf_path: str, output_docx_path: str) -> str:
 
     # --- Pass B: pdf2docx single-thread (Windows-safe) — exit early on good result ---
     candidates: list[tuple[str, str]] = []
-    for label, settings in (
-        ("pdf2docx safe", _PDF2DOCX_SAFE),
-        ("pdf2docx tables", _PDF2DOCX_TABLES),
-        ("pdf2docx low-img", _PDF2DOCX_LOW_IMG),
-    ):
+    for label, settings in _pdf2docx_passes(pdf_path, scanned=scanned, image_heavy=image_heavy):
         tmp = _temp_out(label.replace(" ", "_"))
         temp_files.append(tmp)
         if _try_pdf2docx(pdf_path, tmp, settings):

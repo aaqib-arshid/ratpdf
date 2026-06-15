@@ -9,8 +9,8 @@ namespace ratpdf.Constants
         /// <summary>Only Merge PDF allows more than <see cref="MaxBatchFiles"/> files in one job.</summary>
         public const int MergeMaxBatchFiles = 30;
 
-        public const long MaxFileSizeBytes = 200L * 1024 * 1024; // 200 MB free tier
-        public const long MaxPremiumFileSizeBytes = 4L * 1024 * 1024 * 1024; // 4 GB per file (non-merge Pro)
+        public const long MaxFileSizeBytes = 50L * 1024 * 1024; // 50 MB free tier
+        public const long MaxPremiumFileSizeBytes = 100L * 1024 * 1024; // 100 MB Pro (Edit PDF and most tools)
 
         /// <summary>Pro/Business Merge PDF — combined size of all files in one merge job.</summary>
         public const long MergeMaxTotalBatchBytesPremium = 4L * 1024 * 1024 * 1024;

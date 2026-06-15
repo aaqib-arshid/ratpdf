@@ -32,6 +32,8 @@ namespace ratpdf.Constants
                 string.Equals(t.ToolPath, path, StringComparison.OrdinalIgnoreCase));
         }
 
+        public static IEnumerable<string> AllToolIds() => ById.Keys;
+
         private static IEnumerable<ToolSchema> Build()
         {
             yield return Schema("compress", "Compress PDF", "/pdf/compress",
@@ -57,6 +59,14 @@ namespace ratpdf.Constants
             yield return Schema("pdftoexcel", "PDF to Excel", "/pdf/pdftoexcel",
                 ["Upload a PDF with tables.", "Run conversion.", "Download XLSX spreadsheet."],
                 Faqs("convert PDF to Excel", "Lattice detection works on digital bank statements and invoices."));
+
+            yield return Schema("pdftoppt", "PDF to PowerPoint", "/pdf/pdftoppt",
+                ["Upload a PDF presentation or report.", "Run conversion.", "Download editable PPTX slides."],
+                Faqs("convert PDF to PowerPoint", "Each PDF page becomes a slide with layout preserved for editing."));
+
+            yield return Schema("ppttopdf", "PowerPoint to PDF", "/pdf/ppttopdf",
+                ["Upload PPTX or PPT.", "Wait for LibreOffice Impress export.", "Download print-ready PDF."],
+                Faqs("convert PowerPoint to PDF", "Slide dimensions and fonts are preserved for sharing and print."));
 
             yield return Schema("editpdf", "Edit PDF", "/pdf/editpdf",
                 ["Upload PDF.", "Add text, images, or annotations.", "Download edited PDF."],
@@ -102,6 +112,14 @@ namespace ratpdf.Constants
                 ["Paste or upload plain text.", "Generate PDF.", "Download archive PDF."],
                 Faqs("convert text to PDF", "Archive memos and notes as PDF."));
 
+            yield return Schema("htmltopdf", "HTML to PDF", "/pdf/htmltopdf",
+                ["Paste HTML or upload an .html file.", "Preview markup in the editor if needed.", "Click Convert HTML to PDF.", "Download the rendered PDF."],
+                Faqs("convert HTML to PDF", "iText html2pdf renders CSS and tags into a print-ready PDF."));
+
+            yield return Schema("pdftomarkdown", "PDF to Markdown", "/pdf/pdftomarkdown",
+                ["Upload a digital or OCR PDF.", "Extract text per page.", "Download a .md file with page sections.", "Edit in any Markdown editor."],
+                Faqs("convert PDF to Markdown", "Best for text-heavy digital PDFs; scans need OCR first for clean output."));
+
             yield return Schema("flattenpdf", "Flatten PDF", "/pdf/flattenpdf",
                 ["Upload fillable PDF.", "Flatten form fields.", "Download flat PDF."],
                 Faqs("flatten a PDF form", "Lock field values before portal upload."));
@@ -117,6 +135,14 @@ namespace ratpdf.Constants
             yield return Schema("pdfmetadata", "PDF Metadata Viewer", "/pdf/pdfmetadata",
                 ["Upload PDF.", "View properties.", "Copy JSON export if needed."],
                 Faqs("view PDF metadata", "Inspect title, author, dates, and page count."));
+
+            yield return Schema("exceltopdf", "Excel to PDF", "/pdf/exceltopdf",
+                ["Upload XLSX or XLS.", "Wait for LibreOffice export.", "Download print-ready PDF."],
+                Faqs("convert Excel to PDF", "Preserves sheet layout for finance and reporting."));
+
+            yield return Schema("imgtobase64", "Image to Base64", "/pdf/imgtobase64",
+                ["Upload an image.", "Copy Base64 output.", "Use in HTML, CSS, or APIs."],
+                Faqs("convert image to Base64", "Encode PNG or JPG for inline data URIs."));
         }
 
         private static ToolSchema Schema(string id, string name, string path, string[] steps, (string, string)[] faqs) =>

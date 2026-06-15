@@ -18,6 +18,7 @@ namespace ratpdf.Models
         public ContentSource[]? Sources { get; init; }
         public string[]? FaqQuestions { get; init; }
         public string[]? FaqAnswers { get; init; }
+        public string[]? HowToSteps { get; init; }
 
         public string Path => Kind == ContentKind.Blog ? $"/blog/{Slug}" : $"/guides/{Slug}";
 

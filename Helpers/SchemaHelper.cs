@@ -161,7 +161,8 @@ namespace ratpdf.Helpers
             string? authorSlug = null,
             string? reviewerSlug = null,
             DateTime? dateReviewed = null,
-            IReadOnlyList<ratpdf.Models.ContentSource>? sources = null)
+            IReadOnlyList<ratpdf.Models.ContentSource>? sources = null,
+            IReadOnlyList<string>? howToSteps = null)
         {
             var modified = dateModified ?? dateReviewed ?? datePublished;
             var author = SiteAuthors.Get(authorSlug);
@@ -265,6 +266,25 @@ namespace ratpdf.Helpers
                         @type = "Question",
                         name = f.Question,
                         acceptedAnswer = new { @type = "Answer", text = f.Answer },
+                    }).ToList(),
+                });
+            }
+
+            if (howToSteps is { Count: > 0 })
+            {
+                graph.Add(new
+                {
+                    @type = "HowTo",
+                    name = headline,
+                    description,
+                    totalTime = "PT5M",
+                    step = howToSteps.Select((s, i) => new
+                    {
+                        @type = "HowToStep",
+                        position = i + 1,
+                        name = $"Step {i + 1}",
+                        text = s,
+                        url = $"{canonicalUrl}#step-{i + 1}",
                     }).ToList(),
                 });
             }
@@ -451,7 +471,7 @@ namespace ratpdf.Helpers
 
             var app = new Dictionary<string, object>
             {
-                ["@type"] = "SoftwareApplication",
+                ["@type"] = "WebApplication",
                 ["@id"] = $"{canonicalUrl}#software",
                 ["name"] = toolName,
                 ["applicationCategory"] = "UtilityApplication",

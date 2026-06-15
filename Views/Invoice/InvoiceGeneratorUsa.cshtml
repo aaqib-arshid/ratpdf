@@ -1,0 +1,15 @@
+@model ratpdf.Models.Invoice.CountryInvoiceLandingModel
+@using ratpdf.Constants
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = $"Free Invoice Generator USA | Online Invoice Maker for US Businesses";
+    ViewData["Description"] = Model.Lead;
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(Model.RoutePath);
+    ViewData["OgImage"] = "https://ratpdf.com/images/hero-invoice.svg";
+    ViewData["Keywords"] = Model.Keywords;
+    ViewData["GeoRegion"] = Model.GeoRegion;
+    ViewData["GeoCountry"] = Model.GeoCountry;
+    ViewData["OgLocale"] = Model.OgLocale;
+}
+
+@await Html.PartialAsync("_CountryInvoiceLanding", Model)

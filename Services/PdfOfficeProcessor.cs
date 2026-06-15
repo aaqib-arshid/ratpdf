@@ -10,6 +10,8 @@ namespace ratpdf.Services
         DocxToPdf,
         PdfToXlsx,
         XlsxToPdf,
+        PdfToPptx,
+        PptxToPdf,
     }
 
     public class PdfOfficeProcessor
@@ -73,6 +75,8 @@ namespace ratpdf.Services
                 OfficeConversionKind.DocxToPdf => "docx2pdf",
                 OfficeConversionKind.PdfToXlsx => "pdf2xlsx",
                 OfficeConversionKind.XlsxToPdf => "xlsx2pdf",
+                OfficeConversionKind.PdfToPptx => "pdf2pptx",
+                OfficeConversionKind.PptxToPdf => "pptx2pdf",
                 _ => throw new ArgumentOutOfRangeException(nameof(kind)),
             };
 
@@ -88,7 +92,8 @@ namespace ratpdf.Services
             var stderrTask = process.StandardError.ReadToEndAsync(ct);
 
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-            cts.CancelAfter(TimeSpan.FromSeconds(_timeoutSeconds));
+            var timeoutSeconds = ConversionTimeoutHelper.ResolveSeconds(inputPath, _timeoutSeconds);
+            cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
 
             try
             {
@@ -139,6 +144,8 @@ namespace ratpdf.Services
                 OfficeConversionKind.DocxToPdf => (".docx", ".pdf"),
                 OfficeConversionKind.PdfToXlsx => (".pdf", ".xlsx"),
                 OfficeConversionKind.XlsxToPdf => (".xlsx", ".pdf"),
+                OfficeConversionKind.PdfToPptx => (".pdf", ".pptx"),
+                OfficeConversionKind.PptxToPdf => (".pptx", ".pdf"),
                 _ => (".bin", ".out"),
             };
     }

@@ -1,0 +1,3 @@
+# Keep fixture PDFs out of git — generated on first test run.
+*
+!.gitignore

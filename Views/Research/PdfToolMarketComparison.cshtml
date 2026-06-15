@@ -1,0 +1,86 @@
+@using ratpdf.Constants
+@using ratpdf.Content
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "Online PDF Tool Market Comparison 2026",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/research/pdf-tool-market-comparison"),
+        "WebPage",
+        new[] { "h1", "table" }))
+    </script>
+}
+
+<article class="rp-content-page">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small mb-0">
+            <li class="breadcrumb-item"><a href="@LinkBuildingCatalog.HubPath">Resources</a></li>
+            <li class="breadcrumb-item active">PDF tool market comparison</li>
+        </ol>
+    </nav>
+
+    <header class="mb-4">
+        <span class="rp-badge">Industry study</span>
+        <h1 class="fw-bold mt-2">Online PDF tool market comparison (2026)</h1>
+        <p class="lead text-muted">How major browser PDF vendors compare on free tiers, upload limits, toolkit breadth, and editorial depth — with links to full RatPDF comparison pages.</p>
+        <p class="small text-muted">Last reviewed: June 2026 · <a href="/authors/ethan-brooks">Ethan Brooks</a></p>
+    </header>
+
+    @await Html.PartialAsync("_AiCitationBlock")
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Vendor feature matrix</h2>
+        <p class="text-muted small">Values reflect public pricing pages and help docs as of June 2026. Verify on vendor sites before procurement decisions.</p>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Vendor</th>
+                        <th>Free tier model</th>
+                        <th>Typical free upload</th>
+                        <th>Install required</th>
+                        <th>RatPDF compare page</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>RatPDF</td><td>3 uses/tool/day</td><td>200 MB (4 GB Pro)</td><td>No</td><td><a href="/compare">Hub</a></td></tr>
+                    <tr><td>iLovePDF</td><td>Daily limits per tool</td><td>~200 MB</td><td>No</td><td><a href="/compare/ilovepdf-alternative">Alternative</a></td></tr>
+                    <tr><td>Smallpdf</td><td>2 tasks/day total</td><td>Varies</td><td>No</td><td><a href="/compare/smallpdf-alternative">Alternative</a></td></tr>
+                    <tr><td>PDF24</td><td>Generous free tier</td><td>Large files</td><td>Optional desktop</td><td><a href="/compare/pdf24-alternative">Alternative</a></td></tr>
+                    <tr><td>Adobe Acrobat Online</td><td>Very limited free</td><td>Account required</td><td>No (Adobe ID)</td><td><a href="/compare/adobe-acrobat-alternative">Alternative</a></td></tr>
+                    <tr><td>Sejda</td><td>3 tasks/hour</td><td>50 MB / 200 pages</td><td>No</td><td><a href="/compare/sejda-alternative">Alternative</a></td></tr>
+                    <tr><td>Soda PDF</td><td>Freemium; watermarks</td><td>Varies</td><td>Often desktop</td><td><a href="/compare/sodapdf-alternative">Alternative</a></td></tr>
+                    <tr><td>PDF Candy</td><td>Daily task limits</td><td>Per-tool caps</td><td>No</td><td><a href="/compare/pdf-candy-alternative">Alternative</a></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Differentiators beyond merge &amp; compress</h2>
+        <ul>
+            <li><strong>Editorial depth</strong> — RatPDF publishes <a href="/guides">@ContentLibrary.Guides.Count()+ step-by-step guides</a> and <a href="/blog">@ContentLibrary.Blogs.Count()+ blogs</a> vs thin tool-only pages on many competitors.</li>
+            <li><strong>Business PDFs</strong> — Built-in <a href="/invoice/create">invoice generator</a> (GST/VAT) integrated with compress and email workflows.</li>
+            <li><strong>Research assets</strong> — Citable <a href="/resources">resources hub</a> with attachment limits, compression benchmarks, and retention guides.</li>
+            <li><strong>Vertical workflows</strong> — <a href="/pdf-tools-for-lawyers">Lawyers</a>, <a href="/pdf-tools-for-accountants">accountants</a>, and <a href="/pdf-tools-for-students">students</a> landing pages.</li>
+        </ul>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Methodology</h2>
+        <p>We evaluated vendors on transactional PDF tasks (merge, compress, convert, sign), free-tier friction, maximum upload size, HTTPS processing claims, and presence of tutorial content. Ratings are qualitative — not paid endorsements.</p>
+        <p>Buyer checklist: <a href="/guides/choose-pdf-tool">How to choose a PDF tool</a> · Alternatives roundup: <a href="/guides/pdf-tool-alternatives">PDF tool alternatives guide</a></p>
+    </section>
+
+    <section class="rp-cta-band p-4 rounded-3">
+        <h2 class="h5 fw-bold">Try RatPDF on your typical files</h2>
+        <p class="mb-3 text-muted">Run the same PDFs you use on iLovePDF or Smallpdf — compare output quality and speed on the free tier.</p>
+        <a href="/guides/pdf-tools" class="btn btn-primary me-2">Browse PDF tools</a>
+        <a href="/compare" class="btn btn-outline-primary">Full comparison hub</a>
+    </section>
+</article>

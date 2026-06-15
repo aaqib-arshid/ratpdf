@@ -4,9 +4,12 @@
     ViewData["Description"] = "Compress PDF online free. Reduce PDF file size with Ghostscript engine while keeping readable quality. Pro up to 4 GB.";
     ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/compress");
     ViewData["PdfToolId"] = "compress";
+    ViewData["OgImage"] = PdfToolSeo.OgImageForToolId("compress");
     ViewData["LoadPdfLib"] = true;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@await Html.PartialAsync("_PdfToolBreadcrumbs")
 
 <div class="container py-5 d-flex justify-content-center align-items-start">
     <div class="card shadow-lg p-5" style="max-width: 650px; width: 100%; border-radius: 15px;">

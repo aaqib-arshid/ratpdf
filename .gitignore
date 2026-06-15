@@ -363,3 +363,10 @@ MigrationBackup/
 FodyWeavers.xsd
 /wwwroot/AIModels/u2net.onnx
 /wwwroot/AIModels/onnx-minilm
+
+# Local QA / agent test artifacts (repo root)
+/_*.txt
+/_*.json
+/_*.pdf
+/_cookies*.txt
+/wwwroot/test-cert.pdf

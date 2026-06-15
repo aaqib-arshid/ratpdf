@@ -52,13 +52,26 @@ _LO_WRITER_PDF = (
     '"Quality":{"type":"long","value":"100"},'
     '"UseLosslessCompression":{"type":"boolean","value":"true"},'
     '"EmbedStandardFonts":{"type":"boolean","value":"true"},'
-    '"ExportFormFields":{"type":"boolean","value":"true"}}'
+    '"ExportFormFields":{"type":"boolean","value":"true"},'
+    '"ExportBookmarks":{"type":"boolean","value":"true"},'
+    '"ExportNotes":{"type":"boolean","value":"false"},'
+    '"UseTaggedPDF":{"type":"boolean","value":"true"},'
+    '"ExportLinksRelativeFsys":{"type":"boolean","value":"true"},'
+    '"MaxImageResolution":{"type":"long","value":"300"}}'
 )
 _LO_CALC_PDF = (
     'pdf:calc_pdf_Export:'
     '{"SelectPdfVersion":{"type":"long","value":"1"},'
     '"Quality":{"type":"long","value":"100"},'
     '"SinglePageSheets":{"type":"boolean","value":"false"}}'
+)
+_LO_IMPRESS_PDF = (
+    'pdf:impress_pdf_Export:'
+    '{"SelectPdfVersion":{"type":"long","value":"1"},'
+    '"Quality":{"type":"long","value":"100"},'
+    '"UseLosslessCompression":{"type":"boolean","value":"true"},'
+    '"ExportNotesPages":{"type":"boolean","value":"false"},'
+    '"ExportHiddenSlides":{"type":"boolean","value":"false"}}'
 )
 
 
@@ -214,6 +227,27 @@ def xlsx_to_pdf(input_path: str, output_path: str) -> None:
     )
 
 
+def pptx_to_pdf(input_path: str, output_path: str) -> None:
+    if _libreoffice_convert(input_path, output_path, _LO_IMPRESS_PDF):
+        return
+    if _libreoffice_convert(input_path, output_path, "pdf:impress_pdf_Export"):
+        return
+    raise RuntimeError(
+        "PowerPoint to PDF failed. Install LibreOffice Impress for slide-accurate export."
+    )
+
+
+def pdf_to_pptx(input_path: str, output_path: str) -> None:
+    """PDF → PPTX: try LibreOffice import, then pixmap slides (reliable for all PDFs)."""
+    if _libreoffice_convert(input_path, output_path, "pptx"):
+        return
+    if _libreoffice_convert(input_path, output_path, "pptx:Impress MS PowerPoint 2007 XML"):
+        return
+    from pdf_to_pptx import pdf_to_pptx_pixmap
+
+    pdf_to_pptx_pixmap(input_path, output_path, dpi=150)
+
+
 def _style_table_sheet(ws, row_count: int, col_count: int) -> None:
     """Apply borders and header styling like Acrobat export."""
     try:
@@ -298,7 +332,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Office file converter")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    for cmd in ("docx2pdf", "xlsx2pdf", "pdf2xlsx"):
+    for cmd in ("docx2pdf", "xlsx2pdf", "pdf2xlsx", "pptx2pdf", "pdf2pptx"):
         p = sub.add_parser(cmd)
         p.add_argument("input_path")
         p.add_argument("output_path")
@@ -311,6 +345,10 @@ def main() -> int:
             xlsx_to_pdf(args.input_path, args.output_path)
         elif args.command == "pdf2xlsx":
             pdf_to_xlsx(args.input_path, args.output_path)
+        elif args.command == "pptx2pdf":
+            pptx_to_pdf(args.input_path, args.output_path)
+        elif args.command == "pdf2pptx":
+            pdf_to_pptx(args.input_path, args.output_path)
         print(args.output_path)
         return 0
     except Exception as exc:

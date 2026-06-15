@@ -54,5 +54,14 @@ namespace ratpdf.Controllers
             ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/research/document-retention-periods");
             return View();
         }
+
+        [HttpGet("pdf-tool-market-comparison")]
+        public IActionResult PdfToolMarketComparison()
+        {
+            ViewData["Title"] = "Online PDF Tool Market Comparison 2026 | RatPDF Research";
+            ViewData["Description"] = "Feature matrix comparing iLovePDF, Smallpdf, PDF24, Adobe, Sejda, Soda PDF, PDF Candy, and RatPDF — free tiers, uploads, and toolkit breadth.";
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/research/pdf-tool-market-comparison");
+            return View();
+        }
     }
 }

@@ -1,0 +1,44 @@
+@using ratpdf.Constants
+@{
+    ViewData["Title"] = "PowerPoint to PDF Converter Online Free — Print Ready | RatPDF";
+    ViewData["Description"] = "Convert PPTX to PDF online with slide layout, fonts, and aspect ratio preserved. LibreOffice Impress engine. Free 200 MB, Pro 4 GB.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/PDF/PptToPdf");
+    ViewData["PdfToolId"] = "ppttopdf";
+    ViewData["ToolTitle"] = "PowerPoint to PDF";
+    ViewData["ToolSubtitle"] = "Slide layout · speaker notes optional";
+    ViewData["AcceptHint"] = "PPTX files";
+    ViewData["AcceptAttr"] = ".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation,.ppt";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-file-earmark-pdf";
+    ViewData["BtnLabel"] = "Convert to PDF";
+    ViewData["SeoH1"] = "PowerPoint to PDF — Share Slides as Print-Ready PDF";
+    ViewData["SeoLead"] = "Export PowerPoint decks to professional PDFs for email, print, and client handoff without losing slide proportions.";
+}
+
+@await Html.PartialAsync("_PdfJobToolShell")
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+
+@section Scripts {
+<script>
+PdfToolkit.initJobTool({
+    toolId: 'ppttopdf',
+    convertUrl: '/PDF/PptToPdf/convert',
+    extensions: ['.pptx', '.ppt'],
+    typeLabel: 'PowerPoint',
+    multiple: false,
+    defaultFileName: 'converted.pdf',
+    dropZoneId: 'dropZone',
+    fileInputId: 'fileInput',
+    fileListId: 'fileList',
+    convertBtnId: 'convertBtn',
+    errorAreaId: 'errorArea',
+    progressAreaId: 'progressArea',
+    progressBarId: 'progressBar',
+    progressMsgId: 'progressMsg',
+    progressPctId: 'progressPct',
+    badgeId: 'usageBadge',
+    limitHintId: 'limitHint',
+});
+</script>
+}

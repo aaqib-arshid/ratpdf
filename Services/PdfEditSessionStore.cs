@@ -8,6 +8,7 @@ namespace ratpdf.Services
         public string PdfPath { get; set; } = "";
         public string OriginalFileName { get; set; } = "";
         public string DocumentModelJson { get; set; } = "{}";
+        public string AssetsDir { get; set; } = "";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 
@@ -32,12 +33,15 @@ namespace ratpdf.Services
         public PdfEditSession Create(string pdfPath, string originalFileName, string documentModelJson)
         {
             var id = Guid.NewGuid().ToString("N");
+            var assetsDir = Path.Combine(Path.GetDirectoryName(pdfPath)!, id + "_assets");
+            Directory.CreateDirectory(assetsDir);
             var session = new PdfEditSession
             {
                 SessionId = id,
                 PdfPath = pdfPath,
                 OriginalFileName = originalFileName,
                 DocumentModelJson = documentModelJson,
+                AssetsDir = assetsDir,
             };
             _sessions[id] = session;
             return session;
@@ -54,6 +58,7 @@ namespace ratpdf.Services
             if (_sessions.TryRemove(sessionId, out var session))
             {
                 TryDeleteFile(session.PdfPath);
+                TryDeleteDirectory(session.AssetsDir);
             }
         }
 
@@ -79,6 +84,20 @@ namespace ratpdf.Services
             catch (Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to delete temp PDF {Path}", path);
+            }
+        }
+
+        private void TryDeleteDirectory(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !Directory.Exists(path))
+                return;
+            try
+            {
+                Directory.Delete(path, recursive: true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to delete session assets {Path}", path);
             }
         }
     }

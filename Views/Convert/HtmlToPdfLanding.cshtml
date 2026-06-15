@@ -1,0 +1,27 @@
+@using ratpdf.Constants
+@{
+    Layout = "_Layout";
+}
+@await Html.PartialAsync("_PdfToolBreadcrumbs")
+
+<section class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            @await Html.PartialAsync("_PdfToolTrustPills")
+            <h1 class="h2 fw-bold mb-2">@ViewData["SeoH1"]</h1>
+            <p class="text-muted mb-4">@ViewData["SeoLead"]</p>
+            <div class="card border-0 shadow-sm mb-4" style="border-radius:12px;">
+                <div class="card-body p-4 text-center">
+                    <i class="bi bi-filetype-html display-4 text-primary mb-3"></i>
+                    <p class="mb-3">Open the HTML to PDF tool to render your markup as a downloadable PDF.</p>
+                    <a href="/pdf/htmltopdf" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-arrow-right-circle me-2"></i>Convert HTML to PDF now
+                    </a>
+                </div>
+            </div>
+            @await Html.PartialAsync("_PdfToolSeoArticle", new ViewDataDictionary(ViewData) { { "ToolName", "HTML to PDF" } })
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_PdfToolInternalLinks")
