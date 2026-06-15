@@ -266,6 +266,8 @@ namespace ratpdf.Constants
                     "/freelance-rate-calculator",
                     "/guides/choose-pdf-tool",
                     "/guides/secure-pdf-workflow",
+                    "/guides/medical-tools",
+                    "/guides/developer-tools",
                     "/pdf-tools-for-lawyers",
                     "/pdf-tools-for-accountants",
                     "/pdf-tools-for-students",

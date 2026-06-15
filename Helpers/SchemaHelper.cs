@@ -1,4 +1,5 @@
 ﻿using ratpdf.Constants;
+using ratpdf.Models;
 using ratpdf.Models.CompressPdfSeo;
 using System.Text.Json;
 
@@ -328,7 +329,7 @@ namespace ratpdf.Helpers
                 itemListElement = list,
             }, JsonOpts);
         }
-        public static string BuildFaqLdJson(List<FaqItem> faqs)
+        public static string BuildFaqLdJson(List<ratpdf.Models.CompressPdfSeo.FaqItem> faqs)
         {
             var schema = new
             {

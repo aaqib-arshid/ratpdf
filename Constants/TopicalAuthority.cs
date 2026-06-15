@@ -9,7 +9,15 @@ namespace ratpdf.Constants
     {
         public const string PdfToolsHubPath = "/guides/pdf-tools";
         public const string SecureWorkflowPath = "/guides/secure-pdf-workflow";
+        public const string MedicalGuidesHubPath = "/guides/medical-tools";
+        public const string DeveloperGuidesHubPath = "/guides/developer-tools";
         public const string CompareHubPath = "/compare";
+        public const string AllToolsHubPath = "/tools";
+        public const string MedicalHubPath = "/tools/medical";
+        public const string DeveloperHubPath = "/tools/developer";
+        public const string CalculatorsHubPath = "/tools/calculators";
+        public const string UtilitiesHubPath = "/tools/utilities";
+        public const string BusinessHubPath = "/tools/business";
 
         public sealed record HubLink(string Label, string Path, string Description);
 
@@ -79,6 +87,53 @@ namespace ratpdf.Constants
             ("PDF redaction", "/pdf-redaction", null!),
         ];
 
+        public static readonly ToolGroup[] MedicalToolGroups =
+        [
+            new("Screening & renal function", "Body composition and kidney function estimates for intake and staging.",
+            [
+                ("BMI Calculator", "/bmi-calculator", "WHO categories from height and weight."),
+                ("eGFR Calculator", "/egfr-calculator", "CKD staging from creatinine, age, and sex."),
+            ]),
+            new("Cardiovascular & thrombosis", "Chest pain, AF stroke risk, and VTE pre-test probability scores.",
+            [
+                ("HEART Score", "/heart-score", "Emergency chest pain MACE stratification."),
+                ("CHA₂DS₂-VASc Score", "/cha2ds2-vasc-score", "Stroke risk in atrial fibrillation."),
+                ("Wells Score (DVT/PE)", "/wells-score", "Deep vein thrombosis and pulmonary embolism probability."),
+                ("HAS-BLED Score", "/has-bled-score", "Bleeding risk on anticoagulation."),
+            ]),
+            new("Acute care scores", "Neurology, hemodynamics, burns, and stroke severity scales.",
+            [
+                ("GCS Calculator", "/gcs-calculator", "Glasgow Coma Scale for consciousness level."),
+                ("MAP Calculator", "/map-calculator", "Mean arterial pressure from vitals."),
+                ("Parkland Formula", "/parkland-formula", "Burn resuscitation fluid estimate."),
+                ("NIHSS Calculator", "/nihss-calculator", "NIH Stroke Scale severity score."),
+            ]),
+        ];
+
+        public static readonly ToolGroup[] DeveloperToolGroups =
+        [
+            new("Format & parse", "Pretty-print payloads and inspect structured data.",
+            [
+                ("JSON Formatter", "/pdf/jsonformatter", "Validate and indent JSON for API debugging."),
+                ("JWT Decoder", "/pdf/jwtdecoder", "Read header and payload claims from tokens."),
+                ("HTML Formatter", "/pdf/htmlformatter", "Beautify HTML templates before review or export."),
+            ]),
+            new("Compare & encode", "Diff text and encode URL query parameters.",
+            [
+                ("Text Comparer", "/text-comparer", "Side-by-side diff for configs and redlines."),
+                ("URL Encoder", "/url-encoder", "Percent-encode query string values."),
+                ("URL Decoder", "/url-decoder", "Decode percent-encoded URLs."),
+            ]),
+            new("Conversion & network", "Binary math, Base64 data URIs, and DNS lookups.",
+            [
+                ("Binary to Decimal", "/binary-to-decimal", "Convert bit strings to decimal."),
+                ("Decimal to Binary", "/decimal-to-binary", "Convert integers to binary."),
+                ("Img to Base64", "/pdf/imgtobase64", "Embed small images as data URIs."),
+                ("DNS Lookup", "/tools/dnslookup", "Query A, MX, TXT, and other records."),
+                ("Browser OCR Tool", "/ocr-tool", "Extract text from images in the browser."),
+            ]),
+        ];
+
         private static readonly Dictionary<string, string[]> WorkflowByTool = new(StringComparer.OrdinalIgnoreCase)
         {
             ["/pdf/compress"] = ["/pdf/merge", "/pdf/split", "/invoice/create"],
@@ -135,6 +190,14 @@ namespace ratpdf.Constants
 
         public static string CanonicalHub() => PdfToolSeo.Canonical(PdfToolsHubPath);
         public static string CanonicalSecureHub() => PdfToolSeo.Canonical(SecureWorkflowPath);
+        public static string CanonicalMedicalGuidesHub() => PdfToolSeo.Canonical(MedicalGuidesHubPath);
+        public static string CanonicalDeveloperGuidesHub() => PdfToolSeo.Canonical(DeveloperGuidesHubPath);
+
+        public static bool IsMedicalCategory(string? category) =>
+            string.Equals(category, "Medical", StringComparison.OrdinalIgnoreCase);
+
+        public static bool IsDeveloperCategory(string? category) =>
+            string.Equals(category, "Developer", StringComparison.OrdinalIgnoreCase);
 
         public static bool IsSecureTool(string? path) =>
             !string.IsNullOrEmpty(path) && SecureToolPaths.Contains(Normalize(path));
@@ -165,8 +228,31 @@ namespace ratpdf.Constants
             if (PathsEqual(toolPath, "/pdf/compress"))
                 return "/compress-pdf";
 
+            var categoryHub = GetCategoryHubPath(toolPath);
+            if (categoryHub != null)
+                return categoryHub;
+
             var prefix = PdfToolSeoLandingGenerator.GetRoutePrefixForToolUrl(toolPath);
             return prefix == null ? null : $"/{prefix}";
+        }
+
+        /// <summary>Category silo hub for non-PDF tools (medical, developer, calculators, etc.).</summary>
+        public static string? GetCategoryHubPath(string? toolPath)
+        {
+            toolPath = Normalize(toolPath);
+            var category = SiteToolNavigation.InferRelatedCategory(toolPath);
+            return category switch
+            {
+                SiteToolCategories.Medical => MedicalHubPath,
+                SiteToolCategories.Developer => DeveloperHubPath,
+                SiteToolCategories.Calculators => CalculatorsHubPath,
+                SiteToolCategories.Utilities => UtilitiesHubPath,
+                SiteToolCategories.Network => UtilitiesHubPath,
+                SiteToolCategories.Business => BusinessHubPath,
+                SiteToolCategories.Image => AllToolsHubPath,
+                _ when PdfToolSeo.AllTools.Any(t => PathsEqual(t.Url, toolPath)) => PdfToolsHubPath,
+                _ => null,
+            };
         }
 
         public static IReadOnlyList<(string Label, string Href)> GetFeaturedClusterLinks(string? toolPath, int max = 3)

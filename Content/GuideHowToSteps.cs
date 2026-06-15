@@ -124,6 +124,48 @@ namespace ratpdf.Content
                 "Re-check size with the PDF size checker if needed.",
                 "Split into parts only if compression is insufficient.",
             ],
+            ["background-remover"] =
+            [
+                "Open the background remover tool in your browser.",
+                "Select or drag a JPG, PNG, WEBP, or BMP image — it stays on your device.",
+                "Wait for on-device AI segmentation to finish.",
+                "Download the transparent PNG at the same resolution as your original.",
+            ],
+            ["bmi-calculator-guide"] =
+            [
+                "Open the BMI calculator.",
+                "Enter height and weight in your preferred units.",
+                "Read your BMI value and WHO category.",
+                "Document the result in clinical notes if applicable.",
+            ],
+            ["egfr-calculator-guide"] =
+            [
+                "Enter serum creatinine, age, and sex.",
+                "Review the calculated eGFR in mL/min/1.73m².",
+                "Note the CKD stage band if shown.",
+                "Correlate with urinalysis and trend over time.",
+            ],
+            ["json-formatter-guide"] =
+            [
+                "Paste minified JSON into the formatter.",
+                "Review pretty-printed output and syntax errors.",
+                "Fix any highlighted issues in your source.",
+                "Copy formatted JSON or compare with text comparer.",
+            ],
+            ["jwt-decoder-guide"] =
+            [
+                "Paste the JWT token (header.payload.signature).",
+                "Inspect decoded header and payload JSON.",
+                "Check exp, iss, aud, and scope claims.",
+                "Verify signatures in your backend — decoding alone is not verification.",
+            ],
+            ["developer-tools-guide"] =
+            [
+                "Browse the developer tools hub for your task.",
+                "Open JSON formatter, JWT decoder, or HTML formatter as needed.",
+                "Use text comparer to diff before/after output.",
+                "Bookmark frequently used utilities for daily debugging.",
+            ],
         };
 
         public static IReadOnlyList<string>? Get(string slug) =>

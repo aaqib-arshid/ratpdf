@@ -8,6 +8,7 @@ using ratpdf.Data.AppDBContext;
 using ratpdf.Data.Entities;
 using ratpdf.Middleware;
 using ratpdf.Models.CompressPdfSeo;
+using ratpdf.Constants;
 using ratpdf.Routing;
 using ratpdf.Services;
 using ratpdf.Services.CompressPDF;
@@ -76,6 +77,35 @@ public partial class Program
             Console.WriteLine($"Generated {result.Count} OG PNG images in {result.OutputDirectory}");
             foreach (var file in result.Files)
                 Console.WriteLine($"  - {file}");
+            return;
+        }
+
+        if (args.Contains("--generate-tool-videos", StringComparer.OrdinalIgnoreCase))
+        {
+            var root = Directory.GetCurrentDirectory();
+            var webRoot = Path.Combine(root, "wwwroot");
+            var force = args.Contains("--force", StringComparer.OrdinalIgnoreCase);
+            int? limit = null;
+            var limitArg = args.FirstOrDefault(a => a.StartsWith("--limit=", StringComparison.OrdinalIgnoreCase));
+            if (limitArg != null && int.TryParse(limitArg["--limit=".Length..], out var n))
+                limit = n;
+            Environment.ExitCode = ToolVideoGenerationCli.Run(root, webRoot, force, limit);
+            return;
+        }
+
+        if (args.Contains("--capture-tool-screenshots", StringComparer.OrdinalIgnoreCase))
+        {
+            var root = Directory.GetCurrentDirectory();
+            var webRoot = Path.Combine(root, "wwwroot");
+            var baseUrl = args.FirstOrDefault(a => a.StartsWith("--base-url=", StringComparison.OrdinalIgnoreCase))
+                ?.Split('=', 2)[1] ?? "http://localhost:5041";
+            int? limit = null;
+            var limitArg = args.FirstOrDefault(a => a.StartsWith("--limit=", StringComparison.OrdinalIgnoreCase));
+            if (limitArg != null && int.TryParse(limitArg["--limit=".Length..], out var n))
+                limit = n;
+            var only = args.FirstOrDefault(a => a.StartsWith("--only=", StringComparison.OrdinalIgnoreCase))
+                ?.Split('=', 2)[1];
+            Environment.ExitCode = ToolVideoGenerationCli.CaptureScreenshots(root, webRoot, baseUrl, limit, only);
             return;
         }
 

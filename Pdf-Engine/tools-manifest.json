@@ -1,0 +1,412 @@
+{
+  "tools": [
+    {
+      "slug": "age-calculator",
+      "name": "Age Calculator",
+      "file": "age-calculator.mp4",
+      "url": "/age-calculator"
+    },
+    {
+      "slug": "imgbackgroundremove",
+      "name": "Background Remover",
+      "file": "imgbackgroundremove.mp4",
+      "url": "/tools/imgbackgroundremove"
+    },
+    {
+      "slug": "binary-to-decimal",
+      "name": "Binary to Decimal",
+      "file": "binary-to-decimal.mp4",
+      "url": "/binary-to-decimal"
+    },
+    {
+      "slug": "bmi-calculator",
+      "name": "BMI Calculator",
+      "file": "bmi-calculator.mp4",
+      "url": "/bmi-calculator"
+    },
+    {
+      "slug": "ocr-tool",
+      "name": "Browser OCR Tool",
+      "file": "ocr-tool.mp4",
+      "url": "/ocr-tool"
+    },
+    {
+      "slug": "bulk-image-compressor",
+      "name": "Bulk Image Compressor",
+      "file": "bulk-image-compressor.mp4",
+      "url": "/bulk-image-compressor"
+    },
+    {
+      "slug": "bulk-payslip-generator",
+      "name": "Bulk Payslip Generator",
+      "file": "bulk-payslip-generator.mp4",
+      "url": "/bulk-payslip-generator"
+    },
+    {
+      "slug": "cha2ds2-vasc-score",
+      "name": "CHA\u2082DS\u2082-VASc Score",
+      "file": "cha2ds2-vasc-score.mp4",
+      "url": "/cha2ds2-vasc-score"
+    },
+    {
+      "slug": "imagecompressor",
+      "name": "Compress Image",
+      "file": "imagecompressor.mp4",
+      "url": "/pdf/imagecompressor"
+    },
+    {
+      "slug": "compress",
+      "name": "Compress PDF",
+      "file": "compress.mp4",
+      "url": "/pdf/compress"
+    },
+    {
+      "slug": "decimal-to-binary",
+      "name": "Decimal to Binary",
+      "file": "decimal-to-binary.mp4",
+      "url": "/decimal-to-binary"
+    },
+    {
+      "slug": "dnslookup",
+      "name": "DNS Lookup",
+      "file": "dnslookup.mp4",
+      "url": "/tools/dnslookup"
+    },
+    {
+      "slug": "editpdf",
+      "name": "Edit PDF",
+      "file": "editpdf.mp4",
+      "url": "/pdf/editpdf"
+    },
+    {
+      "slug": "egfr-calculator",
+      "name": "eGFR Calculator",
+      "file": "egfr-calculator.mp4",
+      "url": "/egfr-calculator"
+    },
+    {
+      "slug": "emi-calculator",
+      "name": "EMI Calculator",
+      "file": "emi-calculator.mp4",
+      "url": "/emi-calculator"
+    },
+    {
+      "slug": "exceltopdf",
+      "name": "Excel to PDF",
+      "file": "exceltopdf.mp4",
+      "url": "/pdf/exceltopdf"
+    },
+    {
+      "slug": "extractimages",
+      "name": "Extract Images",
+      "file": "extractimages.mp4",
+      "url": "/pdf/extractimages"
+    },
+    {
+      "slug": "favicon-generator",
+      "name": "Favicon Generator",
+      "file": "favicon-generator.mp4",
+      "url": "/favicon-generator"
+    },
+    {
+      "slug": "flattenpdf",
+      "name": "Flatten PDF",
+      "file": "flattenpdf.mp4",
+      "url": "/pdf/flattenpdf"
+    },
+    {
+      "slug": "gcs-calculator",
+      "name": "GCS Calculator",
+      "file": "gcs-calculator.mp4",
+      "url": "/gcs-calculator"
+    },
+    {
+      "slug": "has-bled-score",
+      "name": "HAS-BLED Score",
+      "file": "has-bled-score.mp4",
+      "url": "/has-bled-score"
+    },
+    {
+      "slug": "heart-score",
+      "name": "HEART Score",
+      "file": "heart-score.mp4",
+      "url": "/heart-score"
+    },
+    {
+      "slug": "htmlformatter",
+      "name": "HTML Formatter",
+      "file": "htmlformatter.mp4",
+      "url": "/pdf/htmlformatter"
+    },
+    {
+      "slug": "htmltopdf",
+      "name": "HTML to PDF",
+      "file": "htmltopdf.mp4",
+      "url": "/pdf/htmltopdf"
+    },
+    {
+      "slug": "image-format-converter",
+      "name": "Image Format Converter",
+      "file": "image-format-converter.mp4",
+      "url": "/image-format-converter"
+    },
+    {
+      "slug": "image-resizer",
+      "name": "Image Resizer",
+      "file": "image-resizer.mp4",
+      "url": "/image-resizer"
+    },
+    {
+      "slug": "convertimages",
+      "name": "Images to PDF",
+      "file": "convertimages.mp4",
+      "url": "/pdf/convertimages"
+    },
+    {
+      "slug": "imgtobase64",
+      "name": "Img to Base64",
+      "file": "imgtobase64.mp4",
+      "url": "/pdf/imgtobase64"
+    },
+    {
+      "slug": "invoice-create",
+      "name": "Invoice Generator",
+      "file": "invoice-create.mp4",
+      "url": "/invoice/create"
+    },
+    {
+      "slug": "iplookup",
+      "name": "IP Lookup",
+      "file": "iplookup.mp4",
+      "url": "/tools/iplookup"
+    },
+    {
+      "slug": "jsonformatter",
+      "name": "JSON Formatter",
+      "file": "jsonformatter.mp4",
+      "url": "/pdf/jsonformatter"
+    },
+    {
+      "slug": "jwtdecoder",
+      "name": "JWT Decoder",
+      "file": "jwtdecoder.mp4",
+      "url": "/pdf/jwtdecoder"
+    },
+    {
+      "slug": "map-calculator",
+      "name": "MAP Calculator",
+      "file": "map-calculator.mp4",
+      "url": "/map-calculator"
+    },
+    {
+      "slug": "merge",
+      "name": "Merge PDF",
+      "file": "merge.mp4",
+      "url": "/pdf/merge"
+    },
+    {
+      "slug": "nihss-calculator",
+      "name": "NIHSS Calculator",
+      "file": "nihss-calculator.mp4",
+      "url": "/nihss-calculator"
+    },
+    {
+      "slug": "ocrpdf",
+      "name": "OCR PDF",
+      "file": "ocrpdf.mp4",
+      "url": "/pdf/ocrpdf"
+    },
+    {
+      "slug": "pagenumbers",
+      "name": "Page Numbers",
+      "file": "pagenumbers.mp4",
+      "url": "/pdf/pagenumbers"
+    },
+    {
+      "slug": "parkland-formula",
+      "name": "Parkland Formula",
+      "file": "parkland-formula.mp4",
+      "url": "/parkland-formula"
+    },
+    {
+      "slug": "password-generator",
+      "name": "Password Generator",
+      "file": "password-generator.mp4",
+      "url": "/password-generator"
+    },
+    {
+      "slug": "free-payslip-generator",
+      "name": "Payslip Generator",
+      "file": "free-payslip-generator.mp4",
+      "url": "/free-payslip-generator"
+    },
+    {
+      "slug": "pdfmetadata",
+      "name": "PDF Metadata",
+      "file": "pdfmetadata.mp4",
+      "url": "/pdf/pdfmetadata"
+    },
+    {
+      "slug": "pdf-redaction",
+      "name": "PDF Redaction",
+      "file": "pdf-redaction.mp4",
+      "url": "/pdf-redaction"
+    },
+    {
+      "slug": "pdftoexcel",
+      "name": "PDF to Excel",
+      "file": "pdftoexcel.mp4",
+      "url": "/pdf/pdftoexcel"
+    },
+    {
+      "slug": "pdftoimages",
+      "name": "PDF to Images",
+      "file": "pdftoimages.mp4",
+      "url": "/pdf/pdftoimages"
+    },
+    {
+      "slug": "pdftomarkdown",
+      "name": "PDF to Markdown",
+      "file": "pdftomarkdown.mp4",
+      "url": "/pdf/pdftomarkdown"
+    },
+    {
+      "slug": "pdftoppt",
+      "name": "PDF to PowerPoint",
+      "file": "pdftoppt.mp4",
+      "url": "/pdf/pdftoppt"
+    },
+    {
+      "slug": "pdftotext",
+      "name": "PDF to Text",
+      "file": "pdftotext.mp4",
+      "url": "/pdf/pdftotext"
+    },
+    {
+      "slug": "pdftodoc",
+      "name": "PDF to Word",
+      "file": "pdftodoc.mp4",
+      "url": "/pdf/pdftodoc"
+    },
+    {
+      "slug": "percentage-calculator",
+      "name": "Percentage Calculator",
+      "file": "percentage-calculator.mp4",
+      "url": "/percentage-calculator"
+    },
+    {
+      "slug": "period-calculator",
+      "name": "Period Calculator",
+      "file": "period-calculator.mp4",
+      "url": "/period-calculator"
+    },
+    {
+      "slug": "ppttopdf",
+      "name": "PowerPoint to PDF",
+      "file": "ppttopdf.mp4",
+      "url": "/pdf/ppttopdf"
+    },
+    {
+      "slug": "password",
+      "name": "Protect PDF",
+      "file": "password.mp4",
+      "url": "/pdf/password"
+    },
+    {
+      "slug": "qr-code-generator",
+      "name": "QR Code Generator",
+      "file": "qr-code-generator.mp4",
+      "url": "/qr-code-generator"
+    },
+    {
+      "slug": "rent-receipt-generator",
+      "name": "Rent Receipt Generator",
+      "file": "rent-receipt-generator.mp4",
+      "url": "/rent-receipt-generator"
+    },
+    {
+      "slug": "ringsizeconverter",
+      "name": "Ring Size Converter",
+      "file": "ringsizeconverter.mp4",
+      "url": "/tools/ringsizeconverter"
+    },
+    {
+      "slug": "rotateorremove",
+      "name": "Rotate PDF",
+      "file": "rotateorremove.mp4",
+      "url": "/pdf/rotateorremove"
+    },
+    {
+      "slug": "signtext",
+      "name": "Sign PDF",
+      "file": "signtext.mp4",
+      "url": "/pdf/signtext"
+    },
+    {
+      "slug": "split",
+      "name": "Split PDF",
+      "file": "split.mp4",
+      "url": "/pdf/split"
+    },
+    {
+      "slug": "text-comparer",
+      "name": "Text Comparer",
+      "file": "text-comparer.mp4",
+      "url": "/text-comparer"
+    },
+    {
+      "slug": "texttopdf",
+      "name": "Text to PDF",
+      "file": "texttopdf.mp4",
+      "url": "/pdf/texttopdf"
+    },
+    {
+      "slug": "unlockpdf",
+      "name": "Unlock PDF",
+      "file": "unlockpdf.mp4",
+      "url": "/pdf/unlockpdf"
+    },
+    {
+      "slug": "url-decoder",
+      "name": "URL Decoder",
+      "file": "url-decoder.mp4",
+      "url": "/url-decoder"
+    },
+    {
+      "slug": "url-encoder",
+      "name": "URL Encoder",
+      "file": "url-encoder.mp4",
+      "url": "/url-encoder"
+    },
+    {
+      "slug": "watermark",
+      "name": "Watermark PDF",
+      "file": "watermark.mp4",
+      "url": "/pdf/watermark"
+    },
+    {
+      "slug": "wells-score",
+      "name": "Wells Score (DVT/PE)",
+      "file": "wells-score.mp4",
+      "url": "/wells-score"
+    },
+    {
+      "slug": "whatismyip",
+      "name": "What Is My IP",
+      "file": "whatismyip.mp4",
+      "url": "/tools/whatismyip"
+    },
+    {
+      "slug": "wordcounter",
+      "name": "Word Counter",
+      "file": "wordcounter.mp4",
+      "url": "/tools/wordcounter"
+    },
+    {
+      "slug": "doctopdf",
+      "name": "Word to PDF",
+      "file": "doctopdf.mp4",
+      "url": "/pdf/doctopdf"
+    }
+  ]
+}

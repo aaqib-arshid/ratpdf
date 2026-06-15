@@ -1,0 +1,75 @@
+@using System.Text.Json
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@model ratpdf.Models.SEOPageModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonical = $"{PdfToolSeo.SiteUrl}/{Model.RoutePrefix}/{Model.Slug}";
+    var toolHref = PdfToolSeo.Canonical(Model.ToolUrl);
+    var hubPath = Model.RoutePrefix.StartsWith("medical", StringComparison.OrdinalIgnoreCase)
+        ? "/tools/medical"
+        : "/tools/calculators";
+    var hubLabel = Model.RoutePrefix.StartsWith("medical", StringComparison.OrdinalIgnoreCase)
+        ? "Medical tools"
+        : "Calculators";
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.Description;
+    ViewData["CanonicalUrl"] = canonical;
+    ViewData["LightLayout"] = true;
+    ViewData["SeoToolUrl"] = toolHref;
+    ViewData["SeoToolLabel"] = $"Open {Model.ToolLinkText}";
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(Model.Title.Replace(" | RatPDF", ""), Model.Description, canonical))
+    </script>
+    @if (Model.FAQ.Count > 0)
+    {
+        <script type="application/ld+json">
+        @Html.Raw(SchemaHelper.BuildFaqLdJson(Model.FAQ.Select(f => new ratpdf.Models.CompressPdfSeo.FaqItem { Question = f.Question, Answer = f.Answer }).ToList()))
+        </script>
+    }
+}
+
+<article class="container py-4 py-md-5">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/tools">All tools</a></li>
+            <li class="breadcrumb-item"><a href="@hubPath">@hubLabel</a></li>
+            <li class="breadcrumb-item"><a href="@toolHref">@Model.ToolLinkText</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Guide</li>
+        </ol>
+    </nav>
+
+    @await Html.PartialAsync("_PdfToolSocialProof")
+    @await Html.PartialAsync("_PdfToolTrustPills")
+
+    <h1 class="fw-bold mb-3">@Model.Title.Replace(" | RatPDF", "")</h1>
+    <p class="lead text-muted">@Model.Description</p>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a href="@toolHref" class="btn btn-primary btn-lg rounded-pill px-4 fw-semibold">
+            <i class="bi bi-calculator me-2"></i>@Model.ToolLinkText — free
+        </a>
+        <a href="@hubPath" class="btn btn-outline-secondary btn-lg rounded-pill px-4">Browse @hubLabel</a>
+    </div>
+    <p class="small text-muted mb-4">Educational use only · Not medical advice · <a href="@SiteEntity.TrustHubPath">Trust center</a></p>
+
+    <div class="seo-landing-body">@Html.Raw(Model.FullContentHtml)</div>
+
+    @if (Model.FAQ.Count > 0)
+    {
+        <h2 class="h4 fw-semibold mt-5">Frequently Asked Questions</h2>
+        @foreach (var faq in Model.FAQ)
+        {
+            <h3 class="h6 fw-semibold mt-3">@faq.Question</h3>
+            <p class="text-muted">@faq.Answer</p>
+        }
+    }
+
+    @await Html.PartialAsync("_SeoLandingCtaBand")
+</article>
+
+@await Html.PartialAsync("_ProgrammaticSeoLinks", Model)

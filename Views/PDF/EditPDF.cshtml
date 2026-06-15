@@ -606,6 +606,10 @@
     <input type="file" id="imageInput" accept="image/*" class="d-none">
 </div>
 
+<div class="container py-3">
+    @await Html.PartialAsync("_ToolHowToVideo")
+</div>
+
 @await Html.PartialAsync("_PdfToolInternalLinks")
 
 @section Scripts {

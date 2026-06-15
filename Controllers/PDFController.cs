@@ -565,6 +565,9 @@ namespace ratpdf.Controllers
             if (!access.Allowed)
                 return StatusCode(402, new { error = access.DenyReason, paywall = true });
 
+            if (file != null && file.Length == 0)
+                file = null;
+
             if (file == null && (string.IsNullOrWhiteSpace(typedText) || typedText.Equals("<p><br></p>", StringComparison.OrdinalIgnoreCase)))
                 return BadRequest(new { error = "Please upload a text file or type some text." });
 
@@ -586,7 +589,7 @@ namespace ratpdf.Controllers
                 async (svc, ct) => await svc.RunTextToPdfJobAsync(jobId, stagingBlob, inputSize, html, ct));
         }
 
-        [HttpPost]
+        [HttpPost("/pdf/htmltopdf")]
         [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
         public async Task<IActionResult> HtmlToPdf(IFormFile? file, string? htmlContent)
@@ -594,6 +597,9 @@ namespace ratpdf.Controllers
             var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.HtmlToPdf, 1);
             if (!access.Allowed)
                 return StatusCode(402, new { error = access.DenyReason, paywall = true });
+
+            if (file != null && file.Length == 0)
+                file = null;
 
             if (file == null && (string.IsNullOrWhiteSpace(htmlContent) || htmlContent.Equals("<p><br></p>", StringComparison.OrdinalIgnoreCase)))
                 return BadRequest(new { error = "Please upload an HTML file or paste HTML content." });

@@ -262,17 +262,24 @@ namespace ratpdf.Content
             """;
 
         private const string BackgroundRemover = """
-            <h2>Remove backgrounds without Photoshop</h2>
-            <p>E-commerce sellers, resumé builders, and social creators need transparent PNGs fast. AI background removal works best on clear subject edges — hair and glass remain challenging.</p>
+            <h2>100% browser-based — your images never upload</h2>
+            <p>RatPDF's <a href="/tools/imgbackgroundremove">AI background remover</a> runs entirely in your browser using on-device inference. Your photos are <strong>not sent to our servers</strong> — ideal for headshots, product shots, and confidential assets where privacy matters.</p>
+            <h2>How it works</h2>
+            <ol>
+            <li>Open the tool and select a JPG, PNG, WEBP, or BMP file (drag-and-drop supported).</li>
+            <li>AI segmentation runs locally in the browser — processing time depends on your device GPU/CPU.</li>
+            <li>Download a transparent PNG with the <strong>same width and height</strong> as your original image.</li>
+            </ol>
             <h2>When it works well</h2>
             <ul>
-            <li>Product photos on plain white or grey</li>
-            <li>Headshots with contrasting backgrounds</li>
+            <li>Product photos on plain white or grey backgrounds</li>
+            <li>Headshots with clear subject/background contrast</li>
             <li>Logos on solid colours</li>
             </ul>
-            <h2>Export tips</h2>
-            <p>Save as PNG for transparency. For PDF catalogues, place the cutout on a new page via <a href="/guides/images-to-pdf">Image to PDF</a>.</p>
-            <p><a href="/Tools/ImgBackgroundRemove">Background remover tool →</a></p>
+            <h2>Limitations</h2>
+            <p>Fine hair, glass, and busy backgrounds remain challenging for any AI cutout. For catalogue PDFs, place PNG cutouts via <a href="/guides/images-to-pdf">Image to PDF</a>. Compress large PNGs with the <a href="/guides/image-compressor-guide">image compressor guide</a>.</p>
+            <p>More image tools: <a href="/tools">all tools</a> · SEO hub: <a href="/background-remover">background remover landing</a></p>
+            <p><a href="/tools/imgbackgroundremove">Open background remover →</a></p>
             """;
 
         private const string WordCounter = """

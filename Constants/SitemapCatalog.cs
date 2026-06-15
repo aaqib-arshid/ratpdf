@@ -10,6 +10,7 @@ namespace ratpdf.Constants
             "/sitemaps/guides.xml",
             "/sitemaps/blog.xml",
             "/sitemaps/pdf-tool-landings.xml",
+            "/sitemaps/category-tool-landings.xml",
         ];
 
         /// <summary>Static urlsets in wwwroot/sitemaps/ (regenerate via --generate-compress-sitemap).</summary>

@@ -11,6 +11,7 @@
         · Up to 200 MB per file ·
         <a href="/Subscription/Plans?source=@source">Pro @SubscriptionPricing.FormatProShort()</a> · 4 GB · unlimited
     </p>
+    @await Html.PartialAsync("_ToolHowToVideo")
 }
 @if (ViewBag.ShowPaywall == true)
 {

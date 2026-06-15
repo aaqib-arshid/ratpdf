@@ -61,6 +61,13 @@ namespace ratpdf.Controllers
             XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:pdf-tool-landings",
                 PdfToolSeoLandingGenerator.AllLandingPaths, SitemapTtl));
 
+        [HttpGet("/sitemaps/category-tool-landings.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapCategoryToolLandings() =>
+            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:category-tool-landings",
+                ToolCategorySeoLandingGenerator.AllLandingPaths, SitemapTtl));
+
         [HttpGet("/sitemaps/compress-pdf-programmatic.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public IActionResult SitemapCompressLegacy() =>

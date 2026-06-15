@@ -1,0 +1,79 @@
+@model ratpdf.Models.CategoryToolsPageModel
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    Layout = "_Layout";
+    var canonical = PdfToolSeo.Canonical(Model.Path);
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(Model.H1, Model.Description, canonical))
+    </script>
+    @if (Model.Faqs.Length > 0)
+    {
+        <script type="application/ld+json">
+        @Html.Raw(SchemaHelper.BuildFaqLdJson(Model.Faqs.Select(f => new ratpdf.Models.CompressPdfSeo.FaqItem { Question = f.Question, Answer = f.Answer }).ToList()))
+        </script>
+    }
+}
+
+<article class="container py-4 py-md-5">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            @if (!string.IsNullOrEmpty(Model.HubBreadcrumbPath))
+            {
+                <li class="breadcrumb-item"><a href="@Model.HubBreadcrumbPath">@Model.HubBreadcrumbLabel</a></li>
+            }
+            <li class="breadcrumb-item active">@Model.H1</li>
+        </ol>
+    </nav>
+
+    @await Html.PartialAsync("_PdfToolSocialProof")
+    @await Html.PartialAsync("_PdfToolTrustPills")
+
+    <h1 class="fw-bold mb-3">@Model.H1</h1>
+    <p class="lead text-muted">@Model.Lead</p>
+    @if (Model.Slug.Equals("medical", StringComparison.OrdinalIgnoreCase))
+    {
+        <p class="mb-3"><a href="@TopicalAuthority.MedicalGuidesHubPath">Step-by-step medical calculator guides →</a></p>
+    }
+    @if (Model.Slug.Equals("developer", StringComparison.OrdinalIgnoreCase))
+    {
+        <p class="mb-3"><a href="@TopicalAuthority.DeveloperGuidesHubPath">Developer tool tutorials &amp; guides →</a></p>
+    }
+    <p class="small text-muted mb-4">@Model.CategoryLabel · Free tier available · <a href="@SiteEntity.TrustHubPath">Trust center</a></p>
+
+    <h2 class="h4 fw-semibold mt-4">Tools in this category</h2>
+    <div class="row g-3 mb-4">
+        @foreach (var tool in Model.FeaturedTools)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="h6 fw-bold"><a href="@tool.Url" class="text-decoration-none">@tool.Name</a></h3>
+                        <p class="small text-muted mb-0">@tool.Blurb</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h2 class="h4 fw-semibold">Common use cases</h2>
+    <ul class="mb-4">
+        @foreach (var useCase in Model.UseCases)
+        {
+            <li class="mb-2">@useCase</li>
+        }
+    </ul>
+
+    <h2 class="h4 fw-semibold">FAQ</h2>
+    @foreach (var faq in Model.Faqs)
+    {
+        <h3 class="h6 fw-semibold mt-3">@faq.Question</h3>
+        <p class="text-muted">@faq.Answer</p>
+    }
+
+    @await Html.PartialAsync("_SeoLandingCtaBand")
+</article>

@@ -14,7 +14,7 @@ namespace ratpdf.Content
             "pdf-tools-for-accountants" => PdfForAccountants,
             "pdf-tools-for-students" => PdfForStudents,
             "choose-pdf-tool" => ChoosePdfTool,
-            _ => null
+            _ => GuideBodiesMedicalImageDev.Get(slug) ?? null
         };
 
         private const string PdfToPowerPoint = """

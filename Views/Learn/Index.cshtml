@@ -1,0 +1,54 @@
+@model IReadOnlyList<ratpdf.Constants.ToolHowToVideo>
+@using ratpdf.Constants
+@inject IWebHostEnvironment Env
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/tool-howto-video.css" asp-append-version="true" />
+}
+
+<div class="rp-content-page">
+    <div class="container py-4 py-lg-5">
+        <header class="text-center mb-5 col-lg-9 mx-auto">
+            <span class="rp-badge mb-2">Video tutorials</span>
+            <h1 class="fw-bold display-6 mt-2">Learn every RatPDF tool</h1>
+            <p class="lead text-muted">
+                @Model.Count step-by-step videos with slide guides — red markers show exactly where to click on each tool.
+            </p>
+        </header>
+
+        @foreach (var group in Model.GroupBy(v => v.ToolUrl.StartsWith("/pdf/") ? "PDF Tools" : v.ToolUrl.Contains("calculator") ? "Medical & Calculators" : v.ToolUrl.StartsWith("/invoice") ? "Business" : "Developer & Utilities"))
+        {
+            <section class="mb-5">
+                <h2 class="h5 fw-bold text-primary mb-3">@group.Key</h2>
+                <div class="row g-3">
+                    @foreach (var t in group.OrderBy(x => x.ToolName))
+                    {
+                        var slides = t.GetSlidePaths(Env);
+                        <div class="col-md-6 col-lg-4">
+                            <a href="@t.LearnPath" class="card h-100 border-0 shadow-sm text-decoration-none rp-learn-card">
+                                @if (slides.Count > 0)
+                                {
+                                    <img src="@slides[0]" alt="@t.ToolName tutorial step 1" class="card-img-top rp-learn-thumb" loading="lazy" />
+                                }
+                                else
+                                {
+                                    <div class="rp-learn-thumb-placeholder d-flex align-items-center justify-content-center bg-light">
+                                        <i class="bi bi-play-circle display-4 text-primary"></i>
+                                    </div>
+                                }
+                                <div class="card-body">
+                                    <h3 class="h6 fw-bold text-dark mb-1">@t.ToolName</h3>
+                                    <p class="small text-muted mb-2">@slides.Count step slides · click guides</p>
+                                    <span class="small fw-semibold text-primary">Watch tutorial →</span>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    </div>
+</div>

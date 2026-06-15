@@ -63,7 +63,9 @@ namespace ratpdf.Content
                     ["No — watermarks are visible only and do not encrypt. Anyone who opens the file can still copy content.", "Yes for sensitive drafts: watermark for status during review, then password-protect the final before external sharing."]),
                 ("rotate-pdf", "Rotate PDF Pages — Fix Scan Orientation", "Fix 90°/180° scans without re-scanning. Rotate vs remove blank pages.", "PDF", "/PDF/RotateOrRemove", null, null),
                 ("images-to-pdf", "Convert Images to PDF — JPG, PNG, WEBP", "Combine receipts and photos into one PDF. Sort order, compression, and margin tips.", "PDF", "/PDF/ConvertImages", null, null),
-                ("background-remover", "Remove Image Background Online — Free Guide", "AI cutouts for e-commerce and headshots. When it works, PNG export, and catalogue PDFs.", "Image", "/Tools/ImgBackgroundRemove", null, null),
+                ("background-remover", "Remove Image Background in Browser — No Upload, 100% Private", "AI background removal runs entirely in your browser with ONNX — images never leave your device. Transparent PNG export at full resolution.", "Image", "/tools/imgbackgroundremove",
+                    ["Does the background remover upload my photos?", "Does it work offline?"],
+                    ["No — segmentation runs locally in your browser; files are not sent to RatPDF servers.", "You need an internet connection once to load the page and model; processing happens on-device after that."]),
                 ("word-counter-guide", "Word Counter Guide — SEO, Essays & Reading Time", "Count words and characters for meta tags, academic limits, and content depth.", "Writing", "/Tools/WordCounter", null, null),
                 ("ring-size-converter-guide", "Ring Size Conversion — US, UK, EU & India", "Measure finger size at home and convert international ring sizes before buying online.", "Lifestyle", "/Tools/RingSizeConverter", null, null),
                 ("my-ip-guide", "What Is My IP Address? — Public IP Explained", "Find public IPv4/IPv6, whitelist office IPs, and troubleshoot VPN visibility.", "Network", "/Tools/WhatIsMyIP", null, null),
@@ -96,6 +98,28 @@ namespace ratpdf.Content
                 ("choose-pdf-tool", "How to Choose a PDF Tool — 2026 Buyer Guide", "Compare free limits, file caps, security, and toolkit breadth. Links to RatPDF vs iLovePDF, Smallpdf, Adobe, and more.", "PDF", "/compare",
                     ["What is the best free PDF tool?", "RatPDF vs Adobe Acrobat Online?"],
                     ["Depends on daily volume and file size — see our comparison hub for feature tables.", "RatPDF is browser-only with 3 free uses per tool; Adobe requires account and has stricter free limits."]),
+                // Medical calculators
+                ("bmi-calculator-guide", "BMI Calculator Guide — WHO Categories & Clinical Use", "Calculate body mass index from height and weight. WHO categories, limitations for athletes, and when to use BMI in screening.", "Medical", "/bmi-calculator", null, null),
+                ("egfr-calculator-guide", "eGFR Calculator Guide — CKD Staging & Kidney Function", "Estimate glomerular filtration rate from creatinine, age, and sex. CKD staging bands and clinical correlation tips.", "Medical", "/egfr-calculator", null, null),
+                ("heart-score-guide", "HEART Score Guide — Chest Pain Risk Stratification", "Calculate HEART score for emergency chest pain patients. Components, MACE risk bands, and shared decision-making.", "Medical", "/heart-score", null, null),
+                ("cha2ds2-vasc-guide", "CHA₂DS₂-VASc Guide — Stroke Risk in Atrial Fibrillation", "Score stroke risk in AF patients for anticoagulation discussions. Pair with HAS-BLED for bleeding risk.", "Medical", "/cha2ds2-vasc-score", null, null),
+                ("wells-score-guide", "Wells Score Guide — DVT and PE Pre-Test Probability", "Calculate Wells criteria for deep vein thrombosis and pulmonary embolism. Low vs high risk pathways.", "Medical", "/wells-score", null, null),
+                ("medical-calculators-guide", "Medical Calculators Hub — Free Clinical Scores Online", "BMI, eGFR, HEART, CHA₂DS₂-VASc, Wells, GCS, MAP, and more — browser-based calculators for education and documentation.", "Medical", "/tools/medical", null, null),
+                // Image tools
+                ("image-compressor-guide", "Image Compressor Guide — Reduce JPG & PNG Size", "Compress images for web, email, and PDF workflows. Quality trade-offs and when to compress after background removal.", "Image", "/pdf/imagecompressor", null, null),
+                ("image-resizer-guide", "Image Resizer Guide — Scale Photos to Exact Pixels", "Resize JPG, PNG, and WEBP without desktop software. Aspect ratio, downscaling, and social crop tips.", "Image", "/image-resizer", null, null),
+                ("image-format-converter-guide", "Image Format Converter — JPG, PNG, WEBP", "Convert between common image formats for CMS uploads, email attachments, and transparent PNG workflows.", "Image", "/image-format-converter", null, null),
+                ("bulk-image-compressor-guide", "Bulk Image Compressor — Compress Many Photos at Once", "Batch-compress product photos and documentation images. QA tips and catalogue PDF workflows.", "Image", "/bulk-image-compressor", null, null),
+                // Developer tools
+                ("json-formatter-guide", "JSON Formatter Guide — Pretty-Print & Validate JSON", "Format API responses and config files. Spot syntax errors before deploy and pair with text diff tools.", "Developer", "/pdf/jsonformatter", null, null),
+                ("jwt-decoder-guide", "JWT Decoder Guide — Inspect Token Claims Safely", "Decode JSON Web Token header and payload. exp, iss, aud claims and why decoding is not verification.", "Developer", "/pdf/jwtdecoder", null, null),
+                ("html-formatter-guide", "HTML Formatter Guide — Beautify Markup for Review", "Indent HTML templates and CMS fragments for readable diffs before HTML-to-PDF export.", "Developer", "/pdf/htmlformatter", null, null),
+                ("text-comparer-guide", "Text Comparer Guide — Diff Two Text Blocks Online", "Side-by-side text diff for config changes, contract redlines, and JSON before/after formatting.", "Developer", "/text-comparer", null, null),
+                ("url-encoder-guide", "URL Encoder Guide — Percent-Encoding Query Strings", "Encode and decode URL parameters safely for OAuth redirects, analytics tags, and API links.", "Developer", "/url-encoder", null, null),
+                ("binary-converter-guide", "Binary Converter Guide — Binary ↔ Decimal", "Convert between binary and decimal for networking homework, subnet masks, and embedded register docs.", "Developer", "/binary-to-decimal", null, null),
+                ("dns-lookup-guide", "DNS Lookup Guide — A, MX, TXT Records", "Query DNS for email migration, domain verification, and CDN cutover troubleshooting.", "Developer", "/tools/dnslookup", null, null),
+                ("img-to-base64-guide", "Image to Base64 Guide — Data URLs for HTML & APIs", "Convert small images to Base64 data URIs for HTML email and JSON payloads. Size inflation warnings.", "Developer", "/pdf/imgtobase64", null, null),
+                ("developer-tools-guide", "Developer Tools Hub — JSON, JWT, HTML & DNS Utilities", "Free browser utilities for JSON formatting, JWT decoding, HTML beautification, text diff, URL encoding, and DNS lookup.", "Developer", "/tools/developer", null, null),
             };
 
             foreach (var m in meta)
@@ -144,6 +168,10 @@ namespace ratpdf.Content
                 ("pdf-redaction-vs-password", "PDF Redaction vs Password — Which Control Do You Need?", "Encryption, watermarks, and permanent redaction explained for legal and HR teams.", "Security"),
                 ("accountant-pdf-workflow", "Accountant PDF Workflow — Month-End Close Checklist", "Statement extraction, board packs, merge, and email-safe compression.", "Business"),
                 ("ilovepdf-vs-smallpdf-vs-ratpdf", "iLovePDF vs Smallpdf vs RatPDF — 2026 Comparison", "Three-way feature table: free limits, uploads, invoice tools, and compare depth.", "PDF"),
+                ("browser-background-remover-privacy", "Browser Background Remover — Why On-Device AI Matters", "How client-side ONNX segmentation keeps product photos and headshots off third-party servers.", "Image"),
+                ("json-formatter-api-debugging", "JSON Formatter for API Debugging — Workflow Tips", "Pretty-print webhook payloads, compare diffs, and validate config before production deploys.", "Developer"),
+                ("jwt-decoder-oauth-integration", "JWT Decoder for OAuth Integration — Claims Checklist", "Inspect exp, iss, aud, and scope claims during SSO and API token debugging.", "Developer"),
+                ("medical-calculator-clinical-documentation", "Medical Calculators in Clinical Documentation", "When to document BMI, eGFR, and risk scores in notes — educational use and disclaimer boundaries.", "Medical"),
             };
 
             var published = new DateTime(2025, 5, 15);

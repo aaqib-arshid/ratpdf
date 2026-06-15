@@ -1,18 +1,18 @@
 @using ratpdf.Constants
 @{
     ViewData["Title"] = "HTML to PDF Converter Online Free — Web Page to PDF | RatPDF";
-    ViewData["Description"] = "Convert HTML to PDF online. Paste HTML, upload .html files, or use the rich editor. iText html2pdf engine — free 200 MB, Pro 4 GB.";
+    ViewData["Description"] = "Convert HTML to PDF online. Paste full HTML with CSS, upload .html files, or edit markup directly. iText html2pdf engine — free 200 MB, Pro 4 GB.";
     ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/htmltopdf");
     ViewData["PdfToolId"] = "htmltopdf";
     ViewData["OgImage"] = PdfToolSeo.OgImageForToolId("htmltopdf");
     ViewData["SeoH1"] = "HTML to PDF — Convert Web Pages & Markup to PDF";
-    ViewData["SeoLead"] = "Turn HTML snippets, email templates, or full .html files into print-ready PDFs in your browser.";
+    ViewData["SeoLead"] = "Turn HTML snippets, email templates, or full .html files into print-ready PDFs — styles, tables, and page breaks preserved.";
 }
 
 @await Html.PartialAsync("_PdfToolBreadcrumbs")
 
 <div class="container py-5 d-flex justify-content-center align-items-start">
-    <div class="card shadow-lg p-5" style="max-width: 800px; width: 100%; border-radius: 15px;">
+    <div class="card shadow-lg p-5" style="max-width: 900px; width: 100%; border-radius: 15px;">
         <div class="card-body">
             <div class="text-center text-md-start mb-3">
                 @await Html.PartialAsync("_PdfToolTrustPills")
@@ -28,8 +28,13 @@
                     <input type="file" name="file" class="d-none" id="fileInput" accept=".html,.htm,text/html">
                 </div>
 
-                <label class="form-label fw-semibold" for="htmlEditor">Or paste / edit HTML</label>
-                <div id="htmlEditor" style="height:280px;background:#fff;border:1px solid #dee2e6;border-radius:6px;"></div>
+                <label class="form-label fw-semibold" for="rawHtmlInput">Paste or edit raw HTML</label>
+                <p class="small text-muted mb-2">
+                    Include <code>&lt;style&gt;</code>, tables, SVG, and <code>page-break</code> rules — full documents are sent to the PDF engine as-is (not stripped like a visual editor).
+                </p>
+                <textarea id="rawHtmlInput" class="form-control font-monospace mb-2" rows="18" spellcheck="false"
+                          placeholder="<!DOCTYPE html>&#10;<html>&#10;  <head>&#10;    <style>body { font-family: Arial; }</style>&#10;  </head>&#10;  <body>&#10;    <h1>Hello PDF</h1>&#10;  </body>&#10;</html>"
+                          style="font-size:0.85rem;line-height:1.45;resize:vertical;"></textarea>
                 <input type="hidden" name="htmlContent" id="htmlContent" />
 
                 <div id="errorArea" class="alert alert-danger d-none mt-3" role="alert"></div>
@@ -47,42 +52,78 @@
 @await Html.PartialAsync("_PdfToolInternalLinks")
 @await Html.PartialAsync("_PdfToolSeoArticle")
 
-@section Head {
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
-}
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script>
-        const quill = new Quill('#htmlEditor', {
-            theme: 'snow',
-            placeholder: '<h1>Your HTML content</h1><p>Paste markup or type here…</p>',
-            modules: {
-                toolbar: [
-                    [{ header: [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    ['link', 'code-block'],
-                    ['clean']
-                ]
+        (function () {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const rawHtmlInput = document.getElementById('rawHtmlInput');
+            const htmlContent = document.getElementById('htmlContent');
+            const errorArea = document.getElementById('errorArea');
+
+            function showError(msg) {
+                errorArea.textContent = msg;
+                errorArea.classList.remove('d-none');
             }
-        });
-        quill.clipboard.dangerouslyPasteHTML('<h2>Sample</h2><p>Replace this HTML before converting.</p>');
 
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        dropZone.addEventListener('click', () => fileInput.click());
-        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('border-primary'); });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-primary'));
-        dropZone.addEventListener('drop', e => {
-            e.preventDefault();
-            dropZone.classList.remove('border-primary');
-            if (e.dataTransfer.files.length) fileInput.files = e.dataTransfer.files;
-        });
+            function clearError() {
+                errorArea.classList.add('d-none');
+            }
 
-        document.getElementById('htmlForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            document.getElementById('htmlContent').value = quill.root.innerHTML;
-            submitWithLoader('htmlForm', 'Rendering HTML to PDF…', 'document.pdf');
-        });
+            async function loadFileIntoEditor(file) {
+                if (!file) return;
+                try {
+                    rawHtmlInput.value = await file.text();
+                    clearError();
+                } catch {
+                    showError('Could not read the HTML file.');
+                }
+            }
+
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', e => {
+                e.preventDefault();
+                dropZone.classList.add('border-primary');
+            });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-primary'));
+            dropZone.addEventListener('drop', async e => {
+                e.preventDefault();
+                dropZone.classList.remove('border-primary');
+                const f = e.dataTransfer.files?.[0];
+                if (!f) return;
+                const dt = new DataTransfer();
+                dt.items.add(f);
+                fileInput.files = dt.files;
+                await loadFileIntoEditor(f);
+            });
+
+            fileInput.addEventListener('change', () => loadFileIntoEditor(fileInput.files?.[0]));
+
+            document.getElementById('htmlForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                clearError();
+
+                let html = rawHtmlInput.value.trim();
+                const file = fileInput.files?.[0];
+
+                if (!html && file) {
+                    try {
+                        html = (await file.text()).trim();
+                    } catch {
+                        showError('Could not read the HTML file.');
+                        return;
+                    }
+                }
+
+                if (!html || html === '<p><br></p>') {
+                    showError('Please paste HTML markup or upload an .html file.');
+                    return;
+                }
+
+                htmlContent.value = html;
+                fileInput.value = '';
+                submitWithLoader('htmlForm', 'Rendering HTML to PDF…', 'document.pdf');
+            });
+        })();
     </script>
 }

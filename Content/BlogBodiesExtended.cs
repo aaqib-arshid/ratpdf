@@ -12,6 +12,10 @@ namespace ratpdf.Content
             "pdf-redaction-vs-password" => RedactionVsPassword,
             "accountant-pdf-workflow" => AccountantWorkflow,
             "ilovepdf-vs-smallpdf-vs-ratpdf" => ThreeWayCompare,
+            "browser-background-remover-privacy" => BrowserBgPrivacy,
+            "json-formatter-api-debugging" => JsonApiDebug,
+            "jwt-decoder-oauth-integration" => JwtOAuth,
+            "medical-calculator-clinical-documentation" => MedicalDoc,
             _ => null
         };
 
@@ -117,6 +121,56 @@ namespace ratpdf.Content
             <tr><td>Compare pages</td><td>Self-promo</td><td>Self-promo</td><td><a href="/compare">Full hub</a></td></tr>
             </tbody></table></div>
             <p>Deep dives: <a href="/compare/ilovepdf-alternative">iLovePDF</a> · <a href="/compare/smallpdf-alternative">Smallpdf</a> · <a href="/guides/pdf-tool-alternatives">All alternatives</a></p>
+            """;
+
+        private const string BrowserBgPrivacy = """
+            <p>Most online background removers upload your photo to a cloud GPU. RatPDF's <a href="/tools/imgbackgroundremove">AI background remover</a> is different: segmentation runs in your browser with ONNX Runtime Web — your image bytes never leave your device.</p>
+            <h2>Why on-device matters</h2>
+            <ul>
+            <li><strong>Privacy</strong> — headshots, ID scans, and unreleased product shots stay local</li>
+            <li><strong>Resolution</strong> — output PNG matches original width and height</li>
+            <li><strong>No queue</strong> — no server-side batch limits during peak hours</li>
+            </ul>
+            <h2>Trade-offs</h2>
+            <p>First load downloads the model (~few MB). Processing speed depends on your CPU/GPU. Fine hair and glass edges remain challenging for any AI cutout.</p>
+            <p>Guide: <a href="/guides/background-remover">Background remover guide</a> · Compress PNGs: <a href="/guides/image-compressor-guide">image compressor</a></p>
+            """;
+
+        private const string JsonApiDebug = """
+            <p>Minified JSON from webhooks and REST APIs is unreadable in log viewers. A <a href="/pdf/jsonformatter">JSON formatter</a> turns one-line payloads into indented trees so you spot missing commas before production.</p>
+            <h2>Debug workflow</h2>
+            <ol>
+            <li>Copy the raw response body from DevTools Network tab</li>
+            <li>Paste into the JSON formatter and fix syntax errors</li>
+            <li>Diff against last-known-good with <a href="/guides/text-comparer-guide">text comparer</a></li>
+            <li>Update your integration tests with the corrected structure</li>
+            </ol>
+            <p>Guide: <a href="/guides/json-formatter-guide">JSON formatter guide</a> · Hub: <a href="/tools/developer">developer tools</a></p>
+            """;
+
+        private const string JwtOAuth = """
+            <p>OAuth and OpenID Connect return JWT access and ID tokens. During integration you need to read claims — not trust them blindly.</p>
+            <h2>Claims checklist</h2>
+            <ul>
+            <li><code>exp</code> — token not expired?</li>
+            <li><code>iss</code> — matches your identity provider?</li>
+            <li><code>aud</code> — intended for your client ID?</li>
+            <li><code>scope</code> — includes required permissions?</li>
+            </ul>
+            <p>Use the <a href="/pdf/jwtdecoder">JWT decoder</a> to inspect payload JSON, then validate signatures server-side with the issuer's JWKS. Never paste production refresh tokens into shared machines.</p>
+            <p>Guide: <a href="/guides/jwt-decoder-guide">JWT decoder guide</a></p>
+            """;
+
+        private const string MedicalDoc = """
+            <p>Clinical calculators help shared decision-making when documented appropriately. RatPDF's <a href="/tools/medical">medical tools hub</a> covers BMI, eGFR, HEART, CHA₂DS₂-VASc, and Wells — all browser-based with no patient data stored.</p>
+            <h2>Documentation tips</h2>
+            <ul>
+            <li>Record the score, date, and inputs used (e.g. creatinine value for eGFR)</li>
+            <li>Note that calculators are adjuncts — not standalone diagnoses</li>
+            <li>Link institutional protocols for anticoagulation or imaging pathways</li>
+            </ul>
+            <p>Guides: <a href="/guides/bmi-calculator-guide">BMI</a> · <a href="/guides/egfr-calculator-guide">eGFR</a> · <a href="/guides/heart-score-guide">HEART score</a></p>
+            <p><em>Educational use only — not medical advice.</em></p>
             """;
     }
 }

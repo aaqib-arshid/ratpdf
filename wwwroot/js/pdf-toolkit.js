@@ -883,7 +883,10 @@ window.PdfToolkit = (function () {
         initEmailCaptureModal();
         document.querySelectorAll('form[data-pdf-tool] button[type="submit"]').forEach(btn => {
             const form = btn.closest('form');
-            const input = form?.querySelector('input[type="file"]');
+            if (!form) return;
+            // HTML/Text to PDF: editor content is valid without a file upload
+            if (form.querySelector('[name="htmlContent"], [name="typedText"]')) return;
+            const input = form.querySelector('input[type="file"]');
             if (input && !input.files?.length) btn.disabled = true;
         });
         syncStickyCtaState();

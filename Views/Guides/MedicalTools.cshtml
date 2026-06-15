@@ -1,0 +1,122 @@
+@model IReadOnlyList<ratpdf.Models.ContentEntry>
+@using ratpdf.Constants
+@using ratpdf.Content
+@using ratpdf.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hub = TopicalAuthority.CanonicalMedicalGuidesHub();
+}
+
+@section Head {
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "CollectionPage",
+      "name": "Medical Calculator Guides — RatPDF",
+      "description": "@ViewData["Description"]",
+      "url": "@hub",
+      "numberOfItems": @Model.Count
+    }
+    </script>
+}
+
+<div class="rp-content-page">
+    <header class="text-center mb-5 col-lg-9 mx-auto">
+        <nav aria-label="breadcrumb" class="mb-3 text-start">
+            <ol class="breadcrumb small mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/guides">Guides</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Medical calculators</li>
+            </ol>
+        </nav>
+        <span class="rp-badge mb-2">Clinical education</span>
+        <h1 class="fw-bold display-6 mt-2">Medical calculator guides</h1>
+        <p class="lead text-muted">
+            Step-by-step tutorials for BMI, eGFR, HEART, CHA₂DS₂-VASc, Wells, and more — browser-based calculators with no patient data stored.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+            <a href="@TopicalAuthority.MedicalHubPath" class="btn btn-primary btn-sm rounded-pill">Open calculators →</a>
+            <a href="/guides" class="btn btn-outline-primary btn-sm rounded-pill">All guides</a>
+        </div>
+    </header>
+
+    <section class="mb-5">
+        <div class="alert alert-light border small text-start mx-auto col-lg-10">
+            <strong>Disclaimer:</strong> These guides and calculators are educational aids only. They do not diagnose, treat, or replace licensed medical advice. Always follow local clinical protocols.
+        </div>
+    </section>
+
+    @if (Model.Count > 0)
+    {
+        <section class="mb-5">
+            <h2 class="h5 fw-bold text-primary mb-3">Featured guides</h2>
+            <div class="row g-3">
+                @foreach (var guide in Model)
+                {
+                    <div class="col-sm-6 col-lg-4">
+                        <a href="@guide.Path" class="rp-guide-card text-decoration-none h-100 d-flex flex-column">
+                            <h3 class="h6 fw-bold text-dark mb-2">@guide.Title</h3>
+                            <p class="small text-muted mb-2 flex-grow-1">@guide.Description</p>
+                            <span class="small fw-semibold text-primary">Read guide →</span>
+                        </a>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    @foreach (var group in TopicalAuthority.MedicalToolGroups)
+    {
+        <section class="mb-5">
+            <h2 class="h5 fw-bold mb-1">@group.Name</h2>
+            <p class="text-muted small mb-3">@group.Description</p>
+            <div class="row g-3">
+                @foreach (var tool in group.Tools)
+                {
+                    var guide = ContentLibrary.GetGuideForToolUrl(tool.Url);
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="rp-guide-card h-100 d-flex flex-column">
+                            <h3 class="h6 fw-bold mb-2"><a href="@tool.Url" class="text-dark text-decoration-none">@tool.Name</a></h3>
+                            <p class="small text-muted flex-grow-1 mb-2">@tool.Blurb</p>
+                            @if (guide != null)
+                            {
+                                <p class="small mb-1"><a href="@guide.Path">Read guide →</a></p>
+                            }
+                            <a href="@tool.Url" class="small fw-semibold text-primary">Open calculator →</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    <section class="mb-5">
+        <div class="card border-0 shadow-sm" style="border-radius:12px;">
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold mb-2">Long-tail clinical guides</h2>
+                <p class="text-muted small mb-3">Scenario-specific pages for SEO and patient education — BMI for women, eGFR for elderly patients, and more.</p>
+                <ul class="small mb-3 ps-3">
+                    <li class="mb-1"><a href="/medical-tools/bmi-calculator-for-women">BMI calculator for women</a></li>
+                    <li class="mb-1"><a href="/medical-tools/egfr-calculator-ckd-staging">eGFR calculator for CKD staging</a></li>
+                    <li class="mb-1"><a href="/medical-tools/heart-score-calculator-chest-pain">HEART score for chest pain</a></li>
+                </ul>
+                <a href="@TopicalAuthority.MedicalHubPath" class="btn btn-outline-primary btn-sm rounded-pill">Browse all medical tools →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h5 fw-bold mb-3">Further reading</h2>
+        <ul class="list-unstyled">
+            @{
+                var blog = ContentLibrary.GetBlog("medical-calculator-clinical-documentation");
+            }
+            @if (blog != null)
+            {
+                <li class="mb-2"><a href="@blog.Path">@blog.Title</a></li>
+            }
+            <li class="mb-2"><a href="/guides/medical-calculators-guide">Medical calculators hub guide</a></li>
+            <li><a href="@TopicalAuthority.PdfToolsHubPath">PDF tools hub</a> — export clinical notes as PDF</li>
+        </ul>
+    </section>
+</div>

@@ -1,0 +1,65 @@
+@model ratpdf.Constants.ToolHowToVideo
+@using ratpdf.Constants
+@inject IWebHostEnvironment Env
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var steps = ViewData["Steps"] as IReadOnlyList<ToolTutorialSteps.Step> ?? Array.Empty<ToolTutorialSteps.Step>();
+    var slidePaths = Model.GetSlidePaths(Env);
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/tool-howto-video.css" asp-append-version="true" />
+}
+
+<div class="rp-content-page">
+    <article class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb small mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="@ToolHowToVideo.LearningHubPath">Video tutorials</a></li>
+                <li class="breadcrumb-item active">@Model.ToolName</li>
+            </ol>
+        </nav>
+
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <h1 class="h2 fw-bold mb-2">@Model.Title</h1>
+                <p class="text-muted mb-4">Step-by-step slides with click markers — follow along on the <a href="@Model.ToolUrl">@Model.ToolName tool page</a>.</p>
+
+                @await Html.PartialAsync("_ToolHowToVideo", Model)
+
+                @if (slidePaths.Count > 0)
+                {
+                    <section class="mt-4">
+                        <h2 class="h6 fw-bold mb-3">Tutorial slides — where to click</h2>
+                        <div class="row g-3">
+                            @for (var i = 0; i < slidePaths.Count; i++)
+                            {
+                                var step = i < steps.Count ? steps[i] : null;
+                                <div class="col-md-6">
+                                    <figure class="rp-step-slide mb-0">
+                                        <img src="@slidePaths[i]" alt="Step @(i + 1)" class="img-fluid rounded border" loading="lazy" />
+                                        <figcaption class="small mt-2">
+                                            <strong>Step @(i + 1):</strong> @(step?.Text ?? "Follow the highlighted area")
+                                            @if (!string.IsNullOrEmpty(step?.ClickLabel))
+                                            {
+                                                <span class="badge bg-danger ms-1">Click: @step.ClickLabel</span>
+                                            }
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                            }
+                        </div>
+                    </section>
+                }
+            </div>
+            <aside class="col-lg-4">
+                <div class="rp-sidebar-card sticky-lg-top" style="top: 1rem;">
+                    <h2 class="h6 fw-bold mb-3">Try the tool</h2>
+                    <a href="@Model.ToolUrl" class="btn btn-primary btn-sm w-100 mb-3">Open @Model.ToolName</a>
+                    <a href="@ToolHowToVideo.LearningHubPath" class="btn btn-outline-primary btn-sm w-100">All tutorials</a>
+                </div>
+            </aside>
+        </div>
+    </article>
+</div>

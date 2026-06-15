@@ -1,0 +1,72 @@
+@model ratpdf.Constants.ToolHowToVideo
+@using ratpdf.Constants
+@inject IWebHostEnvironment Env
+@{
+    var video = Model ?? ToolHowToVideos.Get(Context.Request.Path.Value ?? "");
+    if (video == null)
+    {
+        video = ToolHowToVideos.Get(ViewData["ToolUrl"] as string ?? Context.Request.Path.Value ?? "");
+    }
+    var show = video != null && ToolHowToVideos.FileExists(video, Env.WebRootPath);
+    var steps = video != null ? ToolTutorialSteps.Get(video.ToolUrl, video.ToolName) : Array.Empty<ToolTutorialSteps.Step>();
+    var slidePaths = video?.GetSlidePaths(Env) ?? Array.Empty<string>();
+}
+@if (show && video != null)
+{
+    <link rel="stylesheet" href="~/css/tool-howto-video.css" asp-append-version="true" />
+    <section class="rp-howto-video mb-4" aria-label="@video.Title">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+            <p class="small fw-semibold text-primary mb-0"><i class="bi bi-play-circle me-1"></i>@video.Title</p>
+            <a href="@video.LearnPath" class="small fw-semibold">All slides →</a>
+        </div>
+        <div class="rp-howto-video-frame">
+            <video controls preload="metadata" playsinline
+                   poster="@video.PosterPath"
+                   width="640" height="360"
+                   title="@video.Title">
+                <source src="@video.VideoPath" type="video/mp4" />
+            </video>
+        </div>
+        <p class="small text-muted mb-2 mt-2">@slidePaths.Count step slides · red markers show where to click</p>
+
+        @if (slidePaths.Count > 0)
+        {
+            <div class="rp-step-strip" role="list" aria-label="Tutorial steps">
+                @for (var i = 0; i < slidePaths.Count; i++)
+                {
+                    var step = i < steps.Count ? steps[i] : null;
+                    <div class="rp-step-strip-item" role="listitem">
+                        <img src="@slidePaths[i]" alt="Step @(i + 1)" loading="lazy" />
+                        <span class="rp-step-strip-num">@(i + 1)</span>
+                        @if (!string.IsNullOrEmpty(step?.ClickLabel))
+                        {
+                            <span class="rp-step-strip-label">@step.ClickLabel</span>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </section>
+}
+else if (video != null)
+{
+    @* Fallback when video file missing — still show steps if slides exist *@
+    var slidesOnly = video.GetSlidePaths(Env);
+    if (slidesOnly.Count > 0)
+    {
+        <link rel="stylesheet" href="~/css/tool-howto-video.css" asp-append-version="true" />
+        <section class="rp-howto-video mb-4">
+            <p class="small fw-semibold text-primary mb-2"><i class="bi bi-images me-1"></i>How to use @video.ToolName</p>
+            <div class="rp-step-strip">
+                @for (var i = 0; i < slidesOnly.Count; i++)
+                {
+                    <div class="rp-step-strip-item">
+                        <img src="@slidesOnly[i]" alt="Step @(i + 1)" loading="lazy" />
+                        <span class="rp-step-strip-num">@(i + 1)</span>
+                    </div>
+                }
+            </div>
+            <a href="@video.LearnPath" class="small d-inline-block mt-2">Full tutorial →</a>
+        </section>
+    }
+}

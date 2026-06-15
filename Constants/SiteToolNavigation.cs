@@ -117,7 +117,7 @@ namespace ratpdf.Constants
 
         public static readonly SiteNavTool[] BusinessTools =
         [
-            new("Invoice Generator", "/Invoice/Create"),
+            new("Invoice Generator", "/invoice/create"),
             new("Payslip Generator", "/free-payslip-generator"),
             new("Bulk Payslip Generator", "/bulk-payslip-generator"),
             new("Rent Receipt Generator", "/rent-receipt-generator"),
