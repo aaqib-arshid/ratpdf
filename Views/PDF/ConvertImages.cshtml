@@ -30,23 +30,23 @@
             <!-- Drag & Drop Form -->
             <form asp-action="ConvertImages" method="post" enctype="multipart/form-data" id="imageForm" data-pdf-tool="convertimages">
                 <div class="mb-3">
-                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
+                    <div id="dropZone" class="rp-dropzone border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
                         <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
                         <p class="mb-0 text-muted">Drag & drop images here or click to select</p>
                         <input type="file" name="files" multiple class="form-control form-control-lg d-none" id="fileInput" accept="image/*">
                     </div>
                 </div>
 
-                <!-- Preview Thumbnails -->
-                <div id="preview" class="d-flex flex-wrap justify-content-center mb-3 gap-2"></div>
-
+                @await Html.PartialAsync("_PdfFilePreviewCard")
+                <p id="limitHint" class="text-muted small text-start mb-2"></p>
                 <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
                 @await Html.PartialAsync("_PdfProgressBar")
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary btn-lg w-100">
+                <button type="submit" class="btn btn-primary btn-lg w-100 rp-tool-primary-btn" disabled>
                     <i class="bi bi-file-earmark-pdf-fill me-2"></i> Convert to PDF
                 </button>
+                @await Html.PartialAsync("_PdfSubmitHint")
             </form>
             @await Html.PartialAsync("_PdfToolTrustFooter")
             <div class="mt-4 text-muted small">
@@ -244,51 +244,32 @@
 }")
 </script>
     <script>
-        // Drag & Drop and Preview
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const preview = document.getElementById('preview');
+        const imageLimits = { maxFiles: 20, maxSizeBytes: 200 * 1024 * 1024, multiple: true };
 
-        dropZone.addEventListener('click', () => fileInput.click());
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-primary', 'bg-light');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-primary', 'bg-light');
-            fileInput.files = e.dataTransfer.files;
-            showPreview();
-        });
-
-        fileInput.addEventListener('change', showPreview);
-
-        function showPreview() {
-            preview.innerHTML = '';
-            const files = fileInput.files;
-            for (let i = 0; i < files.length; i++) {
-                if (!files[i].type.startsWith('image/')) continue;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'img-thumbnail';
-                    img.style.height = '80px';
-                    img.style.width = '80px';
-                    preview.appendChild(img);
-                }
-                reader.readAsDataURL(files[i]);
+        async function loadLimits() {
+            const access = await PdfToolkit.checkToolAccess('convertimages');
+            imageLimits.maxFiles = access.maxBatchFiles || imageLimits.maxFiles;
+            imageLimits.maxSizeBytes = access.maxFileSizeBytes || imageLimits.maxSizeBytes;
+            const hint = document.getElementById('limitHint');
+            if (hint) {
+                hint.textContent = `Up to ${imageLimits.maxFiles} images · ${access.maxFileSizeLabel || PdfToolkit.fmtBytes(imageLimits.maxSizeBytes)} per file`;
             }
         }
+        loadLimits();
+
         $('#imageForm').on('submit', function (e) {
-        e.preventDefault();
+            e.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const v = PdfToolkit.validateFiles(fileInput.files, { ...imageLimits, typeLabel: 'image' });
+            if (!v.ok) {
+                const err = document.getElementById('errorArea');
+                if (err) {
+                    err.textContent = v.error;
+                    err.classList.remove('d-none');
+                }
+                return;
+            }
             submitWithLoader('imageForm', 'Converting images…', 'images.pdf');
-       });
+        });
     </script>
 }

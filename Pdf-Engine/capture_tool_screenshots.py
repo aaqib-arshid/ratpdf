@@ -28,6 +28,11 @@ def capture_one(page, base_url: str, tool: dict, out_dir: Path) -> bool:
     try:
         page.goto(full, wait_until="networkidle", timeout=60000)
         page.wait_for_timeout(1500)
+        # Hide embedded tutorial player so screenshots show the tool UI only
+        # (avoids stale poster frames / error pages nested in slide captures).
+        page.evaluate("""() => {
+            document.querySelectorAll('.rp-howto-video').forEach(el => el.remove());
+        }""")
         page.screenshot(path=str(shot), full_page=False)
         print(f"  {slug} -> {shot}")
         return True
