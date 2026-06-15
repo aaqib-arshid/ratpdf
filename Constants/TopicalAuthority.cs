@@ -87,28 +87,7 @@ namespace ratpdf.Constants
             ("PDF redaction", "/pdf-redaction", null!),
         ];
 
-        public static readonly ToolGroup[] MedicalToolGroups =
-        [
-            new("Screening & renal function", "Body composition and kidney function estimates for intake and staging.",
-            [
-                ("BMI Calculator", "/bmi-calculator", "WHO categories from height and weight."),
-                ("eGFR Calculator", "/egfr-calculator", "CKD staging from creatinine, age, and sex."),
-            ]),
-            new("Cardiovascular & thrombosis", "Chest pain, AF stroke risk, and VTE pre-test probability scores.",
-            [
-                ("HEART Score", "/heart-score", "Emergency chest pain MACE stratification."),
-                ("CHA₂DS₂-VASc Score", "/cha2ds2-vasc-score", "Stroke risk in atrial fibrillation."),
-                ("Wells Score (DVT/PE)", "/wells-score", "Deep vein thrombosis and pulmonary embolism probability."),
-                ("HAS-BLED Score", "/has-bled-score", "Bleeding risk on anticoagulation."),
-            ]),
-            new("Acute care scores", "Neurology, hemodynamics, burns, and stroke severity scales.",
-            [
-                ("GCS Calculator", "/gcs-calculator", "Glasgow Coma Scale for consciousness level."),
-                ("MAP Calculator", "/map-calculator", "Mean arterial pressure from vitals."),
-                ("Parkland Formula", "/parkland-formula", "Burn resuscitation fluid estimate."),
-                ("NIHSS Calculator", "/nihss-calculator", "NIH Stroke Scale severity score."),
-            ]),
-        ];
+        public static readonly ToolGroup[] MedicalToolGroups = [];
 
         public static readonly ToolGroup[] DeveloperToolGroups =
         [
@@ -243,7 +222,6 @@ namespace ratpdf.Constants
             var category = SiteToolNavigation.InferRelatedCategory(toolPath);
             return category switch
             {
-                SiteToolCategories.Medical => MedicalHubPath,
                 SiteToolCategories.Developer => DeveloperHubPath,
                 SiteToolCategories.Calculators => CalculatorsHubPath,
                 SiteToolCategories.Utilities => UtilitiesHubPath,

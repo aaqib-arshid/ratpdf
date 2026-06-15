@@ -116,7 +116,7 @@ public partial class Program
         builder.Services.Configure<RouteOptions>(options =>
         {
             options.LowercaseUrls = true;
-            options.LowercaseQueryStrings = false;
+            options.LowercaseQueryStrings = true;
             options.ConstraintMap.Add("compressSeo", typeof(CompressSeoSlugConstraint));
         });
 
@@ -392,6 +392,7 @@ public partial class Program
         });
 
         app.UseMiddleware<SeoUrlNormalizationMiddleware>();
+        app.UseMiddleware<MedicalToolsRemovalMiddleware>();
         app.UseRouting();
         app.UseResponseCaching();
         app.UseOutputCache();

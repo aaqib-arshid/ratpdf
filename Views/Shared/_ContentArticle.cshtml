@@ -76,10 +76,6 @@
                     <hr />
                     <p class="small text-muted mb-2">Explore topical hubs</p>
                     <a href="@TopicalAuthority.PdfToolsHubPath" class="btn btn-outline-primary btn-sm w-100 mb-2">PDF tools hub</a>
-                    @if (TopicalAuthority.IsMedicalCategory(Model.Category))
-                    {
-                        <a href="@TopicalAuthority.MedicalGuidesHubPath" class="btn btn-outline-secondary btn-sm w-100 mb-2">Medical calculator guides</a>
-                    }
                     @if (TopicalAuthority.IsDeveloperCategory(Model.Category))
                     {
                         <a href="@TopicalAuthority.DeveloperGuidesHubPath" class="btn btn-outline-secondary btn-sm w-100 mb-2">Developer tool guides</a>

@@ -10,13 +10,27 @@
     ViewData["Description"] = Model.Description;
     ViewData["CanonicalUrl"] = canonical;
     ViewData["LightLayout"] = true;
+    ViewData["Robots"] = "noindex, follow";
     ViewData["SeoToolUrl"] = toolHref;
     ViewData["SeoToolLabel"] = $"Start {Model.ToolLinkText} free";
+    var h1 = Model.DisplayTitle;
 }
 
 @section Head {
     <script type="application/ld+json">
-    @Html.Raw(SchemaHelper.BuildSoftwareApplicationLdJson(Model.ToolLinkText, toolHref, Model.Description))
+    {
+      "@@context": "https://schema.org",
+      "@@type": "WebApplication",
+      "name": @Html.Raw(JsonSerializer.Serialize(h1)),
+      "url": @Html.Raw(JsonSerializer.Serialize(canonical)),
+      "applicationCategory": @Html.Raw(JsonSerializer.Serialize(Model.SchemaApplicationCategory)),
+      "description": @Html.Raw(JsonSerializer.Serialize(Model.Description)),
+      "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
     </script>
     @if (Model.FAQ.Count > 0)
     {
@@ -53,10 +67,7 @@
         </ol>
     </nav>
 
-    @await Html.PartialAsync("_PdfToolSocialProof")
-    @await Html.PartialAsync("_PdfToolTrustPills")
-
-    <h1 class="fw-bold mb-3">@Model.Title.Replace(" | RatPDF", "")</h1>
+    <h1 class="fw-bold mb-3">@h1</h1>
     <p class="lead text-muted">@Model.Description</p>
 
     <div class="d-flex flex-wrap gap-2 mb-4">

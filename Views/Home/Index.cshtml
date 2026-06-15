@@ -361,21 +361,21 @@
 
     <section class="rp-section-home">
         <div class="rp-section-head">
-            <span class="rp-sec-label">Healthcare</span>
-            <h2>Medical calculators</h2>
-            <p>Evidence-based clinical scores and calculators — free, private, browser-based.</p>
+            <span class="rp-sec-label">PDF conversion</span>
+            <h2>Popular conversion guides</h2>
+            <p>Extract text, convert to Word, and OCR scanned documents — each page links to our free tools.</p>
         </div>
         <div class="row g-2">
-            @foreach (var tool in SiteToolNavigation.MedicalTools.Take(6))
-            {
-                <div class="col-md-4">
-                    <a href="@tool.Url" class="rp-guide-card d-block text-decoration-none p-3">@tool.Name</a>
-                </div>
-            }
+            <div class="col-md-4"><a href="/pdf-to-txt/pdf-to-text-online" class="rp-guide-card d-block text-decoration-none p-3">PDF to Text Online</a></div>
+            <div class="col-md-4"><a href="/pdf-to-txt/how-do-i-convert-pdf-to-text" class="rp-guide-card d-block text-decoration-none p-3">How to Convert PDF to Text</a></div>
+            <div class="col-md-4"><a href="/pdf-to-txt/ocr-pdf-to-text" class="rp-guide-card d-block text-decoration-none p-3">OCR PDF to Text</a></div>
+            <div class="col-md-4"><a href="/pdf-to-word/pdf-to-word-online" class="rp-guide-card d-block text-decoration-none p-3">PDF to Word Online</a></div>
+            <div class="col-md-4"><a href="/pdf-to-word/how-to-convert-pdf-to-word" class="rp-guide-card d-block text-decoration-none p-3">How to Convert PDF to Word</a></div>
+            <div class="col-md-4"><a href="/guides/pdf-to-word" class="rp-guide-card d-block text-decoration-none p-3">PDF to Word Guide</a></div>
         </div>
         <div class="text-center mt-3">
-            <a href="/heart-score" class="btn btn-outline-primary rounded-pill px-4 me-2">HEART Score</a>
-            <a href="/bmi-calculator" class="btn btn-outline-primary rounded-pill px-4">BMI Calculator</a>
+            <a href="/pdf/pdftotext" class="btn btn-outline-primary rounded-pill px-4 me-2">PDF to Text Tool</a>
+            <a href="/learn" class="btn btn-outline-primary rounded-pill px-4">Video Tutorials</a>
         </div>
     </section>
 

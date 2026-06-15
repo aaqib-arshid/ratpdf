@@ -13,14 +13,13 @@ namespace ratpdf.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
-            ViewData["Title"] = "Video Tutorials — How to Use Every RatPDF Tool";
-            ViewData["Description"] = "Step-by-step video tutorials with click guides for every RatPDF tool — PDF, medical calculators, developer utilities, and more.";
+            ViewData["Title"] = "PDF Video Tutorials — How to Use RatPDF Tools";
+            ViewData["Description"] = "Step-by-step video tutorials for every RatPDF PDF tool — merge, compress, convert, sign, and protect documents online.";
             ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(ToolHowToVideo.LearningHubPath);
 
-            var tools = ToolHowToVideos.All
+            var tools = PdfTutorials()
                 .Where(v => ToolHowToVideos.FileExists(v, _env.WebRootPath))
-                .OrderBy(CategoryKey)
-                .ThenBy(v => v.ToolName)
+                .OrderBy(v => v.ToolName)
                 .ToList();
 
             return View(tools);
@@ -29,7 +28,10 @@ namespace ratpdf.Controllers
         [HttpGet("{slug}")]
         public IActionResult Watch(string slug)
         {
-            var entry = ToolHowToVideos.All.FirstOrDefault(v =>
+            if (MedicalToolsRemoval.IsRemovedLearnSlug(slug))
+                return NotFound();
+
+            var entry = PdfTutorials().FirstOrDefault(v =>
                 v.Slug.Equals(slug, StringComparison.OrdinalIgnoreCase));
             if (entry == null || !ToolHowToVideos.FileExists(entry, _env.WebRootPath))
                 return NotFound();
@@ -41,14 +43,11 @@ namespace ratpdf.Controllers
             return View(entry);
         }
 
-        private static string CategoryKey(ToolHowToVideo v)
-        {
-            if (v.ToolUrl.StartsWith("/pdf/", StringComparison.OrdinalIgnoreCase) ||
-                v.ToolUrl.Equals("/pdf-redaction", StringComparison.OrdinalIgnoreCase))
-                return "PDF";
-            if (v.ToolUrl.Contains("calculator", StringComparison.OrdinalIgnoreCase)) return "Medical";
-            if (v.ToolUrl.StartsWith("/invoice", StringComparison.OrdinalIgnoreCase)) return "Business";
-            return "Utilities";
-        }
+        private static IEnumerable<ToolHowToVideo> PdfTutorials() =>
+            ToolHowToVideos.All.Where(IsPdfTutorial);
+
+        private static bool IsPdfTutorial(ToolHowToVideo v) =>
+            v.ToolUrl.StartsWith("/pdf/", StringComparison.OrdinalIgnoreCase) ||
+            v.ToolUrl.Equals("/pdf-redaction", StringComparison.OrdinalIgnoreCase);
     }
 }

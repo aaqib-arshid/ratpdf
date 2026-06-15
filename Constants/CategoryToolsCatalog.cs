@@ -17,28 +17,6 @@ namespace ratpdf.Constants
         private static IEnumerable<CategoryToolsPageModel> Build()
         {
             yield return Hub(
-                "medical",
-                "/tools/medical",
-                "Free Medical Calculators & Clinical Scores Online | RatPDF",
-                "Clinical calculators for BMI, eGFR, HEART score, CHA₂DS₂-VASc, Wells score, GCS, MAP, HAS-BLED, Parkland formula, and NIHSS — free in the browser.",
-                "Medical Calculators & Clinical Scores",
-                "Evidence-based calculators for screening, risk stratification, and clinical documentation — no install required.",
-                "Medical & clinical",
-                SiteToolNavigation.MedicalTools.Select(t => (t.Name, t.Url, ToolBlurb(t.Url))).ToArray(),
-                [
-                    "Estimate BMI for patient intake forms",
-                    "Calculate eGFR from creatinine for CKD staging",
-                    "Score chest pain with HEART before disposition",
-                    "Assess stroke risk with CHA₂DS₂-VASc for anticoagulation discussions",
-                    "Evaluate DVT/PE pre-test probability with Wells criteria",
-                ],
-                [
-                    ("Are these medical calculators for diagnosis?", "No — they are educational aids. Always apply clinical judgment and local protocols; they do not replace licensed medical advice."),
-                    ("Do you store patient data?", "Calculators run in your browser session. RatPDF does not require patient identifiers for these tools."),
-                    ("Can I use these on mobile?", "Yes — all calculators are responsive and work on phones and tablets."),
-                ]);
-
-            yield return Hub(
                 "developer",
                 "/tools/developer",
                 "Free Developer Tools — JSON, JWT, HTML & Text Utilities | RatPDF",
@@ -130,14 +108,13 @@ namespace ratpdf.Constants
             yield return Hub(
                 "all-tools",
                 "/tools",
-                "All Free Online Tools — PDF, Medical, Developer & Business | RatPDF",
-                "Browse every RatPDF tool: PDF edit and convert, medical calculators, developer utilities, image tools, and business generators.",
+                "All Free Online Tools — PDF, Developer & Business | RatPDF",
+                "Browse every RatPDF tool: PDF edit and convert, developer utilities, image tools, and business generators.",
                 "All RatPDF Tools",
-                "One platform for PDF workflows, clinical scores, developer debugging, and business documents.",
+                "One platform for PDF workflows, developer debugging, and business documents.",
                 "All categories",
                 SiteToolNavigation.PdfEditTools
                     .Concat(SiteToolNavigation.PdfConvertTools)
-                    .Concat(SiteToolNavigation.MedicalTools)
                     .Concat(SiteToolNavigation.DeveloperTools)
                     .Concat(SiteToolNavigation.Utilities)
                     .Concat(SiteToolNavigation.BusinessTools)
@@ -147,12 +124,11 @@ namespace ratpdf.Constants
                     .ToArray(),
                 [
                     "Start with PDF compress or merge for document workflows",
-                    "Use medical calculators for clinical education",
                     "Format JSON and decode JWT during development",
                     "Generate invoices and payslips for clients and staff",
                 ],
                 [
-                    ("How many tools does RatPDF offer?", $"Over {PdfToolSeo.ToolCountLabel} PDF tools plus medical, developer, calculator, and business utilities."),
+                    ("How many tools does RatPDF offer?", $"Over {PdfToolSeo.ToolCountLabel} PDF tools plus developer, calculator, and business utilities."),
                     ("Is everything free?", "Core tools include a free tier (3 uses/day per tool). Pro unlocks higher limits and larger files."),
                 ]);
         }

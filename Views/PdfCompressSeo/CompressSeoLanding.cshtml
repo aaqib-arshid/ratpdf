@@ -7,12 +7,15 @@
     ViewData["Description"] = Model.MetaDescription;
     ViewData["CanonicalUrl"] = Model.CanonicalUrl;
     ViewData["LightLayout"] = true;
+    ViewData["Robots"] = Model.NoIndex
+        ? "noindex, follow"
+        : "index, follow, max-image-preview:large, max-snippet:-1";
     var toolHref = PdfToolSeo.Canonical(Model.ToolPath);
     var hubHref = PdfToolSeo.Canonical(Model.HubPath);
 }
 
 @section Head {
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content="@ViewData["Robots"]" />
     @if (Model.Rating != null)
     {
         <script type="application/ld+json">
@@ -37,7 +40,7 @@
             @Html.Raw(SchemaHelper.BuildBreadcrumbLdJson(Model.Breadcrumbs))
         </script>
     }
-    @if (Model.FaqItems != null && Model.FaqItems.Count > 0)
+    @if (Model.FaqItems != null && Model.FaqItems.Count > 0 && !Model.NoIndex)
     {
         <script type="application/ld+json">
             @Html.Raw(SchemaHelper.BuildFaqLdJson(Model.FaqItems))
@@ -119,7 +122,7 @@
         </section>
     }
 
-    @if (Model.FaqItems != null && Model.FaqItems.Count > 0)
+    @if (Model.FaqItems != null && Model.FaqItems.Count > 0 && !Model.NoIndex)
     {
         <section class="mt-5" aria-labelledby="faq-heading">
             <h2 id="faq-heading" class="h4 fw-semibold">Frequently Asked Questions</h2>

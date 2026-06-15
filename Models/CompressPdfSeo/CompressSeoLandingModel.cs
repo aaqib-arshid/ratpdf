@@ -11,5 +11,6 @@ namespace ratpdf.Models.CompressPdfSeo
         public List<(string Label, string Path)> RelatedPages { get; set; } = new();
         public List<(string Name, string Text)> HowToSteps { get; set; } = new();
         public List<(string Name, string Url)> RelatedTools { get; set; } = new();
+        public bool NoIndex { get; set; }
     }
 }

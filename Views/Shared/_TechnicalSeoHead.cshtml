@@ -17,6 +17,7 @@
         ?? PdfToolSeo.DefaultOgImage;
     var robots = ViewData["Robots"] as string ?? "index, follow, max-image-preview:large, max-snippet:-1";
     var pageKeywords = ViewData["Keywords"] as string;
+    var ogDescription = ViewData["OgDescription"] as string ?? description;
     var ogLocale = ViewData["OgLocale"] as string;
     var geoRegion = ViewData["GeoRegion"] as string;
     var geoCountry = ViewData["GeoCountry"] as string;
@@ -37,7 +38,7 @@
 }
 <meta property="og:site_name" content="@PdfToolSeo.SiteName" />
 <meta property="og:title" content="@title" />
-<meta property="og:description" content="@description" />
+<meta property="og:description" content="@ogDescription" />
 <meta property="og:url" content="@canonical" />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="@ogImage" />
@@ -49,7 +50,7 @@
 }
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="@title" />
-<meta name="twitter:description" content="@description" />
+<meta name="twitter:description" content="@ogDescription" />
 <meta name="twitter:image" content="@ogImage" />
 <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM site guide" />
 <link rel="author" href="@PdfToolSeo.Canonical(SiteEntity.AboutPath)" />

@@ -74,11 +74,12 @@ namespace ratpdf.Constants
                 "/home/terms",
                 "/home/disclaimer",
                 "/compare",
+                "/learn",
+                "/compress-pdf",
                 "/convert/pdf-to-jpg",
                 "/convert/html-to-pdf",
                 "/resources",
                 "/tools",
-                "/tools/medical",
                 "/tools/developer",
                 "/tools/calculators",
                 "/tools/utilities",
@@ -109,7 +110,6 @@ namespace ratpdf.Constants
                 "/compare",
                 "/guides/pdf-tools",
                 "/guides/secure-pdf-workflow",
-                "/guides/medical-tools",
                 "/guides/developer-tools",
                 "/pdf/imgtobase64",
                 "/pdf/htmlformatter",
@@ -126,15 +126,6 @@ namespace ratpdf.Constants
                 "/gst-invoice-checker",
                 "/pdf-size-checker",
                 "/research/pdf-tool-market-comparison",
-                "/cha2ds2-vasc-score",
-                "/egfr-calculator",
-                "/wells-score",
-                "/heart-score",
-                "/gcs-calculator",
-                "/map-calculator",
-                "/has-bled-score",
-                "/parkland-formula",
-                "/nihss-calculator",
                 "/password-generator",
                 "/qr-code-generator",
                 "/free-payslip-generator",
@@ -144,7 +135,6 @@ namespace ratpdf.Constants
                 "/decimal-to-binary",
                 "/url-encoder",
                 "/url-decoder",
-                "/bmi-calculator",
                 "/age-calculator",
                 "/emi-calculator",
                 "/percentage-calculator",
@@ -162,7 +152,13 @@ namespace ratpdf.Constants
             paths.AddRange(CategoryToolsCatalog.SitemapPaths());
             paths.AddRange(VerticalPdfToolsCatalog.SitemapPaths());
 
-            return paths.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            foreach (var tutorial in ToolHowToVideos.All)
+                paths.Add(tutorial.LearnPath);
+
+            return paths
+                .Where(p => !MedicalToolsRemoval.IsRemovedPath(p))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
         }
 
         private static readonly HashSet<string> CasePreservedPrefixes = new(StringComparer.OrdinalIgnoreCase)

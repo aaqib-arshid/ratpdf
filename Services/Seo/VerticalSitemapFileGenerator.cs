@@ -1,6 +1,7 @@
 using System.Text;
 using System.Xml.Linq;
 using ratpdf.Constants;
+using ratpdf.Models.ProgrammaticSeo;
 using ratpdf.Services;
 
 namespace ratpdf.Services.Seo
@@ -48,6 +49,13 @@ namespace ratpdf.Services.Seo
                     .Distinct(StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
+                if (urlPrefix == "/pdf-to-txt/")
+                    slugs = FilterSlugs(slugs, webRoot, "pdf-to-txt-keywords.txt", PdfToolVertical.PdfToText, PdfToTxtPillarCatalog.AllSlugs);
+                else if (urlPrefix == "/pdf-to-word/")
+                    slugs = FilterSlugs(slugs, webRoot, "pdftodocx_urls.txt", PdfToolVertical.PdfToWord, PdfToWordPillarCatalog.Catalog.AllSlugs);
+                else if (urlPrefix == "/edit-pdf/")
+                    slugs = FilterSlugs(slugs, webRoot, "edit_pdf_urls_100k.txt", PdfToolVertical.EditPdf, EditPdfPillarCatalog.Catalog.AllSlugs);
+
                 var urls = slugs.Select(s => urlPrefix + s.TrimStart('/')).ToList();
                 var outPath = Path.Combine(sitemapDir, fileName);
                 File.WriteAllText(outPath, BuildUrlSetXml(urls, lastMod), new UTF8Encoding(false));
@@ -55,13 +63,27 @@ namespace ratpdf.Services.Seo
                 Console.WriteLine($"  {fileName}: {urls.Count} URLs");
             }
 
-            var landingPaths = PdfToolSeoLandingGenerator.AllLandingPaths();
-            var landingPath = Path.Combine(sitemapDir, "sitemap_pdf_tool_landings_static.xml");
-            File.WriteAllText(landingPath, BuildUrlSetXml(landingPaths, lastMod), new UTF8Encoding(false));
-            results.Add(("sitemap_pdf_tool_landings_static.xml", landingPaths.Count));
-            Console.WriteLine($"  sitemap_pdf_tool_landings_static.xml: {landingPaths.Count} URLs");
-
             return new VerticalSitemapGenerationResult(results);
+        }
+
+        private static List<string> FilterSlugs(
+            List<string> slugs,
+            string webRoot,
+            string keywordsFile,
+            PdfToolVertical vertical,
+            IReadOnlyList<string> pillarSlugs)
+        {
+            var map = ProgrammaticSlugHelper.LoadKeywordMap(webRoot, keywordsFile);
+            slugs = slugs
+                .Where(s => ProgrammaticSitemapFilter.IsEligible(vertical, s, map.GetValueOrDefault(s), null)
+                    || pillarSlugs.Contains(s, StringComparer.OrdinalIgnoreCase))
+                .ToList();
+            foreach (var pillar in pillarSlugs)
+            {
+                if (!slugs.Contains(pillar, StringComparer.OrdinalIgnoreCase))
+                    slugs.Add(pillar);
+            }
+            return slugs;
         }
 
         private static string Slugify(string keyword) =>

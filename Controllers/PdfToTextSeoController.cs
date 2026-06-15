@@ -16,10 +16,13 @@ namespace ratpdf.Controllers
         [Route("{slug}")]
         public IActionResult PdfToTexSEOPage(string slug)
         {
-            var page = PdfToTxtContentGenerator.PopulateSEOPageData(slug, _env.WebRootPath);
-
+            var page = PdfToTxtSeoEngine.BuildPage(slug, _env.WebRootPath);
             if (page == null)
                 return NotFound();
+
+            if (page.NoIndex)
+                Response.Headers["X-Robots-Tag"] = "noindex, follow";
+
             return View("DynamicPdfToTxtSEO", page);
         }
     }

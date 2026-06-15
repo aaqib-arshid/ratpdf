@@ -98,13 +98,6 @@ namespace ratpdf.Content
                 ("choose-pdf-tool", "How to Choose a PDF Tool — 2026 Buyer Guide", "Compare free limits, file caps, security, and toolkit breadth. Links to RatPDF vs iLovePDF, Smallpdf, Adobe, and more.", "PDF", "/compare",
                     ["What is the best free PDF tool?", "RatPDF vs Adobe Acrobat Online?"],
                     ["Depends on daily volume and file size — see our comparison hub for feature tables.", "RatPDF is browser-only with 3 free uses per tool; Adobe requires account and has stricter free limits."]),
-                // Medical calculators
-                ("bmi-calculator-guide", "BMI Calculator Guide — WHO Categories & Clinical Use", "Calculate body mass index from height and weight. WHO categories, limitations for athletes, and when to use BMI in screening.", "Medical", "/bmi-calculator", null, null),
-                ("egfr-calculator-guide", "eGFR Calculator Guide — CKD Staging & Kidney Function", "Estimate glomerular filtration rate from creatinine, age, and sex. CKD staging bands and clinical correlation tips.", "Medical", "/egfr-calculator", null, null),
-                ("heart-score-guide", "HEART Score Guide — Chest Pain Risk Stratification", "Calculate HEART score for emergency chest pain patients. Components, MACE risk bands, and shared decision-making.", "Medical", "/heart-score", null, null),
-                ("cha2ds2-vasc-guide", "CHA₂DS₂-VASc Guide — Stroke Risk in Atrial Fibrillation", "Score stroke risk in AF patients for anticoagulation discussions. Pair with HAS-BLED for bleeding risk.", "Medical", "/cha2ds2-vasc-score", null, null),
-                ("wells-score-guide", "Wells Score Guide — DVT and PE Pre-Test Probability", "Calculate Wells criteria for deep vein thrombosis and pulmonary embolism. Low vs high risk pathways.", "Medical", "/wells-score", null, null),
-                ("medical-calculators-guide", "Medical Calculators Hub — Free Clinical Scores Online", "BMI, eGFR, HEART, CHA₂DS₂-VASc, Wells, GCS, MAP, and more — browser-based calculators for education and documentation.", "Medical", "/tools/medical", null, null),
                 // Image tools
                 ("image-compressor-guide", "Image Compressor Guide — Reduce JPG & PNG Size", "Compress images for web, email, and PDF workflows. Quality trade-offs and when to compress after background removal.", "Image", "/pdf/imagecompressor", null, null),
                 ("image-resizer-guide", "Image Resizer Guide — Scale Photos to Exact Pixels", "Resize JPG, PNG, and WEBP without desktop software. Aspect ratio, downscaling, and social crop tips.", "Image", "/image-resizer", null, null),
@@ -171,7 +164,6 @@ namespace ratpdf.Content
                 ("browser-background-remover-privacy", "Browser Background Remover — Why On-Device AI Matters", "How client-side ONNX segmentation keeps product photos and headshots off third-party servers.", "Image"),
                 ("json-formatter-api-debugging", "JSON Formatter for API Debugging — Workflow Tips", "Pretty-print webhook payloads, compare diffs, and validate config before production deploys.", "Developer"),
                 ("jwt-decoder-oauth-integration", "JWT Decoder for OAuth Integration — Claims Checklist", "Inspect exp, iss, aud, and scope claims during SSO and API token debugging.", "Developer"),
-                ("medical-calculator-clinical-documentation", "Medical Calculators in Clinical Documentation", "When to document BMI, eGFR, and risk scores in notes — educational use and disclaimer boundaries.", "Medical"),
             };
 
             var published = new DateTime(2025, 5, 15);

@@ -95,6 +95,7 @@ namespace ratpdf.Services.Seo
 
         private string BuildUrlSetXml(IReadOnlyList<string> paths, string? lastModOverride = null)
         {
+            paths = SitemapExclusion.Filter(paths);
             var lastMod = lastModOverride ?? DateTime.UtcNow.ToString("yyyy-MM-dd");
             var doc = new XDocument(
                 new XDeclaration("1.0", "utf-8", null),

@@ -6,21 +6,15 @@ namespace ratpdf.Controllers
     [Route("edit-pdf")]
     public class EditPdfSeoController : Controller
     {
-
         private readonly IWebHostEnvironment _env;
-
-        public EditPdfSeoController(IWebHostEnvironment env)
-        {
-            _env = env;
-        }
+        public EditPdfSeoController(IWebHostEnvironment env) => _env = env;
 
         [Route("{slug}")]
-        public IActionResult PdfToWordSEOPage(string slug)
+        public IActionResult EditPdfSeOPage(string slug)
         {
-            var page = EditPdfContentGenerator.PopulateSEOPageData(slug, _env.WebRootPath);
-
-            if (page == null)
-                return NotFound();
+            var page = EditPdfSeoEngine.BuildPage(slug, _env.WebRootPath);
+            if (page == null) return NotFound();
+            if (page.NoIndex) Response.Headers["X-Robots-Tag"] = "noindex, follow";
             return View("DynamicEditPdfSEO", page);
         }
     }

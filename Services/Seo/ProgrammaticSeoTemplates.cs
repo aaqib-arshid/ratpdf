@@ -1,5 +1,6 @@
 using System.Text;
 using ratpdf.Constants;
+using ratpdf.Helpers;
 
 namespace ratpdf.Services.Seo
 {
@@ -36,202 +37,231 @@ namespace ratpdf.Services.Seo
             || k.Contains(" in australia") || k.Contains(" in canada") || k.Contains(" in singapore")
             || k.Contains(" online india") || k.Contains(" online uk") || k.Contains(" online usa");
 
-        public static string BuildTitle(string keyword, ProgrammaticPageType type, string toolName)
-        {
-            return type switch
-            {
-                ProgrammaticPageType.Comparison =>
-                    $"{Capitalize(keyword)} — Feature Comparison | RatPDF",
-                ProgrammaticPageType.Alternative =>
-                    $"{Capitalize(keyword)} — Free Online | RatPDF",
-                ProgrammaticPageType.UseCase =>
-                    $"{Capitalize(keyword)} — Step-by-Step Guide | RatPDF",
-                ProgrammaticPageType.Location =>
-                    $"{Capitalize(keyword)} — Free & Secure | RatPDF",
-                _ => keyword switch
-                {
-                    var s when s.Contains("free", StringComparison.OrdinalIgnoreCase) =>
-                        $"{Capitalize(keyword)} — Free Online Tool | RatPDF",
-                    var s when s.StartsWith("how to", StringComparison.OrdinalIgnoreCase) =>
-                        $"{Capitalize(keyword)} — Guide | RatPDF",
-                    _ => $"{Capitalize(keyword)} Online — Fast & Secure | RatPDF",
-                },
-            };
-        }
+        public static string BuildDisplayTitle(string keyword, string slug) =>
+            SlugTitleHelper.FromPhrase(keyword);
 
-        public static string BuildDescription(string keyword, ProgrammaticPageType type, string toolName) =>
-            type switch
-            {
-                ProgrammaticPageType.Comparison =>
-                    $"Compare {keyword} with RatPDF {toolName}. Side-by-side features, pricing, limits, and privacy — choose the best PDF workflow.",
-                ProgrammaticPageType.Alternative =>
-                    $"Looking for {keyword}? RatPDF offers a free browser-based {toolName} with HTTPS upload, no watermarks, and Pro plans from $8.99/mo.",
-                ProgrammaticPageType.UseCase =>
-                    $"Learn how to {keyword} with RatPDF. Practical workflow for real-world documents — secure, fast, no desktop install.",
-                ProgrammaticPageType.Location =>
-                    $"{Capitalize(keyword)} with RatPDF — GDPR-friendly processing, free tier, and Pro support for large files up to 4 GB.",
-                _ => $"Learn how to {keyword} with RatPDF. Secure online PDF processing — free tier available, Pro up to 4 GB.",
-            };
+        public static string BuildTitle(string keyword, ProgrammaticPageType type, string toolLinkText, string slug) =>
+            ProgrammaticToolMetaCatalog.BuildPageTitle(BuildDisplayTitle(keyword, slug), type);
+
+        public static string BuildDescription(
+            ProgrammaticToolCategory category,
+            string displayTitle,
+            string toolLinkText) =>
+            ProgrammaticToolMetaCatalog.BuildMetaDescription(category, displayTitle, toolLinkText);
 
         public static string BuildContentHtml(
+            ProgrammaticToolCategory category,
             ProgrammaticPageType type,
             string keyword,
+            string displayTitle,
             string toolLinkHtml,
             string toolHref,
             string verbPhrase,
-            string hubHref)
+            string hubHref,
+            string toolLinkText)
         {
+            if (category == ProgrammaticToolCategory.MedicalCalculator)
+                return BuildMedicalCalculator(type, displayTitle, toolLinkHtml, toolHref, toolLinkText, hubHref);
+
+            if (category == ProgrammaticToolCategory.GeneralCalculator)
+                return BuildGeneralCalculator(displayTitle, toolLinkHtml, toolHref, toolLinkText, hubHref);
+
             return type switch
             {
-                ProgrammaticPageType.Comparison => BuildComparison(keyword, toolLinkHtml, toolHref),
-                ProgrammaticPageType.Alternative => BuildAlternative(keyword, toolLinkHtml, toolHref),
-                ProgrammaticPageType.UseCase => BuildUseCase(keyword, toolLinkHtml, toolHref, verbPhrase),
-                ProgrammaticPageType.Location => BuildLocation(keyword, toolLinkHtml, toolHref),
-                _ => BuildLongTail(keyword, toolLinkHtml, toolHref, verbPhrase, hubHref),
+                ProgrammaticPageType.Comparison => BuildComparison(displayTitle, keyword, toolLinkHtml, toolHref),
+                ProgrammaticPageType.Alternative => BuildAlternative(displayTitle, keyword, toolLinkHtml, toolHref),
+                ProgrammaticPageType.UseCase => BuildPdfUseCase(displayTitle, toolLinkHtml, toolHref, toolLinkText),
+                ProgrammaticPageType.Location => BuildLocation(displayTitle, keyword, toolLinkHtml, toolHref),
+                _ => BuildPdfLongTail(displayTitle, toolLinkHtml, toolHref, toolLinkText, hubHref),
             };
         }
 
         public static List<(string Question, string Answer)> BuildFaqs(
+            ProgrammaticToolCategory category,
             ProgrammaticPageType type,
-            string keyword,
+            string displayTitle,
             string toolLinkText,
             string toolHref,
             string verbPhrase)
         {
-            var baseFaqs = new List<(string, string)>
-            {
-                ($"How do I {keyword}?", $"Open {toolLinkText} at ratpdf.com{toolHref}, upload your PDF, and follow the on-screen steps."),
-                ("Is it free?", "Yes — 3 uses per tool per day on the free tier (200 MB/file). Pro adds unlimited use and 4 GB uploads."),
-                ("Are files private?", "Uploads use HTTPS and temporary storage. Files are deleted after download."),
-            };
+            if (category == ProgrammaticToolCategory.MedicalCalculator)
+                return BuildMedicalFaqs(displayTitle, toolLinkText, toolHref);
 
-            if (type == ProgrammaticPageType.Comparison)
-                baseFaqs.Add(($"Is RatPDF better for {keyword}?", "RatPDF runs in the browser with no install, transparent free limits, and production PDF engines. Compare the table above to your current tool."));
-            if (type == ProgrammaticPageType.Alternative)
-                baseFaqs.Add(($"Why switch from a paid PDF tool?", "RatPDF covers merge, split, compress, convert, and sign in one site — free to start, Pro when you need volume or large files."));
-            if (type == ProgrammaticPageType.UseCase)
-                baseFaqs.Add(($"What file order should I use when I {verbPhrase}?", "Drag files into the order you want before processing. You can reorder in the preview on supported tools."));
-            if (type == ProgrammaticPageType.Location)
-                baseFaqs.Add(("Does RatPDF work internationally?", "Yes — RatPDF is browser-based and works worldwide. Data is processed over HTTPS; check our Privacy policy for retention details."));
+            if (category == ProgrammaticToolCategory.GeneralCalculator)
+                return BuildCalculatorFaqs(displayTitle, toolLinkText, toolHref);
 
-            return baseFaqs;
+            return BuildPdfFaqs(type, displayTitle, toolLinkText, toolHref, verbPhrase);
         }
 
-        private static string BuildLongTail(string keyword, string toolLink, string toolHref, string verbPhrase, string hubHref)
+        private static string BuildMedicalCalculator(
+            ProgrammaticPageType type,
+            string displayTitle,
+            string toolLink,
+            string toolHref,
+            string toolLinkText,
+            string hubHref)
         {
-            var sb = new StringBuilder();
-            sb.Append($"""
-                <p>Need to <strong>{keyword}</strong>? RatPDF's {toolLink} runs on production-grade engines with HTTPS upload and automatic file deletion. No desktop install required.</p>
-                <h2>Why {keyword} online?</h2>
-                <p>Browser tools save time on locked-down laptops, phones, and shared machines. Upload once, process on our servers, download the result. Free: 3 uses/day per tool, 200 MB per file. <a href="/Subscription/Plans">Pro</a>: 4 GB files, unlimited daily use.</p>
-                <h2>How to {verbPhrase}</h2>
+            var intro = type == ProgrammaticPageType.UseCase
+                ? $"<p>Looking for <strong>{displayTitle}</strong>? Use the free {toolLink} on RatPDF.</p>"
+                : $"<p>Use the free <strong>{displayTitle}</strong> on RatPDF. Enter the required clinical values and the calculator returns the result instantly.</p>";
+
+            return $"""
+                {intro}
+                <p><strong>Educational use only</strong> — not a substitute for clinical judgment. Always apply local protocols and treat the patient, not the number.</p>
+                <h2>How to use {toolLinkText}</h2>
                 <ol>
-                <li>Open the {toolLink} on ratpdf.com.</li>
-                <li>Upload your PDF (or multiple files if the tool supports batch).</li>
-                <li>Configure options — page range, order, quality, or security settings.</li>
-                <li>Start processing and wait for the progress indicator.</li>
-                <li>Download the finished file when the job completes.</li>
+                <li>Open {toolLink} at ratpdf.com{toolHref}.</li>
+                <li>Enter the required values (height/weight, creatinine, score components, etc.).</li>
+                <li>The calculator computes the result automatically.</li>
+                <li>Review the output against clinical reference ranges.</li>
+                <li>Document the result in your notes if needed.</li>
                 </ol>
-                <h2>Related tools</h2>
-                <p>Explore <a href="{hubHref}">more guides</a>, <a href="/pdf/compress">Compress PDF</a>, <a href="/pdf/merge">Merge PDF</a>, and <a href="/guides">step-by-step tutorials</a>.</p>
-                """);
-            return sb.ToString();
+                <h2>Why use RatPDF?</h2>
+                <ul>
+                <li>Browser-based — no install on locked-down hospital laptops</li>
+                <li>No patient identifiers required</li>
+                <li>Free tier for light use; <a href="/Subscription/Plans">Pro</a> for high-volume workflows</li>
+                </ul>
+                <p>Explore more <a href="{hubHref}">medical calculators</a> or return to the <a href="/tools/medical">medical tools hub</a>.</p>
+                """;
         }
 
-        private static string BuildComparison(string keyword, string toolLink, string toolHref)
+        private static string BuildGeneralCalculator(
+            string displayTitle,
+            string toolLink,
+            string toolHref,
+            string toolLinkText,
+            string hubHref) =>
+            $"""
+                <p>Use the free <strong>{displayTitle}</strong> on RatPDF. Enter your values and get instant results in the browser — no signup required.</p>
+                <h2>How to use {toolLinkText}</h2>
+                <ol>
+                <li>Open {toolLink} at ratpdf.com{toolHref}.</li>
+                <li>Enter the required numbers or dates in the form fields.</li>
+                <li>Click Calculate (or see live results as you type).</li>
+                <li>Review the output and copy or note the result.</li>
+                </ol>
+                <p>Browse more <a href="{hubHref}">calculators</a> on RatPDF.</p>
+                """;
+
+        private static string BuildPdfLongTail(
+            string displayTitle,
+            string toolLink,
+            string toolHref,
+            string toolLinkText,
+            string hubHref) =>
+            $"""
+                <p>Need to <strong>{displayTitle.ToLowerInvariant()}</strong>? Upload your file to RatPDF's {toolLink}, select your options, and download the result. Free: 3 uses/day, 200 MB. Pro: 4 GB, unlimited.</p>
+                <h2>How to use {toolLinkText}</h2>
+                <ol>
+                <li>Open {toolLink} at ratpdf.com{toolHref}.</li>
+                <li>Upload your PDF file (drag and drop or click to browse).</li>
+                <li>Configure tool-specific options.</li>
+                <li>Click Process and wait for completion.</li>
+                <li>Download your result.</li>
+                </ol>
+                <p>Related: <a href="{hubHref}">more guides</a>, <a href="/pdf/compress">Compress PDF</a>, <a href="/pdf/merge">Merge PDF</a>.</p>
+                """;
+
+        private static string BuildPdfUseCase(string displayTitle, string toolLink, string toolHref, string toolLinkText) =>
+            $"""
+                <p><strong>{displayTitle}</strong> is a common document workflow. RatPDF's {toolLink} helps you complete it without desktop software.</p>
+                <h2>Steps</h2>
+                <ol>
+                <li>Open {toolLink} at ratpdf.com{toolHref}.</li>
+                <li>Upload your PDF (or multiple files if supported).</li>
+                <li>Configure options for your use case.</li>
+                <li>Process and download the finished file.</li>
+                <li>Optional: <a href="/pdf/compress">compress</a> if a portal has a size limit.</li>
+                </ol>
+                """;
+
+        private static string BuildComparison(string displayTitle, string keyword, string toolLink, string toolHref)
         {
             var competitor = ExtractCompetitor(keyword);
-            var sb = new StringBuilder();
-            sb.Append($"""
-                <p>Evaluating <strong>{keyword}</strong>? This guide compares <strong>{competitor}</strong> with RatPDF's {toolLink} so you can pick the right workflow for speed, privacy, and cost.</p>
-                <h2>{Capitalize(keyword)} — quick comparison</h2>
+            return $"""
+                <p>Evaluating <strong>{displayTitle}</strong>? Compare <strong>{competitor}</strong> with RatPDF's {toolLink}.</p>
                 <div class="table-responsive"><table class="table table-bordered">
                 <thead><tr><th>Feature</th><th>RatPDF</th><th>{competitor}</th></tr></thead>
                 <tbody>
-                <tr><td>Install required</td><td>No — browser only</td><td>Often desktop app or account</td></tr>
-                <tr><td>Free tier</td><td>3 uses/tool/day, 200 MB</td><td>Varies; often watermarks or limits</td></tr>
+                <tr><td>Install required</td><td>No</td><td>Often yes</td></tr>
+                <tr><td>Free tier</td><td>3 uses/tool/day, 200 MB</td><td>Varies</td></tr>
                 <tr><td>Max file size (Pro)</td><td>4 GB</td><td>Plan-dependent</td></tr>
-                <tr><td>HTTPS upload</td><td>Yes</td><td>Varies</td></tr>
-                <tr><td>File retention</td><td>Deleted after download</td><td>Check vendor policy</td></tr>
-                <tr><td>Related PDF tools</td><td>{PdfToolSeo.ToolCountLabel} on one site</td><td>Usually single-purpose</td></tr>
                 </tbody></table></div>
-                <h2>When RatPDF wins</h2>
-                <ul>
-                <li>You need a quick one-off task without installing software.</li>
-                <li>You want merge + compress + convert in one subscription.</li>
-                <li>You care about transparent free limits before upgrading.</li>
-                </ul>
-                <h2>Try RatPDF now</h2>
-                <p>Open the {toolLink} and run your document through the same workflow you would use on {competitor} — compare output quality and speed yourself.</p>
-                """);
-            return sb.ToString();
+                <p>Try {toolLink} at ratpdf.com{toolHref}.</p>
+                """;
         }
 
-        private static string BuildAlternative(string keyword, string toolLink, string toolHref)
+        private static string BuildAlternative(string displayTitle, string keyword, string toolLink, string toolHref)
         {
             var competitor = ExtractCompetitor(keyword);
-            var sb = new StringBuilder();
-            sb.Append($"""
-                <p>Searching for <strong>{keyword}</strong>? RatPDF is a capable free alternative to {competitor} for everyday PDF tasks — no credit card to start.</p>
-                <h2>Why teams switch to RatPDF</h2>
+            return $"""
+                <p>Looking for <strong>{displayTitle}</strong>? RatPDF is a free browser alternative to {competitor}.</p>
                 <ul>
-                <li><strong>All-in-one toolkit</strong> — compress, merge, split, convert, sign, OCR on ratpdf.com</li>
-                <li><strong>Browser-based</strong> — works on Windows, Mac, Linux, Chromebook, iPad</li>
-                <li><strong>Clear pricing</strong> — free tier for light use; Pro from {SubscriptionPricing.FormatProShort()}</li>
-                <li><strong>No watermarks</strong> on output for registered free-tier use within daily limits</li>
+                <li>All-in-one PDF toolkit on ratpdf.com</li>
+                <li>No watermarks within free daily limits</li>
+                <li>Pro from {SubscriptionPricing.FormatProShort()}</li>
                 </ul>
-                <h2>Migration checklist</h2>
-                <ol>
-                <li>Bookmark {toolHref} for your most common task.</li>
-                <li>Test one representative file (size, scan, forms) on the free tier.</li>
-                <li>Upgrade to Pro if you hit daily limits or need 4 GB uploads.</li>
-                </ol>
-                <p>Start with the {toolLink} — same outcome as {competitor}, fewer tabs open.</p>
-                """);
-            return sb.ToString();
+                <p>Start with {toolLink} — ratpdf.com{toolHref}.</p>
+                """;
         }
 
-        private static string BuildUseCase(string keyword, string toolLink, string toolHref, string verbPhrase)
-        {
-            var scenario = ExtractUseCase(keyword);
-            var sb = new StringBuilder();
-            sb.Append($"""
-                <p><strong>{Capitalize(keyword)}</strong> is a common workflow in {scenario}. RatPDF's {toolLink} helps you {verbPhrase} without email attachments bouncing or portal rejections.</p>
-                <h2>Typical workflow for {scenario}</h2>
-                <ol>
-                <li>Gather source PDFs in final order (cover letter → CV → certificates).</li>
-                <li>Open {toolLink} and upload all files.</li>
-                <li>Confirm page order in the preview.</li>
-                <li>Process and download a single output PDF.</li>
-                <li>Optional: <a href="/pdf/compress">compress</a> if the portal has a size cap.</li>
-                </ol>
-                <h2>Tips for {scenario}</h2>
-                <ul>
-                <li>Flatten forms first if uploads require non-editable PDFs.</li>
-                <li>Use descriptive filenames before merging — easier to audit order.</li>
-                <li>Run <a href="/pdf/ocrpdf">OCR</a> on scans so reviewers can search text.</li>
-                </ul>
-                """);
-            return sb.ToString();
-        }
-
-        private static string BuildLocation(string keyword, string toolLink, string toolHref)
+        private static string BuildLocation(string displayTitle, string keyword, string toolLink, string toolHref)
         {
             var region = ExtractRegion(keyword);
-            var sb = new StringBuilder();
-            sb.Append($"""
-                <p>Users in <strong>{region}</strong> often search for <strong>{keyword}</strong>. RatPDF works globally — process PDFs from any browser with HTTPS encryption.</p>
-                <h2>Popular in {region}</h2>
-                <ul>
-                <li>Freelancers sending invoices and contracts as single PDFs</li>
-                <li>Students combining assignments before university portal upload</li>
-                <li>Small businesses archiving receipts and statements monthly</li>
-                </ul>
-                <h2>Compliance &amp; privacy notes</h2>
-                <p>Files are transferred over TLS and removed after processing. For GDPR-related questions see our <a href="/home/privacy">Privacy Policy</a>. No local install means less IT friction for distributed teams in {region}.</p>
-                <p>Ready? Use the {toolLink} — free to start.</p>
-                """);
-            return sb.ToString();
+            return $"""
+                <p><strong>{displayTitle}</strong> — users in {region} can process PDFs in the browser with HTTPS encryption.</p>
+                <p>Use {toolLink} at ratpdf.com{toolHref}. See our <a href="/home/privacy">Privacy Policy</a> for data handling.</p>
+                """;
+        }
+
+        private static List<(string, string)> BuildMedicalFaqs(string displayTitle, string toolLinkText, string toolHref)
+        {
+            var formula = ProgrammaticToolMetaCatalog.ClinicalFormulaHint(toolHref);
+            return
+            [
+                ($"Is the {displayTitle} accurate?",
+                    $"The calculator uses the {formula}. Results should always be interpreted alongside full clinical assessment."),
+                ("Do you store patient data?",
+                    "No patient identifiers are required. Calculations run in your browser session. RatPDF does not log or store clinical inputs."),
+                ("Can I use this on mobile?",
+                    "Yes — all calculators are fully responsive and work on phones and tablets."),
+                ("Is this medical advice?",
+                    "No. This tool is for educational use only and does not replace licensed medical judgment."),
+            ];
+        }
+
+        private static List<(string, string)> BuildCalculatorFaqs(string displayTitle, string toolLinkText, string toolHref) =>
+        [
+            ($"How do I use the {displayTitle}?",
+                $"Open {toolLinkText} at ratpdf.com{toolHref}, enter your values, and read the result instantly."),
+            ("Is it free?",
+                "Yes — 3 uses per tool per day on the free tier. Pro adds unlimited use."),
+            ("Can I use this on mobile?",
+                "Yes — the calculator is fully responsive."),
+        ];
+
+        private static List<(string, string)> BuildPdfFaqs(
+            ProgrammaticPageType type,
+            string displayTitle,
+            string toolLinkText,
+            string toolHref,
+            string verbPhrase)
+        {
+            var faqs = new List<(string, string)>
+            {
+                ($"How do I use {displayTitle}?",
+                    $"Open {toolLinkText} at ratpdf.com{toolHref}, upload your PDF, and follow the on-screen steps."),
+                ("Is it free?",
+                    "Yes — 3 uses per tool per day (200 MB/file). Pro: 4 GB files, unlimited daily use."),
+                ("Are files private?",
+                    "Uploads use HTTPS and temporary storage. Files are deleted after download."),
+            };
+
+            if (type == ProgrammaticPageType.Comparison)
+                faqs.Add(($"Is RatPDF better for {displayTitle.ToLowerInvariant()}?",
+                    "RatPDF runs in the browser with transparent free limits and production PDF engines."));
+            return faqs;
         }
 
         private static string ExtractCompetitor(string keyword)
@@ -248,14 +278,6 @@ namespace ratpdf.Services.Seo
             return "other online PDF tools";
         }
 
-        private static string ExtractUseCase(string keyword)
-        {
-            var idx = keyword.IndexOf(" for ", StringComparison.OrdinalIgnoreCase);
-            if (idx >= 0)
-                return keyword[(idx + 5)..].Trim();
-            return "professional document workflows";
-        }
-
         private static string ExtractRegion(string keyword)
         {
             var k = keyword.ToLowerInvariant();
@@ -266,12 +288,6 @@ namespace ratpdf.Services.Seo
             if (k.Contains("canada")) return "Canada";
             if (k.Contains("singapore")) return "Singapore";
             return "your region";
-        }
-
-        private static string Capitalize(string kword)
-        {
-            if (string.IsNullOrEmpty(kword)) return kword;
-            return char.ToUpperInvariant(kword[0]) + kword[1..];
         }
     }
 }

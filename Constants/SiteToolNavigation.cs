@@ -62,23 +62,8 @@ namespace ratpdf.Constants
             new("Favicon Generator", "/favicon-generator"),
         ];
 
-        public static readonly SiteNavTool[] MedicalTools =
-        [
-            new("BMI Calculator", "/bmi-calculator"),
-            new("HEART Score", "/heart-score"),
-            new("eGFR Calculator", "/egfr-calculator"),
-            new("CHA₂DS₂-VASc Score", "/cha2ds2-vasc-score"),
-            new("Wells Score (DVT/PE)", "/wells-score"),
-            new("GCS Calculator", "/gcs-calculator"),
-            new("MAP Calculator", "/map-calculator"),
-            new("HAS-BLED Score", "/has-bled-score"),
-            new("Parkland Formula", "/parkland-formula"),
-            new("NIHSS Calculator", "/nihss-calculator"),
-        ];
-
         public static readonly SiteNavTool[] Calculators =
         [
-            new("BMI Calculator", "/bmi-calculator"),
             new("Age Calculator", "/age-calculator"),
             new("EMI Calculator", "/emi-calculator"),
             new("Percentage Calculator", "/percentage-calculator"),
@@ -134,7 +119,6 @@ namespace ratpdf.Constants
 
         public static IReadOnlyList<SiteNavTool> GetCategoryTools(string category) => category switch
         {
-            SiteToolCategories.Medical => MedicalTools,
             SiteToolCategories.Calculators => Calculators,
             SiteToolCategories.Image => ImageTools,
             SiteToolCategories.Developer => DeveloperTools,
@@ -152,7 +136,6 @@ namespace ratpdf.Constants
             if (PdfToolSeo.AllTools.Any(t => PathsEqual(t.Url, path)))
                 return null;
 
-            if (ContainsPath(MedicalTools, path)) return SiteToolCategories.Medical;
             if (ContainsPath(Calculators, path)) return SiteToolCategories.Calculators;
             if (ContainsPath(ImageTools, path)) return SiteToolCategories.Image;
             if (ContainsPath(DeveloperTools, path)) return SiteToolCategories.Developer;
@@ -165,7 +148,6 @@ namespace ratpdf.Constants
 
         public static string CategoryHeading(string category) => category switch
         {
-            SiteToolCategories.Medical => "Related medical calculators",
             SiteToolCategories.Calculators => "Related calculators",
             SiteToolCategories.Image => "Related image tools",
             SiteToolCategories.Developer => "Related developer tools",

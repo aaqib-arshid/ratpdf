@@ -1,0 +1,148 @@
+@using System.Text.Json
+@using ratpdf.Constants
+@using ratpdf.Helpers
+@model ratpdf.Models.SEOPageModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var canonical = string.IsNullOrEmpty(Model.CanonicalUrl)
+        ? $"{PdfToolSeo.SiteUrl}/{Model.RoutePrefix}/{Model.Slug}"
+        : Model.CanonicalUrl;
+    var toolHref = PdfToolSeo.Canonical(Model.ToolUrl);
+    var hubHref = string.IsNullOrEmpty(Model.HubPath) ? "/guides/pdf-tools" : Model.HubPath;
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.Description;
+    ViewData["CanonicalUrl"] = canonical;
+    ViewData["LightLayout"] = true;
+    ViewData["Robots"] = Model.NoIndex
+        ? "noindex, follow"
+        : "index, follow, max-image-preview:large, max-snippet:-1";
+    ViewData["SeoToolUrl"] = toolHref;
+    ViewData["SeoToolLabel"] = Model.ToolLinkText;
+    var h1 = Model.DisplayTitle;
+}
+
+@section Head {
+    @if (Model.HowToSteps.Count > 0 && !Model.NoIndex)
+    {
+        <script type="application/ld+json">
+        @Html.Raw(SchemaHelper.BuildHowToLdJson(h1, Model.Description, Model.HowToSteps, canonical))
+        </script>
+    }
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "WebApplication",
+      "name": @Html.Raw(JsonSerializer.Serialize(h1)),
+      "url": @Html.Raw(JsonSerializer.Serialize(canonical)),
+      "applicationCategory": "UtilitiesApplication",
+      "description": @Html.Raw(JsonSerializer.Serialize(Model.Description)),
+      "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    @if (Model.FAQ.Count > 0 && !Model.NoIndex)
+    {
+        <script type="application/ld+json">
+        @Html.Raw(SchemaHelper.BuildFaqLdJson(Model.FAQ.Select(f => new ratpdf.Models.CompressPdfSeo.FaqItem { Question = f.Question, Answer = f.Answer }).ToList()))
+        </script>
+    }
+}
+
+<article class="container py-4 py-md-5">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/guides/pdf-tools">PDF tools</a></li>
+            <li class="breadcrumb-item"><a href="@hubHref">@Model.ToolLinkText guide</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@h1</li>
+        </ol>
+    </nav>
+
+    <header class="mb-4">
+        <h1 class="display-6 fw-bold">@h1</h1>
+        <p class="lead text-muted mb-0">@Model.Description</p>
+    </header>
+
+    <div class="card border-primary shadow-sm mb-4">
+        <div class="card-body p-4 text-center">
+            <i class="bi bi-lightning-charge-fill display-4 text-primary mb-2"></i>
+            <h2 class="h5 fw-semibold mb-2">@Model.ToolLinkText</h2>
+            <p class="text-muted mb-3">Free online on RatPDF — secure HTTPS upload.</p>
+            <a href="@toolHref" class="btn btn-primary btn-lg">
+                <i class="bi bi-lightning-charge-fill me-2"></i>@Model.ToolLinkText — free
+            </a>
+        </div>
+    </div>
+
+    @if (Model.HowToSteps.Count > 0)
+    {
+        <section class="mb-4" aria-labelledby="howto-heading">
+            <h2 id="howto-heading" class="h4 fw-semibold">Quick steps</h2>
+            <ol class="mt-3">
+                @foreach (var step in Model.HowToSteps)
+                {
+                    <li class="mb-2"><strong>@step.Name</strong> — @step.Text</li>
+                }
+            </ol>
+        </section>
+    }
+
+    <div class="seo-landing-body">@Html.Raw(Model.FullContentHtml)</div>
+
+    @if (Model.RelatedPages.Count > 0 || Model.RelatedTools.Count > 0)
+    {
+        <nav class="mt-5 card border-0 shadow-sm" aria-label="Related PDF topics">
+            <div class="card-body p-4">
+                @if (Model.RelatedPages.Count > 0)
+                {
+                    <h2 class="h6 fw-bold mb-2">Related guides</h2>
+                    <ul class="small mb-3 ps-3">
+                        @foreach (var link in Model.RelatedPages)
+                        {
+                            <li class="mb-1"><a href="@link.Path">@link.Label</a></li>
+                        }
+                    </ul>
+                }
+                @if (Model.RelatedTools.Count > 0)
+                {
+                    <h2 class="h6 fw-bold mb-2">Related tools</h2>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var tool in Model.RelatedTools)
+                        {
+                            <a href="@tool.Url" class="btn btn-outline-secondary btn-sm rounded-pill">@tool.Name</a>
+                        }
+                    </div>
+                }
+            </div>
+        </nav>
+    }
+
+    @if (Model.FAQ.Count > 0)
+    {
+        <section class="mt-5" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" class="h4 fw-semibold">Frequently Asked Questions</h2>
+            <div class="accordion mt-3" id="programmaticSeoFaq">
+                @for (var i = 0; i < Model.FAQ.Count; i++)
+                {
+                    var faq = Model.FAQ[i];
+                    var collapseId = $"faqCollapse{i}";
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button@(i > 0 ? " collapsed" : "")" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#@collapseId">
+                                @faq.Question
+                            </button>
+                        </h3>
+                        <div id="@collapseId" class="accordion-collapse collapse@(i == 0 ? " show" : "")"
+                             data-bs-parent="#programmaticSeoFaq">
+                            <div class="accordion-body">@faq.Answer</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+</article>

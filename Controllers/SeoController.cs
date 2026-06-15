@@ -34,12 +34,16 @@ namespace ratpdf.Controllers
             return XmlContent(xml);
         }
 
+        // ── Core segmented sitemaps ──
+
+        [HttpGet("/sitemaps/sitemap-core.xml")]
         [HttpGet("/sitemaps/site.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
-        public ContentResult SitemapSite() =>
-            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:site", PdfToolSeo.SitemapCorePaths, SitemapTtl));
+        public ContentResult SitemapCore() =>
+            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:core", PdfToolSeo.SitemapCorePaths, SitemapTtl));
 
+        [HttpGet("/sitemaps/sitemap-guides.xml")]
         [HttpGet("/sitemaps/guides.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
@@ -47,6 +51,7 @@ namespace ratpdf.Controllers
             XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:guides",
                 () => ContentLibrary.Guides.Select(g => g.Path).ToList(), SitemapTtl));
 
+        [HttpGet("/sitemaps/sitemap-blog.xml")]
         [HttpGet("/sitemaps/blog.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
@@ -54,26 +59,26 @@ namespace ratpdf.Controllers
             XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:blog",
                 () => ContentLibrary.Blogs.Select(b => b.Path).ToList(), SitemapTtl));
 
-        [HttpGet("/sitemaps/pdf-tool-landings.xml")]
+        [HttpGet("/sitemaps/sitemap-compare.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
-        public ContentResult SitemapPdfToolLandings() =>
-            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:pdf-tool-landings",
-                PdfToolSeoLandingGenerator.AllLandingPaths, SitemapTtl));
+        public ContentResult SitemapCompare() =>
+            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:compare",
+                CompetitiveSeoCatalog.AllComparePaths, SitemapTtl));
 
-        [HttpGet("/sitemaps/category-tool-landings.xml")]
+        // ── Compress programmatic (indexed, curated SEO engine) ──
+
+        [HttpGet("/sitemaps/sitemap-compress-seo.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
-        public ContentResult SitemapCategoryToolLandings() =>
-            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:category-tool-landings",
-                ToolCategorySeoLandingGenerator.AllLandingPaths, SitemapTtl));
+        public ContentResult SitemapCompressSeo() =>
+            SitemapCompressChunk(1);
 
         [HttpGet("/sitemaps/compress-pdf-programmatic.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public IActionResult SitemapCompressLegacy() =>
-            RedirectPermanent("/sitemaps/compress-pdf-index.xml");
+            RedirectPermanent("/sitemaps/sitemap-compress-seo.xml");
 
-        /// <summary>Standalone compress index (optional direct URL). Not referenced by /sitemap.xml — avoids nested sitemap indexes.</summary>
         [HttpGet("/sitemaps/compress-pdf-index.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
@@ -96,6 +101,22 @@ namespace ratpdf.Controllers
             var xml = _sitemaps.GetCompressChunkXml(chunk);
             return string.IsNullOrEmpty(xml) ? NotFoundContent() : XmlContent(xml);
         }
+
+        // ── Deprecated: noindex thin landings removed from index (410 Gone) ──
+
+        [HttpGet("/sitemaps/pdf-tool-landings.xml")]
+        [HttpGet("/sitemaps/category-tool-landings.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        public ContentResult SitemapRemovedThinLandings()
+        {
+            Response.StatusCode = StatusCodes.Status410Gone;
+            return Content(string.Empty, "application/xml", Encoding.UTF8);
+        }
+
+        [HttpGet("/sitemaps/sitemap_pdf_to_txt.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        public IActionResult SitemapPdfToTxtLegacy() =>
+            RedirectPermanent("/sitemaps/sitemap-pdftotxt-seo.xml");
 
         private ContentResult XmlContent(string xml) =>
             Content(xml, "application/xml", Encoding.UTF8);

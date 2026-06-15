@@ -35,10 +35,6 @@
 
     <h1 class="fw-bold mb-3">@Model.H1</h1>
     <p class="lead text-muted">@Model.Lead</p>
-    @if (Model.Slug.Equals("medical", StringComparison.OrdinalIgnoreCase))
-    {
-        <p class="mb-3"><a href="@TopicalAuthority.MedicalGuidesHubPath">Step-by-step medical calculator guides →</a></p>
-    }
     @if (Model.Slug.Equals("developer", StringComparison.OrdinalIgnoreCase))
     {
         <p class="mb-3"><a href="@TopicalAuthority.DeveloperGuidesHubPath">Developer tool tutorials &amp; guides →</a></p>

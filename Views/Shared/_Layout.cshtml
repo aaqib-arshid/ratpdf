@@ -35,7 +35,6 @@
     <link rel="preconnect" href="https://unpkg.com" crossorigin />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="PDF converter, merge PDF, split PDF, compress PDF, unlock PDF, flatten PDF, OCR PDF, PDF to images, extract images from PDF, add page numbers PDF, PDF metadata, img to pdf, pdf to img, PDF to Word, Word to PDF, doc to pdf, pdf to doc, docx to pdf, pdf to docx, pdf to xls, xls to pdf, excel to pdf, pdf to excel, edit pdf, free PDF tools" />
     <meta name="author" content="Rat PDF" />
     <meta name="description" content="@(ViewData["Description"] ?? "Free online PDF tools — merge, split, compress, PDF to Word, Word to PDF, PDF to Excel. Adobe-quality conversion.")" />
     <title>@(ViewData["Title"] ?? "Free PDF Tools Online") | RatPDF</title>
@@ -212,6 +211,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item featured" href="/guides/pdf-tools"><i class="bi bi-grid-3x3-gap me-2"></i>All PDF Tools Hub</a></li>
                         <li><a class="dropdown-item featured" href="/pdf/compress"><i class="bi bi-lightning-charge-fill me-2"></i>Compress PDF</a></li>
+                        <li><a class="dropdown-item featured" href="/learn"><i class="bi bi-play-circle me-2"></i>Video tutorials</a></li>
                         <li><a class="dropdown-item" href="/compress-pdf"><i class="bi bi-collection me-2"></i>Compression Hub</a></li>
                         <li><a class="dropdown-item" href="/guides/secure-pdf-workflow"><i class="bi bi-shield-lock me-2"></i>Secure PDF Workflow</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -231,12 +231,6 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More Tools</a>
                     <ul class="dropdown-menu dropdown-menu-lg-end" style="min-width: 240px;">
-                        <li><h6 class="dropdown-header">Medical</h6></li>
-                        @foreach (var tool in SiteToolNavigation.MedicalTools)
-                        {
-                            <li><a class="dropdown-item" href="@tool.Url">@tool.Name</a></li>
-                        }
-                        <li><hr class="dropdown-divider"></li>
                         <li><h6 class="dropdown-header">Image</h6></li>
                         @foreach (var tool in SiteToolNavigation.ImageTools)
                         {

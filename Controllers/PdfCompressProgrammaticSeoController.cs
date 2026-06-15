@@ -27,7 +27,11 @@ namespace ratpdf.Controllers
                 return NotFound();
 
             ViewData["LightLayout"] = true;
-            ViewData["Robots"] = "index, follow, max-image-preview:large, max-snippet:-1";
+            ViewData["Robots"] = page.NoIndex
+                ? "noindex, follow"
+                : "index, follow, max-image-preview:large, max-snippet:-1";
+            if (page.NoIndex)
+                Response.Headers["X-Robots-Tag"] = "noindex, follow";
             return View("~/Views/PdfCompressSeo/CompressSeoLanding.cshtml", page);
         }
     }

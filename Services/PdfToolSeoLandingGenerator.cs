@@ -92,22 +92,29 @@ namespace ratpdf.Services
 
         private static SEOPageModel GeneratePage(LandingConfig cfg, string keyword)
         {
+            var slug = GenerateSlug(keyword);
             var pageType = ProgrammaticSeoTemplates.DetectType(keyword);
+            var category = ProgrammaticToolMetaCatalog.ResolveCategory(cfg.RoutePrefix, cfg.ToolUrl);
+            var displayTitle = ProgrammaticSeoTemplates.BuildDisplayTitle(keyword, slug);
             var toolHref = PdfToolSeo.Canonical(cfg.ToolUrl);
             var toolLink = $"<a href=\"{toolHref}\">{cfg.ToolLinkText}</a>";
             var hubHref = PdfToolSeo.Canonical($"/{cfg.RoutePrefix}");
 
             return new SEOPageModel
             {
-                Title = ProgrammaticSeoTemplates.BuildTitle(keyword, pageType, cfg.ToolLinkText),
-                Description = ProgrammaticSeoTemplates.BuildDescription(keyword, pageType, cfg.ToolLinkText),
-                Slug = GenerateSlug(keyword),
+                Title = ProgrammaticSeoTemplates.BuildTitle(keyword, pageType, cfg.ToolLinkText, slug),
+                DisplayTitle = displayTitle,
+                Description = ProgrammaticSeoTemplates.BuildDescription(category, displayTitle, cfg.ToolLinkText),
+                Slug = slug,
                 RoutePrefix = cfg.RoutePrefix,
                 ToolUrl = cfg.ToolUrl,
                 ToolLinkText = cfg.ToolLinkText,
+                Category = category,
+                NoIndex = true,
+                SchemaApplicationCategory = ProgrammaticToolMetaCatalog.SchemaApplicationCategory(category),
                 FullContentHtml = ProgrammaticSeoTemplates.BuildContentHtml(
-                    pageType, keyword, toolLink, toolHref, cfg.VerbPhrase, hubHref),
-                FAQ = ProgrammaticSeoTemplates.BuildFaqs(pageType, keyword, cfg.ToolLinkText, cfg.ToolUrl, cfg.VerbPhrase),
+                    category, pageType, keyword, displayTitle, toolLink, toolHref, cfg.VerbPhrase, hubHref, cfg.ToolLinkText),
+                FAQ = ProgrammaticSeoTemplates.BuildFaqs(category, pageType, displayTitle, cfg.ToolLinkText, cfg.ToolUrl, cfg.VerbPhrase),
             };
         }
 

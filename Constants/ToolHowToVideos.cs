@@ -34,7 +34,8 @@ namespace ratpdf.Constants
             return Cache.Value.TryGetValue(Normalize(toolPath), out var v) ? v : null;
         }
 
-        public static IEnumerable<ToolHowToVideo> All => Cache.Value.Values;
+        public static IEnumerable<ToolHowToVideo> All =>
+            Cache.Value.Values.Where(v => !MedicalToolsRemoval.IsRemovedPath(v.ToolUrl));
 
         public static bool FileExists(ToolHowToVideo video, string webRootPath) =>
             File.Exists(Path.Combine(webRootPath, "videos", "how-to", video.FileName));
@@ -46,8 +47,6 @@ namespace ratpdf.Constants
             foreach (var t in PdfToolSeo.AllTools)
                 Add(dict, t.Url, t.Name);
 
-            foreach (var t in SiteToolNavigation.MedicalTools)
-                Add(dict, t.Url, t.Name);
             foreach (var t in SiteToolNavigation.DeveloperTools)
                 Add(dict, t.Url, t.Name);
             foreach (var t in SiteToolNavigation.ImageTools)

@@ -3,23 +3,21 @@ namespace ratpdf.Constants
     /// <summary>Child sitemaps referenced by /sitemap.xml index.</summary>
     public static class SitemapCatalog
     {
-        /// <summary>Dynamically generated urlsets (served by SeoController when no static file exists).</summary>
+        /// <summary>Dynamically generated urlsets (SeoController).</summary>
         public static readonly string[] DynamicChildren =
         [
-            "/sitemaps/site.xml",
-            "/sitemaps/guides.xml",
-            "/sitemaps/blog.xml",
-            "/sitemaps/pdf-tool-landings.xml",
-            "/sitemaps/category-tool-landings.xml",
+            "/sitemaps/sitemap-core.xml",
+            "/sitemaps/sitemap-guides.xml",
+            "/sitemaps/sitemap-blog.xml",
+            "/sitemaps/sitemap-compare.xml",
         ];
 
-        /// <summary>Static urlsets in wwwroot/sitemaps/ (regenerate via --generate-compress-sitemap).</summary>
-        /// <remarks>Compress chunks (compress-pdf-001.xml, …) are merged into the root index at runtime — do not list compress-pdf-index.xml here (nested index).</remarks>
+        /// <summary>Static urlsets in wwwroot/sitemaps/.</summary>
         public static readonly string[] StaticChildren =
         [
             "/sitemaps/sitemaptools.xml",
             "/sitemaps/sitemap-pdf-to-word.xml",
-            "/sitemaps/sitemap_pdf_to_txt.xml",
+            "/sitemaps/sitemap-pdftotxt-seo.xml",
             "/sitemaps/sitemap-editpdf.xml",
             "/sitemaps/sitemap_bgremove.xml",
             "/sitemaps/sitemap_wordcounterseo.xml",
@@ -33,15 +31,27 @@ namespace ratpdf.Constants
             "/sitemaps/payslip_sitemap.xml",
         ];
 
-        public static IEnumerable<string> AllChildPaths() =>
-            DynamicChildren.Concat(StaticChildren);
+        /// <summary>Compress programmatic chunks (urlsets, up to 10k URLs each).</summary>
+        public static IEnumerable<string> CompressChunkPaths(IReadOnlyList<string> chunks) => chunks;
 
-        /// <summary>Child urlsets for /sitemap.xml — compress chunks are urlsets, not a nested sitemap index.</summary>
         public static List<string> BuildMainIndexChildren(IReadOnlyList<string> compressSitemapChunks) =>
             DynamicChildren
                 .Concat(StaticChildren)
-                .Concat(compressSitemapChunks)
+                .Concat(compressSitemapChunks.Select((p, i) => i == 0 && compressSitemapChunks.Count == 1
+                    ? "/sitemaps/sitemap-compress-seo.xml"
+                    : p))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
+
+        /// <summary>Legacy paths kept as 301 redirects in SeoController.</summary>
+        public static readonly string[] LegacyRedirectPaths =
+        [
+            "/sitemaps/site.xml",
+            "/sitemaps/guides.xml",
+            "/sitemaps/blog.xml",
+            "/sitemaps/pdf-tool-landings.xml",
+            "/sitemaps/category-tool-landings.xml",
+            "/sitemaps/sitemap_pdf_to_txt.xml",
+        ];
     }
 }

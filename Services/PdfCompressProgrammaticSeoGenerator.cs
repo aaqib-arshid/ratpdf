@@ -1,6 +1,8 @@
 using System.Text;
 using ratpdf.Constants;
 using ratpdf.Models.CompressPdfSeo;
+using ratpdf.Models.ProgrammaticSeo;
+using ratpdf.Services.Seo;
 
 namespace ratpdf.Services
 {
@@ -296,6 +298,9 @@ namespace ratpdf.Services
             if (string.IsNullOrWhiteSpace(slug) || StaticControllerSlugs.Contains(slug))
                 return false;
 
+            if (IsBlockedSlug(slug))
+                return false;
+
             EnsureSlugCache();
             return _allSlugs!.Contains(slug);
         }
@@ -317,7 +322,17 @@ namespace ratpdf.Services
             foreach (var slug in StaticLegacySlugs)
                 paths.Add($"/{slug}");
             foreach (var slug in _allSlugs!)
-                paths.Add($"/{slug}");
+            {
+                if (IsBlockedSlug(slug)) continue;
+                if (CuratedBySlug.ContainsKey(slug) || StaticLegacySlugs.Contains(slug))
+                {
+                    paths.Add($"/{slug}");
+                    continue;
+                }
+                var intent = IntentClassifier.Classify(PdfToolVertical.CompressPdf, slug, slug.Replace('-', ' '));
+                if (IntentClassifier.IsSitemapEligible(intent))
+                    paths.Add($"/{slug}");
+            }
             return paths.OrderBy(p => p, StringComparer.OrdinalIgnoreCase).ToList();
         }
 
@@ -340,6 +355,9 @@ namespace ratpdf.Services
             if (string.IsNullOrWhiteSpace(slug) || StaticControllerSlugs.Contains(slug))
                 return null;
 
+            if (IsBlockedSlug(slug))
+                return null;
+
             if (CuratedBySlug.TryGetValue(slug, out var curated))
                 return BuildCuratedPage(curated);
 
@@ -348,6 +366,19 @@ namespace ratpdf.Services
                 return null;
 
             return BuildLongTailPage(slug);
+        }
+
+        /// <summary>Reject keyword-file slugs unrelated to PDF compression.</summary>
+        private static bool IsBlockedSlug(string slug)
+        {
+            var lower = slug.ToLowerInvariant();
+            string[] blocked =
+            [
+                "rv-kbb", "kbb-value", "kbb-book", "rv-values-kbb", "motorhome",
+                "pdf-to-word-converter", "pdf-to-ppt", "html-to-pdf", "word-to-pdf",
+                "invoice-generator", "payslip", "bmi-calculator", "egfr-calculator",
+            ];
+            return blocked.Any(b => lower.Contains(b, StringComparison.Ordinal));
         }
 
         private static void EnsureSlugCache()
@@ -369,7 +400,7 @@ namespace ratpdf.Services
             {
                 foreach (var s in slugs)
                 {
-                    if (!string.IsNullOrWhiteSpace(s) && !StaticControllerSlugs.Contains(s))
+                    if (!string.IsNullOrWhiteSpace(s) && !StaticControllerSlugs.Contains(s) && !IsBlockedSlug(s))
                         _allSlugs!.Add(s.Trim());
                 }
             }
@@ -391,29 +422,43 @@ namespace ratpdf.Services
             var lines = File.ReadAllLines(path)
                 .Where(l => !string.IsNullOrWhiteSpace(l))
                 .Select(l => GenerateSlug(l.Trim()))
-                .Where(s => !StaticControllerSlugs.Contains(s));
+                .Where(s => !StaticControllerSlugs.Contains(s) && !IsBlockedSlug(s));
 
             _keywordSlugs = new HashSet<string>(lines, StringComparer.OrdinalIgnoreCase);
             RegisterKeywordSlugs(_keywordSlugs);
         }
 
-        private static CompressSeoLandingModel BuildLongTailPage(string slug)
+        private static CompressSeoLandingModel? BuildLongTailPage(string slug)
         {
-            var keyword = slug.Replace('-', ' ');
-            var title = $"{Capitalize(keyword)} — Free Online Tool | RatPDF";
-            var h1 = Capitalize(keyword);
+            var keywordPhrase = slug.Replace('-', ' ');
+            var intent = IntentClassifier.Classify(PdfToolVertical.CompressPdf, slug, keywordPhrase);
+            var disposition = IntentClassifier.GetDisposition(intent);
+            if (disposition == IndexDisposition.NotFound)
+                return null;
 
-            return BuildModel(
+            var displayTitle = VerticalIntentContentBuilder.BuildDisplayTitle(
+                PdfToolVertical.CompressPdf, slug, keywordPhrase, intent);
+            var toolHref = PdfToolSeo.Canonical(ToolPath);
+            var noIndex = disposition == IndexDisposition.NoIndex;
+
+            var faqs = VerticalIntentContentBuilder
+                .BuildFaqs(PdfToolVertical.CompressPdf, intent, toolHref, slug)
+                .Select(f => new FaqItem { Question = f.Question, Answer = f.Answer })
+                .ToList();
+
+            var model = BuildModel(
                 slug,
-                h1,
-                title,
-                $"Learn how to {keyword} with RatPDF's free PDF compressor. Secure, fast, and no registration required.",
+                displayTitle,
+                ProgrammaticMetadataService.BuildTitle(displayTitle, intent, false),
+                ProgrammaticMetadataService.BuildDescription(displayTitle, intent),
                 PageCategory.LongTail,
-                keyword,
+                keywordPhrase,
                 GetDefaultRelated(slug),
-                BuildLongTailContent(keyword),
-                BuildGenericFaqs(keyword),
-                BuildHowToSteps(keyword));
+                VerticalIntentContentBuilder.BuildContent(PdfToolVertical.CompressPdf, intent, displayTitle, slug, toolHref),
+                faqs,
+                BuildHowToSteps(keywordPhrase));
+            model.NoIndex = noIndex;
+            return model;
         }
 
         private static CompressSeoLandingModel BuildCuratedPage(CuratedPage page)

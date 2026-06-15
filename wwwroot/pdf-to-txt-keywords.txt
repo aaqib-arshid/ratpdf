@@ -624,7 +624,6 @@ pdf-to-text-farsi
 pdf-to-text-fast
 fastest-pdf-to-text
 fast-ocr-pdf-to-text
-fast-ocr-pdf-to-text
 text-to-fancy-pdf
 text-to-pdf-farsroid
 pdf-text-farbe-ndern
@@ -3023,7 +3022,6 @@ xl-file-convert-to-pdf
 convert-sql-to-pdf
 convert-qxp-to-pdf
 free-pdf-to-qfx-converter
-how-to-convert-txt-to-pdf
 txt-to-pdf-convert
 convert-txt-file-to-pdf
 txt-to-pdf-converter
@@ -3180,7 +3178,6 @@ convert-twb-to-pdf
 tbs-to-pdf-converter
 convert-twbx-to-pdf
 twb-to-pdf-converter
-how-to-convert-pdf-to-txt
 tdt-to-pdf-converter
 how-to-convert-pdf-into-txt-file
 tesseract-convert-pdf-to-text
@@ -4268,7 +4265,6 @@ chatgpt-can-t-extract-text-from-pdf
 can-t-extract-text-from-pdf
 why-does-google-extract-text-from-pdf
 why-can-t-chat-extract-text-from-pdf
-why-can-t-chatgpt-extract-text-from-pdf
 extract-text-from-pdf-with-formatting-python
 extract-text-from-scanned-pdf-with-adobe
 extract-text-from-pdf-to-word-free-online
@@ -4540,7 +4536,6 @@ pdf-extract-text-n8n
 react-native-pdf-text-extractor
 free-online-pdf-page-extractor
 pdf-to-png-extractor
-pdf-extract-kit
 pdf-text-extractor-ocr-free
 pdf-text-extractor-open-source
 pdf-text-extractor-offline

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ratpdf.Services;
+using ratpdf.Services.Seo;
 
 namespace ratpdf.Controllers
 {
@@ -16,6 +17,13 @@ namespace ratpdf.Controllers
             var page = ToolCategorySeoLandingGenerator.Populate(routePrefix, slug);
             if (page == null)
                 return NotFound();
+
+            Response.Headers["X-Robots-Tag"] = "noindex, follow";
+            ViewData["Robots"] = "noindex, follow";
+            ViewData["Description"] = page.Description;
+            ViewData["OgDescription"] = ProgrammaticToolMetaCatalog.BuildOgDescription(
+                page.Category, page.DisplayTitle, page.ToolLinkText);
+
             return View("~/Views/CategorySeo/DynamicCategorySeo.cshtml", page);
         }
     }
