@@ -1,0 +1,32 @@
+{
+  "generated": "2026-06-16",
+  "pdf_live_guides": 621,
+  "wave_upgraded_slugs": 238,
+  "thin_remaining_est": 383,
+  "roadmap_pdf_rows": 943,
+  "article_opportunities_total": 1001,
+  "by_action": {
+    "UPGRADE": 406,
+    "CREATE": 450,
+    "MAINTAIN": 145
+  },
+  "top_clusters": {
+    "PDF Workflows": 235,
+    "PDF Productivity": 200,
+    "PDF Conversion": 103,
+    "PDF for Businesses": 95,
+    "PDF Compression": 79,
+    "PDF Security": 47,
+    "PDF OCR": 44,
+    "PDF Collaboration": 40,
+    "PDF Editing": 28,
+    "PDF Archiving": 18,
+    "PDF Compliance": 17,
+    "PDF Troubleshooting": 13,
+    "PDF for Government Forms": 12,
+    "PDF Errors": 11,
+    "PDF Accessibility": 10
+  },
+  "authority_target": 1000,
+  "gap_to_target": 356
+}

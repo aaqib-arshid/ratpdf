@@ -56,6 +56,7 @@
                 <thead class="table-light"><tr><th>Platform</th><th>Max file</th><th>Notes</th></tr></thead>
                 <tbody>
                     <tr data-limit-mb="100"><td>WhatsApp</td><td><strong>100 MB</strong> (documents)</td><td>Images/video limits differ; PDF sent as document</td></tr>
+                    <tr data-limit-mb="2048"><td>Telegram</td><td><strong>2 GB</strong> (documents)</td><td>Hard cap is high; compress for mobile send speed and bot API limits (~50 MB)</td></tr>
                     <tr data-limit-mb="25"><td>Slack (Free/Pro)</td><td><strong>1 GB</strong> (paid) / <strong>5 MB</strong> free</td><td>Plan-dependent</td></tr>
                     <tr data-limit-mb="10"><td>LinkedIn messaging</td><td><strong>20 MB</strong> (approx.)</td><td>Attachment limits not always published; compress for reliability</td></tr>
                     <tr data-limit-mb="25"><td>Microsoft Teams</td><td><strong>250 GB</strong> (SharePoint) / chat ~<strong>250 MB</strong></td><td>Large files use SharePoint link</td></tr>
@@ -73,6 +74,21 @@
                     <tr data-limit-mb="2"><td>Many ATS / career pages</td><td><strong>2–5 MB</strong></td><td>Resume PDFs; compress aggressively</td></tr>
                     <tr data-limit-mb="5"><td>Indeed (employer upload)</td><td><strong>Varies by employer</strong></td><td>Often 2–10 MB for applications</td></tr>
                     <tr data-limit-mb="10"><td>Government job portals (India)</td><td><strong>1–10 MB</strong></td><td>UPSC, SSC, state portals often specify per notification</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">LMS &amp; education portals</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead class="table-light"><tr><th>Platform</th><th>Typical PDF cap</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr data-limit-mb="100"><td>Canvas</td><td><strong>100 MB</strong> (instance default)</td><td>Instructors may set lower per-assignment limits</td></tr>
+                    <tr data-limit-mb="50"><td>Blackboard / Moodle</td><td><strong>50–250 MB</strong> (varies)</td><td>Institution admin sets upload ceiling</td></tr>
+                    <tr data-limit-mb="10"><td>UCAS (UK)</td><td><strong>Per document type</strong></td><td>Reference and personal statement PDFs — verify current UCAS spec</td></tr>
+                    <tr data-limit-mb="10"><td>Common App (US)</td><td><strong>10 MB</strong> (typical upload)</td><td>Supplements and counselor forms vary by college</td></tr>
                 </tbody>
             </table>
         </div>
@@ -97,6 +113,18 @@
         <p class="small text-muted">Use our interactive checker or compress if you're over the limit.</p>
         <a href="/pdf-size-checker" class="btn btn-primary rounded-pill me-2">PDF size checker</a>
         <a href="/pdf/compress" class="btn btn-outline-primary rounded-pill">Compress PDF free</a>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Compression guides by destination</h2>
+        <p class="small text-muted">Step-by-step workflows when your PDF exceeds a limit above.</p>
+        <ul class="small mb-0">
+            <li><a href="/guides/compress-pdf-for-email">Compress PDF for email</a> · <a href="/guides/compress-pdf-for-gmail">Gmail</a> · <a href="/guides/compress-pdf-for-outlook">Outlook</a></li>
+            <li><a href="/guides/compress-pdf-for-whatsapp">WhatsApp</a> · <a href="/guides/compress-pdf-for-telegram">Telegram</a> · <a href="/guides/compress-pdf-for-linkedin">LinkedIn</a></li>
+            <li><a href="/guides/compress-pdf-for-indeed">Indeed</a> · <a href="/guides/compress-pdf-for-naukri">Naukri</a> · <a href="/guides/compress-pdf-for-job-application">Job applications</a></li>
+            <li><a href="/guides/compress-pdf-for-lms">LMS uploads</a> · <a href="/guides/compress-pdf-for-visa-application">Visa applications</a> · <a href="/guides/compress-pdf-efiling">E-filing</a></li>
+            <li><a href="/guides/compress-pdf-guide">Compress PDF guide</a> · <a href="/research/pdf-compression-benchmark">Compression benchmark</a></li>
+        </ul>
     </section>
 
     <section class="small text-muted">

@@ -39,6 +39,7 @@ namespace ratpdf.Constants
             "/learn/has-bled-score",
             "/learn/parkland-formula",
             "/learn/nihss-calculator",
+            "/guides/convert-medical-record-admin-pdf-to-word",
         };
 
         public static bool IsRemovedPath(string? path)

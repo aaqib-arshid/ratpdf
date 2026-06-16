@@ -77,6 +77,16 @@ namespace ratpdf.Constants
                 ["Huge tool count", "Long-tail landing pages", "Chrome extension"],
                 ["Fragmented UX", "Daily limits", "Quality varies by tool"],
                 ["pdf to word", "merge pdf", "compress pdf", "pdf to jpg", "edit pdf", "split pdf"]),
+            new("pdfelement", "PDFelement", "pdf.wondershare.com",
+                "Freemium desktop + cloud; OCR and batch on paid; Wondershare account funnel.",
+                ["Affordable vs Adobe", "Desktop + cloud bundle", "Form recognition on Pro"],
+                ["Watermark on free exports", "Account upsell", "Online tools secondary to install"],
+                ["pdf editor", "pdf to word", "merge pdf", "compress pdf", "ocr pdf", "sign pdf"]),
+            new("wondershare", "Wondershare PDF", "wondershare.com",
+                "PDFelement parent brand; desktop-first PDF suite with subscription marketing.",
+                ["Brand recognition in Asia", "PDFelement cross-sell", "Video tutorial ecosystem"],
+                ["Heavy subscription push", "Free web tier limited", "Multiple product confusion"],
+                ["pdf editor", "pdf converter", "pdf to word", "compress pdf", "merge pdf"]),
         ];
 
         /// <summary>High-value keywords competitors rank for where RatPDF coverage is weak or missing.</summary>
@@ -107,6 +117,8 @@ namespace ratpdf.Constants
             new("adobe acrobat alternative", "Commercial", "/compare/adobe-acrobat-alternative", "/guides/pdf-tool-alternatives", "Adobe", "P0"),
             new("sejda alternative", "Commercial", "/compare/sejda-alternative", "/guides/pdf-tool-alternatives", "Sejda", "P1"),
             new("foxit alternative", "Commercial", "/compare/foxit-alternative", "/guides/pdf-tool-alternatives", "Foxit", "P2"),
+            new("pdfelement alternative", "Commercial", "/compare/pdfelement-alternative", "/guides/pdf-tool-alternatives", "PDFelement", "P1"),
+            new("wondershare alternative", "Commercial", "/compare/wondershare-alternative", "/guides/pdf-tool-alternatives", "Wondershare", "P1"),
             new("gst invoice pdf", "Commercial", "/invoice/gst-invoice-generator", "/guides/invoice-generator-guide", "N/A", "P0"),
             new("compress aadhar pdf", "Transactional", "/compress-aadhar-pdf", "/guides/compress-pdf-guide", "iLovePDF", "P0"),
         ];

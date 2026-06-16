@@ -4,7 +4,6 @@ namespace ratpdf.Constants
 
     public static class SiteToolCategories
     {
-        public const string Medical = "medical";
         public const string Calculators = "calculators";
         public const string Image = "image";
         public const string Developer = "developer";

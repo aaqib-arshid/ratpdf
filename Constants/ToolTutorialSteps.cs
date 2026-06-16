@@ -15,7 +15,7 @@ namespace ratpdf.Constants
                 return PdfUploadToolSteps(toolName);
 
             if (toolUrl.Contains("calculator", StringComparison.OrdinalIgnoreCase) ||
-                slug.Contains("calculator") || slug is "heart-score" or "wells-score" or "has-bled-score" or "parkland-formula" or "nihss-calculator")
+                slug.Contains("calculator"))
                 return CalculatorSteps(toolName);
 
             if (toolUrl.StartsWith("/invoice", StringComparison.OrdinalIgnoreCase) || slug.Contains("payslip") || slug.Contains("receipt"))

@@ -4,7 +4,6 @@ namespace ratpdf.Services.Seo
 {
     public enum ProgrammaticToolCategory
     {
-        MedicalCalculator,
         GeneralCalculator,
         PdfTool,
     }
@@ -14,18 +13,8 @@ namespace ratpdf.Services.Seo
     {
         public static ProgrammaticToolCategory ResolveCategory(string routePrefix, string toolUrl)
         {
-            if (routePrefix.StartsWith("medical", StringComparison.OrdinalIgnoreCase))
-                return ProgrammaticToolCategory.MedicalCalculator;
-
             if (routePrefix.Equals("calculator-tools", StringComparison.OrdinalIgnoreCase))
                 return ProgrammaticToolCategory.GeneralCalculator;
-
-            var path = toolUrl.Trim().TrimEnd('/').ToLowerInvariant();
-            if (path is "/bmi-calculator" or "/egfr-calculator" or "/heart-score"
-                or "/cha2ds2-vasc-score" or "/wells-score" or "/has-bled-score"
-                or "/nihss-calculator" or "/gcs-calculator" or "/map-calculator"
-                or "/parkland-formula")
-                return ProgrammaticToolCategory.MedicalCalculator;
 
             return ProgrammaticToolCategory.PdfTool;
         }
@@ -37,8 +26,6 @@ namespace ratpdf.Services.Seo
         {
             return category switch
             {
-                ProgrammaticToolCategory.MedicalCalculator =>
-                    $"Use the free {displayTitle} on RatPDF. Browser-based clinical calculator — no signup, no patient data stored. For educational use only.",
                 ProgrammaticToolCategory.GeneralCalculator =>
                     $"Use the free {displayTitle} on RatPDF. Instant browser-based results — no signup required.",
                 _ =>
@@ -52,8 +39,6 @@ namespace ratpdf.Services.Seo
             string toolLinkText) =>
             category switch
             {
-                ProgrammaticToolCategory.MedicalCalculator =>
-                    $"{displayTitle} — free educational clinical calculator on RatPDF. No patient identifiers stored.",
                 ProgrammaticToolCategory.GeneralCalculator =>
                     $"{displayTitle} — free online calculator on RatPDF with instant results.",
                 _ =>
@@ -63,24 +48,9 @@ namespace ratpdf.Services.Seo
         public static string SchemaApplicationCategory(ProgrammaticToolCategory category) =>
             category switch
             {
-                ProgrammaticToolCategory.MedicalCalculator => "MedicalApplication",
                 ProgrammaticToolCategory.GeneralCalculator => "UtilitiesApplication",
                 _ => "UtilitiesApplication",
             };
-
-        public static string ClinicalFormulaHint(string toolUrl)
-        {
-            var path = toolUrl.Trim().TrimEnd('/').ToLowerInvariant();
-            return path switch
-            {
-                "/bmi-calculator" => "standard BMI formula (weight ÷ height²)",
-                "/egfr-calculator" => "CKD-EPI / MDRD eGFR equations",
-                "/heart-score" => "HEART score for chest pain (Six AJ et al.)",
-                "/cha2ds2-vasc-score" => "CHA₂DS₂-VASc stroke risk score",
-                "/wells-score" => "Wells criteria for DVT/PE",
-                _ => "published clinical scoring method",
-            };
-        }
 
         public static string BuildPageTitle(string displayTitle, ProgrammaticPageType pageType)
         {

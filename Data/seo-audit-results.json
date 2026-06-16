@@ -1,0 +1,3939 @@
+{
+  "summary": {
+    "totals": {
+      "live_guides": 716,
+      "by_layer": {
+        "hand_core": 28,
+        "hand_extended": 16,
+        "generated": 672
+      },
+      "median_word_count": {
+        "hand_core": 61,
+        "hand_extended": 541,
+        "generated": 62
+      },
+      "thin_pages": 698,
+      "template_footprint_pages": 252,
+      "missing_faq_pages": 716,
+      "missing_tool_link_pages": 281,
+      "weak_intro_pages": 0,
+      "weak_conclusion_pages": 72,
+      "orphan_candidates": 34
+    },
+    "top_50_traffic": [
+      {
+        "slug": "invoice-generator-india",
+        "title": "invoice generator india",
+        "traffic_roi": 22.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "hand_extended",
+        "word_count": 749
+      },
+      {
+        "slug": "invoice-generator-usa",
+        "title": "invoice generator usa",
+        "traffic_roi": 22.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "hand_extended",
+        "word_count": 532
+      },
+      {
+        "slug": "pdf-to-word-mac",
+        "title": "pdf to word mac",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 82
+      },
+      {
+        "slug": "pdf-to-word-keep-formatting",
+        "title": "pdf to word keep formatting",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 81
+      },
+      {
+        "slug": "scanned-pdf-to-word",
+        "title": "scanned pdf to word",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 77
+      },
+      {
+        "slug": "images-to-pdf",
+        "title": "images to pdf",
+        "traffic_roi": 20.5,
+        "priority": "P1",
+        "traffic": "High",
+        "layer": "hand_core",
+        "word_count": 76
+      },
+      {
+        "slug": "invoice-generator-new-zealand",
+        "title": "invoice generator new-zealand",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 73
+      },
+      {
+        "slug": "invoice-generator-south-africa",
+        "title": "invoice generator south-africa",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 73
+      },
+      {
+        "slug": "pdf-to-word-without-word",
+        "title": "pdf to word without microsoft word",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 71
+      },
+      {
+        "slug": "invoice-generator-singapore",
+        "title": "invoice generator singapore",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 70
+      },
+      {
+        "slug": "invoice-generator-uae",
+        "title": "invoice generator uae",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 70
+      },
+      {
+        "slug": "pdf-to-word-vs-google-docs",
+        "title": "pdf to word vs google docs",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 70
+      },
+      {
+        "slug": "invoice-generator-germany",
+        "title": "invoice generator germany",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 69
+      },
+      {
+        "slug": "invoice-generator-uk",
+        "title": "invoice generator uk",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 69
+      },
+      {
+        "slug": "invoice-generator-france",
+        "title": "invoice generator france",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 68
+      },
+      {
+        "slug": "invoice-generator-philippines",
+        "title": "invoice generator philippines",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 68
+      },
+      {
+        "slug": "invoice-generator-australia",
+        "title": "invoice generator australia",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 66
+      },
+      {
+        "slug": "invoice-generator-canada",
+        "title": "invoice generator canada",
+        "traffic_roi": 20.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 66
+      },
+      {
+        "slug": "compress-pdf-for-email",
+        "title": "compress pdf for email",
+        "traffic_roi": 19.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "hand_extended",
+        "word_count": 1603
+      },
+      {
+        "slug": "bulk-gst-invoice-generator",
+        "title": "bulk gst invoice generator",
+        "traffic_roi": 19.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 89
+      },
+      {
+        "slug": "merge-pdf-without-quality-loss",
+        "title": "merge pdf without losing quality",
+        "traffic_roi": 19.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 76
+      },
+      {
+        "slug": "merge-scanned-digital-pdf",
+        "title": "merge pdf scanned and digital",
+        "traffic_roi": 19.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 76
+      },
+      {
+        "slug": "merge-pdf-online",
+        "title": "merge pdf online",
+        "traffic_roi": 19.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 74
+      },
+      {
+        "slug": "merge-pdf-visa-application",
+        "title": "merge pdf for visa application",
+        "traffic_roi": 19.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 73
+      },
+      {
+        "slug": "merge-password-protected-pdf",
+        "title": "merge pdf password protected",
+        "traffic_roi": 19.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 71
+      },
+      {
+        "slug": "merge-pdf-custom-order",
+        "title": "merge pdf in order",
+        "traffic_roi": 19.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 71
+      },
+      {
+        "slug": "recurring-invoice-generator",
+        "title": "recurring invoice generator",
+        "traffic_roi": 18.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 95
+      },
+      {
+        "slug": "pdf-to-word-vs-pdf-to-text",
+        "title": "pdf to text vs pdf to word",
+        "traffic_roi": 18.5,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 80
+      },
+      {
+        "slug": "powerpoint-to-pdf",
+        "title": "powerpoint to pdf",
+        "traffic_roi": 18.5,
+        "priority": "P1",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 65
+      },
+      {
+        "slug": "compress-pdf-for-printing",
+        "title": "compress pdf for printing",
+        "traffic_roi": 17.5,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_core",
+        "word_count": 0
+      },
+      {
+        "slug": "compress-pdf-for-gmail",
+        "title": "compress pdf for gmail upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 1125
+      },
+      {
+        "slug": "compress-pdf-for-outlook",
+        "title": "compress pdf for outlook upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 849
+      },
+      {
+        "slug": "compress-pdf-for-linkedin",
+        "title": "compress pdf for linkedin-jobs upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 804
+      },
+      {
+        "slug": "compress-pdf-for-workday",
+        "title": "compress pdf for workday upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 553
+      },
+      {
+        "slug": "compress-pdf-for-indeed",
+        "title": "compress pdf for indeed upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 541
+      },
+      {
+        "slug": "compress-pdf-for-lms",
+        "title": "compress pdf for moodle upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 471
+      },
+      {
+        "slug": "compress-pdf-for-naukri",
+        "title": "compress pdf for shine upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 459
+      },
+      {
+        "slug": "compress-pdf-for-whatsapp",
+        "title": "compress pdf for whatsapp upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 452
+      },
+      {
+        "slug": "compress-pdf-for-telegram",
+        "title": "compress pdf for telegram upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 369
+      },
+      {
+        "slug": "compress-pdf-for-yahoo-mail",
+        "title": "compress pdf for yahoo mail upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 363
+      },
+      {
+        "slug": "compress-pdf-for-protonmail",
+        "title": "compress pdf for protonmail upload",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "hand_extended",
+        "word_count": 344
+      },
+      {
+        "slug": "compress-pdf-made-it-larger",
+        "title": "compress pdf made it larger",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 125
+      },
+      {
+        "slug": "pdf-to-text-research",
+        "title": "pdf to text for research",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 86
+      },
+      {
+        "slug": "pdf-to-word-garbled-text",
+        "title": "pdf to word garbled text",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 85
+      },
+      {
+        "slug": "pdf-to-text-legal",
+        "title": "pdf to text legal documents",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 84
+      },
+      {
+        "slug": "split-pdf-by-size",
+        "title": "split pdf by size",
+        "traffic_roi": 17.0,
+        "priority": "P1",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 83
+      },
+      {
+        "slug": "pdf-to-text-bank-statements",
+        "title": "pdf to text bank statements",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 82
+      },
+      {
+        "slug": "combine-then-compress-pdf",
+        "title": "combine pdf before compress",
+        "traffic_roi": 17.0,
+        "priority": "P1",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 81
+      },
+      {
+        "slug": "pdf-to-word-invoice",
+        "title": "convert invoice pdf to word",
+        "traffic_roi": 17.0,
+        "priority": "P0",
+        "traffic": "Medium",
+        "layer": "generated",
+        "word_count": 80
+      },
+      {
+        "slug": "split-pdf-for-email",
+        "title": "split pdf for email",
+        "traffic_roi": 17.0,
+        "priority": "P1",
+        "traffic": "High",
+        "layer": "generated",
+        "word_count": 78
+      }
+    ],
+    "top_50_convert": [
+      {
+        "slug": "invoice-generator-india",
+        "title": "invoice generator india",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "hand_extended"
+      },
+      {
+        "slug": "invoice-generator-usa",
+        "title": "invoice generator usa",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "hand_extended"
+      },
+      {
+        "slug": "invoice-generator-australia",
+        "title": "invoice generator australia",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-canada",
+        "title": "invoice generator canada",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-france",
+        "title": "invoice generator france",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-germany",
+        "title": "invoice generator germany",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-new-zealand",
+        "title": "invoice generator new-zealand",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-philippines",
+        "title": "invoice generator philippines",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-singapore",
+        "title": "invoice generator singapore",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-south-africa",
+        "title": "invoice generator south-africa",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-uae",
+        "title": "invoice generator uae",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "invoice-generator-uk",
+        "title": "invoice generator uk",
+        "convert_roi": 21,
+        "tool": "/invoice/create",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "pdf-to-word-keep-formatting",
+        "title": "pdf to word keep formatting",
+        "convert_roi": 20,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "pdf-to-word-mac",
+        "title": "pdf to word mac",
+        "convert_roi": 20,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "pdf-to-word-vs-google-docs",
+        "title": "pdf to word vs google docs",
+        "convert_roi": 20,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "pdf-to-word-without-word",
+        "title": "pdf to word without microsoft word",
+        "convert_roi": 20,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "scanned-pdf-to-word",
+        "title": "scanned pdf to word",
+        "convert_roi": 20,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "images-to-pdf",
+        "title": "images to pdf",
+        "convert_roi": 19,
+        "tool": "/pdf/convertimages",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "hand_core"
+      },
+      {
+        "slug": "powerpoint-to-pdf",
+        "title": "powerpoint to pdf",
+        "convert_roi": 19,
+        "tool": "/pdf/ppttopdf",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "bulk-gst-invoice-generator",
+        "title": "bulk gst invoice generator",
+        "convert_roi": 18,
+        "tool": "/invoice/create",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-proforma-invoice-pdf-to-word",
+        "title": "convert proforma-invoice pdf to word",
+        "convert_roi": 18,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "pdf-to-word-invoice",
+        "title": "convert invoice pdf to word",
+        "convert_roi": 18,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "bulk-payslip-excel-guide",
+        "title": "payslip generator excel upload",
+        "convert_roi": 18,
+        "tool": "/free-payslip-generator",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "hr-payslip-compliance",
+        "title": "hr payslip compliance",
+        "convert_roi": 18,
+        "tool": "/free-payslip-generator",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "payslip-home-loan",
+        "title": "payslip for home loan",
+        "convert_roi": 18,
+        "tool": "/free-payslip-generator",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "payslip-vs-salary-certificate",
+        "title": "payslip vs salary certificate",
+        "convert_roi": 18,
+        "tool": "/free-payslip-generator",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "salary-slip-format-india",
+        "title": "salary slip format india",
+        "convert_roi": 18,
+        "tool": "/free-payslip-generator",
+        "funnel": "BOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "merge-password-protected-pdf",
+        "title": "merge pdf password protected",
+        "convert_roi": 17,
+        "tool": "/pdf/merge",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "merge-pdf-custom-order",
+        "title": "merge pdf in order",
+        "convert_roi": 17,
+        "tool": "/pdf/merge",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "merge-pdf-online",
+        "title": "merge pdf online",
+        "convert_roi": 17,
+        "tool": "/pdf/merge",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "merge-pdf-visa-application",
+        "title": "merge pdf for visa application",
+        "convert_roi": 17,
+        "tool": "/pdf/merge",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "merge-pdf-without-quality-loss",
+        "title": "merge pdf without losing quality",
+        "convert_roi": 17,
+        "tool": "/pdf/merge",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "merge-scanned-digital-pdf",
+        "title": "merge pdf scanned and digital",
+        "convert_roi": 17,
+        "tool": "/pdf/merge",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "recurring-invoice-generator",
+        "title": "recurring invoice generator",
+        "convert_roi": 17.0,
+        "tool": "/invoice/create",
+        "funnel": "MOFU",
+        "intent": "Commercial",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-bank-statement-pdf-to-word",
+        "title": "convert bank-statement pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-contract-pdf-to-word",
+        "title": "convert contract pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-credit-note-pdf-to-word",
+        "title": "convert credit-note pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-debit-note-pdf-to-word",
+        "title": "convert debit-note pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-delivery-note-pdf-to-word",
+        "title": "convert delivery-note pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-lease-agreement-pdf-to-word",
+        "title": "convert lease-agreement pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-nda-pdf-to-word",
+        "title": "convert nda pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-purchase-order-pdf-to-word",
+        "title": "convert purchase-order pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-quotation-pdf-to-word",
+        "title": "convert quotation pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-receipt-pdf-to-word",
+        "title": "convert receipt pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-sow-pdf-to-word",
+        "title": "convert sow pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-tax-return-pdf-to-word",
+        "title": "convert tax-return pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "convert-transcript-pdf-to-word",
+        "title": "convert transcript pdf to word",
+        "convert_roi": 17,
+        "tool": "/pdf/pdftodoc",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "ocr-pdf-arabic",
+        "title": "ocr pdf arabic",
+        "convert_roi": 17,
+        "tool": "/pdf/ocrpdf",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "ocr-pdf-chinese",
+        "title": "ocr pdf chinese",
+        "convert_roi": 17,
+        "tool": "/pdf/ocrpdf",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      },
+      {
+        "slug": "ocr-pdf-french",
+        "title": "ocr pdf french",
+        "convert_roi": 17,
+        "tool": "/pdf/ocrpdf",
+        "funnel": "MOFU",
+        "intent": "Transactional",
+        "layer": "generated"
+      }
+    ],
+    "top_100_upgrade": [
+      {
+        "slug": "invoice-generator-australia",
+        "title": "invoice generator australia",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 66,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-canada",
+        "title": "invoice generator canada",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 66,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-france",
+        "title": "invoice generator france",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 68,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-germany",
+        "title": "invoice generator germany",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 69,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-new-zealand",
+        "title": "invoice generator new-zealand",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 73,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-philippines",
+        "title": "invoice generator philippines",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 68,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-singapore",
+        "title": "invoice generator singapore",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 70,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-south-africa",
+        "title": "invoice generator south-africa",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 73,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-uae",
+        "title": "invoice generator uae",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 70,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-uk",
+        "title": "invoice generator uk",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 21,
+        "layer": "generated",
+        "word_count": 69,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "pdf-to-word-keep-formatting",
+        "title": "pdf to word keep formatting",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 20,
+        "layer": "generated",
+        "word_count": 81,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Word"
+      },
+      {
+        "slug": "pdf-to-word-mac",
+        "title": "pdf to word mac",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 20,
+        "layer": "generated",
+        "word_count": 82,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Word"
+      },
+      {
+        "slug": "pdf-to-word-vs-google-docs",
+        "title": "pdf to word vs google docs",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 20,
+        "layer": "generated",
+        "word_count": 70,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Word"
+      },
+      {
+        "slug": "pdf-to-word-without-word",
+        "title": "pdf to word without microsoft word",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 20,
+        "layer": "generated",
+        "word_count": 71,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Word"
+      },
+      {
+        "slug": "scanned-pdf-to-word",
+        "title": "scanned pdf to word",
+        "upgrade_roi": 26.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 20,
+        "layer": "generated",
+        "word_count": 77,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Word"
+      },
+      {
+        "slug": "images-to-pdf",
+        "title": "images to pdf",
+        "upgrade_roi": 25.5,
+        "traffic_roi": 20.5,
+        "convert_roi": 19,
+        "layer": "hand_core",
+        "word_count": 76,
+        "issues": [
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Convert"
+      },
+      {
+        "slug": "bulk-gst-invoice-generator",
+        "title": "bulk gst invoice generator",
+        "upgrade_roi": 25.0,
+        "traffic_roi": 19.0,
+        "convert_roi": 18,
+        "layer": "generated",
+        "word_count": 89,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "merge-password-protected-pdf",
+        "title": "merge pdf password protected",
+        "upgrade_roi": 25.0,
+        "traffic_roi": 19.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 71,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "merge-pdf-custom-order",
+        "title": "merge pdf in order",
+        "upgrade_roi": 25.0,
+        "traffic_roi": 19.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 71,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "merge-pdf-online",
+        "title": "merge pdf online",
+        "upgrade_roi": 25.0,
+        "traffic_roi": 19.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 74,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "merge-pdf-visa-application",
+        "title": "merge pdf for visa application",
+        "upgrade_roi": 25.0,
+        "traffic_roi": 19.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 73,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "merge-pdf-without-quality-loss",
+        "title": "merge pdf without losing quality",
+        "upgrade_roi": 25.0,
+        "traffic_roi": 19.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 76,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "merge-scanned-digital-pdf",
+        "title": "merge pdf scanned and digital",
+        "upgrade_roi": 25.0,
+        "traffic_roi": 19.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 76,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "invoice-generator-india",
+        "title": "invoice generator india",
+        "upgrade_roi": 24.5,
+        "traffic_roi": 22.5,
+        "convert_roi": 21,
+        "layer": "hand_extended",
+        "word_count": 749,
+        "issues": [
+          "missing_faq",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "invoice-generator-usa",
+        "title": "invoice generator usa",
+        "upgrade_roi": 24.5,
+        "traffic_roi": 22.5,
+        "convert_roi": 21,
+        "layer": "hand_extended",
+        "word_count": 532,
+        "issues": [
+          "missing_faq",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "pdf-to-word-vs-pdf-to-text",
+        "title": "pdf to text vs pdf to word",
+        "upgrade_roi": 24.5,
+        "traffic_roi": 18.5,
+        "convert_roi": 16.0,
+        "layer": "generated",
+        "word_count": 80,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "missing_compare_link",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Text"
+      },
+      {
+        "slug": "powerpoint-to-pdf",
+        "title": "powerpoint to pdf",
+        "upgrade_roi": 24.5,
+        "traffic_roi": 18.5,
+        "convert_roi": 19,
+        "layer": "generated",
+        "word_count": 65,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Convert"
+      },
+      {
+        "slug": "recurring-invoice-generator",
+        "title": "recurring invoice generator",
+        "upgrade_roi": 24.5,
+        "traffic_roi": 18.5,
+        "convert_roi": 17.0,
+        "layer": "generated",
+        "word_count": 95,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_compare_link",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Invoice"
+      },
+      {
+        "slug": "add-image-to-pdf",
+        "title": "add image to pdf",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 65,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Edit PDF"
+      },
+      {
+        "slug": "combine-then-compress-pdf",
+        "title": "combine pdf before compress",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 81,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "missing_research_cite",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "compress-pdf-made-it-larger",
+        "title": "compress pdf made it larger",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 125,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Troubleshooting"
+      },
+      {
+        "slug": "convert-bank-statement-pdf-to-word",
+        "title": "convert bank-statement pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 76,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-contract-pdf-to-word",
+        "title": "convert contract pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 73,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-credit-note-pdf-to-word",
+        "title": "convert credit-note pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 69,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-debit-note-pdf-to-word",
+        "title": "convert debit-note pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 66,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-delivery-note-pdf-to-word",
+        "title": "convert delivery-note pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 70,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-lease-agreement-pdf-to-word",
+        "title": "convert lease-agreement pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 64,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-nda-pdf-to-word",
+        "title": "convert nda pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 66,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-proforma-invoice-pdf-to-word",
+        "title": "convert proforma-invoice pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 18,
+        "layer": "generated",
+        "word_count": 70,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-purchase-order-pdf-to-word",
+        "title": "convert purchase-order pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 67,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-quotation-pdf-to-word",
+        "title": "convert quotation pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 68,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-receipt-pdf-to-word",
+        "title": "convert receipt pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 73,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-sow-pdf-to-word",
+        "title": "convert sow pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 67,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-tax-return-pdf-to-word",
+        "title": "convert tax-return pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 72,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "convert-transcript-pdf-to-word",
+        "title": "convert transcript pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 67,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "edit-pdf-forms",
+        "title": "edit pdf forms",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 73,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Edit PDF"
+      },
+      {
+        "slug": "edit-scanned-pdf",
+        "title": "edit scanned pdf",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 77,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Edit PDF"
+      },
+      {
+        "slug": "extract-single-page-pdf",
+        "title": "extract single page from pdf",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 68,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "ocr-pdf-arabic",
+        "title": "ocr pdf arabic",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 74,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-chinese",
+        "title": "ocr pdf chinese",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 67,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-french",
+        "title": "ocr pdf french",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 75,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-german",
+        "title": "ocr pdf german",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 70,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-hindi",
+        "title": "ocr pdf hindi",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 71,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-japanese",
+        "title": "ocr pdf japanese",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 67,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-korean",
+        "title": "ocr pdf korean",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 68,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-poor-quality",
+        "title": "ocr pdf poor quality",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 72,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Troubleshooting"
+      },
+      {
+        "slug": "ocr-pdf-portuguese",
+        "title": "ocr pdf portuguese",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 61,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-russian",
+        "title": "ocr pdf russian",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 64,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "ocr-pdf-spanish",
+        "title": "ocr pdf spanish",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 71,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "OCR PDF"
+      },
+      {
+        "slug": "organize-pdf-pages",
+        "title": "organize pdf pages",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 74,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Merge PDF"
+      },
+      {
+        "slug": "pdf-to-text-bank-statements",
+        "title": "pdf to text bank statements",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 82,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Text"
+      },
+      {
+        "slug": "pdf-to-text-legal",
+        "title": "pdf to text legal documents",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 84,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Text"
+      },
+      {
+        "slug": "pdf-to-text-research",
+        "title": "pdf to text for research",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 86,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "PDF to Text"
+      },
+      {
+        "slug": "pdf-to-word-garbled-text",
+        "title": "pdf to word garbled text",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 85,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Troubleshooting"
+      },
+      {
+        "slug": "pdf-to-word-invoice",
+        "title": "convert invoice pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 18,
+        "layer": "generated",
+        "word_count": 80,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "pdf-to-word-resume",
+        "title": "convert resume pdf to word",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 17,
+        "layer": "generated",
+        "word_count": 77,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Workflow"
+      },
+      {
+        "slug": "split-pdf-by-size",
+        "title": "split pdf by size",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 83,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Split PDF"
+      },
+      {
+        "slug": "split-pdf-for-email",
+        "title": "split pdf for email",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 78,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Split PDF"
+      },
+      {
+        "slug": "split-pdf-page-range",
+        "title": "split pdf by page range",
+        "upgrade_roi": 23.0,
+        "traffic_roi": 17.0,
+        "convert_roi": 16,
+        "layer": "generated",
+        "word_count": 73,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Split PDF"
+      },
+      {
+        "slug": "compress-pdf-for-printing",
+        "title": "compress pdf for printing",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 17.5,
+        "convert_roi": 14.0,
+        "layer": "hand_core",
+        "word_count": 0,
+        "issues": [
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "weak_conclusion",
+          "no_internal_links",
+          "missing_tool_link",
+          "missing_research_cite",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "batch-compress-pdf",
+        "title": "batch compress pdf files",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 16.5,
+        "convert_roi": 16.0,
+        "layer": "generated",
+        "word_count": 81,
+        "issues": [
+          "thin",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "missing_research_cite",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "extract-text-without-adobe",
+        "title": "extract text from pdf without adobe",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 16.5,
+        "convert_roi": 15.0,
+        "layer": "generated",
+        "word_count": 82,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "PDF to Text"
+      },
+      {
+        "slug": "ocr-vs-pdf-to-text",
+        "title": "ocr vs pdf to text",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 16.5,
+        "convert_roi": 16.0,
+        "layer": "generated",
+        "word_count": 98,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Comparison"
+      },
+      {
+        "slug": "pdf-tools-small-business",
+        "title": "pdf tools for small business",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 16.5,
+        "convert_roi": 15.0,
+        "layer": "generated",
+        "word_count": 71,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P1",
+        "cluster": "Compare"
+      },
+      {
+        "slug": "bulk-payslip-excel-guide",
+        "title": "payslip generator excel upload",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 14.5,
+        "convert_roi": 18,
+        "layer": "generated",
+        "word_count": 51,
+        "issues": [
+          "thin",
+          "template_footprint",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P2",
+        "cluster": "Payslip"
+      },
+      {
+        "slug": "hr-payslip-compliance",
+        "title": "hr payslip compliance",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 14.5,
+        "convert_roi": 18,
+        "layer": "generated",
+        "word_count": 49,
+        "issues": [
+          "thin",
+          "template_footprint",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P2",
+        "cluster": "Payslip"
+      },
+      {
+        "slug": "payslip-home-loan",
+        "title": "payslip for home loan",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 14.5,
+        "convert_roi": 18,
+        "layer": "generated",
+        "word_count": 51,
+        "issues": [
+          "thin",
+          "template_footprint",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P2",
+        "cluster": "Payslip"
+      },
+      {
+        "slug": "payslip-vs-salary-certificate",
+        "title": "payslip vs salary certificate",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 14.5,
+        "convert_roi": 18,
+        "layer": "generated",
+        "word_count": 51,
+        "issues": [
+          "thin",
+          "template_footprint",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P2",
+        "cluster": "Payslip"
+      },
+      {
+        "slug": "salary-slip-format-india",
+        "title": "salary slip format india",
+        "upgrade_roi": 22.5,
+        "traffic_roi": 14.5,
+        "convert_roi": 18,
+        "layer": "generated",
+        "word_count": 51,
+        "issues": [
+          "thin",
+          "template_footprint",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "missing_tool_link",
+          "below_word_target"
+        ],
+        "priority": "P2",
+        "cluster": "Payslip"
+      },
+      {
+        "slug": "compress-before-merge-pdf",
+        "title": "compress pdf before merge",
+        "upgrade_roi": 21.5,
+        "traffic_roi": 15.5,
+        "convert_roi": 14.0,
+        "layer": "generated",
+        "word_count": 113,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-cloud-storage",
+        "title": "compress pdf for cloud storage",
+        "upgrade_roi": 21.5,
+        "traffic_roi": 15.5,
+        "convert_roi": 14.0,
+        "layer": "generated",
+        "word_count": 110,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-with-images",
+        "title": "compress pdf with images",
+        "upgrade_roi": 21.5,
+        "traffic_roi": 15.5,
+        "convert_roi": 14.0,
+        "layer": "generated",
+        "word_count": 106,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-without-quality-loss",
+        "title": "how to compress pdf without losing quality",
+        "upgrade_roi": 21.5,
+        "traffic_roi": 15.5,
+        "convert_roi": 14.0,
+        "layer": "generated",
+        "word_count": 113,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "ocr-accuracy-tips",
+        "title": "ocr accuracy tips",
+        "upgrade_roi": 21.5,
+        "traffic_roi": 13.5,
+        "convert_roi": 12.0,
+        "layer": "generated",
+        "word_count": 47,
+        "issues": [
+          "thin",
+          "template_footprint",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P2",
+        "cluster": "PDF to Text"
+      },
+      {
+        "slug": "compress-pdf-for-email",
+        "title": "compress pdf for email",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 19.0,
+        "convert_roi": 13,
+        "layer": "hand_extended",
+        "word_count": 1603,
+        "issues": [
+          "missing_faq",
+          "no_faq_in_body"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-common-app",
+        "title": "compress pdf for common-app upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 112,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-digilocker",
+        "title": "compress pdf for digilocker upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 114,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-gst-portal",
+        "title": "compress pdf for gst-portal upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 109,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-home-affairs-australia",
+        "title": "compress pdf for home-affairs-australia upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 112,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-immigration-canada",
+        "title": "compress pdf for immigration-canada upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 107,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-incometax",
+        "title": "compress pdf for incometax upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 116,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-irctc",
+        "title": "compress pdf for irctc upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 111,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-on-android",
+        "title": "compress pdf on android",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 104,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-on-iphone",
+        "title": "compress pdf on iphone",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 112,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-on-mac",
+        "title": "compress pdf on mac",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 116,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-on-windows",
+        "title": "compress pdf on windows",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 113,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-schengen-visa",
+        "title": "compress pdf for schengen-visa upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 113,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-ucas",
+        "title": "compress pdf for ucas upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 115,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-uidai",
+        "title": "compress pdf for uidai upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 109,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      },
+      {
+        "slug": "compress-pdf-ukvi",
+        "title": "compress pdf for ukvi upload",
+        "upgrade_roi": 21.0,
+        "traffic_roi": 15.0,
+        "convert_roi": 13,
+        "layer": "generated",
+        "word_count": 111,
+        "issues": [
+          "thin",
+          "low_value_template",
+          "missing_faq",
+          "ultra_thin",
+          "no_faq_in_body",
+          "below_word_target"
+        ],
+        "priority": "P0",
+        "cluster": "Compress PDF"
+      }
+    ],
+    "cluster_gaps": {
+      "Comparison": {
+        "count": 12,
+        "thin": 12,
+        "no_faq": 12
+      },
+      "Workflow": {
+        "count": 33,
+        "thin": 32,
+        "no_faq": 33
+      },
+      "Best-of": {
+        "count": 2,
+        "thin": 2,
+        "no_faq": 2
+      },
+      "Secure PDF": {
+        "count": 21,
+        "thin": 19,
+        "no_faq": 21
+      },
+      "unknown": {
+        "count": 13,
+        "thin": 13,
+        "no_faq": 13
+      },
+      "Compress PDF": {
+        "count": 44,
+        "thin": 32,
+        "no_faq": 44
+      },
+      "Convert": {
+        "count": 14,
+        "thin": 14,
+        "no_faq": 14
+      },
+      "Invoice": {
+        "count": 108,
+        "thin": 106,
+        "no_faq": 108
+      },
+      "Checklists": {
+        "count": 7,
+        "thin": 6,
+        "no_faq": 7
+      },
+      "Edit PDF": {
+        "count": 3,
+        "thin": 3,
+        "no_faq": 3
+      },
+      "Compliance": {
+        "count": 11,
+        "thin": 11,
+        "no_faq": 11
+      },
+      "Regional": {
+        "count": 152,
+        "thin": 152,
+        "no_faq": 152
+      },
+      "PDF Fundamentals": {
+        "count": 20,
+        "thin": 20,
+        "no_faq": 20
+      },
+      "Payslip": {
+        "count": 14,
+        "thin": 14,
+        "no_faq": 14
+      },
+      "Merge PDF": {
+        "count": 13,
+        "thin": 13,
+        "no_faq": 13
+      },
+      "Industry": {
+        "count": 38,
+        "thin": 38,
+        "no_faq": 38
+      },
+      "Troubleshooting": {
+        "count": 10,
+        "thin": 10,
+        "no_faq": 10
+      },
+      "Research": {
+        "count": 7,
+        "thin": 7,
+        "no_faq": 7
+      },
+      "PDF to Text": {
+        "count": 26,
+        "thin": 26,
+        "no_faq": 26
+      },
+      "Glossary": {
+        "count": 144,
+        "thin": 144,
+        "no_faq": 144
+      },
+      "Mistakes": {
+        "count": 1,
+        "thin": 1,
+        "no_faq": 1
+      },
+      "OCR PDF": {
+        "count": 10,
+        "thin": 10,
+        "no_faq": 10
+      },
+      "Advanced PDF": {
+        "count": 4,
+        "thin": 4,
+        "no_faq": 4
+      },
+      "PDF to Word": {
+        "count": 5,
+        "thin": 5,
+        "no_faq": 5
+      },
+      "Compare": {
+        "count": 1,
+        "thin": 1,
+        "no_faq": 1
+      },
+      "Split PDF": {
+        "count": 3,
+        "thin": 3,
+        "no_faq": 3
+      }
+    },
+    "orphan_candidates": [
+      {
+        "slug": "rotate-pdf",
+        "inbound": 0,
+        "outbound": 0
+      },
+      {
+        "slug": "pdf-metadata",
+        "inbound": 0,
+        "outbound": 0
+      },
+      {
+        "slug": "add-page-numbers",
+        "inbound": 0,
+        "outbound": 0
+      },
+      {
+        "slug": "compress-pdf-for-printing",
+        "inbound": 0,
+        "outbound": 0
+      },
+      {
+        "slug": "flatten-pdf",
+        "inbound": 0,
+        "outbound": 0
+      },
+      {
+        "slug": "browser-vs-desktop-pdf-tools",
+        "inbound": 0,
+        "outbound": 0
+      },
+      {
+        "slug": "word-counter-guide",
+        "inbound": 0,
+        "outbound": 1
+      },
+      {
+        "slug": "ring-size-converter-guide",
+        "inbound": 0,
+        "outbound": 1
+      },
+      {
+        "slug": "my-ip-guide",
+        "inbound": 0,
+        "outbound": 1
+      },
+      {
+        "slug": "batch-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-bank-statement-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-contract-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-credit-note-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-debit-note-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-delivery-note-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-lease-agreement-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-nda-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-proforma-invoice-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-purchase-order-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-quotation-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-receipt-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-sow-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-tax-return-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "convert-transcript-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "mistakes-pdf-to-word-for-scanned-tables",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "pdf-to-word-garbled-text",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "pdf-to-word-keep-formatting",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "pdf-to-word-mac",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "pdf-to-word-vs-google-docs",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "pdf-to-word-without-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "scanned-pdf-to-word",
+        "inbound": 0,
+        "outbound": 2
+      },
+      {
+        "slug": "excel-to-pdf",
+        "inbound": 1,
+        "outbound": 0
+      },
+      {
+        "slug": "sign-pdf",
+        "inbound": 1,
+        "outbound": 2
+      },
+      {
+        "slug": "extract-images-from-pdf",
+        "inbound": 1,
+        "outbound": 1
+      }
+    ],
+    "issue_samples": {
+      "thin": [
+        "pdf-to-word",
+        "ocr-pdf",
+        "edit-pdf",
+        "rotate-pdf",
+        "excel-to-pdf",
+        "pdf-to-images",
+        "unlock-pdf",
+        "watermark-pdf",
+        "pdf-metadata",
+        "add-page-numbers",
+        "compress-pdf-for-printing",
+        "flatten-pdf",
+        "browser-vs-desktop-pdf-tools",
+        "extract-images-from-pdf",
+        "pdf-to-powerpoint-without-adobe",
+        "text-to-pdf-without-adobe",
+        "corrupted-pdf-repair",
+        "pdf-encryption-aes-explained",
+        "pdf-fonts-missing",
+        "pdf-to-jpg-without-adobe",
+        "powerpoint-to-pdf-without-adobe",
+        "redact-pdf-gdpr",
+        "share-confidential-pdf",
+        "watermark-pdf-draft",
+        "beginner-ocr-basics",
+        "beginner-pdf-basics",
+        "beginner-pdf-bookmarks",
+        "beginner-pdf-hyperlinks",
+        "ocr-accuracy-tips",
+        "ocr-historical-documents"
+      ],
+      "template": [
+        "bank-statement-pdf-workflow-australia",
+        "bank-statement-pdf-workflow-brazil",
+        "bank-statement-pdf-workflow-canada",
+        "bank-statement-pdf-workflow-france",
+        "bank-statement-pdf-workflow-germany",
+        "bank-statement-pdf-workflow-india",
+        "bank-statement-pdf-workflow-ireland",
+        "bank-statement-pdf-workflow-italy",
+        "bank-statement-pdf-workflow-japan",
+        "bank-statement-pdf-workflow-mexico",
+        "bank-statement-pdf-workflow-netherlands",
+        "bank-statement-pdf-workflow-new-zealand",
+        "bank-statement-pdf-workflow-singapore",
+        "bank-statement-pdf-workflow-south-africa",
+        "bank-statement-pdf-workflow-south-korea",
+        "bank-statement-pdf-workflow-spain",
+        "bank-statement-pdf-workflow-uae",
+        "bank-statement-pdf-workflow-uk",
+        "bank-statement-pdf-workflow-usa",
+        "beginner-digital-signature-basics",
+        "beginner-ocr-basics",
+        "beginner-pdf-accessibility-basics",
+        "beginner-pdf-basics",
+        "beginner-pdf-bookmarks",
+        "beginner-pdf-color-space-rgb-cmyk",
+        "beginner-pdf-compression-basics",
+        "beginner-pdf-file-structure",
+        "beginner-pdf-fonts-embedding",
+        "beginner-pdf-forms-basics",
+        "beginner-pdf-hyperlinks"
+      ],
+      "no_faq": [
+        "pdf-to-word",
+        "ocr-pdf",
+        "edit-pdf",
+        "rotate-pdf",
+        "excel-to-pdf",
+        "pdf-to-images",
+        "unlock-pdf",
+        "watermark-pdf",
+        "pdf-metadata",
+        "add-page-numbers",
+        "compress-pdf-for-printing",
+        "flatten-pdf",
+        "browser-vs-desktop-pdf-tools",
+        "word-to-pdf",
+        "pdf-txt-guide",
+        "pdf-to-text",
+        "text-to-pdf",
+        "sign-pdf",
+        "images-to-pdf",
+        "background-remover",
+        "word-counter-guide",
+        "ring-size-converter-guide",
+        "my-ip-guide",
+        "invoice-generator-guide",
+        "extract-images-from-pdf",
+        "watermark-vs-password-pdf",
+        "sign-pdf-legally",
+        "pdf-tool-alternatives",
+        "compress-pdf-for-email",
+        "compress-pdf-for-gmail"
+      ]
+    },
+    "most_linked_paths": [
+      [
+        "/guides/pdf-tools",
+        1097
+      ],
+      [
+        "/compare",
+        458
+      ],
+      [
+        "/pdf/compress",
+        288
+      ],
+      [
+        "/invoice/create",
+        270
+      ],
+      [
+        "/guides/compress-pdf-guide",
+        219
+      ],
+      [
+        "/guides/choose-pdf-tool",
+        176
+      ],
+      [
+        "/guides/ocr-pdf",
+        171
+      ],
+      [
+        "/pdf/ocrpdf",
+        168
+      ],
+      [
+        "/guides/merge-pdf",
+        167
+      ],
+      [
+        "/pdf/merge",
+        165
+      ],
+      [
+        "/guides/secure-pdf-workflow",
+        162
+      ],
+      [
+        "/guides/invoice-generator-guide",
+        133
+      ],
+      [
+        "/guides/gst-invoice-format-india",
+        109
+      ],
+      [
+        "/guides/vat-invoice-eu-requirements",
+        106
+      ],
+      [
+        "/guides/hmrc-invoice-requirements",
+        106
+      ],
+      [
+        "/research/attachment-size-limits",
+        64
+      ],
+      [
+        "/guides/compress-pdf-for-email",
+        64
+      ],
+      [
+        "/pdf/pdftotext",
+        34
+      ],
+      [
+        "/free-payslip-generator",
+        28
+      ],
+      [
+        "/guides/pdf-to-word",
+        27
+      ],
+      [
+        "/guides/invoice-for-freelancers",
+        27
+      ],
+      [
+        "/guides/invoice-generator-india",
+        26
+      ],
+      [
+        "/guides/invoice-generator-usa",
+        26
+      ],
+      [
+        "/guides/invoice-generator-uk",
+        26
+      ],
+      [
+        "/pdf/pdftodoc",
+        25
+      ],
+      [
+        "/pdf/password",
+        20
+      ],
+      [
+        "/guides/ocr-vs-pdf-to-text",
+        14
+      ],
+      [
+        "/pdf-size-checker",
+        14
+      ],
+      [
+        "/guides/compress-pdf-for-job-application",
+        14
+      ],
+      [
+        "/guides/compress-pdf-for-gmail",
+        12
+      ]
+    ]
+  },
+  "programmatic": {
+    "keyword_corpus_counts": {
+      "compress": 5336,
+      "pdf_to_word": 6394,
+      "edit_pdf": 5160,
+      "pdf_to_txt": 4902,
+      "decay": 219,
+      "payslip": 1718,
+      "jwt": 1494,
+      "json": 1461,
+      "html": 587
+    },
+    "estimated_programmatic_urls": 27271,
+    "risks": [
+      "Intent verticals share 2-3 body variants across thousands of slugs (VerticalIntentContentBuilder hash rotation)",
+      "Competitor alternatives triple-stacked: /compare/* vs compress curated vs noindex tool landings",
+      "Compress size-target clusters (/compress-pdf-to-100kb vs /compress-pdf-under-100kb) near-duplicate workflows",
+      "Template tool landings (~250+) share identical FAQ/how-to; noindex but crawl budget cost",
+      "FAQ schema suppressed on noindex pages \u2014 thin landings lack rich results",
+      "PDF-to-word vs /guides/pdf-to-word vs /pdf/pdftodoc \u2014 pillar overlap"
+    ],
+    "fix_recommendations": [
+      "Expand curated compress pillar set; canonical near-duplicate size slugs to strongest URL",
+      "Add unique stat blocks to top 100 indexed programmatic slugs by search volume proxy",
+      "Strengthen cross-links from /compress-pdf hub to editorial spokes",
+      "Consolidate compare ownership: /compare/* owns competitor names; noindex duplicate alternatives",
+      "Increase VerticalIntentContentBuilder variant pool from 3 to 12+ for indexed tiers",
+      "Add FAQ uniqueness per intent subclass (device, error, task) not just global hash"
+    ]
+  },
+  "eeat": {
+    "global_signals": {
+      "author_byline": "All guides via _AuthorByline.cshtml (SiteAuthors.ResolveForContent)",
+      "last_reviewed": "Static 2026-01-15 for all guides \u2014 freshness gap",
+      "sources_catalog": "ContentSourcesCatalog per slug; defaults to Adobe+Ghostscript",
+      "howto_schema": "GuideHowToSteps.cs \u2014 partial slug coverage",
+      "expert_review_notes": "Not implemented at page level",
+      "screenshots": "No screenshot assets in guide bodies"
+    },
+    "faq_coverage": {
+      "guides_with_faq_schema": 0,
+      "guides_without_faq": 716,
+      "pct_without_faq": 100.0
+    },
+    "hand_written_count": 44,
+    "generated_count": 672,
+    "commercial_pages": 703,
+    "priority_commercial_upgrades": [
+      "invoice-generator-india",
+      "invoice-generator-usa",
+      "invoice-generator-australia",
+      "invoice-generator-canada",
+      "invoice-generator-france",
+      "invoice-generator-germany",
+      "invoice-generator-new-zealand",
+      "invoice-generator-philippines",
+      "invoice-generator-singapore",
+      "invoice-generator-south-africa",
+      "invoice-generator-uae",
+      "invoice-generator-uk",
+      "pdf-to-word-keep-formatting",
+      "pdf-to-word-mac",
+      "pdf-to-word-vs-google-docs",
+      "pdf-to-word-without-word",
+      "scanned-pdf-to-word",
+      "images-to-pdf",
+      "powerpoint-to-pdf",
+      "bulk-gst-invoice-generator",
+      "bulk-payslip-excel-guide",
+      "convert-proforma-invoice-pdf-to-word",
+      "hr-payslip-compliance",
+      "payslip-home-loan",
+      "payslip-vs-salary-certificate",
+      "pdf-to-word-invoice",
+      "salary-slip-format-india",
+      "convert-bank-statement-pdf-to-word",
+      "convert-contract-pdf-to-word",
+      "convert-credit-note-pdf-to-word",
+      "convert-debit-note-pdf-to-word",
+      "convert-delivery-note-pdf-to-word",
+      "convert-lease-agreement-pdf-to-word",
+      "convert-nda-pdf-to-word",
+      "convert-purchase-order-pdf-to-word",
+      "convert-quotation-pdf-to-word",
+      "convert-receipt-pdf-to-word",
+      "convert-sow-pdf-to-word",
+      "convert-tax-return-pdf-to-word",
+      "convert-transcript-pdf-to-word"
+    ]
+  },
+  "conversion": {
+    "high_traffic_guides_audited": 80,
+    "guides_with_conversion_gaps": 80,
+    "top_gaps": [
+      {
+        "slug": "invoice-generator-india",
+        "title": "invoice generator india",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-usa",
+        "title": "invoice generator usa",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "images-to-pdf",
+        "title": "images to pdf",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 19
+      },
+      {
+        "slug": "invoice-generator-australia",
+        "title": "invoice generator australia",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-canada",
+        "title": "invoice generator canada",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-france",
+        "title": "invoice generator france",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-germany",
+        "title": "invoice generator germany",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-new-zealand",
+        "title": "invoice generator new-zealand",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-philippines",
+        "title": "invoice generator philippines",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-singapore",
+        "title": "invoice generator singapore",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-south-africa",
+        "title": "invoice generator south-africa",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-uae",
+        "title": "invoice generator uae",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "invoice-generator-uk",
+        "title": "invoice generator uk",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 21
+      },
+      {
+        "slug": "pdf-to-word-keep-formatting",
+        "title": "pdf to word keep formatting",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 20
+      },
+      {
+        "slug": "pdf-to-word-mac",
+        "title": "pdf to word mac",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 20
+      },
+      {
+        "slug": "pdf-to-word-vs-google-docs",
+        "title": "pdf to word vs google docs",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 20
+      },
+      {
+        "slug": "pdf-to-word-without-word",
+        "title": "pdf to word without microsoft word",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 20
+      },
+      {
+        "slug": "scanned-pdf-to-word",
+        "title": "scanned pdf to word",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 20
+      },
+      {
+        "slug": "compress-pdf-for-email",
+        "title": "compress pdf for email",
+        "gaps": [
+          "no_faq_schema"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "bulk-gst-invoice-generator",
+        "title": "bulk gst invoice generator",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 18
+      },
+      {
+        "slug": "merge-password-protected-pdf",
+        "title": "merge pdf password protected",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 17
+      },
+      {
+        "slug": "merge-pdf-custom-order",
+        "title": "merge pdf in order",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 17
+      },
+      {
+        "slug": "merge-pdf-online",
+        "title": "merge pdf online",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 17
+      },
+      {
+        "slug": "merge-pdf-visa-application",
+        "title": "merge pdf for visa application",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 17
+      },
+      {
+        "slug": "merge-pdf-without-quality-loss",
+        "title": "merge pdf without losing quality",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 17
+      },
+      {
+        "slug": "merge-scanned-digital-pdf",
+        "title": "merge pdf scanned and digital",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 17
+      },
+      {
+        "slug": "pdf-to-word-vs-pdf-to-text",
+        "title": "pdf to text vs pdf to word",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 16.0
+      },
+      {
+        "slug": "powerpoint-to-pdf",
+        "title": "powerpoint to pdf",
+        "gaps": [
+          "no_tool_cta_in_body",
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 19
+      },
+      {
+        "slug": "recurring-invoice-generator",
+        "title": "recurring invoice generator",
+        "gaps": [
+          "no_faq_schema",
+          "template_body",
+          "thin_content"
+        ],
+        "convert_roi": 17.0
+      },
+      {
+        "slug": "compress-pdf-for-printing",
+        "title": "compress pdf for printing",
+        "gaps": [
+          "no_tool_cta_in_body",
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 14.0
+      },
+      {
+        "slug": "compress-pdf-for-gmail",
+        "title": "compress pdf for gmail upload",
+        "gaps": [
+          "no_faq_schema"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-outlook",
+        "title": "compress pdf for outlook upload",
+        "gaps": [
+          "no_faq_schema"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-linkedin",
+        "title": "compress pdf for linkedin-jobs upload",
+        "gaps": [
+          "no_faq_schema"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-indeed",
+        "title": "compress pdf for indeed upload",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-naukri",
+        "title": "compress pdf for shine upload",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-yahoo-mail",
+        "title": "compress pdf for yahoo mail upload",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-protonmail",
+        "title": "compress pdf for protonmail upload",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-whatsapp",
+        "title": "compress pdf for whatsapp upload",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-telegram",
+        "title": "compress pdf for telegram upload",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 13
+      },
+      {
+        "slug": "compress-pdf-for-workday",
+        "title": "compress pdf for workday upload",
+        "gaps": [
+          "no_faq_schema",
+          "thin_content"
+        ],
+        "convert_roi": 13
+      }
+    ],
+    "recommendations": [
+      "Ensure _ToolTryCta fires: every BOFU guide needs ToolUrl in ContentLibrary",
+      "Add mid-article CTA blocks on compress/invoice clusters (not just footer link)",
+      "Add lead magnets: size checker, GST checker links on compliance guides",
+      "FAQ answers should end with tool deep-link (currently generic on generated pages)",
+      "Compare hub CTA on pdf-tool-alternatives-style pages \u2014 already strong; replicate pattern"
+    ]
+  },
+  "backlinks": {
+    "existing_data_assets": [
+      {
+        "path": "/research/attachment-size-limits",
+        "type": "citable data",
+        "priority": "P0"
+      },
+      {
+        "path": "/research/pdf-compression-benchmark",
+        "type": "benchmark study",
+        "priority": "P0"
+      },
+      {
+        "path": "/research/freelancer-invoicing-statistics",
+        "type": "statistics",
+        "priority": "P1"
+      },
+      {
+        "path": "/research/document-retention-periods",
+        "type": "compliance reference",
+        "priority": "P1"
+      },
+      {
+        "path": "/research/pdf-tool-market-comparison",
+        "type": "market data",
+        "priority": "P0"
+      },
+      {
+        "path": "/compare/*",
+        "type": "commercial comparison",
+        "priority": "P0"
+      },
+      {
+        "path": "/guides/pdf-tool-alternatives",
+        "type": "editorial roundup",
+        "priority": "P1"
+      }
+    ],
+    "codebase_data_to_publish": [
+      "Ghostscript compression level benchmarks (already in compress-pdf-guide prose)",
+      "Gmail/Outlook/portal attachment limits table (compress-pdf-for-gmail extended)",
+      "CompetitiveSeoCatalog keyword gap matrix",
+      "IntentClassifier corpus stats (indexed vs noindex ratio)",
+      "Invoice GST field validation rules from invoice tool",
+      "PDF tool usage limits (3/day) as transparency study"
+    ],
+    "expansion_priorities": [
+      {
+        "topic": "Email attachment limits by provider (2026)",
+        "action": "Expand attachment-size-limits with changelog"
+      },
+      {
+        "topic": "PDF compression ratio by file type",
+        "action": "Add dataset to pdf-compression-benchmark"
+      },
+      {
+        "topic": "Freelancer invoice payment terms survey",
+        "action": "Expand freelancer-invoicing-statistics"
+      },
+      {
+        "topic": "PDF tool pricing comparison",
+        "action": "Sync pdf-tool-market-comparison with live competitor pricing"
+      },
+      {
+        "topic": "Government portal PDF size limits",
+        "action": "New section in attachment-size-limits (no new URL)"
+      }
+    ]
+  },
+  "internal_linking": {
+    "orphan_count": 34,
+    "design_targets": [
+      "Wire ContentRoadmapMeta InternalLinks into _ContentArticle sidebar",
+      "Cluster-based related guides (not category-only)",
+      "Every compress spoke \u2192 /research/attachment-size-limits",
+      "Every commercial guide \u2192 relevant /compare/* page",
+      "Glossary mesh: link related glossary terms (currently hub-only)",
+      "Regional workflows: cross-link country + doc-type matrix",
+      "Programmatic compress hub \u2192 top 50 editorial spokes"
+    ],
+    "hub_pages": [
+      "/guides/pdf-tools",
+      "/compress-pdf",
+      "/guides/secure-pdf-workflow",
+      "/guides/developer-tools",
+      "/resources",
+      "/compare"
+    ]
+  }
+}

@@ -15,7 +15,6 @@ namespace ratpdf.Content
             "browser-background-remover-privacy" => BrowserBgPrivacy,
             "json-formatter-api-debugging" => JsonApiDebug,
             "jwt-decoder-oauth-integration" => JwtOAuth,
-            "medical-calculator-clinical-documentation" => MedicalDoc,
             _ => null
         };
 
@@ -74,14 +73,59 @@ namespace ratpdf.Content
             """;
 
         private const string HtmlDev = """
-            <p>Developers use HTML-to-PDF for invoices, tickets, and report exports. RatPDF's <a href="/pdf/htmltopdf">HTML to PDF</a> tool complements server-side libraries when you need a quick render without deploying code.</p>
-            <h2>Tips for clean output</h2>
+            <p>Teams pick an <strong>HTML to PDF API</strong> when invoices, tickets, or reports must render server-side — but the market spans headless Chrome, legacy WebKit wrappers, and hosted SaaS. This guide compares common approaches and when RatPDF's browser <a href="/pdf/htmltopdf">HTML to PDF</a> tool fits (no deploy, no API key).</p>
+
+            <h2>HTML to PDF API alternatives compared</h2>
+            <div class="table-responsive"><table class="table table-bordered table-sm">
+            <thead><tr><th>Approach</th><th>Best for</th><th>Trade-offs</th></tr></thead>
+            <tbody>
+            <tr><td><strong>Puppeteer / Playwright</strong></td><td>Full CSS3, SPAs after render</td><td>Ops overhead — Chrome in Docker, memory per job</td></tr>
+            <tr><td><strong>wkhtmltopdf</strong></td><td>Legacy templates, simple HTML</td><td>Stale WebKit; flexbox gaps; maintenance mode</td></tr>
+            <tr><td><strong>iText html2pdf / OpenPDF</strong></td><td>Java/.NET server PDF stacks</td><td>No JS execution; inline CSS works best</td></tr>
+            <tr><td><strong>Gotenberg</strong></td><td>Self-hosted API wrapping Chromium</td><td>You run and scale the container fleet</td></tr>
+            <tr><td><strong>DocRaptor / PDFShift / similar SaaS</strong></td><td>Managed API, SLA, PrinceXML option</td><td>Per-document cost; data leaves your VPC</td></tr>
+            <tr><td><strong>Browser print → PDF</strong></td><td>One-off exports</td><td>Not automatable; margins inconsistent</td></tr>
+            <tr><td><strong>RatPDF HTML to PDF</strong></td><td>Ad-hoc templates, QA renders, small batches</td><td>Not a REST API — browser upload; 3 free uses/day</td></tr>
+            </tbody></table></div>
+
+            <h2>Decision tree</h2>
+            <ol>
+            <li><strong>Need JavaScript to run?</strong> → Puppeteer, Playwright, or Gotenberg — not static html2pdf alone.</li>
+            <li><strong>100% self-contained HTML + CSS?</strong> → iText html2pdf (RatPDF uses this) or wkhtmltopdf for simple layouts.</li>
+            <li><strong>Don't want to operate Chrome?</strong> → Hosted API (DocRaptor, PDFShift) or RatPDF for manual batches.</li>
+            <li><strong>Unicode invoices (₹, €, CJK)?</strong> → Embed fonts in HTML; test with same engine as production.</li>
+            </ol>
+
+            <h2>CSS and font pitfalls (all engines)</h2>
             <ul>
-            <li>Use <code>@page</code> CSS for margins and page breaks</li>
-            <li>Prefer web-safe or embedded fonts</li>
-            <li>Test with the same HTML you send to production — not live SPA URLs</li>
+            <li>Use <code>@page { size: A4; margin: 20mm; }</code> for print margins — not body padding alone</li>
+            <li>Prefer inline or embedded CSS; relative <code>url(font.woff2)</code> paths break on server render</li>
+            <li>Test with production HTML snapshot — not live SPA URLs that need auth cookies</li>
+            <li>Page breaks: <code>page-break-before: always</code> on section headers</li>
             </ul>
-            <p>Guide: <a href="/guides/html-to-pdf">HTML to PDF guide</a></p>
+
+            <h2>Original example: invoice template QA</h2>
+            <p>Startup renders GST invoice HTML from their Node app via Puppeteer in production. Designer updates CSS — staging API queue is backed up. Developer pastes static HTML into RatPDF HTML to PDF, verifies table alignment and ₹ symbol in 30 seconds, then promotes CSS to Puppeteer template. Production API unchanged; RatPDF used as visual regression shortcut.</p>
+
+            <h2>When RatPDF is enough vs when you need an API</h2>
+            <table class="table table-bordered table-sm">
+            <thead><tr><th>Scenario</th><th>RatPDF tool</th><th>Self-hosted API</th></tr></thead>
+            <tbody>
+            <tr><td>Monthly manual report export</td><td>Yes</td><td>Overkill</td></tr>
+            <tr><td>1000 tickets/hour from queue</td><td>No</td><td>Yes — Puppeteer/Gotenberg</td></tr>
+            <tr><td>CI snapshot test of one template</td><td>Yes</td><td>Optional</td></tr>
+            <tr><td>Customer-facing SLA + retry logic</td><td>No</td><td>Yes — hosted or own fleet</td></tr>
+            </tbody>
+            </table>
+
+            <h2>Related resources</h2>
+            <ul>
+            <li><a href="/guides/html-to-pdf">HTML to PDF guide</a></li>
+            <li><a href="/guides/developer-tools-guide">Developer tools hub</a></li>
+            <li><a href="/guides/pdf-to-text-python-workflow">PDF to text Python workflow</a></li>
+            <li><a href="/blog/json-formatter-api-debugging">JSON formatter for API debugging</a></li>
+            </ul>
+            <p><a href="/pdf/htmltopdf">Try HTML to PDF →</a></p>
             """;
 
         private const string RedactionVsPassword = """
@@ -159,18 +203,6 @@ namespace ratpdf.Content
             </ul>
             <p>Use the <a href="/pdf/jwtdecoder">JWT decoder</a> to inspect payload JSON, then validate signatures server-side with the issuer's JWKS. Never paste production refresh tokens into shared machines.</p>
             <p>Guide: <a href="/guides/jwt-decoder-guide">JWT decoder guide</a></p>
-            """;
-
-        private const string MedicalDoc = """
-            <p>Clinical calculators help shared decision-making when documented appropriately. RatPDF's <a href="/tools/medical">medical tools hub</a> covers BMI, eGFR, HEART, CHA₂DS₂-VASc, and Wells — all browser-based with no patient data stored.</p>
-            <h2>Documentation tips</h2>
-            <ul>
-            <li>Record the score, date, and inputs used (e.g. creatinine value for eGFR)</li>
-            <li>Note that calculators are adjuncts — not standalone diagnoses</li>
-            <li>Link institutional protocols for anticoagulation or imaging pathways</li>
-            </ul>
-            <p>Guides: <a href="/guides/bmi-calculator-guide">BMI</a> · <a href="/guides/egfr-calculator-guide">eGFR</a> · <a href="/guides/heart-score-guide">HEART score</a></p>
-            <p><em>Educational use only — not medical advice.</em></p>
             """;
     }
 }

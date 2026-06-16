@@ -9,6 +9,7 @@ namespace ratpdf.Models
         public required string Description { get; init; }
         public required string Category { get; init; }
         public string? ToolUrl { get; init; }
+        public string? Cluster { get; init; }
         public required string BodyHtml { get; init; }
         public DateTime Published { get; init; }
         public DateTime? LastReviewed { get; init; }

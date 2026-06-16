@@ -4,7 +4,7 @@ using ratpdf.Services.Seo;
 
 namespace ratpdf.Services
 {
-    /// <summary>Programmatic SEO for medical and calculator tool long-tail intents.</summary>
+    /// <summary>Programmatic SEO for calculator tool long-tail intents.</summary>
     public static class ToolCategorySeoLandingGenerator
     {
         public sealed record LandingConfig(
@@ -18,11 +18,6 @@ namespace ratpdf.Services
 
         private static readonly LandingConfig[] Configs =
         [
-            BmiCalculator(),
-            EgfrCalculator(),
-            HeartScore(),
-            Cha2ds2Score(),
-            WellsScore(),
             EmiCalculator(),
             AgeCalculator(),
             PercentageCalculator(),
@@ -89,57 +84,6 @@ namespace ratpdf.Services
                 FAQ = ProgrammaticSeoTemplates.BuildFaqs(category, pageType, displayTitle, cfg.ToolLinkText, cfg.ToolUrl, cfg.VerbPhrase),
             };
         }
-
-        private static LandingConfig BmiCalculator() => new(
-            "medical-tools", "/bmi-calculator", "BMI Calculator", "calculate body mass index",
-            "/tools/medical", "Medical tools",
-            [
-                "bmi calculator for women", "bmi calculator for men", "bmi calculator for seniors",
-                "bmi calculator metric units", "bmi calculator imperial units", "bmi calculator for athletes",
-                "bmi calculator for children", "bmi calculator for pregnancy", "bmi calculator kg cm",
-                "bmi calculator lbs inches", "bmi calculator for weight loss", "bmi calculator normal range",
-                "bmi calculator online free", "bmi calculator for obesity screening", "bmi calculator for teens",
-            ]);
-
-        private static LandingConfig EgfrCalculator() => new(
-            "medical-tools", "/egfr-calculator", "eGFR Calculator", "estimate glomerular filtration rate",
-            "/tools/medical", "Medical tools",
-            [
-                "egfr calculator for elderly", "egfr calculator ckd staging", "egfr calculator from creatinine",
-                "egfr calculator mdrd", "egfr calculator ckdepi", "egfr calculator for diabetes",
-                "egfr calculator online free", "egfr calculator pediatric", "egfr calculator black race coefficient",
-                "egfr calculator for nephrology", "egfr calculator mg dl", "egfr calculator umol l",
-            ]);
-
-        private static LandingConfig HeartScore() => new(
-            "medical-tools", "/heart-score", "HEART Score Calculator", "calculate HEART score for chest pain",
-            "/tools/medical", "Medical tools",
-            [
-                "heart score calculator chest pain", "heart score for ed triage", "heart score low risk criteria",
-                "heart score calculator online", "heart score for acute coronary syndrome", "heart score mace risk",
-                "heart score calculator free", "heart score emergency department", "heart score protocol",
-                "heart score vs troponin", "heart score clinical decision rule",
-            ]);
-
-        private static LandingConfig Cha2ds2Score() => new(
-            "medical-tools", "/cha2ds2-vasc-score", "CHA₂DS₂-VASc Calculator", "calculate CHA₂DS₂-VASc stroke risk",
-            "/tools/medical", "Medical tools",
-            [
-                "cha2ds2 vasc calculator", "cha2ds2 vasc score atrial fibrillation", "cha2ds2 vasc anticoagulation",
-                "cha2ds2 vasc calculator online", "cha2ds2 vasc score interpretation", "cha2ds2 vasc for stroke risk",
-                "cha2ds2 vasc calculator free", "cha2ds2 vasc elderly patient", "cha2ds2 vasc female score",
-                "cha2ds2 vasc diabetes hypertension",
-            ]);
-
-        private static LandingConfig WellsScore() => new(
-            "medical-tools", "/wells-score", "Wells Score Calculator", "calculate Wells score for DVT or PE",
-            "/tools/medical", "Medical tools",
-            [
-                "wells score dvt calculator", "wells score pe calculator", "wells criteria pulmonary embolism",
-                "wells score deep vein thrombosis", "wells score calculator online", "wells score cut off",
-                "wells score clinical probability", "wells score for leg swelling", "wells score emergency medicine",
-                "wells score d dimer pathway",
-            ]);
 
         private static LandingConfig EmiCalculator() => new(
             "calculator-tools", "/emi-calculator", "EMI Calculator", "calculate loan EMI",

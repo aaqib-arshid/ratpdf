@@ -1,0 +1,72 @@
+{
+  "generated": "2026-06-16",
+  "authority_slugs_in_waves": 594,
+  "upgrade_completed": 328,
+  "upgrade_total": 406,
+  "upgrade_coverage_pct": 80.8,
+  "priority_score_captured_pct": 83.7,
+  "create_remaining": 450,
+  "maintain_remaining": 145,
+  "top_10_pending_upgrade": [
+    {
+      "slug": "glossary-dpi",
+      "keyword": "what is dpi",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-embedded-files",
+      "keyword": "what is embedded files",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-encoding",
+      "keyword": "what is encoding",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-extract",
+      "keyword": "what is extract",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-factur-x",
+      "keyword": "what is factur-x",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-flate-compression",
+      "keyword": "what is flate compression",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-form-field",
+      "keyword": "what is form field",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-full-embedding",
+      "keyword": "what is full embedding",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-hra-receipt",
+      "keyword": "what is hra receipt",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    },
+    {
+      "slug": "glossary-hsn-code",
+      "keyword": "what is hsn code",
+      "score": 59,
+      "cluster": "PDF Productivity"
+    }
+  ]
+}

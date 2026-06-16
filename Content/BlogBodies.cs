@@ -84,7 +84,7 @@ namespace ratpdf.Content
             <li>Place of supply for inter-state IGST</li>
             </ul>
             <h2>PDF delivery</h2>
-            <p>Export PDF from your <a href="/Invoice/Create">invoice generator</a>, email to client, and retain a copy for 6+ years per statutory guidance. Compress archived years annually.</p>
+            <p>Export PDF from your <a href="/invoice/create">invoice generator</a>, email to client, and retain a copy for 6+ years per statutory guidance. Compress archived years annually. Full format guide: <a href="/guides/gst-invoice-format-india">GST invoice format India</a>.</p>
             """;
 
         private const string SecurePdf = """
@@ -124,7 +124,7 @@ namespace ratpdf.Content
             <li>Vector logos look jagged</li>
             </ul>
             <h2>RatPDF approach</h2>
-            <p>iText smart mode preserves vectors. After merge, run <a href="/guides/compress-pdf-guide">compression</a> only if size requires it — not by default.</p>
+            <p>iText smart mode preserves vectors. Full guide: <a href="/guides/merge-pdf-without-quality-loss">merge PDF without losing quality</a>. After merge, run <a href="/guides/compress-pdf-guide">compression</a> only if size requires it — not by default.</p>
             """;
     }
 }

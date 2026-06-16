@@ -60,9 +60,6 @@ namespace ratpdf.Services.Seo
             string hubHref,
             string toolLinkText)
         {
-            if (category == ProgrammaticToolCategory.MedicalCalculator)
-                return BuildMedicalCalculator(type, displayTitle, toolLinkHtml, toolHref, toolLinkText, hubHref);
-
             if (category == ProgrammaticToolCategory.GeneralCalculator)
                 return BuildGeneralCalculator(displayTitle, toolLinkHtml, toolHref, toolLinkText, hubHref);
 
@@ -84,46 +81,10 @@ namespace ratpdf.Services.Seo
             string toolHref,
             string verbPhrase)
         {
-            if (category == ProgrammaticToolCategory.MedicalCalculator)
-                return BuildMedicalFaqs(displayTitle, toolLinkText, toolHref);
-
             if (category == ProgrammaticToolCategory.GeneralCalculator)
                 return BuildCalculatorFaqs(displayTitle, toolLinkText, toolHref);
 
             return BuildPdfFaqs(type, displayTitle, toolLinkText, toolHref, verbPhrase);
-        }
-
-        private static string BuildMedicalCalculator(
-            ProgrammaticPageType type,
-            string displayTitle,
-            string toolLink,
-            string toolHref,
-            string toolLinkText,
-            string hubHref)
-        {
-            var intro = type == ProgrammaticPageType.UseCase
-                ? $"<p>Looking for <strong>{displayTitle}</strong>? Use the free {toolLink} on RatPDF.</p>"
-                : $"<p>Use the free <strong>{displayTitle}</strong> on RatPDF. Enter the required clinical values and the calculator returns the result instantly.</p>";
-
-            return $"""
-                {intro}
-                <p><strong>Educational use only</strong> — not a substitute for clinical judgment. Always apply local protocols and treat the patient, not the number.</p>
-                <h2>How to use {toolLinkText}</h2>
-                <ol>
-                <li>Open {toolLink} at ratpdf.com{toolHref}.</li>
-                <li>Enter the required values (height/weight, creatinine, score components, etc.).</li>
-                <li>The calculator computes the result automatically.</li>
-                <li>Review the output against clinical reference ranges.</li>
-                <li>Document the result in your notes if needed.</li>
-                </ol>
-                <h2>Why use RatPDF?</h2>
-                <ul>
-                <li>Browser-based — no install on locked-down hospital laptops</li>
-                <li>No patient identifiers required</li>
-                <li>Free tier for light use; <a href="/Subscription/Plans">Pro</a> for high-volume workflows</li>
-                </ul>
-                <p>Explore more <a href="{hubHref}">medical calculators</a> or return to the <a href="/tools/medical">medical tools hub</a>.</p>
-                """;
         }
 
         private static string BuildGeneralCalculator(
@@ -213,22 +174,6 @@ namespace ratpdf.Services.Seo
                 <p><strong>{displayTitle}</strong> — users in {region} can process PDFs in the browser with HTTPS encryption.</p>
                 <p>Use {toolLink} at ratpdf.com{toolHref}. See our <a href="/home/privacy">Privacy Policy</a> for data handling.</p>
                 """;
-        }
-
-        private static List<(string, string)> BuildMedicalFaqs(string displayTitle, string toolLinkText, string toolHref)
-        {
-            var formula = ProgrammaticToolMetaCatalog.ClinicalFormulaHint(toolHref);
-            return
-            [
-                ($"Is the {displayTitle} accurate?",
-                    $"The calculator uses the {formula}. Results should always be interpreted alongside full clinical assessment."),
-                ("Do you store patient data?",
-                    "No patient identifiers are required. Calculations run in your browser session. RatPDF does not log or store clinical inputs."),
-                ("Can I use this on mobile?",
-                    "Yes — all calculators are fully responsive and work on phones and tablets."),
-                ("Is this medical advice?",
-                    "No. This tool is for educational use only and does not replace licensed medical judgment."),
-            ];
         }
 
         private static List<(string, string)> BuildCalculatorFaqs(string displayTitle, string toolLinkText, string toolHref) =>

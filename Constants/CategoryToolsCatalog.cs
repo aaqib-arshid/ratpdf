@@ -2,7 +2,7 @@ using ratpdf.Models;
 
 namespace ratpdf.Constants
 {
-    /// <summary>Category hub pages for non-PDF tool silos (medical, developer, calculators, utilities, business).</summary>
+    /// <summary>Category hub pages for non-PDF tool silos (developer, calculators, utilities, business).</summary>
     public static class CategoryToolsCatalog
     {
         private static readonly Dictionary<string, CategoryToolsPageModel> BySlug =
@@ -154,11 +154,6 @@ namespace ratpdf.Constants
 
         private static string ToolBlurb(string url) => url.ToLowerInvariant() switch
         {
-            var u when u.Contains("bmi") => "Body mass index from height and weight.",
-            var u when u.Contains("egfr") => "Kidney function estimate from creatinine.",
-            var u when u.Contains("heart-score") => "Chest pain risk stratification score.",
-            var u when u.Contains("cha2ds2") => "Stroke risk in atrial fibrillation.",
-            var u when u.Contains("wells") => "DVT and PE pre-test probability.",
             var u when u.Contains("json") => "Validate and pretty-print JSON.",
             var u when u.Contains("jwt") => "Inspect JWT header and payload.",
             var u when u.Contains("htmlformatter") => "Beautify HTML markup.",

@@ -37,6 +37,7 @@ namespace ratpdf.Services
         private static IReadOnlyList<(string Label, string Path)> RelatedPages(SearchIntent intent) =>
         [
             ("Convert PDF to Word", "/pdf-to-word/pdf-to-word"),
+            ("How to convert PDF to Word", "/pdf-to-word/how-to-convert-pdf-to-word"),
             ("PDF to Word guide", "/pdf-to-word/convert-pdf-to-word"),
             ("PDF to Word on iPhone", "/pdf-to-word/pdf-to-word-iphone"),
             ("PDF to Text", "/pdf-to-txt/pdf-to-text-online"),

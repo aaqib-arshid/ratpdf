@@ -5,33 +5,31 @@ namespace ratpdf.Content
     {
         public static string? Get(string slug) => slug switch
         {
-            "compress-pdf-guide" => CompressPdf,
-            "merge-pdf" => MergePdf,
-            "split-pdf" => SplitPdf,
-            "pdf-to-word" => PdfToWord,
+            "compress-pdf-guide" or "merge-pdf" or "split-pdf" or "pdf-to-word" or "ocr-pdf"
+                => GuideBodiesWave7.Get(slug),
+            "edit-pdf" or "rotate-pdf"
+                => GuideBodiesWave8.Get(slug),
+            "pdf-to-excel" or "excel-to-pdf" or "pdf-to-images"
+                => GuideBodiesWave10.Get(slug),
+            "password-protect-pdf" or "unlock-pdf" or "watermark-pdf"
+                => GuideBodiesWave11.Get(slug),
+            "pdf-metadata" or "add-page-numbers"
+                => GuideBodiesWave12.Get(slug),
+            "compress-pdf-for-printing" or "flatten-pdf"
+                => GuideBodiesWave13.Get(slug),
+            "browser-vs-desktop-pdf-tools"
+                => GuideBodiesWave14.Get(slug),
             "word-to-pdf" => WordToPdf,
-            "pdf-to-excel" => PdfToExcel,
-            "excel-to-pdf" => ExcelToPdf,
-            "edit-pdf" => EditPdf,
             "pdf-txt-guide" or "pdf-to-text" => PdfToText,
             "text-to-pdf" => TextToPdf,
-            "watermark-pdf" => WatermarkPdf,
-            "password-protect-pdf" => PasswordPdf,
             "sign-pdf" => SignPdf,
-            "rotate-pdf" => RotatePdf,
             "images-to-pdf" => ImagesToPdf,
             "background-remover" => BackgroundRemover,
             "word-counter-guide" => WordCounter,
             "ring-size-converter-guide" => RingSize,
             "my-ip-guide" => MyIp,
             "invoice-generator-guide" => InvoiceGenerator,
-            "unlock-pdf" => UnlockPdf,
-            "flatten-pdf" => FlattenPdf,
-            "pdf-to-images" => PdfToImages,
             "extract-images-from-pdf" => ExtractImages,
-            "ocr-pdf" => OcrPdf,
-            "add-page-numbers" => PageNumbers,
-            "pdf-metadata" => PdfMetadata,
             "watermark-vs-password-pdf" => WatermarkVsPassword,
             "sign-pdf-legally" => SignPdfLegally,
             "pdf-tool-alternatives" => PdfToolAlternatives,
@@ -59,11 +57,68 @@ namespace ratpdf.Content
             <ul>
             <li>Start with <em>Medium</em>; only use High if the portal still rejects the file.</li>
             <li>For multi-document bundles, <a href="/guides/merge-pdf">merge PDFs first</a>, then compress once.</li>
+            <li>Court e-filing: <a href="/guides/compress-pdf-efiling">compress PDF for e-filing</a>.</li>
+            <li>LMS submissions: <a href="/guides/compress-pdf-for-lms">compress PDF for LMS</a>.</li>
+            <li>Insurance claim uploads: <a href="/guides/compress-pdf-insurance-claims">compress PDF for insurance claims</a>.</li>
+            <li>Job applications: <a href="/guides/compress-pdf-for-job-application">compress PDF for job application</a>.</li>
+            <li>Indeed uploads: <a href="/guides/compress-pdf-for-indeed">compress PDF for Indeed</a>.</li>
+            <li>LinkedIn resumes: <a href="/guides/compress-pdf-for-linkedin">compress PDF for LinkedIn</a>.</li>
+            <li>University applications: <a href="/guides/compress-pdf-for-university-application">compress PDF for university application</a>.</li>
+            <li>WhatsApp sharing: <a href="/guides/compress-pdf-for-whatsapp">compress PDF for WhatsApp</a>.</li>
+            <li>Telegram sharing: <a href="/guides/compress-pdf-for-telegram">compress PDF for Telegram</a>.</li>
+            <li>Naukri resumes: <a href="/guides/compress-pdf-for-naukri">compress PDF for Naukri</a>.</li>
+            <li>Cloud storage quota: <a href="/guides/compress-pdf-cloud-storage">compress PDF for cloud storage</a>.</li>
+            <li>Print workflows: <a href="/guides/compress-pdf-for-printing">compress PDF for printing</a>.</li>
+            <li>Workday apply: <a href="/guides/compress-pdf-for-workday">compress PDF for Workday</a>.</li>
+            <li>USAJOBS: <a href="/guides/compress-pdf-usajobs">compress PDF for USAJOBS</a>.</li>
+            <li>iPhone/iPad: <a href="/guides/compress-pdf-on-iphone">compress PDF on iPhone</a>.</li>
+            <li>Android: <a href="/guides/compress-pdf-on-android">compress PDF on Android</a>.</li>
+            <li>Mac: <a href="/guides/compress-pdf-on-mac">compress PDF on Mac</a>.</li>
+            <li>Windows / Chromebook: <a href="/guides/compress-pdf-on-windows">compress PDF on Windows</a>.</li>
+            <li>Image-heavy PDFs: <a href="/guides/compress-pdf-with-images">compress PDF with images</a>.</li>
+            <li>Quality preservation: <a href="/guides/compress-pdf-without-quality-loss">compress without quality loss</a>.</li>
+            <li>Students / LMS: <a href="/guides/compress-pdf-students">compress PDF for students</a>.</li>
+            <li>Freelancers / client delivery: <a href="/guides/compress-pdf-freelancers">compress PDF for freelancers</a>.</li>
+            <li>Teachers / LMS handouts: <a href="/guides/compress-pdf-teachers">compress PDF for teachers</a>.</li>
+            <li>Recruiters / candidate packs: <a href="/guides/compress-pdf-recruiters">compress PDF for recruiters</a>.</li>
+            <li>HR / onboarding: <a href="/guides/compress-pdf-hr">compress PDF for HR</a>.</li>
+            <li>Government portals: <a href="/guides/compress-pdf-government">compress PDF for government</a>.</li>
+            <li>Ecommerce / catalogs: <a href="/guides/compress-pdf-ecommerce">compress PDF for ecommerce</a>.</li>
+            <li>Real estate listings: <a href="/guides/compress-pdf-real-estate">compress PDF for real estate</a>.</li>
+            <li>Nonprofits / grants: <a href="/guides/compress-pdf-nonprofits">compress PDF for nonprofits</a>.</li>
+            <li>Construction / permits: <a href="/guides/compress-pdf-construction">compress PDF for construction</a>.</li>
+            <li>Marketing agencies: <a href="/guides/compress-pdf-marketing-agencies">compress PDF for marketing agencies</a>.</li>
+            <li>Healthcare / payer portals: <a href="/guides/compress-pdf-healthcare-admin">compress PDF for healthcare administrators</a>.</li>
+            <li>Proton Mail: <a href="/guides/compress-pdf-for-protonmail">compress PDF for Proton Mail</a>.</li>
+            <li>Yahoo Mail: <a href="/guides/compress-pdf-for-yahoo-mail">compress PDF for Yahoo Mail</a>.</li>
+            <li>Visa uploads: <a href="/guides/compress-pdf-for-visa-application">compress PDF for visa application</a>.</li>
+            <li>Schengen VFS: <a href="/guides/compress-pdf-schengen-visa">compress PDF for Schengen visa</a>.</li>
+            <li>UKVI: <a href="/guides/compress-pdf-ukvi">compress PDF for UKVI</a>.</li>
+            <li>Australia ImmiAccount: <a href="/guides/compress-pdf-home-affairs-australia">compress PDF for Home Affairs Australia</a>.</li>
+            <li>Canada IRCC: <a href="/guides/compress-pdf-immigration-canada">compress PDF for immigration Canada</a>.</li>
+            <li>UCAS (UK): <a href="/guides/compress-pdf-ucas">compress PDF for UCAS</a>.</li>
+            <li>UIDAI / Aadhaar: <a href="/guides/compress-pdf-uidai">compress PDF for UIDAI</a>.</li>
+            <li>Passport applications: <a href="/guides/compress-pdf-for-passport-application">compress PDF for passport application</a>.</li>
+            <li>Government portals: <a href="/guides/compress-pdf-for-government-forms">compress PDF for government forms</a>.</li>
+            <li>Email (all providers): <a href="/guides/compress-pdf-for-email">compress PDF for email</a>.</li>
+            <li>LinkedIn resumes: <a href="/guides/compress-pdf-for-linkedin">compress PDF for LinkedIn</a>.</li>
+            <li>IRCTC uploads: <a href="/guides/compress-pdf-irctc">compress PDF for IRCTC</a>.</li>
+            <li>Merge then compress: <a href="/guides/compress-before-merge-pdf">compress before or after merge</a> · <a href="/guides/combine-then-compress-pdf">combine then compress workflow</a> · <a href="/guides/merge-vs-compress">merge vs compress</a> · <a href="/guides/compress-vs-split">compress vs split</a>.</li>
+            <li>Before email: <a href="/guides/pdf-email-attachment-checklist">PDF email attachment checklist</a>.</li>
             <li>Scanned pages compress dramatically because photos dominate size — expect the biggest wins there.</li>
             <li>Keep an uncompressed archive copy before aggressive compression for long-term records.</li>
+            <li>Size grew after compress? <a href="/guides/compress-pdf-made-it-larger">why compression made PDF larger</a></li>
+            <li>Why so big? <a href="/guides/why-is-pdf-file-so-large">why is my PDF so large</a></li>
+            <li>Scanned vs digital: <a href="/guides/compress-scanned-vs-digital-pdf">compress scanned vs digital PDF</a></li>
+            <li>Engine: <a href="/guides/ghostscript-pdf-compression">Ghostscript compression explained</a></li>
+            <li>Bank statements: <a href="/guides/compress-bank-statement-pdf">compress bank statement PDF</a></li>
+            <li>GST invoices: <a href="/guides/compress-gst-invoice-pdf">compress GST invoice PDF</a></li>
+            <li>PAN card: <a href="/guides/compress-pan-card-pdf">compress PAN card PDF</a></li>
+            <li>Accountants: <a href="/guides/compress-pdf-accountants">compress PDF for accountants</a></li>
+            <li>Lawyers: <a href="/guides/compress-pdf-lawyers">compress PDF for lawyers</a></li>
             </ul>
             <h2>When not to compress</h2>
-            <p>Print-ready artwork, prepress PDFs, and files with embedded CAD vectors may lose subtle detail at High settings. For those, use Low or skip compression entirely.</p>
+            <p>Print-ready artwork, prepress PDFs, and files with embedded CAD vectors may lose subtle detail at High settings. For those, use Low or skip compression entirely. See <a href="/guides/compress-pdf-for-printing">compress PDF for printing</a> and <a href="/guides/compress-pdf-without-quality-loss">compress without quality loss</a> for print-shop and legal workflows. New to compression? <a href="/guides/glossary-compress-pdf-online">What is compress PDF online?</a></p>
             """;
 
         private const string MergePdf = """
@@ -80,8 +135,20 @@ namespace ratpdf.Content
             <h2>Tips for clean results</h2>
             <ul>
             <li>Merge in logical order: cover letter → resume → portfolio.</li>
+            <li>Custom order tips: <a href="/guides/merge-pdf-custom-order">merge PDF in custom order</a>.</li>
             <li>If one file is landscape and another portrait, rotate pages first with our <a href="/guides/rotate-pdf">rotate guide</a>.</li>
             <li>After merging a large pack, <a href="/guides/compress-pdf-guide">compress</a> for email.</li>
+            <li>Password-protected sources: <a href="/guides/merge-password-protected-pdf">merge password-protected PDFs</a>.</li>
+            <li>Visa applicants: see <a href="/guides/merge-pdf-visa-application">merge PDF for visa application</a>.</li>
+            <li>Court filing: <a href="/guides/merge-pdf-court-filing">merge PDF for court filing</a>.</li>
+            <li>Mixed scans + digital: <a href="/guides/merge-scanned-digital-pdf">merge scanned and digital PDFs</a>.</li>
+            <li>Quality preservation: <a href="/guides/merge-pdf-without-quality-loss">merge PDF without losing quality</a>.</li>
+            <li>Accountants / board packs: <a href="/guides/merge-pdf-accountants">merge PDF for accountants</a>.</li>
+            <li>Students / readings: <a href="/guides/merge-pdf-students">merge PDF for students</a>.</li>
+            <li>Beginner tutorial: <a href="/guides/how-to-merge-pdf-files">how to merge PDF files</a>.</li>
+            <li>Merge online: <a href="/guides/merge-pdf-online">merge PDF online</a>.</li>
+            <li>Organize / reorder pages: <a href="/guides/organize-pdf-pages">organize PDF pages online</a>.</li>
+            <li>Combine then compress: <a href="/guides/combine-then-compress-pdf">merge first, compress once</a> · <a href="/guides/merge-vs-compress">merge vs compress decision guide</a>.</li>
             </ul>
             """;
 
@@ -95,6 +162,14 @@ namespace ratpdf.Content
             <li><strong>Legal</strong> — extract exhibits and schedules from a master contract.</li>
             <li><strong>Finance</strong> — split multi-month bank PDFs by statement period.</li>
             <li><strong>Education</strong> — pull one chapter for students without sharing the full textbook scan.</li>
+            </ul>
+            <h2>Split workflow guides</h2>
+            <ul>
+            <li><a href="/guides/split-pdf-page-range">Split PDF by page range</a></li>
+            <li><a href="/guides/extract-single-page-pdf">Extract single page from PDF</a></li>
+            <li><a href="/guides/split-pdf-for-email">Split PDF for email</a> (when compress is not enough)</li>
+            <li><a href="/guides/split-pdf-by-size">Split PDF by size</a> (MB-limited chunks)</li>
+            <li><a href="/guides/organize-pdf-pages">Organize PDF pages</a> (reorder after split)</li>
             </ul>
             <p>Try it now: <a href="/PDF/Split">Split PDF</a>.</p>
             """;
@@ -121,6 +196,41 @@ namespace ratpdf.Content
             <li>Use the original digital PDF when possible — not a photocopy re-scan.</li>
             <li>Unlock password-protected files before upload.</li>
             <li>Image-heavy scans may produce Word with page images — visually identical, ideal for printing.</li>
+            <li>Resume editing: <a href="/guides/pdf-to-word-resume">PDF to Word for resume</a></li>
+            <li>Keep tables and logos: <a href="/guides/pdf-to-word-keep-formatting">PDF to Word keep formatting</a></li>
+            <li>Invoice edits: <a href="/guides/pdf-to-word-invoice">PDF to Word for invoice</a></li>
+            <li>Scanned documents: <a href="/guides/scanned-pdf-to-word">scanned PDF to Word</a></li>
+            <li>Mac users: <a href="/guides/pdf-to-word-mac">PDF to Word on Mac</a></li>
+            <li>No Office license: <a href="/guides/pdf-to-word-without-word">PDF to Word without Microsoft Word</a></li>
+            <li>Google Docs workflow: <a href="/guides/pdf-to-word-vs-google-docs">PDF to Word vs Google Docs</a></li>
+            <li>Many files: <a href="/guides/batch-pdf-to-word">batch PDF to Word workflow</a></li>
+            <li>Word vs plain text: <a href="/guides/pdf-to-word-vs-pdf-to-text">PDF to Word vs PDF to Text</a></li>
+            <li>Beginner definition: <a href="/guides/glossary-pdf-to-word-converter">what is a PDF to Word converter?</a></li>
+            <li>Garbled symbols or boxes: <a href="/guides/pdf-to-word-garbled-text">PDF to Word garbled text fixes</a></li>
+            </ul>
+            <h2>Document-type workflows</h2>
+            <ul>
+            <li><a href="/guides/convert-contract-pdf-to-word">Convert contract PDF to Word</a></li>
+            <li><a href="/guides/convert-nda-pdf-to-word">Convert NDA PDF to Word</a></li>
+            <li><a href="/guides/convert-lease-agreement-pdf-to-word">Convert lease agreement PDF to Word</a></li>
+            <li><a href="/guides/convert-bank-statement-pdf-to-word">Convert bank statement PDF to Word</a></li>
+            <li><a href="/guides/convert-sow-pdf-to-word">Convert SOW PDF to Word</a></li>
+            <li><a href="/guides/convert-purchase-order-pdf-to-word">Convert purchase order PDF to Word</a></li>
+            <li><a href="/guides/convert-quotation-pdf-to-word">Convert quotation PDF to Word</a></li>
+            <li><a href="/guides/convert-proforma-invoice-pdf-to-word">Convert proforma invoice PDF to Word</a></li>
+            <li><a href="/guides/convert-receipt-pdf-to-word">Convert receipt PDF to Word</a></li>
+            <li><a href="/guides/convert-credit-note-pdf-to-word">Convert credit note PDF to Word</a></li>
+            <li><a href="/guides/convert-debit-note-pdf-to-word">Convert debit note PDF to Word</a></li>
+            <li><a href="/guides/convert-delivery-note-pdf-to-word">Convert delivery note PDF to Word</a></li>
+            <li><a href="/guides/convert-tax-return-pdf-to-word">Convert tax return PDF to Word</a></li>
+            <li><a href="/guides/convert-transcript-pdf-to-word">Convert transcript PDF to Word</a></li>
+            </ul>
+            <h2>Programmatic guides</h2>
+            <ul>
+            <li><a href="/pdf-to-word/pdf-to-word">PDF to Word online</a></li>
+            <li><a href="/pdf-to-word/how-to-convert-pdf-to-word">How to convert PDF to Word</a></li>
+            <li><a href="/pdf-to-word/convert-pdf-to-word">Convert PDF to Word</a></li>
+            <li><a href="/pdf-to-word/pdf-to-word-iphone">PDF to Word on iPhone</a></li>
             </ul>
             <p><a href="/PDF/PdfToDoc">Convert PDF to Word now →</a></p>
             """;
@@ -177,6 +287,17 @@ namespace ratpdf.Content
             </ul>
             <h2>Limitations</h2>
             <p>Complex prepress, CMYK colour proofing, and heavy form redesign still belong in desktop tools. For watermarks and passwords, use dedicated <a href="/guides/watermark-pdf">watermark</a> and <a href="/guides/password-protect-pdf">protect</a> tools.</p>
+            <h2>Edit PDF workflow guides</h2>
+            <ul>
+            <li><a href="/guides/edit-pdf-without-acrobat">Edit PDF without Adobe</a></li>
+            <li><a href="/guides/edit-scanned-pdf">Edit scanned PDF</a> (OCR first)</li>
+            <li><a href="/guides/add-image-to-pdf">Add image to PDF</a></li>
+            <li><a href="/guides/edit-pdf-forms">Edit PDF forms</a></li>
+            <li><a href="/guides/add-page-numbers">Add page numbers</a></li>
+            <li><a href="/guides/rotate-pdf">Rotate PDF pages</a></li>
+            <li><a href="/edit-pdf/edit-pdf-free">Edit PDF free</a> · <a href="/edit-pdf/edit-pdf-add-text">Add text</a> · <a href="/edit-pdf/edit-pdf-add-signature">Add signature</a></li>
+            <li><a href="/blog/pdf-editing-mistakes">PDF editing mistakes</a></li>
+            </ul>
             <p><a href="/PDF/EditPDF">Open PDF editor →</a></p>
             """;
 
@@ -190,6 +311,35 @@ namespace ratpdf.Content
             <li>For editable layout, prefer <a href="/guides/pdf-to-word">PDF to Word</a>.</li>
             <li>Clean scans (straight, good lighting) OCR better.</li>
             <li>Check numbers in financial extracts manually — OCR can confuse 0/O and 1/l.</li>
+            <li>Research workflow: <a href="/guides/pdf-to-text-research">PDF to text for research papers</a></li>
+            <li>Scanned PDFs: <a href="/guides/extract-text-scanned-pdf">extract text from scanned PDF</a></li>
+            <li>Without Adobe: <a href="/guides/extract-text-without-adobe">extract text from PDF without Adobe</a></li>
+            <li>Which tool first: <a href="/guides/ocr-vs-pdf-to-text">OCR vs PDF to Text</a></li>
+            <li>Tesseract vs cloud OCR: <a href="/guides/tesseract-vs-online-ocr">Tesseract vs online OCR</a></li>
+            <li>Word vs text export: <a href="/guides/pdf-to-word-vs-pdf-to-text">PDF to Word vs PDF to Text</a></li>
+            <li>Bank statements: <a href="/guides/pdf-to-text-bank-statements">PDF to text for bank statements</a></li>
+            <li>Multilingual UTF-8: <a href="/guides/pdf-to-text-multilingual">PDF to text multilingual</a></li>
+            <li>Hindi OCR: <a href="/guides/ocr-pdf-hindi">OCR PDF Hindi</a></li>
+            <li>Arabic OCR: <a href="/guides/ocr-pdf-arabic">OCR PDF Arabic</a></li>
+            <li>Spanish OCR: <a href="/guides/ocr-pdf-spanish">OCR PDF Spanish</a></li>
+            <li>Chinese OCR: <a href="/guides/ocr-pdf-chinese">OCR PDF Chinese</a></li>
+            <li>French OCR: <a href="/guides/ocr-pdf-french">OCR PDF French</a></li>
+            <li>German OCR: <a href="/guides/ocr-pdf-german">OCR PDF German</a></li>
+            <li>Japanese OCR: <a href="/guides/ocr-pdf-japanese">OCR PDF Japanese</a></li>
+            <li>Russian OCR: <a href="/guides/ocr-pdf-russian">OCR PDF Russian</a></li>
+            <li>Korean OCR: <a href="/guides/ocr-pdf-korean">OCR PDF Korean</a></li>
+            <li>Portuguese OCR: <a href="/guides/ocr-pdf-portuguese">OCR PDF Portuguese</a></li>
+            <li>OCR quality fixes: <a href="/guides/ocr-pdf-poor-quality">OCR poor quality</a></li>
+            <li>Accessibility / screen readers: <a href="/guides/pdf-to-text-accessibility">PDF to text accessibility</a></li>
+            <li>Beginner definition: <a href="/guides/glossary-pdf-to-text-extractor">what is a PDF to text extractor?</a></li>
+            </ul>
+            <h2>Programmatic guides</h2>
+            <ul>
+            <li><a href="/pdf-to-txt/pdf-to-text-online">PDF to text online</a></li>
+            <li><a href="/pdf-to-txt/how-do-i-convert-pdf-to-text">How to convert PDF to text</a></li>
+            <li><a href="/pdf-to-txt/ocr-pdf-to-text">OCR PDF to text</a></li>
+            <li><a href="/pdf-to-txt/how-scanned-pdf-to-text">Scanned PDF to text</a></li>
+            <li><a href="/pdf-to-txt/pdf-to-text-iphone">PDF to text on iPhone</a> · <a href="/pdf-to-txt/pdf-to-text-android">Android</a></li>
             </ul>
             <p><a href="/PDF/PdfToText">PDF to Text tool →</a></p>
             """;
@@ -334,6 +484,41 @@ namespace ratpdf.Content
             </ul>
             <h2>Pro features</h2>
             <p>Remove watermarks, save reusable templates, and add your logo on Pro plans. See <a href="/Subscription/Plans">pricing</a>.</p>
+            <h2>Country guides</h2>
+            <ul>
+            <li><a href="/guides/invoice-generator-india">Invoice generator India (GST)</a></li>
+            <li><a href="/guides/invoice-generator-usa">Invoice generator USA</a></li>
+            <li><a href="/guides/invoice-generator-uk">Invoice generator UK (VAT)</a></li>
+            <li><a href="/guides/invoice-generator-australia">Invoice generator Australia (GST)</a></li>
+            <li><a href="/guides/invoice-generator-canada">Invoice generator Canada (GST/HST)</a></li>
+            <li><a href="/guides/invoice-generator-france">Invoice generator France (TVA)</a></li>
+            <li><a href="/guides/invoice-generator-germany">Invoice generator Germany (USt)</a></li>
+            <li><a href="/guides/invoice-generator-singapore">Invoice generator Singapore (GST)</a></li>
+            <li><a href="/guides/invoice-generator-uae">Invoice generator UAE (VAT)</a></li>
+            <li><a href="/guides/invoice-generator-philippines">Invoice generator Philippines (VAT)</a></li>
+            <li><a href="/guides/invoice-generator-new-zealand">Invoice generator New Zealand (GST)</a></li>
+            <li><a href="/guides/invoice-generator-south-africa">Invoice generator South Africa (VAT)</a></li>
+            <li><a href="/guides/invoice-for-freelancers">Invoice for freelancers</a></li>
+            <li>No account required: <a href="/invoice/free-invoice-no-signup">free invoice without signup</a></li>
+            </ul>
+            <h2>Tax &amp; compliance requirements</h2>
+            <ul>
+            <li><a href="/guides/gst-invoice-format-india">GST invoice format India</a></li>
+            <li><a href="/guides/vat-invoice-eu-requirements">EU VAT invoice requirements</a></li>
+            <li><a href="/guides/hmrc-invoice-requirements">UK HMRC invoice requirements</a></li>
+            <li><a href="/guides/ato-invoice-requirements">Australia ATO tax invoice requirements</a></li>
+            <li><a href="/guides/cra-invoice-requirements">Canada CRA invoice requirements</a></li>
+            <li><a href="/guides/irs-tax-pdf-format">IRS tax document PDF format</a></li>
+            <li><a href="/guides/e-invoicing-india-pdf">E-invoicing India PDF</a></li>
+            </ul>
+            <h2>Privacy, accessibility &amp; retention</h2>
+            <ul>
+            <li><a href="/guides/gdpr-pdf-redaction">GDPR PDF redaction</a></li>
+            <li><a href="/guides/hipaa-pdf-handling">HIPAA PDF handling</a></li>
+            <li><a href="/guides/section-508-pdf">Section 508 PDF accessibility</a></li>
+            <li><a href="/guides/wcag-22-pdf">WCAG 2.2 PDF requirements</a></li>
+            <li><a href="/guides/sox-pdf-retention">SOX document retention PDF</a></li>
+            </ul>
             <p><a href="/Invoice/Create">Create invoice →</a></p>
             """;
 
@@ -347,17 +532,7 @@ namespace ratpdf.Content
             <li>Download the decrypted PDF when the job completes.</li>
             </ol>
             <p>RatPDF never bypasses unknown passwords. Use only on files you are authorized to access.</p>
-            """;
-
-        private const string FlattenPdf = """
-            <h2>What flattening does</h2>
-            <p>Interactive forms keep answers in editable fields. Flattening burns those values into the page so recipients cannot change them — essential for tax forms, HR packets, and signed applications.</p>
-            <h2>Workflow</h2>
-            <ol>
-            <li>Fill the PDF in your viewer or our <a href="/PDF/EditPDF">Edit PDF</a> tool.</li>
-            <li>Run <a href="/PDF/FlattenPdf">Flatten PDF</a> to lock field values.</li>
-            <li>Optionally <a href="/PDF/Password">password-protect</a> the final pack.</li>
-            </ol>
+            <p>Next step: <a href="/guides/merge-password-protected-pdf">merge unlocked PDFs</a>.</p>
             """;
 
         private const string PdfToImages = """
@@ -389,6 +564,8 @@ namespace ratpdf.Content
             <li>Scan at 300 DPI, straight pages</li>
             <li>Grayscale for text forms</li>
             <li>Follow with <a href="/PDF/PdfToDoc">PDF to Word</a> if you need editable layout</li>
+            <li>Full workflow: <a href="/guides/ocr-scanned-pdf-workflow">OCR scanned PDF guide</a></li>
+            <li>Extract text: <a href="/guides/extract-text-scanned-pdf">extract text from scanned PDF</a></li>
             </ul>
             """;
 
@@ -505,7 +682,7 @@ namespace ratpdf.Content
             <tr><td><a href="/compare/smallpdf-alternative">Smallpdf</a></td><td>2 tasks/day across all tools</td><td>3 uses per tool/day; 4 GB Pro uploads</td></tr>
             <tr><td><a href="/compare/pdf24-alternative">PDF24</a></td><td>Dated UX; desktop upsell</td><td>Modern hub + invoice PDF workflow</td></tr>
             <tr><td><a href="/compare/adobe-acrobat-alternative">Adobe Acrobat</a></td><td>Account + very limited free</td><td>No install; free tier without Adobe ID</td></tr>
-            <tr><td><a href="/compare/sejda-alternative">Sejda</a></td><td>3 tasks/hour; page caps</td><td>Merge + compress + convert silo</td></tr>
+            <tr><td><a href="/compare/sejda-alternative">Sejda</a></td><td>3 tasks/hour; page caps</td><td>Merge, compress, and convert tools</td></tr>
             <tr><td><a href="/compare/foxit-alternative">Foxit</a></td><td>Desktop-first funnel</td><td>Browser-first SMB workflow</td></tr>
             <tr><td><a href="/compare/sodapdf-alternative">Soda PDF</a></td><td>Watermark; subscription push</td><td>Transparent free tier + guides</td></tr>
             <tr><td><a href="/compare/pdf-candy-alternative">PDF Candy</a></td><td>Fragmented tool pages</td><td>Unified hub + invoice workflow</td></tr>
@@ -517,6 +694,15 @@ namespace ratpdf.Content
             <li><strong>PDF to JPG</strong> — <a href="/pdf/pdftoimages">PDF to Images</a></li>
             <li><strong>Alternative queries</strong> — dedicated <a href="/compare">comparison hub</a></li>
             <li><strong>Business PDFs</strong> — <a href="/invoice/create">Invoice generator</a> → compress → email</li>
+            </ul>
+            <h2>Convert without Adobe</h2>
+            <ul>
+            <li><a href="/guides/word-to-pdf-without-adobe">Word to PDF without Adobe</a></li>
+            <li><a href="/guides/excel-to-pdf-without-adobe">Excel to PDF without Adobe</a></li>
+            <li><a href="/guides/pdf-to-excel-without-adobe">PDF to Excel without Adobe</a></li>
+            <li><a href="/guides/extract-text-without-adobe">Extract text without Adobe</a></li>
+            <li><a href="/guides/extract-images-from-pdf-without-adobe">Extract images without Adobe</a></li>
+            <li><a href="/guides/html-to-pdf-without-adobe">HTML to PDF without Adobe</a></li>
             </ul>
             <h2>Migration checklist</h2>
             <ol>

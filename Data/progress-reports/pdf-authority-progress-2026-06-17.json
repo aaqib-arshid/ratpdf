@@ -1,0 +1,11 @@
+{
+  "generated": "2026-06-17",
+  "authority_slugs_in_waves": 672,
+  "upgrade_completed": 406,
+  "upgrade_total": 406,
+  "upgrade_coverage_pct": 100.0,
+  "priority_score_captured_pct": 100.0,
+  "create_remaining": 450,
+  "maintain_remaining": 145,
+  "top_10_pending_upgrade": []
+}

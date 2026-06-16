@@ -1,0 +1,51 @@
+id,keyword,cluster,intent,competition,priority_score,action,existing_slug,target_url,word_target,notes
+1,adobe acrobat alternative,PDF Collaboration,commercial,medium,100,UPGRADE,adobe-acrobat-alternative,/guides/adobe-acrobat-alternative,1500-4000,Thin template — rewrite to 1500+ words
+2,foxit alternative,PDF Collaboration,commercial,medium,100,UPGRADE,foxit-alternative,/guides/foxit-alternative,1500-4000,Thin template — rewrite to 1500+ words
+3,ilovepdf alternative,PDF Collaboration,commercial,medium,100,UPGRADE,ilovepdf-alternative,/guides/ilovepdf-alternative,1500-4000,Thin template — rewrite to 1500+ words
+4,pdf candy alternative,PDF Collaboration,commercial,medium,100,UPGRADE,pdf-candy-alternative,/guides/pdf-candy-alternative,1500-4000,Thin template — rewrite to 1500+ words
+5,pdf24 alternative,PDF Collaboration,commercial,medium,100,UPGRADE,pdf24-alternative,/guides/pdf24-alternative,1500-4000,Thin template — rewrite to 1500+ words
+6,pdfelement alternative,PDF Collaboration,commercial,medium,100,UPGRADE,pdfelement-alternative,/guides/pdfelement-alternative,1500-4000,Thin template — rewrite to 1500+ words
+7,sejda alternative,PDF Collaboration,commercial,medium,100,UPGRADE,sejda-alternative,/guides/sejda-alternative,1500-4000,Thin template — rewrite to 1500+ words
+8,smallpdf alternative,PDF Collaboration,commercial,medium,100,UPGRADE,smallpdf-alternative,/guides/smallpdf-alternative,1500-4000,Thin template — rewrite to 1500+ words
+9,sodapdf alternative,PDF Collaboration,commercial,medium,100,UPGRADE,sodapdf-alternative,/guides/sodapdf-alternative,1500-4000,Thin template — rewrite to 1500+ words
+10,wondershare alternative,PDF Collaboration,commercial,medium,100,UPGRADE,wondershare-alternative,/guides/wondershare-alternative,1500-4000,Thin template — rewrite to 1500+ words
+71,merge pdf for accountants,PDF Workflows,transactional,medium,100,UPGRADE,merge-pdf-accountants,/guides/merge-pdf-accountants,1500-4000,Thin template — rewrite to 1500+ words
+72,merge pdf for court filing,PDF Workflows,transactional,medium,100,UPGRADE,merge-pdf-court-filing,/guides/merge-pdf-court-filing,1500-4000,Thin template — rewrite to 1500+ words
+73,merge pdf for students,PDF Workflows,transactional,medium,100,UPGRADE,merge-pdf-students,/guides/merge-pdf-students,1500-4000,Thin template — rewrite to 1500+ words
+93,ocr pdf to text,PDF Conversion,transactional,medium,100,UPGRADE,ocr-pdf-to-text,/guides/ocr-pdf-to-text,1500-4000,Thin template — rewrite to 1500+ words
+102,pdf to text online,PDF Conversion,transactional,medium,100,UPGRADE,pdf-to-text-online,/guides/pdf-to-text-online,1500-4000,Thin template — rewrite to 1500+ words
+104,how to convert pdf to word,PDF Conversion,transactional,medium,100,UPGRADE,how-to-convert-pdf-to-word,/guides/how-to-convert-pdf-to-word,1500-4000,Thin template — rewrite to 1500+ words
+105,pdf to word batch convert,PDF Conversion,transactional,medium,100,UPGRADE,batch-pdf-to-word,/guides/batch-pdf-to-word,1500-4000,Thin template — rewrite to 1500+ words
+106,pdf to word converter,PDF Conversion,transactional,medium,100,UPGRADE,pdf-to-word-converter,/guides/pdf-to-word-converter,1500-4000,Thin template — rewrite to 1500+ words
+113,email attachment size limits 2026,PDF Compliance,informational,medium,100,UPGRADE,email-attachment-size-limits-2026,/guides/email-attachment-size-limits-2026,1500-4000,Thin template — rewrite to 1500+ words
+20,compress pdf for gmail upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-gmail,/guides/compress-pdf-for-gmail,1500-4000,Thin template — rewrite to 1500+ words
+26,compress pdf for indeed upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-indeed,/guides/compress-pdf-for-indeed,1500-4000,Thin template — rewrite to 1500+ words
+30,compress pdf for linkedin upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-linkedin,/guides/compress-pdf-for-linkedin,1500-4000,Thin template — rewrite to 1500+ words
+32,compress pdf for naukri upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-naukri,/guides/compress-pdf-for-naukri,1500-4000,Thin template — rewrite to 1500+ words
+33,compress pdf for outlook upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-outlook,/guides/compress-pdf-for-outlook,1500-4000,Thin template — rewrite to 1500+ words
+36,compress pdf for protonmail upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-protonmail,/guides/compress-pdf-for-protonmail,1500-4000,Thin template — rewrite to 1500+ words
+38,compress pdf for telegram upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-telegram,/guides/compress-pdf-for-telegram,1500-4000,Thin template — rewrite to 1500+ words
+39,compress pdf for ucas upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-ucas,/guides/compress-pdf-ucas,1500-4000,Thin template — rewrite to 1500+ words
+40,compress pdf for uidai upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-uidai,/guides/compress-pdf-uidai,1500-4000,Thin template — rewrite to 1500+ words
+41,compress pdf for ukvi upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-ukvi,/guides/compress-pdf-ukvi,1500-4000,Thin template — rewrite to 1500+ words
+43,compress pdf for usajobs upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-usajobs,/guides/compress-pdf-usajobs,1500-4000,Thin template — rewrite to 1500+ words
+45,compress pdf for whatsapp upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-whatsapp,/guides/compress-pdf-for-whatsapp,1500-4000,Thin template — rewrite to 1500+ words
+46,compress pdf for workday upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-workday,/guides/compress-pdf-for-workday,1500-4000,Thin template — rewrite to 1500+ words
+47,compress pdf for yahoo mail upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-yahoo-mail,/guides/compress-pdf-for-yahoo-mail,1500-4000,Thin template — rewrite to 1500+ words
+70,how do i merge pdf files,PDF Workflows,informational,medium,97,UPGRADE,how-to-merge-pdf-files,/guides/how-to-merge-pdf-files,1500-4000,Thin template — rewrite to 1500+ words
+594,sign pdf online,PDF Signing,transactional,medium,97,UPGRADE,sign-pdf,/guides/sign-pdf,1500-4000,
+19,compress pdf for email,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-email,/guides/compress-pdf-for-email,1500-4000,Thin template — rewrite to 1500+ words
+29,compress pdf for job application,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-job-application,/guides/compress-pdf-for-job-application,1500-4000,Thin template — rewrite to 1500+ words
+31,compress pdf for LMS,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-lms,/guides/compress-pdf-for-lms,1500-4000,Thin template — rewrite to 1500+ words
+34,compress pdf for passport,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-passport-application,/guides/compress-pdf-for-passport-application,1500-4000,Thin template — rewrite to 1500+ words
+42,compress pdf for university,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-university-application,/guides/compress-pdf-for-university-application,1500-4000,Thin template — rewrite to 1500+ words
+44,compress pdf for visa,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-visa-application,/guides/compress-pdf-for-visa-application,1500-4000,Thin template — rewrite to 1500+ words
+91,how to convert pdf to text,PDF Conversion,informational,medium,96,UPGRADE,how-to-convert-pdf-to-text,/guides/how-to-convert-pdf-to-text,1500-4000,Thin template — rewrite to 1500+ words
+92,ocr pdf for e-discovery,PDF Conversion,industry,medium,96,UPGRADE,ocr-pdf-ediscovery,/guides/ocr-pdf-ediscovery,1500-4000,Thin template — rewrite to 1500+ words
+94,pdf to text accessibility,PDF Conversion,industry,medium,96,UPGRADE,pdf-to-text-accessibility,/guides/pdf-to-text-accessibility,1500-4000,Thin template — rewrite to 1500+ words
+96,pdf to text for python,PDF Conversion,advanced,medium,96,UPGRADE,pdf-to-text-python-workflow,/guides/pdf-to-text-python-workflow,1500-4000,Thin template — rewrite to 1500+ words
+99,pdf to text multilingual,PDF Conversion,advanced,medium,96,UPGRADE,pdf-to-text-multilingual,/guides/pdf-to-text-multilingual,1500-4000,Thin template — rewrite to 1500+ words
+100,pdf to text on android,PDF Conversion,task-based,medium,96,UPGRADE,pdf-to-text-on-android,/guides/pdf-to-text-on-android,1500-4000,Thin template — rewrite to 1500+ words
+101,pdf to text on iphone,PDF Conversion,task-based,medium,96,UPGRADE,pdf-to-text-on-iphone,/guides/pdf-to-text-on-iphone,1500-4000,Thin template — rewrite to 1500+ words
+103,scanned pdf to text,PDF Conversion,informational,medium,96,UPGRADE,scanned-pdf-to-text,/guides/scanned-pdf-to-text,1500-4000,Thin template — rewrite to 1500+ words
+58,how to compress pdf construction,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-construction,/guides/compress-pdf-construction,1500-4000,Thin template — rewrite to 1500+ words

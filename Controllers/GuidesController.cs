@@ -35,15 +35,6 @@ namespace ratpdf.Controllers
             return View();
         }
 
-        [HttpGet("medical-tools")]
-        public IActionResult MedicalTools()
-        {
-            ViewData["Title"] = "Medical Calculator Guides — BMI, eGFR, HEART & More | RatPDF";
-            ViewData["Description"] = "Step-by-step guides for clinical calculators: BMI, eGFR, HEART score, CHA₂DS₂-VASc, Wells criteria, and the full medical tools hub.";
-            ViewData["CanonicalUrl"] = TopicalAuthority.CanonicalMedicalGuidesHub();
-            return View(ContentLibrary.Guides.Where(g => g.Category == "Medical").OrderBy(g => g.Title).ToList());
-        }
-
         [HttpGet("developer-tools")]
         public IActionResult DeveloperTools()
         {

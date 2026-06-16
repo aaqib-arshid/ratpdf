@@ -9,11 +9,9 @@ namespace ratpdf.Constants
     {
         public const string PdfToolsHubPath = "/guides/pdf-tools";
         public const string SecureWorkflowPath = "/guides/secure-pdf-workflow";
-        public const string MedicalGuidesHubPath = "/guides/medical-tools";
         public const string DeveloperGuidesHubPath = "/guides/developer-tools";
         public const string CompareHubPath = "/compare";
         public const string AllToolsHubPath = "/tools";
-        public const string MedicalHubPath = "/tools/medical";
         public const string DeveloperHubPath = "/tools/developer";
         public const string CalculatorsHubPath = "/tools/calculators";
         public const string UtilitiesHubPath = "/tools/utilities";
@@ -38,7 +36,7 @@ namespace ratpdf.Constants
             new("Compress & optimize", "Shrink files before email or upload.",
             [
                 ("Compress PDF", "/pdf/compress", "Ghostscript compression up to 90% size reduction."),
-                ("Compression hub", "/compress-pdf", "Long-tail guides for email limits and portal caps."),
+                ("Compression hub", "/compress-pdf", "Guides for email limits and portal upload caps."),
             ]),
             new("Combine & organize", "Merge, split, rotate, and number pages.",
             [
@@ -86,8 +84,6 @@ namespace ratpdf.Constants
             ("Unlock PDF", "/pdf/unlockpdf", "unlock-pdf"),
             ("PDF redaction", "/pdf-redaction", null!),
         ];
-
-        public static readonly ToolGroup[] MedicalToolGroups = [];
 
         public static readonly ToolGroup[] DeveloperToolGroups =
         [
@@ -169,11 +165,7 @@ namespace ratpdf.Constants
 
         public static string CanonicalHub() => PdfToolSeo.Canonical(PdfToolsHubPath);
         public static string CanonicalSecureHub() => PdfToolSeo.Canonical(SecureWorkflowPath);
-        public static string CanonicalMedicalGuidesHub() => PdfToolSeo.Canonical(MedicalGuidesHubPath);
         public static string CanonicalDeveloperGuidesHub() => PdfToolSeo.Canonical(DeveloperGuidesHubPath);
-
-        public static bool IsMedicalCategory(string? category) =>
-            string.Equals(category, "Medical", StringComparison.OrdinalIgnoreCase);
 
         public static bool IsDeveloperCategory(string? category) =>
             string.Equals(category, "Developer", StringComparison.OrdinalIgnoreCase);
@@ -215,7 +207,7 @@ namespace ratpdf.Constants
             return prefix == null ? null : $"/{prefix}";
         }
 
-        /// <summary>Category silo hub for non-PDF tools (medical, developer, calculators, etc.).</summary>
+        /// <summary>Category silo hub for non-PDF tools (developer, calculators, etc.).</summary>
         public static string? GetCategoryHubPath(string? toolPath)
         {
             toolPath = Normalize(toolPath);

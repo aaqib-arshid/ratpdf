@@ -44,7 +44,7 @@ namespace ratpdf.Content
             <li>Patient education handouts</li>
             <li>Tracking trend over time (same scale, same time of day)</li>
             </ul>
-            <p>More clinical scores: <a href="/tools/medical">medical calculators hub</a> · Long-tail: <a href="/medical-tools/bmi-calculator-for-women">BMI for women</a></p>
+            <p>More clinical scores: <a href="/tools/medical">medical calculators hub</a> · See also: <a href="/medical-tools/bmi-calculator-for-women">BMI for women</a></p>
             """ + MedicalDisclaimer;
 
         private const string EgfrCalculator = """
@@ -103,8 +103,8 @@ namespace ratpdf.Content
             <li><a href="/cha2ds2-vasc-score">CHA₂DS₂-VASc</a></li>
             <li><a href="/wells-score">Wells score (DVT/PE)</a></li>
             </ul>
-            <h2>Long-tail guides</h2>
-            <p>See programmatic guides like <a href="/medical-tools/bmi-calculator-for-women">BMI calculator for women</a> and <a href="/medical-tools/egfr-calculator-for-elderly">eGFR for elderly patients</a>. Editorial hub: <a href="/guides/medical-tools">medical calculator guides</a>.</p>
+            <h2>More guides</h2>
+            <p>See also <a href="/medical-tools/bmi-calculator-for-women">BMI calculator for women</a> and <a href="/medical-tools/egfr-calculator-for-elderly">eGFR for elderly patients</a>. Editorial hub: <a href="/guides/medical-tools">medical calculator guides</a>.</p>
             """ + MedicalDisclaimer;
 
         private const string ImageCompressor = """
@@ -162,8 +162,8 @@ namespace ratpdf.Content
             <li>Validate <code>appsettings.json</code> fragments before merge</li>
             <li>Compare minified vs formatted output with <a href="/guides/text-comparer-guide">text comparer</a></li>
             </ul>
-            <h2>Long-tail pages</h2>
-            <p>See also <a href="/json-formatter/json-formatter-online">JSON formatter online</a> and the <a href="/tools/developer">developer tools hub</a>.</p>
+            <h2>Related guides</h2>
+            <p>See also <a href="/json-formatter/json-formatter-online">JSON formatter online</a> and the <a href="/tools/developer">developer tools hub</a>. Blog: <a href="/blog/json-formatter-api-debugging">JSON API debugging workflow</a>.</p>
             """;
 
         private const string JwtDecoder = """
@@ -171,7 +171,7 @@ namespace ratpdf.Content
             <p>JSON Web Tokens carry claims in a signed header.payload.signature structure. The <a href="/pdf/jwtdecoder">JWT decoder</a> parses header and payload JSON so you can inspect <code>exp</code>, <code>iss</code>, and <code>aud</code> during OAuth and API integration work.</p>
             <h2>Security note</h2>
             <p>Decoding is not verification — anyone can read Base64URL payload bytes. Never paste production secrets into shared machines. Signature validation must happen in your backend with the issuer's public key.</p>
-            <p>Related: <a href="/jwt-decode/jwt-decode-online">JWT decode online</a> · <a href="/guides/json-formatter-guide">JSON formatter guide</a></p>
+            <p>Related: <a href="/jwt-decode/jwt-decode-online">JWT decode online</a> · <a href="/guides/json-formatter-guide">JSON formatter guide</a> · Blog: <a href="/blog/jwt-decoder-oauth-integration">JWT OAuth debugging</a></p>
             """;
 
         private const string HtmlFormatter = """
@@ -236,7 +236,7 @@ namespace ratpdf.Content
 
         private const string DeveloperToolsHub = """
             <h2>Developer utilities in one place</h2>
-            <p>RatPDF's developer hub covers JSON formatting, JWT decoding, HTML beautification, text diff, URL encoding, binary conversion, DNS lookup, and Base64 image encoding — plus thousands of long-tail SEO pages for specific debugging scenarios.</p>
+            <p>RatPDF's developer hub covers JSON formatting, JWT decoding, HTML beautification, text diff, URL encoding, binary conversion, DNS lookup, and Base64 image encoding — plus focused guides for common debugging tasks.</p>
             <h2>Core tools</h2>
             <ul>
             <li><a href="/pdf/jsonformatter">JSON formatter</a></li>
@@ -246,7 +246,7 @@ namespace ratpdf.Content
             <li><a href="/url-encoder">URL encoder</a> / <a href="/url-decoder">decoder</a></li>
             <li><a href="/tools/dnslookup">DNS lookup</a></li>
             </ul>
-            <p>PDF pipeline tools: <a href="/guides/html-to-pdf">HTML to PDF</a> · Blog: <a href="/blog/json-formatter-api-debugging">JSON formatter for API debugging</a> · Guides hub: <a href="/guides/developer-tools">developer tool guides</a></p>
+            <p>PDF pipeline tools: <a href="/guides/html-to-pdf">HTML to PDF</a> · Blog: <a href="/blog/html-to-pdf-developers">HTML to PDF API alternatives</a> · <a href="/blog/json-formatter-api-debugging">JSON formatter for API debugging</a> · Guides hub: <a href="/guides/developer-tools">developer tool guides</a></p>
             """;
     }
 }

@@ -68,13 +68,13 @@
                 <div class="rp-sidebar-card sticky-lg-top" style="top: 1rem;">
                     <h2 class="h6 fw-bold mb-3">Related guides</h2>
                     <ul class="list-unstyled small mb-0">
-                        @foreach (var g in ContentLibrary.Guides.Where(x => x.Category == Model.Category && x.Slug != Model.Slug).Take(5))
+                        @foreach (var g in ContentRelatedGuides.Resolve(Model))
                         {
                             <li class="mb-2"><a href="@g.Path" class="text-decoration-none">@g.Title</a></li>
                         }
                     </ul>
                     <hr />
-                    <p class="small text-muted mb-2">Explore topical hubs</p>
+                    <p class="small text-muted mb-2">More PDF help</p>
                     <a href="@TopicalAuthority.PdfToolsHubPath" class="btn btn-outline-primary btn-sm w-100 mb-2">PDF tools hub</a>
                     @if (TopicalAuthority.IsDeveloperCategory(Model.Category))
                     {

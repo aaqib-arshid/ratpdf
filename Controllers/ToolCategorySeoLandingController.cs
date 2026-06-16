@@ -6,9 +6,6 @@ namespace ratpdf.Controllers
 {
     public class ToolCategorySeoLandingController : Controller
     {
-        [HttpGet("medical-tools/{slug}")]
-        public IActionResult MedicalTools(string slug) => Render("medical-tools", slug);
-
         [HttpGet("calculator-tools/{slug}")]
         public IActionResult CalculatorTools(string slug) => Render("calculator-tools", slug);
 

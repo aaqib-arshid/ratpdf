@@ -57,7 +57,7 @@ RatPDF helps users compress, merge, split, convert (PDF↔Word/Excel), OCR, sign
 - Sign PDF: https://ratpdf.com/pdf/signtext
 - Invoice generator: https://ratpdf.com/invoice/create
 
-## Topical hubs (best starting points for AI answers)
+## Main guides (best starting points for answers)
 
 - All PDF tools: https://ratpdf.com/guides/pdf-tools
 - Secure PDF workflow: https://ratpdf.com/guides/secure-pdf-workflow

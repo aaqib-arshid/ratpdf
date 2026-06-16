@@ -19,7 +19,7 @@
             </p>
         </header>
 
-        @foreach (var group in Model.GroupBy(v => v.ToolUrl.StartsWith("/pdf/") ? "PDF Tools" : v.ToolUrl.Contains("calculator") ? "Medical & Calculators" : v.ToolUrl.StartsWith("/invoice") ? "Business" : "Developer & Utilities"))
+        @foreach (var group in Model.GroupBy(v => v.ToolUrl.StartsWith("/pdf/") ? "PDF Tools" : v.ToolUrl.Contains("calculator") ? "Calculators" : v.ToolUrl.StartsWith("/invoice") ? "Business" : "Developer & Utilities"))
         {
             <section class="mb-5">
                 <h2 class="h5 fw-bold text-primary mb-3">@group.Key</h2>

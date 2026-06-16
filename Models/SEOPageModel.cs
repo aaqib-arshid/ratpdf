@@ -22,7 +22,6 @@ namespace ratpdf.Models
         public SearchIntent Intent { get; set; }
         public double IntentConfidence { get; set; }
         public bool IsPillar { get; set; }
-        public bool IsMedical => Category == ratpdf.Services.Seo.ProgrammaticToolCategory.MedicalCalculator;
         public bool NoIndex { get; set; } = true;
         public string SchemaApplicationCategory { get; set; } = "UtilitiesApplication";
     }

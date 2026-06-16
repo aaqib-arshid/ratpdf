@@ -1,0 +1,1002 @@
+id,keyword,cluster,intent,competition,priority_score,action,existing_slug,target_url,word_target,notes
+1,adobe acrobat alternative,PDF Collaboration,commercial,medium,100,UPGRADE,adobe-acrobat-alternative,/guides/adobe-acrobat-alternative,1500-4000,Thin template — rewrite to 1500+ words
+2,foxit alternative,PDF Collaboration,commercial,medium,100,UPGRADE,foxit-alternative,/guides/foxit-alternative,1500-4000,Thin template — rewrite to 1500+ words
+3,ilovepdf alternative,PDF Collaboration,commercial,medium,100,UPGRADE,ilovepdf-alternative,/guides/ilovepdf-alternative,1500-4000,Thin template — rewrite to 1500+ words
+4,pdf candy alternative,PDF Collaboration,commercial,medium,100,UPGRADE,pdf-candy-alternative,/guides/pdf-candy-alternative,1500-4000,Thin template — rewrite to 1500+ words
+5,pdf24 alternative,PDF Collaboration,commercial,medium,100,UPGRADE,pdf24-alternative,/guides/pdf24-alternative,1500-4000,Thin template — rewrite to 1500+ words
+6,pdfelement alternative,PDF Collaboration,commercial,medium,100,UPGRADE,pdfelement-alternative,/guides/pdfelement-alternative,1500-4000,Thin template — rewrite to 1500+ words
+7,sejda alternative,PDF Collaboration,commercial,medium,100,UPGRADE,sejda-alternative,/guides/sejda-alternative,1500-4000,Thin template — rewrite to 1500+ words
+8,smallpdf alternative,PDF Collaboration,commercial,medium,100,UPGRADE,smallpdf-alternative,/guides/smallpdf-alternative,1500-4000,Thin template — rewrite to 1500+ words
+9,sodapdf alternative,PDF Collaboration,commercial,medium,100,UPGRADE,sodapdf-alternative,/guides/sodapdf-alternative,1500-4000,Thin template — rewrite to 1500+ words
+10,wondershare alternative,PDF Collaboration,commercial,medium,100,UPGRADE,wondershare-alternative,/guides/wondershare-alternative,1500-4000,Thin template — rewrite to 1500+ words
+71,merge pdf for accountants,PDF Workflows,transactional,medium,100,UPGRADE,merge-pdf-accountants,/guides/merge-pdf-accountants,1500-4000,Thin template — rewrite to 1500+ words
+72,merge pdf for court filing,PDF Workflows,transactional,medium,100,UPGRADE,merge-pdf-court-filing,/guides/merge-pdf-court-filing,1500-4000,Thin template — rewrite to 1500+ words
+73,merge pdf for students,PDF Workflows,transactional,medium,100,UPGRADE,merge-pdf-students,/guides/merge-pdf-students,1500-4000,Thin template — rewrite to 1500+ words
+93,ocr pdf to text,PDF Conversion,transactional,medium,100,UPGRADE,ocr-pdf-to-text,/guides/ocr-pdf-to-text,1500-4000,Thin template — rewrite to 1500+ words
+102,pdf to text online,PDF Conversion,transactional,medium,100,UPGRADE,pdf-to-text-online,/guides/pdf-to-text-online,1500-4000,Thin template — rewrite to 1500+ words
+104,how to convert pdf to word,PDF Conversion,transactional,medium,100,UPGRADE,how-to-convert-pdf-to-word,/guides/how-to-convert-pdf-to-word,1500-4000,Thin template — rewrite to 1500+ words
+105,pdf to word batch convert,PDF Conversion,transactional,medium,100,UPGRADE,batch-pdf-to-word,/guides/batch-pdf-to-word,1500-4000,Thin template — rewrite to 1500+ words
+106,pdf to word converter,PDF Conversion,transactional,medium,100,UPGRADE,pdf-to-word-converter,/guides/pdf-to-word-converter,1500-4000,Thin template — rewrite to 1500+ words
+113,email attachment size limits 2026,PDF Compliance,informational,medium,100,UPGRADE,email-attachment-size-limits-2026,/guides/email-attachment-size-limits-2026,1500-4000,Thin template — rewrite to 1500+ words
+20,compress pdf for gmail upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-gmail,/guides/compress-pdf-for-gmail,1500-4000,Thin template — rewrite to 1500+ words
+26,compress pdf for indeed upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-indeed,/guides/compress-pdf-for-indeed,1500-4000,Thin template — rewrite to 1500+ words
+30,compress pdf for linkedin upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-linkedin,/guides/compress-pdf-for-linkedin,1500-4000,Thin template — rewrite to 1500+ words
+32,compress pdf for naukri upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-naukri,/guides/compress-pdf-for-naukri,1500-4000,Thin template — rewrite to 1500+ words
+33,compress pdf for outlook upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-outlook,/guides/compress-pdf-for-outlook,1500-4000,Thin template — rewrite to 1500+ words
+36,compress pdf for protonmail upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-protonmail,/guides/compress-pdf-for-protonmail,1500-4000,Thin template — rewrite to 1500+ words
+38,compress pdf for telegram upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-telegram,/guides/compress-pdf-for-telegram,1500-4000,Thin template — rewrite to 1500+ words
+39,compress pdf for ucas upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-ucas,/guides/compress-pdf-ucas,1500-4000,Thin template — rewrite to 1500+ words
+40,compress pdf for uidai upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-uidai,/guides/compress-pdf-uidai,1500-4000,Thin template — rewrite to 1500+ words
+41,compress pdf for ukvi upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-ukvi,/guides/compress-pdf-ukvi,1500-4000,Thin template — rewrite to 1500+ words
+43,compress pdf for usajobs upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-usajobs,/guides/compress-pdf-usajobs,1500-4000,Thin template — rewrite to 1500+ words
+45,compress pdf for whatsapp upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-whatsapp,/guides/compress-pdf-for-whatsapp,1500-4000,Thin template — rewrite to 1500+ words
+46,compress pdf for workday upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-workday,/guides/compress-pdf-for-workday,1500-4000,Thin template — rewrite to 1500+ words
+47,compress pdf for yahoo mail upload,PDF Compression,problem-solving,medium,97,UPGRADE,compress-pdf-for-yahoo-mail,/guides/compress-pdf-for-yahoo-mail,1500-4000,Thin template — rewrite to 1500+ words
+70,how do i merge pdf files,PDF Workflows,informational,medium,97,UPGRADE,how-to-merge-pdf-files,/guides/how-to-merge-pdf-files,1500-4000,Thin template — rewrite to 1500+ words
+594,sign pdf online,PDF Signing,transactional,medium,97,UPGRADE,sign-pdf,/guides/sign-pdf,1500-4000,
+19,compress pdf for email,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-email,/guides/compress-pdf-for-email,1500-4000,Thin template — rewrite to 1500+ words
+29,compress pdf for job application,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-job-application,/guides/compress-pdf-for-job-application,1500-4000,Thin template — rewrite to 1500+ words
+31,compress pdf for LMS,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-lms,/guides/compress-pdf-for-lms,1500-4000,Thin template — rewrite to 1500+ words
+34,compress pdf for passport,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-passport-application,/guides/compress-pdf-for-passport-application,1500-4000,Thin template — rewrite to 1500+ words
+42,compress pdf for university,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-university-application,/guides/compress-pdf-for-university-application,1500-4000,Thin template — rewrite to 1500+ words
+44,compress pdf for visa,PDF Compression,problem-solving,medium,96,UPGRADE,compress-pdf-for-visa-application,/guides/compress-pdf-for-visa-application,1500-4000,Thin template — rewrite to 1500+ words
+91,how to convert pdf to text,PDF Conversion,informational,medium,96,UPGRADE,how-to-convert-pdf-to-text,/guides/how-to-convert-pdf-to-text,1500-4000,Thin template — rewrite to 1500+ words
+92,ocr pdf for e-discovery,PDF Conversion,industry,medium,96,UPGRADE,ocr-pdf-ediscovery,/guides/ocr-pdf-ediscovery,1500-4000,Thin template — rewrite to 1500+ words
+94,pdf to text accessibility,PDF Conversion,industry,medium,96,UPGRADE,pdf-to-text-accessibility,/guides/pdf-to-text-accessibility,1500-4000,Thin template — rewrite to 1500+ words
+96,pdf to text for python,PDF Conversion,advanced,medium,96,UPGRADE,pdf-to-text-python-workflow,/guides/pdf-to-text-python-workflow,1500-4000,Thin template — rewrite to 1500+ words
+99,pdf to text multilingual,PDF Conversion,advanced,medium,96,UPGRADE,pdf-to-text-multilingual,/guides/pdf-to-text-multilingual,1500-4000,Thin template — rewrite to 1500+ words
+100,pdf to text on android,PDF Conversion,task-based,medium,96,UPGRADE,pdf-to-text-on-android,/guides/pdf-to-text-on-android,1500-4000,Thin template — rewrite to 1500+ words
+101,pdf to text on iphone,PDF Conversion,task-based,medium,96,UPGRADE,pdf-to-text-on-iphone,/guides/pdf-to-text-on-iphone,1500-4000,Thin template — rewrite to 1500+ words
+103,scanned pdf to text,PDF Conversion,informational,medium,96,UPGRADE,scanned-pdf-to-text,/guides/scanned-pdf-to-text,1500-4000,Thin template — rewrite to 1500+ words
+58,how to compress pdf construction,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-construction,/guides/compress-pdf-construction,1500-4000,Thin template — rewrite to 1500+ words
+59,how to compress pdf ecommerce,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-ecommerce,/guides/compress-pdf-ecommerce,1500-4000,Thin template — rewrite to 1500+ words
+60,how to compress pdf freelancers,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-freelancers,/guides/compress-pdf-freelancers,1500-4000,Thin template — rewrite to 1500+ words
+61,how to compress pdf government,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-government,/guides/compress-pdf-government,1500-4000,Thin template — rewrite to 1500+ words
+62,how to compress pdf healthcare-admin,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-healthcare-admin,/guides/compress-pdf-healthcare-admin,1500-4000,Thin template — rewrite to 1500+ words
+63,how to compress pdf hr,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-hr,/guides/compress-pdf-hr,1500-4000,Thin template — rewrite to 1500+ words
+64,how to compress pdf marketing-agencies,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-marketing-agencies,/guides/compress-pdf-marketing-agencies,1500-4000,Thin template — rewrite to 1500+ words
+65,how to compress pdf nonprofits,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-nonprofits,/guides/compress-pdf-nonprofits,1500-4000,Thin template — rewrite to 1500+ words
+66,how to compress pdf real-estate,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-real-estate,/guides/compress-pdf-real-estate,1500-4000,Thin template — rewrite to 1500+ words
+67,how to compress pdf recruiters,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-recruiters,/guides/compress-pdf-recruiters,1500-4000,Thin template — rewrite to 1500+ words
+68,how to compress pdf students,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-students,/guides/compress-pdf-students,1500-4000,Thin template — rewrite to 1500+ words
+69,how to compress pdf teachers,PDF for Businesses,problem-solving,medium,94,UPGRADE,compress-pdf-teachers,/guides/compress-pdf-teachers,1500-4000,Thin template — rewrite to 1500+ words
+80,common mistakes when pdf to word for scanned tables,PDF Errors,informational,medium,94,UPGRADE,mistakes-pdf-to-word-for-scanned-tables,/guides/mistakes-pdf-to-word-for-scanned-tables,1500-4000,Thin template — rewrite to 1500+ words
+579,pdf to text,PDF Conversion,transactional,medium,94,UPGRADE,pdf-to-text,/guides/pdf-to-text,1500-4000,
+158,pdf tool market comparison,PDF Compliance,commercial,medium,93,UPGRADE,pdf-tool-market-comparison,/guides/pdf-tool-market-comparison,1500-4000,Thin template — rewrite to 1500+ words
+603,pdf too large to email,PDF Troubleshooting,problem,low,92,CREATE,,/guides/pdf-too-large-to-email,1500-4000,
+571,compress pdf to 100kb,PDF Compression,transactional,medium,91,CREATE,,/guides/compress-pdf-to-100kb,1500-4000,
+11,ocr vs pdf to text,PDF Collaboration,commercial,medium,90,MAINTAIN,,/guides/ocr-vs-pdf-to-text,1500-4000,Wave upgraded
+12,pdf to word vs pdf to text,PDF Collaboration,commercial,medium,90,MAINTAIN,,/guides/pdf-to-word-vs-pdf-to-text,1500-4000,Wave upgraded
+117,convert bank-statement pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-bank-statement-pdf-to-word,1500-4000,Wave upgraded
+118,convert contract pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-contract-pdf-to-word,1500-4000,Wave upgraded
+119,convert credit-note pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-credit-note-pdf-to-word,1500-4000,Wave upgraded
+120,convert debit-note pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-debit-note-pdf-to-word,1500-4000,Wave upgraded
+121,convert delivery-note pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-delivery-note-pdf-to-word,1500-4000,Wave upgraded
+122,convert lease-agreement pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-lease-agreement-pdf-to-word,1500-4000,Wave upgraded
+123,convert nda pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-nda-pdf-to-word,1500-4000,Wave upgraded
+124,convert purchase-order pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-purchase-order-pdf-to-word,1500-4000,Wave upgraded
+125,convert quotation pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-quotation-pdf-to-word,1500-4000,Wave upgraded
+126,convert receipt pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-receipt-pdf-to-word,1500-4000,Wave upgraded
+127,convert sow pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-sow-pdf-to-word,1500-4000,Wave upgraded
+128,convert tax-return pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-tax-return-pdf-to-word,1500-4000,Wave upgraded
+129,convert transcript pdf to word,PDF Workflows,transactional,medium,90,MAINTAIN,,/guides/convert-transcript-pdf-to-word,1500-4000,Wave upgraded
+566,reduce pdf file size,PDF Compression,transactional,medium,90,CREATE,,/guides/reduce-pdf-file-size,1500-4000,
+570,compress pdf for government portal,PDF Compression,problem,low,90,CREATE,,/guides/compress-pdf-for-government-portal,1500-4000,
+572,compress pdf to 200kb,PDF Compression,transactional,medium,90,CREATE,,/guides/compress-pdf-to-200kb,1500-4000,
+55,what is compress pdf online,PDF Productivity,informational,medium,89,UPGRADE,glossary-compress-pdf-online,/guides/glossary-compress-pdf-online,1500-4000,Thin template — rewrite to 1500+ words
+56,what is pdf to text extractor,PDF Productivity,informational,medium,89,UPGRADE,glossary-pdf-to-text-extractor,/guides/glossary-pdf-to-text-extractor,1500-4000,Thin template — rewrite to 1500+ words
+57,what is pdf to word converter,PDF Productivity,informational,medium,89,UPGRADE,glossary-pdf-to-word-converter,/guides/glossary-pdf-to-word-converter,1500-4000,Thin template — rewrite to 1500+ words
+74,merge pdf for visa application,PDF Workflows,transactional,medium,89,MAINTAIN,,/guides/merge-pdf-visa-application,1500-4000,Wave upgraded
+75,merge pdf in order,PDF Workflows,transactional,medium,89,MAINTAIN,,/guides/merge-pdf-custom-order,1500-4000,Wave upgraded
+76,merge pdf online,PDF Workflows,transactional,medium,89,MAINTAIN,,/guides/merge-pdf-online,1500-4000,Wave upgraded
+77,merge pdf password protected,PDF Workflows,transactional,medium,89,MAINTAIN,,/guides/merge-password-protected-pdf,1500-4000,Wave upgraded
+78,merge pdf scanned and digital,PDF Workflows,transactional,medium,89,MAINTAIN,,/guides/merge-scanned-digital-pdf,1500-4000,Wave upgraded
+79,merge pdf without losing quality,PDF Workflows,transactional,medium,89,MAINTAIN,,/guides/merge-pdf-without-quality-loss,1500-4000,Wave upgraded
+107,pdf to word for resume,PDF Conversion,transactional,medium,89,MAINTAIN,,/guides/pdf-to-word-resume,1500-4000,Wave upgraded
+108,pdf to word keep formatting,PDF Conversion,transactional,medium,89,MAINTAIN,,/guides/pdf-to-word-keep-formatting,1500-4000,Wave upgraded
+109,pdf to word mac,PDF Conversion,transactional,medium,89,MAINTAIN,,/guides/pdf-to-word-mac,1500-4000,Wave upgraded
+110,pdf to word vs google docs,PDF Conversion,transactional,medium,89,MAINTAIN,,/guides/pdf-to-word-vs-google-docs,1500-4000,Wave upgraded
+111,pdf to word without microsoft word,PDF Conversion,transactional,medium,89,MAINTAIN,,/guides/pdf-to-word-without-word,1500-4000,Wave upgraded
+112,scanned pdf to word,PDF Conversion,transactional,medium,89,MAINTAIN,,/guides/scanned-pdf-to-word,1500-4000,Wave upgraded
+130,best free pdf tools 2026,PDF Collaboration,commercial,medium,89,UPGRADE,best-free-pdf-tools-2026,/guides/best-free-pdf-tools-2026,1500-4000,Thin template — rewrite to 1500+ words
+131,pdf tool security comparison,PDF Collaboration,commercial,medium,89,UPGRADE,pdf-tool-security-comparison,/guides/pdf-tool-security-comparison,1500-4000,Thin template — rewrite to 1500+ words
+134,extract images from pdf,PDF Conversion,transactional,medium,89,UPGRADE,extract-images-from-pdf,/guides/extract-images-from-pdf,1500-4000,Thin template — rewrite to 1500+ words
+139,pdf to powerpoint,PDF Conversion,transactional,medium,89,UPGRADE,pdf-to-powerpoint,/guides/pdf-to-powerpoint,1500-4000,Thin template — rewrite to 1500+ words
+141,text to pdf,PDF Conversion,transactional,medium,89,UPGRADE,text-to-pdf,/guides/text-to-pdf,1500-4000,Thin template — rewrite to 1500+ words
+142,word to pdf,PDF Conversion,transactional,medium,89,UPGRADE,word-to-pdf,/guides/word-to-pdf,1500-4000,Thin template — rewrite to 1500+ words
+145,add signature to pdf,PDF Editing,transactional,medium,89,UPGRADE,add-signature-to-pdf,/guides/add-signature-to-pdf,1500-4000,Thin template — rewrite to 1500+ words
+148,edit pdf mistakes compliance,PDF Editing,transactional,medium,89,UPGRADE,edit-pdf-mistakes-compliance,/guides/edit-pdf-mistakes-compliance,1500-4000,Thin template — rewrite to 1500+ words
+149,edit pdf online free,PDF Editing,transactional,medium,89,UPGRADE,edit-pdf-online-free,/guides/edit-pdf-online-free,1500-4000,Thin template — rewrite to 1500+ words
+157,tesseract vs online ocr,PDF Conversion,commercial,medium,89,UPGRADE,tesseract-vs-online-ocr,/guides/tesseract-vs-online-ocr,1500-4000,Thin template — rewrite to 1500+ words
+567,compress pdf without losing quality,PDF Compression,informational,medium,88,CREATE,,/guides/compress-pdf-without-losing-quality,1500-4000,
+573,compress pdf to 500kb,PDF Compression,transactional,medium,88,CREATE,,/guides/compress-pdf-to-500kb,1500-4000,
+586,make scanned pdf searchable,PDF OCR,problem,low,88,CREATE,,/guides/make-scanned-pdf-searchable,1500-4000,
+628,government portal pdf compress,PDF for Government Forms,problem,low,88,CREATE,,/guides/government-portal-pdf-compress,1500-4000,
+630,ats friendly pdf resume,PDF for Job Applications,problem,medium,88,CREATE,,/guides/ats-friendly-pdf-resume,1500-4000,
+574,compress pdf under 1mb,PDF Compression,transactional,medium,87,CREATE,,/guides/compress-pdf-under-1mb,1500-4000,
+588,replace text in pdf,PDF Editing,problem,medium,87,CREATE,,/guides/replace-text-in-pdf,1500-4000,
+589,redact pdf permanently,PDF Security,problem,low,87,CREATE,,/guides/redact-pdf-permanently,1500-4000,
+600,print to pdf mac,PDF Printing,device,medium,87,CREATE,,/guides/print-to-pdf-mac,1500-4000,
+622,passport scan pdf size,PDF for Visas,problem,low,87,CREATE,,/guides/passport-scan-pdf-size,1500-4000,
+626,irs pdf form fill online,PDF for Government Forms,workflow,medium,87,CREATE,,/guides/irs-pdf-form-fill-online,1500-4000,
+13,batch compress pdf files,PDF Compression,commercial,medium,86,MAINTAIN,,/guides/batch-compress-pdf,1500-4000,Wave upgraded
+81,ocr pdf arabic,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-arabic,1500-4000,Wave upgraded
+82,ocr pdf chinese,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-chinese,1500-4000,Wave upgraded
+83,ocr pdf french,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-french,1500-4000,Wave upgraded
+84,ocr pdf german,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-german,1500-4000,Wave upgraded
+85,ocr pdf hindi,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-hindi,1500-4000,Wave upgraded
+86,ocr pdf japanese,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-japanese,1500-4000,Wave upgraded
+87,ocr pdf korean,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-korean,1500-4000,Wave upgraded
+88,ocr pdf portuguese,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-portuguese,1500-4000,Wave upgraded
+89,ocr pdf russian,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-russian,1500-4000,Wave upgraded
+90,ocr pdf spanish,PDF OCR,transactional,medium,86,MAINTAIN,,/guides/ocr-pdf-spanish,1500-4000,Wave upgraded
+611,compare two pdfs,PDF Collaboration,transactional,medium,86,CREATE,,/guides/compare-two-pdfs,1500-4000,
+621,bank statement pdf visa,PDF for Visas,workflow,medium,86,CREATE,,/guides/bank-statement-pdf-visa,1500-4000,
+623,uscis pdf upload requirements,PDF for Visas,compliance,low,86,CREATE,,/guides/uscis-pdf-upload-requirements,1500-4000,
+632,combine resume cover letter pdf,PDF for Job Applications,workflow,low,86,CREATE,,/guides/combine-resume-cover-letter-pdf,1500-4000,
+635,contract pdf redline workflow,PDF for Legal Documents,workflow,low,86,CREATE,,/guides/contract-pdf-redline-workflow,1500-4000,
+747,compress pdf for incometax india,PDF for Government Forms,problem,low,86,CREATE,,/guides/compress-pdf-incometax-india,1500-4000,Portal-specific
+114,compress pdf made it larger,PDF Troubleshooting,problem-solving,medium,85,MAINTAIN,,/guides/compress-pdf-made-it-larger,1500-4000,Wave upgraded
+115,ocr pdf poor quality,PDF Troubleshooting,problem-solving,medium,85,MAINTAIN,,/guides/ocr-pdf-poor-quality,1500-4000,Wave upgraded
+116,pdf to word garbled text,PDF Troubleshooting,problem-solving,medium,85,MAINTAIN,,/guides/pdf-to-word-garbled-text,1500-4000,Wave upgraded
+568,compress pdf made file larger,PDF Compression,problem,low,85,CREATE,,/guides/compress-pdf-made-file-larger,1500-4000,
+575,compress pdf for court e filing,PDF Compression,problem,low,85,CREATE,,/guides/compress-pdf-for-court-e-filing,1500-4000,
+604,pdf password not working,PDF Troubleshooting,problem,medium,85,CREATE,,/guides/pdf-password-not-working,1500-4000,
+618,smallpdf vs adobe,PDF Collaboration,comparison,medium,85,CREATE,,/guides/smallpdf-vs-adobe,1500-4000,
+624,ukvi pdf document rules,PDF for Visas,compliance,low,85,CREATE,,/guides/ukvi-pdf-document-rules,1500-4000,
+629,digilocker pdf upload size,PDF for Government Forms,problem,low,85,CREATE,,/guides/digilocker-pdf-upload-size,1500-4000,
+741,compress pdf for irs,PDF for Government Forms,problem,low,85,CREATE,,/guides/compress-pdf-irs,1500-4000,Portal-specific
+748,compress pdf for gst portal india,PDF for Government Forms,problem,low,85,CREATE,,/guides/compress-pdf-gst-portal-india,1500-4000,Portal-specific
+582,heic to pdf,PDF Conversion,transactional,medium,84,CREATE,,/guides/heic-to-pdf,1500-4000,
+593,secure pdf before email,PDF Security,workflow,low,84,CREATE,,/guides/secure-pdf-before-email,1500-4000,
+595,create fillable pdf,PDF Forms,informational,medium,84,CREATE,,/guides/create-fillable-pdf,1500-4000,
+625,schengen visa pdf merge order,PDF for Visas,workflow,low,84,CREATE,,/guides/schengen-visa-pdf-merge-order,1500-4000,
+633,pdf job application size limit,PDF for Job Applications,problem,low,84,CREATE,,/guides/pdf-job-application-size-limit,1500-4000,
+640,law firm pdf discovery workflow,PDF for Businesses,workflow,low,84,CREATE,,/guides/law-firm-pdf-discovery-workflow,1500-4000,
+642,submit homework pdf canvas,PDF for Students,problem,medium,84,CREATE,,/guides/submit-homework-pdf-canvas,1500-4000,
+742,compress pdf for uscis,PDF for Visas,problem,low,84,CREATE,,/guides/compress-pdf-uscis,1500-4000,Portal-specific
+745,compress pdf for ukvi,PDF for Visas,problem,low,84,UPGRADE,compress-pdf-ukvi,/guides/compress-pdf-ukvi,1500-4000,Portal-specific
+973,create fillable pdf form free,PDF Forms,transactional,medium,84,CREATE,,/guides/create-fillable-pdf-form-free,1500-4000,
+569,compress scanned pdf,PDF Compression,problem,medium,83,CREATE,,/guides/compress-scanned-pdf,1500-4000,
+584,email to pdf,PDF Conversion,workflow,medium,83,CREATE,,/guides/email-to-pdf,1500-4000,
+605,pdf blank after merge,PDF Troubleshooting,problem,low,83,CREATE,,/guides/pdf-blank-after-merge,1500-4000,
+619,safari save webpage as pdf,PDF Browser Workflows,device,medium,83,CREATE,,/guides/safari-save-webpage-as-pdf,1500-4000,
+627,dmv upload pdf size limit,PDF for Government Forms,problem,low,83,CREATE,,/guides/dmv-upload-pdf-size-limit,1500-4000,
+638,insurance claim pdf photos,PDF for Businesses,workflow,low,83,CREATE,,/guides/insurance-claim-pdf-photos,1500-4000,
+743,compress pdf for dmv,PDF for Government Forms,problem,low,83,CREATE,,/guides/compress-pdf-dmv,1500-4000,Portal-specific
+746,compress pdf for schengen,PDF for Visas,problem,low,83,CREATE,,/guides/compress-pdf-schengen,1500-4000,Portal-specific
+16,compress pdf for common-app upload,PDF Compression,problem-solving,medium,82,MAINTAIN,,/guides/compress-pdf-common-app,1500-4000,Wave upgraded
+17,compress pdf for digilocker upload,PDF Compression,problem-solving,medium,82,MAINTAIN,,/guides/compress-pdf-digilocker,1500-4000,Wave upgraded
+22,compress pdf for gst-portal upload,PDF Compression,problem-solving,medium,82,MAINTAIN,,/guides/compress-pdf-gst-portal,1500-4000,Wave upgraded
+23,compress pdf for home-affairs-australia upload,PDF Compression,problem-solving,medium,82,MAINTAIN,,/guides/compress-pdf-home-affairs-australia,1500-4000,Wave upgraded
+24,compress pdf for immigration-canada upload,PDF Compression,problem-solving,medium,82,MAINTAIN,,/guides/compress-pdf-immigration-canada,1500-4000,Wave upgraded
+25,compress pdf for incometax upload,PDF Compression,problem-solving,medium,82,MAINTAIN,,/guides/compress-pdf-incometax,1500-4000,Wave upgraded
+28,compress pdf for irctc upload,PDF Compression,problem-solving,medium,82,MAINTAIN,,/guides/compress-pdf-irctc,1500-4000,Wave upgraded
+37,compress pdf for schengen-visa upload,PDF Compression,problem-solving,medium,82,MAINTAIN,,/guides/compress-pdf-schengen-visa,1500-4000,Wave upgraded
+48,compress pdf on android,PDF Compression,task-based,medium,82,MAINTAIN,,/guides/compress-pdf-on-android,1500-4000,Wave upgraded
+49,compress pdf on iphone,PDF Compression,task-based,medium,82,MAINTAIN,,/guides/compress-pdf-on-iphone,1500-4000,Wave upgraded
+50,compress pdf on mac,PDF Compression,task-based,medium,82,MAINTAIN,,/guides/compress-pdf-on-mac,1500-4000,Wave upgraded
+51,compress pdf on windows,PDF Compression,task-based,medium,82,MAINTAIN,,/guides/compress-pdf-on-windows,1500-4000,Wave upgraded
+576,compress pdf for medical records,PDF Compression,problem,low,82,CREATE,,/guides/compress-pdf-for-medical-records,1500-4000,
+585,webpage to pdf,PDF Conversion,transactional,medium,82,CREATE,,/guides/webpage-to-pdf,1500-4000,
+587,ocr handwriting pdf,PDF OCR,problem,medium,82,CREATE,,/guides/ocr-handwriting-pdf,1500-4000,
+615,pdfgear alternative,PDF Collaboration,comparison,medium,82,CREATE,,/guides/pdfgear-alternative,1500-4000,
+634,bates numbering pdf,PDF for Legal Documents,workflow,medium,82,CREATE,,/guides/bates-numbering-pdf,1500-4000,
+637,real estate disclosure pdf merge,PDF for Businesses,workflow,low,82,CREATE,,/guides/real-estate-disclosure-pdf-merge,1500-4000,
+641,student combine lecture pdfs,PDF for Students,workflow,low,82,CREATE,,/guides/student-combine-lecture-pdfs,1500-4000,
+646,pdf vs word when to use,PDF Productivity,informational,medium,82,CREATE,,/guides/pdf-vs-word-when-to-use,1500-4000,
+650,pdfgear alternative,PDF Collaboration,comparison,medium,82,CREATE,,/compare/pdfgear-alternative,2000-3500,Missing competitor page
+749,compress pdf for mygov australia,PDF for Government Forms,problem,low,82,CREATE,,/guides/compress-pdf-mygov-australia,1500-4000,Portal-specific
+875,visa application pdf workflow italy,PDF Workflows,workflow,low,82,UPGRADE,visa-application-pdf-workflow-italy,/guides/visa-application-pdf-workflow-italy,1500-4000,Regional visa/bank
+878,visa application pdf workflow mexico,PDF Workflows,workflow,low,82,UPGRADE,visa-application-pdf-workflow-mexico,/guides/visa-application-pdf-workflow-mexico,1500-4000,Regional visa/bank
+881,visa application pdf workflow new zealand,PDF Workflows,workflow,low,82,UPGRADE,visa-application-pdf-workflow-new-zealand,/guides/visa-application-pdf-workflow-new-zealand,1500-4000,Regional visa/bank
+884,visa application pdf workflow south africa,PDF Workflows,workflow,low,82,UPGRADE,visa-application-pdf-workflow-south-africa,/guides/visa-application-pdf-workflow-south-africa,1500-4000,Regional visa/bank
+887,visa application pdf workflow south korea,PDF Workflows,workflow,low,82,UPGRADE,visa-application-pdf-workflow-south-korea,/guides/visa-application-pdf-workflow-south-korea,1500-4000,Regional visa/bank
+892,visa application pdf workflow argentina,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-argentina,1500-4000,Regional visa/bank
+895,visa application pdf workflow poland,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-poland,1500-4000,Regional visa/bank
+898,visa application pdf workflow sweden,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-sweden,1500-4000,Regional visa/bank
+901,visa application pdf workflow norway,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-norway,1500-4000,Regional visa/bank
+904,visa application pdf workflow denmark,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-denmark,1500-4000,Regional visa/bank
+907,visa application pdf workflow finland,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-finland,1500-4000,Regional visa/bank
+910,visa application pdf workflow portugal,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-portugal,1500-4000,Regional visa/bank
+913,visa application pdf workflow greece,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-greece,1500-4000,Regional visa/bank
+916,visa application pdf workflow turkey,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-turkey,1500-4000,Regional visa/bank
+919,visa application pdf workflow egypt,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-egypt,1500-4000,Regional visa/bank
+922,visa application pdf workflow morocco,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-morocco,1500-4000,Regional visa/bank
+925,visa application pdf workflow nigeria,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-nigeria,1500-4000,Regional visa/bank
+928,visa application pdf workflow kenya,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-kenya,1500-4000,Regional visa/bank
+931,visa application pdf workflow thailand,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-thailand,1500-4000,Regional visa/bank
+934,visa application pdf workflow vietnam,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-vietnam,1500-4000,Regional visa/bank
+937,visa application pdf workflow indonesia,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-indonesia,1500-4000,Regional visa/bank
+940,visa application pdf workflow malaysia,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-malaysia,1500-4000,Regional visa/bank
+943,visa application pdf workflow philippines,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-philippines,1500-4000,Regional visa/bank
+946,visa application pdf workflow china,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-china,1500-4000,Regional visa/bank
+949,visa application pdf workflow taiwan,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-taiwan,1500-4000,Regional visa/bank
+952,visa application pdf workflow hong kong,PDF Workflows,workflow,low,82,CREATE,,/guides/visa-application-pdf-workflow-hong-kong,1500-4000,Regional visa/bank
+18,compress pdf for e-filing,PDF Compression,problem-solving,medium,81,MAINTAIN,,/guides/compress-pdf-efiling,1500-4000,Wave upgraded
+21,compress pdf for government,PDF Compression,problem-solving,medium,81,MAINTAIN,,/guides/compress-pdf-for-government-forms,1500-4000,Wave upgraded
+27,compress pdf for insurance,PDF Compression,problem-solving,medium,81,MAINTAIN,,/guides/compress-pdf-insurance-claims,1500-4000,Wave upgraded
+95,pdf to text bank statements,PDF Conversion,industry,medium,81,MAINTAIN,,/guides/pdf-to-text-bank-statements,1500-4000,Wave upgraded
+97,pdf to text for research,PDF Conversion,industry,medium,81,MAINTAIN,,/guides/pdf-to-text-research,1500-4000,Wave upgraded
+98,pdf to text legal documents,PDF Conversion,industry,medium,81,MAINTAIN,,/guides/pdf-to-text-legal,1500-4000,Wave upgraded
+616,nitro pdf alternative,PDF Collaboration,comparison,medium,81,CREATE,,/guides/nitro-pdf-alternative,1500-4000,
+639,healthcare pdf hipaa email,PDF for Businesses,compliance,low,81,CREATE,,/guides/healthcare-pdf-hipaa-email,1500-4000,
+644,scan notes to pdf study,PDF for Students,workflow,low,81,CREATE,,/guides/scan-notes-to-pdf-study,1500-4000,
+651,nitro pdf alternative,PDF Collaboration,comparison,medium,81,CREATE,,/compare/nitro-pdf-alternative,2000-3500,Missing competitor page
+737,secured pdf cannot be edited,PDF Errors,problem,medium,81,CREATE,,/guides/pdf-error-secured-document,1500-4000,
+750,compress pdf for service canada,PDF for Government Forms,problem,low,81,CREATE,,/guides/compress-pdf-service-canada,1500-4000,Portal-specific
+577,lossless pdf compression,PDF Compression,informational,low,80,CREATE,,/guides/lossless-pdf-compression,1500-4000,
+596,pdf form not saving,PDF Forms,problem,low,80,CREATE,,/guides/pdf-form-not-saving,1500-4000,
+599,pdf/ua compliance guide,PDF Accessibility,compliance,low,80,CREATE,,/guides/pdf-ua-compliance-guide,1500-4000,
+606,convert to pdf/a online,PDF Standards,workflow,low,80,CREATE,,/guides/convert-to-pdf-a-online,1500-4000,
+609,pdf document retention periods,PDF Archiving,compliance,low,80,CREATE,,/guides/pdf-document-retention-periods,1500-4000,
+613,share pdf securely,PDF Collaboration,workflow,low,80,CREATE,,/guides/share-pdf-securely,1500-4000,
+620,firefox print to pdf,PDF Browser Workflows,device,low,80,CREATE,,/guides/firefox-print-to-pdf,1500-4000,
+631,linkedin save profile as pdf,PDF for Job Applications,workflow,low,80,CREATE,,/guides/linkedin-save-profile-as-pdf,1500-4000,
+636,accountant client pdf portal,PDF for Businesses,workflow,low,80,CREATE,,/guides/accountant-client-pdf-portal,1500-4000,
+643,compress pdf for blackboard,PDF for Students,problem,low,80,CREATE,,/guides/compress-pdf-for-blackboard,1500-4000,
+732,there was an error opening this document pdf,PDF Errors,problem,medium,80,CREATE,,/guides/pdf-error-there-was-an-error-opening-this-document,1500-4000,
+744,compress pdf for ssa,PDF for Government Forms,problem,low,80,CREATE,,/guides/compress-pdf-ssa,1500-4000,Portal-specific
+876,bank statement pdf workflow italy,PDF Workflows,workflow,low,80,UPGRADE,bank-statement-pdf-workflow-italy,/guides/bank-statement-pdf-workflow-italy,1500-4000,Regional visa/bank
+879,bank statement pdf workflow mexico,PDF Workflows,workflow,low,80,UPGRADE,bank-statement-pdf-workflow-mexico,/guides/bank-statement-pdf-workflow-mexico,1500-4000,Regional visa/bank
+882,bank statement pdf workflow new zealand,PDF Workflows,workflow,low,80,UPGRADE,bank-statement-pdf-workflow-new-zealand,/guides/bank-statement-pdf-workflow-new-zealand,1500-4000,Regional visa/bank
+885,bank statement pdf workflow south africa,PDF Workflows,workflow,low,80,UPGRADE,bank-statement-pdf-workflow-south-africa,/guides/bank-statement-pdf-workflow-south-africa,1500-4000,Regional visa/bank
+888,bank statement pdf workflow south korea,PDF Workflows,workflow,low,80,UPGRADE,bank-statement-pdf-workflow-south-korea,/guides/bank-statement-pdf-workflow-south-korea,1500-4000,Regional visa/bank
+890,bank statement pdf workflow brazil,PDF Workflows,workflow,low,80,UPGRADE,bank-statement-pdf-workflow-brazil,/guides/bank-statement-pdf-workflow-brazil,1500-4000,Regional visa/bank
+893,bank statement pdf workflow argentina,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-argentina,1500-4000,Regional visa/bank
+896,bank statement pdf workflow poland,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-poland,1500-4000,Regional visa/bank
+899,bank statement pdf workflow sweden,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-sweden,1500-4000,Regional visa/bank
+902,bank statement pdf workflow norway,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-norway,1500-4000,Regional visa/bank
+905,bank statement pdf workflow denmark,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-denmark,1500-4000,Regional visa/bank
+908,bank statement pdf workflow finland,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-finland,1500-4000,Regional visa/bank
+911,bank statement pdf workflow portugal,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-portugal,1500-4000,Regional visa/bank
+914,bank statement pdf workflow greece,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-greece,1500-4000,Regional visa/bank
+917,bank statement pdf workflow turkey,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-turkey,1500-4000,Regional visa/bank
+920,bank statement pdf workflow egypt,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-egypt,1500-4000,Regional visa/bank
+923,bank statement pdf workflow morocco,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-morocco,1500-4000,Regional visa/bank
+926,bank statement pdf workflow nigeria,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-nigeria,1500-4000,Regional visa/bank
+929,bank statement pdf workflow kenya,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-kenya,1500-4000,Regional visa/bank
+932,bank statement pdf workflow thailand,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-thailand,1500-4000,Regional visa/bank
+935,bank statement pdf workflow vietnam,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-vietnam,1500-4000,Regional visa/bank
+938,bank statement pdf workflow indonesia,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-indonesia,1500-4000,Regional visa/bank
+941,bank statement pdf workflow malaysia,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-malaysia,1500-4000,Regional visa/bank
+944,bank statement pdf workflow philippines,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-philippines,1500-4000,Regional visa/bank
+947,bank statement pdf workflow china,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-china,1500-4000,Regional visa/bank
+950,bank statement pdf workflow taiwan,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-taiwan,1500-4000,Regional visa/bank
+953,bank statement pdf workflow hong kong,PDF Workflows,workflow,low,80,CREATE,,/guides/bank-statement-pdf-workflow-hong-kong,1500-4000,Regional visa/bank
+977,pdf form digital signature field,PDF Forms,transactional,medium,80,CREATE,,/guides/pdf-form-digital-signature-field,1500-4000,
+591,remove metadata from pdf,PDF Security,problem,low,79,CREATE,,/guides/remove-metadata-from-pdf,1500-4000,
+598,remediate pdf accessibility,PDF Accessibility,workflow,low,79,CREATE,,/guides/remediate-pdf-accessibility,1500-4000,
+652,pdfgear vs adobe,PDF Collaboration,comparison,medium,79,CREATE,,/compare/pdfgear-vs-adobe,2000-3500,Missing competitor page
+733,pdf file damaged and cannot be repaired,PDF Errors,problem,medium,79,CREATE,,/guides/pdf-error-file-damaged,1500-4000,
+751,compress pdf for ird nz,PDF for Government Forms,problem,low,79,CREATE,,/guides/compress-pdf-ird-nz,1500-4000,Portal-specific
+992,pdf/a-1b compliance checklist,PDF Archiving,compliance,low,79,CREATE,,/guides/pdf-a-1b-compliance-checklist,1500-4000,
+14,compress pdf before merge,PDF Compression,informational,medium,78,MAINTAIN,,/guides/compress-before-merge-pdf,1500-4000,Wave upgraded
+15,compress pdf for cloud storage,PDF Compression,informational,medium,78,MAINTAIN,,/guides/compress-pdf-cloud-storage,1500-4000,Wave upgraded
+35,compress pdf for printing,PDF Compression,informational,medium,78,MAINTAIN,,/guides/compress-pdf-for-printing,1500-4000,Wave upgraded
+52,compress pdf with images,PDF Compression,informational,medium,78,MAINTAIN,,/guides/compress-pdf-with-images,1500-4000,Wave upgraded
+53,how to compress pdf without losing quality,PDF Compression,informational,medium,78,MAINTAIN,,/guides/compress-pdf-without-quality-loss,1500-4000,Wave upgraded
+578,ghostscript compress pdf settings,PDF Compression,informational,low,78,CREATE,,/guides/ghostscript-compress-pdf-settings,1500-4000,
+590,encrypt pdf aes 256,PDF Security,informational,low,78,CREATE,,/guides/encrypt-pdf-aes-256,1500-4000,
+597,screen reader pdf,PDF Accessibility,problem,low,78,CREATE,,/guides/screen-reader-pdf,1500-4000,
+601,commercial print pdf handoff,PDF Printing,workflow,low,78,CREATE,,/guides/commercial-print-pdf-handoff,1500-4000,
+608,archive pdf long term storage,PDF Archiving,informational,low,78,CREATE,,/guides/archive-pdf-long-term-storage,1500-4000,
+617,pdf24 vs ilovepdf,PDF Collaboration,comparison,low,78,CREATE,,/guides/pdf24-vs-ilovepdf,1500-4000,
+647,how pdf compression works,PDF Productivity,informational,low,78,CREATE,,/guides/how-pdf-compression-works,1500-4000,
+653,nitro vs adobe acrobat,PDF Collaboration,comparison,medium,78,CREATE,,/compare/nitro-vs-adobe-acrobat,2000-3500,Missing competitor page
+731,pdf error 0x80070057,PDF Errors,problem,medium,78,CREATE,,/guides/pdf-error-0x80070057,1500-4000,
+877,contract pdf workflow italy,PDF Workflows,workflow,low,78,UPGRADE,contract-pdf-workflow-italy,/guides/contract-pdf-workflow-italy,1500-4000,Regional visa/bank
+880,contract pdf workflow mexico,PDF Workflows,workflow,low,78,UPGRADE,contract-pdf-workflow-mexico,/guides/contract-pdf-workflow-mexico,1500-4000,Regional visa/bank
+883,contract pdf workflow new zealand,PDF Workflows,workflow,low,78,UPGRADE,contract-pdf-workflow-new-zealand,/guides/contract-pdf-workflow-new-zealand,1500-4000,Regional visa/bank
+886,contract pdf workflow south africa,PDF Workflows,workflow,low,78,UPGRADE,contract-pdf-workflow-south-africa,/guides/contract-pdf-workflow-south-africa,1500-4000,Regional visa/bank
+889,contract pdf workflow south korea,PDF Workflows,workflow,low,78,UPGRADE,contract-pdf-workflow-south-korea,/guides/contract-pdf-workflow-south-korea,1500-4000,Regional visa/bank
+891,contract pdf workflow brazil,PDF Workflows,workflow,low,78,UPGRADE,contract-pdf-workflow-brazil,/guides/contract-pdf-workflow-brazil,1500-4000,Regional visa/bank
+894,contract pdf workflow argentina,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-argentina,1500-4000,Regional visa/bank
+897,contract pdf workflow poland,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-poland,1500-4000,Regional visa/bank
+900,contract pdf workflow sweden,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-sweden,1500-4000,Regional visa/bank
+903,contract pdf workflow norway,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-norway,1500-4000,Regional visa/bank
+906,contract pdf workflow denmark,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-denmark,1500-4000,Regional visa/bank
+909,contract pdf workflow finland,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-finland,1500-4000,Regional visa/bank
+912,contract pdf workflow portugal,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-portugal,1500-4000,Regional visa/bank
+915,contract pdf workflow greece,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-greece,1500-4000,Regional visa/bank
+918,contract pdf workflow turkey,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-turkey,1500-4000,Regional visa/bank
+921,contract pdf workflow egypt,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-egypt,1500-4000,Regional visa/bank
+924,contract pdf workflow morocco,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-morocco,1500-4000,Regional visa/bank
+927,contract pdf workflow nigeria,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-nigeria,1500-4000,Regional visa/bank
+930,contract pdf workflow kenya,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-kenya,1500-4000,Regional visa/bank
+933,contract pdf workflow thailand,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-thailand,1500-4000,Regional visa/bank
+936,contract pdf workflow vietnam,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-vietnam,1500-4000,Regional visa/bank
+939,contract pdf workflow indonesia,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-indonesia,1500-4000,Regional visa/bank
+942,contract pdf workflow malaysia,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-malaysia,1500-4000,Regional visa/bank
+945,contract pdf workflow philippines,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-philippines,1500-4000,Regional visa/bank
+948,contract pdf workflow china,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-china,1500-4000,Regional visa/bank
+951,contract pdf workflow taiwan,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-taiwan,1500-4000,Regional visa/bank
+954,contract pdf workflow hong kong,PDF Workflows,workflow,low,78,CREATE,,/guides/contract-pdf-workflow-hong-kong,1500-4000,Regional visa/bank
+974,pdf form field validation,PDF Forms,transactional,medium,78,CREATE,,/guides/pdf-form-field-validation,1500-4000,
+986,pdf prints too light,PDF Printing,problem,low,78,CREATE,,/guides/pdf-prints-too-light,1500-4000,
+1001,migrate documents to pdf/a workflow,PDF Archiving,compliance,low,78,CREATE,,/guides/pdf-migration-documents-to-pdfa,1500-4000,
+607,pdf retention policy,PDF Standards,compliance,low,77,CREATE,,/guides/pdf-retention-policy,1500-4000,
+612,pdf review workflow,PDF Collaboration,workflow,low,77,CREATE,,/guides/pdf-review-workflow,1500-4000,
+734,pdf not a valid file,PDF Errors,problem,medium,77,CREATE,,/guides/pdf-error-not-a-valid-file,1500-4000,
+978,convert xfa pdf to acroform,PDF Forms,transactional,medium,77,CREATE,,/guides/xfa-to-acroform-convert,1500-4000,
+987,pdf prints cropped off,PDF Printing,problem,low,77,CREATE,,/guides/pdf-prints-cropped-off,1500-4000,
+993,pdf/a-2b vs pdf/a-3 difference,PDF Archiving,compliance,low,77,CREATE,,/guides/pdf-a-2b-vs-pdf-a-3,1500-4000,
+592,pdf javascript security risk,PDF Security,informational,low,76,CREATE,,/guides/pdf-javascript-security-risk,1500-4000,
+610,digitize paper archive pdf,PDF Archiving,workflow,low,76,CREATE,,/guides/digitize-paper-archive-pdf,1500-4000,
+648,pdf file size explained,PDF Productivity,informational,low,76,CREATE,,/guides/pdf-file-size-explained,1500-4000,
+654,pdfsam alternative,PDF Collaboration,comparison,medium,76,CREATE,,/compare/pdfsam-alternative,2000-3500,Missing competitor page
+736,pdf print spooler error,PDF Errors,problem,medium,76,CREATE,,/guides/pdf-error-print-spooler,1500-4000,
+976,pdf form calculated fields,PDF Forms,transactional,medium,76,CREATE,,/guides/pdf-form-calculate-fields,1500-4000,
+980,fix pdf missing alt text,PDF Accessibility,problem,low,76,CREATE,,/guides/fix-pdf-missing-alt-text,1500-4000,
+988,pdf prints wrong paper size,PDF Printing,problem,low,76,CREATE,,/guides/pdf-prints-wrong-paper-size,1500-4000,
+994,pdf long term archive strategy,PDF Archiving,compliance,low,76,CREATE,,/guides/pdf-long-term-archive-strategy,1500-4000,
+1006,pdf timestamp authority signing,PDF Archiving,compliance,low,76,CREATE,,/guides/pdf-timestamp-authority-signing,1500-4000,
+164,compress vs split,PDF Collaboration,commercial,medium,75,UPGRADE,compress-vs-split,/guides/compress-vs-split,1500-4000,Thin template — rewrite to 1500+ words
+165,merge vs compress,PDF Collaboration,commercial,medium,75,UPGRADE,merge-vs-compress,/guides/merge-vs-compress,1500-4000,Thin template — rewrite to 1500+ words
+581,pdf to epub,PDF Conversion,transactional,low,75,CREATE,,/guides/pdf-to-epub,1500-4000,
+645,what is a pdf file,PDF Productivity,informational,low,75,CREATE,,/guides/what-is-a-pdf-file,1500-4000,
+739,pdf font embedding failed,PDF Errors,problem,medium,75,CREATE,,/guides/pdf-error-font-embedding,1500-4000,
+752,merge pdf on iphone,PDF Workflows,device,medium,75,CREATE,,/guides/merge-pdf-on-iphone,1500-4000,
+756,merge pdf on ipad,PDF Workflows,device,medium,75,CREATE,,/guides/merge-pdf-on-ipad,1500-4000,
+764,merge pdf on chromebook,PDF Workflows,device,medium,75,CREATE,,/guides/merge-pdf-on-chromebook,1500-4000,
+769,merge pdf on linux,PDF Workflows,device,medium,75,CREATE,,/guides/merge-pdf-on-linux,1500-4000,
+777,merge pdf on windows 11,PDF Workflows,device,medium,75,CREATE,,/guides/merge-pdf-on-windows-11,1500-4000,
+960,pdf to google docs,PDF Conversion,transactional,medium,75,CREATE,,/guides/pdf-to-google-docs,1500-4000,
+979,pdf form accessibility tags,PDF Forms,transactional,medium,75,CREATE,,/guides/pdf-form-accessibility-tags,1500-4000,
+981,fix pdf reading order screen reader,PDF Accessibility,problem,low,75,CREATE,,/guides/fix-pdf-reading-order,1500-4000,
+991,embed fonts in pdf for print,PDF Printing,problem,low,75,CREATE,,/guides/pdf-embed-fonts-for-print,1500-4000,
+998,pdf litigation hold archiving,PDF Archiving,compliance,low,75,CREATE,,/guides/pdf-litigation-hold-archive,1500-4000,
+132,pdf tools for small business,PDF Collaboration,commercial,medium,74,MAINTAIN,,/guides/pdf-tools-small-business,1500-4000,Wave upgraded
+133,excel to pdf,PDF Conversion,transactional,medium,74,MAINTAIN,,/guides/excel-to-pdf,1500-4000,Wave upgraded
+135,html to pdf,PDF Conversion,transactional,medium,74,MAINTAIN,,/guides/html-to-pdf,1500-4000,Wave upgraded
+136,images to pdf,PDF Conversion,transactional,medium,74,MAINTAIN,,/guides/images-to-pdf,1500-4000,Wave upgraded
+137,pdf to excel,PDF Conversion,transactional,medium,74,MAINTAIN,,/guides/pdf-to-excel,1500-4000,Wave upgraded
+138,pdf to markdown,PDF Conversion,transactional,medium,74,MAINTAIN,,/guides/pdf-to-markdown,1500-4000,Wave upgraded
+140,powerpoint to pdf,PDF Conversion,transactional,medium,74,MAINTAIN,,/guides/powerpoint-to-pdf,1500-4000,Wave upgraded
+143,add image to pdf,PDF Editing,transactional,medium,74,MAINTAIN,,/guides/add-image-to-pdf,1500-4000,Wave upgraded
+144,add page numbers pdf,PDF Editing,transactional,medium,74,MAINTAIN,,/guides/add-page-numbers,1500-4000,Wave upgraded
+146,add text to pdf,PDF Editing,transactional,medium,74,MAINTAIN,,/guides/add-text-to-pdf,1500-4000,Wave upgraded
+147,edit pdf forms,PDF Editing,transactional,medium,74,MAINTAIN,,/guides/edit-pdf-forms,1500-4000,Wave upgraded
+150,edit pdf without acrobat,PDF Editing,transactional,medium,74,MAINTAIN,,/guides/edit-pdf-without-acrobat,1500-4000,Wave upgraded
+151,edit scanned pdf,PDF Editing,transactional,medium,74,MAINTAIN,,/guides/edit-scanned-pdf,1500-4000,Wave upgraded
+152,rotate pdf pages,PDF Editing,transactional,medium,74,MAINTAIN,,/guides/rotate-pdf,1500-4000,Wave upgraded
+153,combine pdf before compress,PDF Workflows,transactional,medium,74,MAINTAIN,,/guides/combine-then-compress-pdf,1500-4000,Wave upgraded
+154,extract single page from pdf,PDF Workflows,transactional,medium,74,MAINTAIN,,/guides/extract-single-page-pdf,1500-4000,Wave upgraded
+155,organize pdf pages,PDF Workflows,transactional,medium,74,MAINTAIN,,/guides/organize-pdf-pages,1500-4000,Wave upgraded
+156,extract text from pdf without adobe,PDF Conversion,commercial,medium,74,MAINTAIN,,/guides/extract-text-without-adobe,1500-4000,Wave upgraded
+159,split pdf by page range,PDF Workflows,transactional,medium,74,MAINTAIN,,/guides/split-pdf-page-range,1500-4000,Wave upgraded
+160,split pdf by size,PDF Workflows,transactional,medium,74,MAINTAIN,,/guides/split-pdf-by-size,1500-4000,Wave upgraded
+161,split pdf for email,PDF Workflows,transactional,medium,74,MAINTAIN,,/guides/split-pdf-for-email,1500-4000,Wave upgraded
+536,best browser pdf tools for accountants,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-accountants,1500-4000,Deferred roadmap
+537,best browser pdf tools for archivists,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-archivists,1500-4000,Deferred roadmap
+538,best browser pdf tools for bookkeepers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-bookkeepers,1500-4000,Deferred roadmap
+539,best browser pdf tools for construction managers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-construction-managers,1500-4000,Deferred roadmap
+540,best browser pdf tools for consultants,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-consultants,1500-4000,Deferred roadmap
+541,best browser pdf tools for designers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-designers,1500-4000,Deferred roadmap
+542,best browser pdf tools for developers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-developers,1500-4000,Deferred roadmap
+543,best browser pdf tools for ecommerce sellers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-ecommerce-sellers,1500-4000,Deferred roadmap
+544,best browser pdf tools for event planners,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-event-planners,1500-4000,Deferred roadmap
+545,best browser pdf tools for freelancers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-freelancers,1500-4000,Deferred roadmap
+546,best browser pdf tools for government contractors,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-government-contractors,1500-4000,Deferred roadmap
+547,best browser pdf tools for healthcare administrators,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-healthcare-administrators,1500-4000,Deferred roadmap
+548,best browser pdf tools for hr teams,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-hr-teams,1500-4000,Deferred roadmap
+549,best browser pdf tools for insurance agents,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-insurance-agents,1500-4000,Deferred roadmap
+550,best browser pdf tools for journalists,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-journalists,1500-4000,Deferred roadmap
+551,best browser pdf tools for lawyers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-lawyers,1500-4000,Deferred roadmap
+552,best browser pdf tools for librarians,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-librarians,1500-4000,Deferred roadmap
+553,best browser pdf tools for marketers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-marketers,1500-4000,Deferred roadmap
+554,best browser pdf tools for nonprofits,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-nonprofits,1500-4000,Deferred roadmap
+555,best browser pdf tools for paralegals,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-paralegals,1500-4000,Deferred roadmap
+556,best browser pdf tools for photographers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-photographers,1500-4000,Deferred roadmap
+557,best browser pdf tools for real estate agents,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-real-estate-agents,1500-4000,Deferred roadmap
+558,best browser pdf tools for recruiters,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-recruiters,1500-4000,Deferred roadmap
+559,best browser pdf tools for remote teams,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-remote-teams,1500-4000,Deferred roadmap
+560,best browser pdf tools for researchers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-researchers,1500-4000,Deferred roadmap
+561,best browser pdf tools for small business,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-small-business,1500-4000,Deferred roadmap
+562,best browser pdf tools for startups,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-startups,1500-4000,Deferred roadmap
+563,best browser pdf tools for students,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-students,1500-4000,Deferred roadmap
+564,best browser pdf tools for tax preparers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-tax-preparers,1500-4000,Deferred roadmap
+565,best browser pdf tools for teachers,PDF Productivity,commercial,medium,74,CREATE,,/guides/best-browser-pdf-tools-for-teachers,1500-4000,Deferred roadmap
+602,pdf overprint printing,PDF Printing,informational,low,74,CREATE,,/guides/pdf-overprint-printing,1500-4000,
+614,pdf comment export,PDF Collaboration,workflow,low,74,CREATE,,/guides/pdf-comment-export,1500-4000,
+649,pdf workflow checklist,PDF Productivity,informational,low,74,CREATE,,/guides/pdf-workflow-checklist,1500-4000,
+655,able2extract alternative,PDF Collaboration,comparison,medium,74,CREATE,,/compare/able2extract-alternative,2000-3500,Missing competitor page
+735,pdf out of memory error,PDF Errors,problem,medium,74,CREATE,,/guides/pdf-error-out-of-memory,1500-4000,
+782,how pdf compression works,PDF Productivity,informational,low,74,CREATE,,/guides/beginner-how-pdf-compression-works,1500-4000,
+965,pdf review workflow remote team,PDF Collaboration,workflow,low,74,CREATE,,/guides/pdf-review-workflow-remote-team,1500-4000,
+975,pdf form tab order accessibility,PDF Forms,transactional,medium,74,CREATE,,/guides/pdf-form-tab-order,1500-4000,
+982,fix untagged pdf content,PDF Accessibility,problem,low,74,CREATE,,/guides/fix-pdf-untagged-content,1500-4000,
+989,pdf double sided printing wrong order,PDF Printing,problem,low,74,CREATE,,/guides/pdf-prints-double-sided-wrong,1500-4000,
+995,pdf digitization project plan,PDF Archiving,compliance,low,74,CREATE,,/guides/pdf-digitization-project-plan,1500-4000,
+1003,pdf retention schedule by document type,PDF Archiving,compliance,low,74,CREATE,,/guides/pdf-retention-schedule-by-type,1500-4000,
+738,xfa pdf form not supported,PDF Errors,problem,medium,73,CREATE,,/guides/pdf-error-xfa-form,1500-4000,
+757,split pdf on ipad,PDF Workflows,device,medium,73,CREATE,,/guides/split-pdf-on-ipad,1500-4000,
+761,split pdf on android,PDF Workflows,device,medium,73,CREATE,,/guides/split-pdf-on-android,1500-4000,
+765,split pdf on chromebook,PDF Workflows,device,medium,73,CREATE,,/guides/split-pdf-on-chromebook,1500-4000,
+770,split pdf on linux,PDF Workflows,device,medium,73,CREATE,,/guides/split-pdf-on-linux,1500-4000,
+778,split pdf on windows 11,PDF Workflows,device,medium,73,CREATE,,/guides/split-pdf-on-windows-11,1500-4000,
+789,scanned vs digital pdf,PDF Productivity,informational,low,73,CREATE,,/guides/beginner-scanned-vs-digital-pdf,1500-4000,
+966,pdf approval workflow without adobe,PDF Collaboration,workflow,low,73,CREATE,,/guides/pdf-approval-workflow-no-adobe,1500-4000,
+983,fix pdf low contrast text wcag,PDF Accessibility,problem,low,73,CREATE,,/guides/fix-pdf-low-contrast-text,1500-4000,
+990,pdf prints grayscale only fix,PDF Printing,problem,low,73,CREATE,,/guides/pdf-prints-grayscale-only,1500-4000,
+996,pdf records management policy template,PDF Archiving,compliance,low,73,CREATE,,/guides/pdf-records-management-policy,1500-4000,
+580,pdf to csv,PDF Conversion,transactional,low,72,CREATE,,/guides/pdf-to-csv,1500-4000,
+656,merge pdf for lawyers,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-lawyers,1500-4000,Industry vertical
+660,merge pdf for accountants,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-accountants,1500-4000,Industry vertical
+664,merge pdf for healthcare,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-healthcare,1500-4000,Industry vertical
+668,merge pdf for real estate,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-real-estate,1500-4000,Industry vertical
+672,merge pdf for insurance,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-insurance,1500-4000,Industry vertical
+676,merge pdf for education,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-education,1500-4000,Industry vertical
+680,merge pdf for nonprofits,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-nonprofits,1500-4000,Industry vertical
+684,merge pdf for government,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-government,1500-4000,Industry vertical
+688,merge pdf for freelancers,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-freelancers,1500-4000,Industry vertical
+692,merge pdf for consultants,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-consultants,1500-4000,Industry vertical
+696,merge pdf for architects,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-architects,1500-4000,Industry vertical
+700,merge pdf for engineers,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-engineers,1500-4000,Industry vertical
+704,merge pdf for researchers,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-researchers,1500-4000,Industry vertical
+708,merge pdf for journalists,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-journalists,1500-4000,Industry vertical
+712,merge pdf for hr teams,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-hr-teams,1500-4000,Industry vertical
+716,merge pdf for sales teams,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-sales-teams,1500-4000,Industry vertical
+720,merge pdf for marketing teams,PDF for Businesses,workflow,low,72,CREATE,,/guides/merge-pdf-for-marketing-teams,1500-4000,Industry vertical
+753,convert pdf on iphone,PDF Conversion,device,medium,72,CREATE,,/guides/convert-pdf-on-iphone,1500-4000,
+758,convert pdf on ipad,PDF Conversion,device,medium,72,CREATE,,/guides/convert-pdf-on-ipad,1500-4000,
+766,convert pdf on chromebook,PDF Conversion,device,medium,72,CREATE,,/guides/convert-pdf-on-chromebook,1500-4000,
+771,convert pdf on linux,PDF Conversion,device,medium,72,CREATE,,/guides/convert-pdf-on-linux,1500-4000,
+774,convert pdf on mac,PDF Conversion,device,medium,72,CREATE,,/guides/convert-pdf-on-mac,1500-4000,
+779,convert pdf on windows 11,PDF Conversion,device,medium,72,CREATE,,/guides/convert-pdf-on-windows-11,1500-4000,
+783,pdf vs png for documents,PDF Productivity,informational,low,72,CREATE,,/guides/beginner-pdf-vs-png-for-documents,1500-4000,
+959,pdf to pages mac,PDF Mac Workflows,transactional,medium,72,CREATE,,/guides/pdf-to-pages,1500-4000,
+970,archive email thread as pdf,PDF Collaboration,workflow,low,72,CREATE,,/guides/pdf-email-thread-archive,1500-4000,
+984,fix pdf table headers accessibility,PDF Accessibility,problem,low,72,CREATE,,/guides/fix-pdf-table-headers,1500-4000,
+997,migrate email archive to pdf/a,PDF Archiving,compliance,low,72,CREATE,,/guides/pdf-email-archive-migration,1500-4000,
+1002,pdf worm storage compliance,PDF Archiving,compliance,low,72,CREATE,,/guides/pdf-worm-storage-compliance,1500-4000,
+172,compress aadhaar pdf,PDF Compression,transactional,medium,71,UPGRADE,compress-aadhaar-pdf,/guides/compress-aadhaar-pdf,1500-4000,Thin template — rewrite to 1500+ words
+174,compress pan card pdf,PDF Compression,transactional,medium,71,UPGRADE,compress-pan-card-pdf,/guides/compress-pan-card-pdf,1500-4000,Thin template — rewrite to 1500+ words
+181,how to extract images from pdf without adobe,PDF Conversion,commercial,medium,71,UPGRADE,extract-images-from-pdf-without-adobe,/guides/extract-images-from-pdf-without-adobe,1500-4000,Thin template — rewrite to 1500+ words
+188,how to pdf to powerpoint without adobe,PDF Conversion,commercial,medium,71,UPGRADE,pdf-to-powerpoint-without-adobe,/guides/pdf-to-powerpoint-without-adobe,1500-4000,Thin template — rewrite to 1500+ words
+190,how to text to pdf without adobe,PDF Conversion,commercial,medium,71,UPGRADE,text-to-pdf-without-adobe,/guides/text-to-pdf-without-adobe,1500-4000,Thin template — rewrite to 1500+ words
+329,pdf tools for accountants,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-for-accountants,/guides/pdf-tools-for-accountants,1500-4000,Thin template — rewrite to 1500+ words
+330,pdf tools for construction,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-construction,/guides/pdf-tools-construction,1500-4000,Thin template — rewrite to 1500+ words
+332,pdf tools for healthcare-admin,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-healthcare-admin,/guides/pdf-tools-healthcare-admin,1500-4000,Thin template — rewrite to 1500+ words
+333,pdf tools for insurance,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-insurance,/guides/pdf-tools-insurance,1500-4000,Thin template — rewrite to 1500+ words
+334,pdf tools for lawyers,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-for-lawyers,/guides/pdf-tools-for-lawyers,1500-4000,Thin template — rewrite to 1500+ words
+335,pdf tools for marketing-agencies,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-marketing-agencies,/guides/pdf-tools-marketing-agencies,1500-4000,Thin template — rewrite to 1500+ words
+336,pdf tools for nonprofits,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-nonprofits,/guides/pdf-tools-nonprofits,1500-4000,Thin template — rewrite to 1500+ words
+337,pdf tools for real-estate,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-real-estate,/guides/pdf-tools-real-estate,1500-4000,Thin template — rewrite to 1500+ words
+338,pdf tools for recruiters,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-recruiters,/guides/pdf-tools-recruiters,1500-4000,Thin template — rewrite to 1500+ words
+339,pdf tools for students,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-for-students,/guides/pdf-tools-for-students,1500-4000,Thin template — rewrite to 1500+ words
+340,pdf tools for teachers,PDF for Businesses,commercial,medium,71,UPGRADE,pdf-tools-teachers,/guides/pdf-tools-teachers,1500-4000,Thin template — rewrite to 1500+ words
+657,compress pdf for lawyers,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-lawyers,1500-4000,Industry vertical
+661,compress pdf for accountants,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-accountants,1500-4000,Industry vertical
+665,compress pdf for healthcare,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-healthcare,1500-4000,Industry vertical
+669,compress pdf for real estate,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-real-estate,1500-4000,Industry vertical
+673,compress pdf for insurance,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-insurance,1500-4000,Industry vertical
+677,compress pdf for education,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-education,1500-4000,Industry vertical
+681,compress pdf for nonprofits,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-nonprofits,1500-4000,Industry vertical
+685,compress pdf for government,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-government,1500-4000,Industry vertical
+689,compress pdf for freelancers,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-freelancers,1500-4000,Industry vertical
+693,compress pdf for consultants,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-consultants,1500-4000,Industry vertical
+697,compress pdf for architects,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-architects,1500-4000,Industry vertical
+701,compress pdf for engineers,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-engineers,1500-4000,Industry vertical
+705,compress pdf for researchers,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-researchers,1500-4000,Industry vertical
+709,compress pdf for journalists,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-journalists,1500-4000,Industry vertical
+713,compress pdf for hr teams,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-hr-teams,1500-4000,Industry vertical
+717,compress pdf for sales teams,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-sales-teams,1500-4000,Industry vertical
+721,compress pdf for marketing teams,PDF for Businesses,workflow,low,71,CREATE,,/guides/compress-pdf-for-marketing-teams,1500-4000,Industry vertical
+754,sign pdf on iphone,PDF Signing,device,medium,71,CREATE,,/guides/sign-pdf-on-iphone,1500-4000,
+759,sign pdf on ipad,PDF Signing,device,medium,71,CREATE,,/guides/sign-pdf-on-ipad,1500-4000,
+762,sign pdf on android,PDF Signing,device,medium,71,CREATE,,/guides/sign-pdf-on-android,1500-4000,
+767,sign pdf on chromebook,PDF Signing,device,medium,71,CREATE,,/guides/sign-pdf-on-chromebook,1500-4000,
+772,sign pdf on linux,PDF Signing,device,medium,71,CREATE,,/guides/sign-pdf-on-linux,1500-4000,
+775,sign pdf on mac,PDF Signing,device,medium,71,CREATE,,/guides/sign-pdf-on-mac,1500-4000,
+780,sign pdf on windows 11,PDF Signing,device,medium,71,CREATE,,/guides/sign-pdf-on-windows-11,1500-4000,
+788,pdf encryption types explained,PDF Productivity,informational,low,71,CREATE,,/guides/beginner-pdf-encryption-types,1500-4000,
+794,best pdf editor for lawyers,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-lawyers,1500-4000,Best-of segment
+799,best pdf editor for students,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-students,1500-4000,Best-of segment
+804,best pdf editor for accountants,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-accountants,1500-4000,Best-of segment
+809,best pdf editor for teachers,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-teachers,1500-4000,Best-of segment
+814,best pdf editor for freelancers,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-freelancers,1500-4000,Best-of segment
+819,best pdf editor for small business,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-small-business,1500-4000,Best-of segment
+824,best pdf editor for healthcare,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-healthcare,1500-4000,Best-of segment
+829,best pdf editor for real estate agents,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-real-estate-agents,1500-4000,Best-of segment
+834,best pdf editor for remote teams,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-remote-teams,1500-4000,Best-of segment
+839,best pdf editor for nonprofits,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-nonprofits,1500-4000,Best-of segment
+844,best pdf editor for government,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-government,1500-4000,Best-of segment
+849,best pdf editor for researchers,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-researchers,1500-4000,Best-of segment
+854,best pdf editor for designers,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-designers,1500-4000,Best-of segment
+859,best pdf editor for developers,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-developers,1500-4000,Best-of segment
+864,best pdf editor for sales teams,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-sales-teams,1500-4000,Best-of segment
+869,best pdf editor for hr teams,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-hr-teams,1500-4000,Best-of segment
+874,best pdf editor for consultants,PDF Editing,commercial,medium,71,CREATE,,/guides/best-pdf-editor-for-consultants,1500-4000,Best-of segment
+967,pdf version control best practices,PDF Collaboration,workflow,low,71,CREATE,,/guides/pdf-version-control-best-practices,1500-4000,
+985,add pdf bookmarks for navigation,PDF Accessibility,problem,low,71,CREATE,,/guides/fix-pdf-bookmarks-missing,1500-4000,
+999,pdf cloud archive vs on premise,PDF Archiving,compliance,low,71,CREATE,,/guides/pdf-cloud-archive-vs-on-prem,1500-4000,
+499,freelancer invoicing statistics,PDF Compliance,informational,medium,70,UPGRADE,freelancer-invoicing-statistics,/guides/freelancer-invoicing-statistics,1500-4000,Thin template — rewrite to 1500+ words
+500,gmail vs outlook attachment limits,PDF Compliance,informational,medium,70,UPGRADE,gmail-vs-outlook-pdf-limits,/guides/gmail-vs-outlook-pdf-limits,1500-4000,Thin template — rewrite to 1500+ words
+502,pdf compression benchmark,PDF Compliance,informational,medium,70,UPGRADE,pdf-compression-benchmark,/guides/pdf-compression-benchmark,1500-4000,Thin template — rewrite to 1500+ words
+503,university application pdf requirements,PDF Compliance,informational,medium,70,UPGRADE,university-pdf-upload-requirements,/guides/university-pdf-upload-requirements,1500-4000,Thin template — rewrite to 1500+ words
+583,cad to pdf,PDF Conversion,transactional,low,70,CREATE,,/guides/cad-to-pdf,1500-4000,
+658,ocr pdf for lawyers,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-lawyers,1500-4000,Industry vertical
+662,ocr pdf for accountants,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-accountants,1500-4000,Industry vertical
+666,ocr pdf for healthcare,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-healthcare,1500-4000,Industry vertical
+670,ocr pdf for real estate,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-real-estate,1500-4000,Industry vertical
+674,ocr pdf for insurance,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-insurance,1500-4000,Industry vertical
+678,ocr pdf for education,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-education,1500-4000,Industry vertical
+682,ocr pdf for nonprofits,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-nonprofits,1500-4000,Industry vertical
+686,ocr pdf for government,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-government,1500-4000,Industry vertical
+690,ocr pdf for freelancers,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-freelancers,1500-4000,Industry vertical
+694,ocr pdf for consultants,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-consultants,1500-4000,Industry vertical
+698,ocr pdf for architects,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-architects,1500-4000,Industry vertical
+702,ocr pdf for engineers,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-engineers,1500-4000,Industry vertical
+706,ocr pdf for researchers,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-researchers,1500-4000,Industry vertical
+710,ocr pdf for journalists,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-journalists,1500-4000,Industry vertical
+714,ocr pdf for hr teams,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-hr-teams,1500-4000,Industry vertical
+718,ocr pdf for sales teams,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-sales-teams,1500-4000,Industry vertical
+722,ocr pdf for marketing teams,PDF for Businesses,workflow,low,70,CREATE,,/guides/ocr-pdf-for-marketing-teams,1500-4000,Industry vertical
+740,pdf linearization failed,PDF Errors,problem,medium,70,CREATE,,/guides/pdf-error-linearization,1500-4000,
+755,ocr pdf on iphone,PDF OCR,device,medium,70,CREATE,,/guides/ocr-pdf-on-iphone,1500-4000,
+760,ocr pdf on ipad,PDF OCR,device,medium,70,CREATE,,/guides/ocr-pdf-on-ipad,1500-4000,
+763,ocr pdf on android,PDF OCR,device,medium,70,CREATE,,/guides/ocr-pdf-on-android,1500-4000,
+768,ocr pdf on chromebook,PDF OCR,device,medium,70,CREATE,,/guides/ocr-pdf-on-chromebook,1500-4000,
+773,ocr pdf on linux,PDF OCR,device,medium,70,CREATE,,/guides/ocr-pdf-on-linux,1500-4000,
+776,ocr pdf on mac,PDF OCR,device,medium,70,CREATE,,/guides/ocr-pdf-on-mac,1500-4000,
+781,ocr pdf on windows 11,PDF OCR,device,medium,70,CREATE,,/guides/ocr-pdf-on-windows-11,1500-4000,
+784,vector vs raster pdf,PDF Productivity,informational,low,70,UPGRADE,beginner-vector-vs-raster-pdf,/guides/beginner-vector-vs-raster-pdf,1500-4000,
+790,best pdf compressor for lawyers,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-lawyers,1500-4000,Best-of segment
+795,best pdf compressor for students,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-students,1500-4000,Best-of segment
+800,best pdf compressor for accountants,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-accountants,1500-4000,Best-of segment
+805,best pdf compressor for teachers,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-teachers,1500-4000,Best-of segment
+810,best pdf compressor for freelancers,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-freelancers,1500-4000,Best-of segment
+815,best pdf compressor for small business,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-small-business,1500-4000,Best-of segment
+820,best pdf compressor for healthcare,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-healthcare,1500-4000,Best-of segment
+825,best pdf compressor for real estate agents,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-real-estate-agents,1500-4000,Best-of segment
+830,best pdf compressor for remote teams,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-remote-teams,1500-4000,Best-of segment
+835,best pdf compressor for nonprofits,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-nonprofits,1500-4000,Best-of segment
+840,best pdf compressor for government,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-government,1500-4000,Best-of segment
+845,best pdf compressor for researchers,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-researchers,1500-4000,Best-of segment
+850,best pdf compressor for designers,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-designers,1500-4000,Best-of segment
+855,best pdf compressor for developers,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-developers,1500-4000,Best-of segment
+860,best pdf compressor for sales teams,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-sales-teams,1500-4000,Best-of segment
+865,best pdf compressor for hr teams,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-hr-teams,1500-4000,Best-of segment
+870,best pdf compressor for consultants,PDF Compression,commercial,medium,70,CREATE,,/guides/best-pdf-compressor-for-consultants,1500-4000,Best-of segment
+955,pdf to rtf,PDF Conversion,transactional,medium,70,CREATE,,/guides/pdf-to-rtf,1500-4000,
+964,pdf to searchable image,PDF OCR,transactional,medium,70,CREATE,,/guides/pdf-to-searchable-image,1500-4000,
+972,pdf client delivery checklist,PDF Collaboration,workflow,low,70,CREATE,,/guides/pdf-client-delivery-checklist,1500-4000,
+1000,verify pdf checksum integrity,PDF Archiving,compliance,low,70,CREATE,,/guides/pdf-checksum-verify-integrity,1500-4000,
+659,secure pdf workflow lawyers,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-lawyers,1500-4000,Industry vertical
+663,secure pdf workflow accountants,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-accountants,1500-4000,Industry vertical
+667,secure pdf workflow healthcare,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-healthcare,1500-4000,Industry vertical
+671,secure pdf workflow real estate,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-real-estate,1500-4000,Industry vertical
+675,secure pdf workflow insurance,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-insurance,1500-4000,Industry vertical
+679,secure pdf workflow education,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-education,1500-4000,Industry vertical
+683,secure pdf workflow nonprofits,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-nonprofits,1500-4000,Industry vertical
+687,secure pdf workflow government,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-government,1500-4000,Industry vertical
+691,secure pdf workflow freelancers,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-freelancers,1500-4000,Industry vertical
+695,secure pdf workflow consultants,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-consultants,1500-4000,Industry vertical
+699,secure pdf workflow architects,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-architects,1500-4000,Industry vertical
+703,secure pdf workflow engineers,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-engineers,1500-4000,Industry vertical
+707,secure pdf workflow researchers,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-researchers,1500-4000,Industry vertical
+711,secure pdf workflow journalists,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-journalists,1500-4000,Industry vertical
+715,secure pdf workflow hr teams,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-hr-teams,1500-4000,Industry vertical
+719,secure pdf workflow sales teams,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-sales-teams,1500-4000,Industry vertical
+723,secure pdf workflow marketing teams,PDF Security,workflow,low,69,CREATE,,/guides/secure-pdf-workflow-marketing-teams,1500-4000,Industry vertical
+791,best pdf merger for lawyers,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-lawyers,1500-4000,Best-of segment
+796,best pdf merger for students,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-students,1500-4000,Best-of segment
+801,best pdf merger for accountants,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-accountants,1500-4000,Best-of segment
+806,best pdf merger for teachers,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-teachers,1500-4000,Best-of segment
+811,best pdf merger for freelancers,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-freelancers,1500-4000,Best-of segment
+816,best pdf merger for small business,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-small-business,1500-4000,Best-of segment
+821,best pdf merger for healthcare,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-healthcare,1500-4000,Best-of segment
+826,best pdf merger for real estate agents,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-real-estate-agents,1500-4000,Best-of segment
+831,best pdf merger for remote teams,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-remote-teams,1500-4000,Best-of segment
+836,best pdf merger for nonprofits,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-nonprofits,1500-4000,Best-of segment
+841,best pdf merger for government,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-government,1500-4000,Best-of segment
+846,best pdf merger for researchers,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-researchers,1500-4000,Best-of segment
+851,best pdf merger for designers,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-designers,1500-4000,Best-of segment
+856,best pdf merger for developers,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-developers,1500-4000,Best-of segment
+861,best pdf merger for sales teams,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-sales-teams,1500-4000,Best-of segment
+866,best pdf merger for hr teams,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-hr-teams,1500-4000,Best-of segment
+871,best pdf merger for consultants,PDF Workflows,commercial,medium,69,CREATE,,/guides/best-pdf-merger-for-consultants,1500-4000,Best-of segment
+968,export pdf comments to word,PDF Collaboration,workflow,low,69,CREATE,,/guides/pdf-comments-to-word,1500-4000,
+1004,pdf destruction certificate workflow,PDF Archiving,compliance,low,69,CREATE,,/guides/pdf-destruction-certificate,1500-4000,
+724,ocr pdf italian,PDF OCR,transactional,low,68,CREATE,,/guides/ocr-pdf-italian,1500-4000,
+725,ocr pdf dutch,PDF OCR,transactional,low,68,CREATE,,/guides/ocr-pdf-dutch,1500-4000,
+726,ocr pdf turkish,PDF OCR,transactional,low,68,CREATE,,/guides/ocr-pdf-turkish,1500-4000,
+727,ocr pdf vietnamese,PDF OCR,transactional,low,68,CREATE,,/guides/ocr-pdf-vietnamese,1500-4000,
+728,ocr pdf thai,PDF OCR,transactional,low,68,CREATE,,/guides/ocr-pdf-thai,1500-4000,
+729,ocr pdf hebrew,PDF OCR,transactional,low,68,CREATE,,/guides/ocr-pdf-hebrew,1500-4000,
+730,ocr pdf polish,PDF OCR,transactional,low,68,CREATE,,/guides/ocr-pdf-polish,1500-4000,
+785,pdf color spaces cmyk rgb,PDF Productivity,informational,low,68,CREATE,,/guides/beginner-pdf-color-spaces,1500-4000,
+792,best pdf converter for lawyers,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-lawyers,1500-4000,Best-of segment
+797,best pdf converter for students,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-students,1500-4000,Best-of segment
+802,best pdf converter for accountants,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-accountants,1500-4000,Best-of segment
+807,best pdf converter for teachers,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-teachers,1500-4000,Best-of segment
+812,best pdf converter for freelancers,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-freelancers,1500-4000,Best-of segment
+817,best pdf converter for small business,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-small-business,1500-4000,Best-of segment
+822,best pdf converter for healthcare,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-healthcare,1500-4000,Best-of segment
+827,best pdf converter for real estate agents,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-real-estate-agents,1500-4000,Best-of segment
+832,best pdf converter for remote teams,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-remote-teams,1500-4000,Best-of segment
+837,best pdf converter for nonprofits,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-nonprofits,1500-4000,Best-of segment
+842,best pdf converter for government,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-government,1500-4000,Best-of segment
+847,best pdf converter for researchers,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-researchers,1500-4000,Best-of segment
+852,best pdf converter for designers,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-designers,1500-4000,Best-of segment
+857,best pdf converter for developers,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-developers,1500-4000,Best-of segment
+862,best pdf converter for sales teams,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-sales-teams,1500-4000,Best-of segment
+867,best pdf converter for hr teams,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-hr-teams,1500-4000,Best-of segment
+872,best pdf converter for consultants,PDF Conversion,commercial,medium,68,CREATE,,/guides/best-pdf-converter-for-consultants,1500-4000,Best-of segment
+958,pdf to odt,PDF Conversion,transactional,medium,68,CREATE,,/guides/pdf-to-odt,1500-4000,
+961,pdf to notion,PDF Productivity,transactional,medium,68,CREATE,,/guides/pdf-to-notion,1500-4000,
+971,pdf handoff design to development,PDF Collaboration,workflow,low,68,CREATE,,/guides/pdf-handoff-design-to-dev,1500-4000,
+1005,pdf archive metadata schema,PDF Archiving,compliance,low,68,CREATE,,/guides/pdf-archive-metadata-schema,1500-4000,
+162,pdf email attachment checklist,PDF Workflows,informational,medium,67,UPGRADE,pdf-email-attachment-checklist,/guides/pdf-email-attachment-checklist,1500-4000,Thin template — rewrite to 1500+ words
+356,how do i combine images into pdf,PDF Workflows,informational,medium,67,UPGRADE,how-to-combine-images-into-pdf,/guides/how-to-combine-images-into-pdf,1500-4000,Thin template — rewrite to 1500+ words
+357,how do i split a pdf,PDF Workflows,informational,medium,67,UPGRADE,how-to-split-a-pdf,/guides/how-to-split-a-pdf,1500-4000,Thin template — rewrite to 1500+ words
+358,how do i split pdf for email,PDF Workflows,informational,medium,67,UPGRADE,how-to-split-pdf-for-email,/guides/how-to-split-pdf-for-email,1500-4000,Thin template — rewrite to 1500+ words
+359,digital signature basics,PDF Productivity,informational,medium,67,UPGRADE,beginner-digital-signature-basics,/guides/beginner-digital-signature-basics,1500-4000,Thin template — rewrite to 1500+ words
+360,ocr basics,PDF Productivity,informational,medium,67,UPGRADE,beginner-ocr-basics,/guides/beginner-ocr-basics,1500-4000,Thin template — rewrite to 1500+ words
+361,pdf accessibility basics,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-accessibility-basics,/guides/beginner-pdf-accessibility-basics,1500-4000,Thin template — rewrite to 1500+ words
+362,pdf basics,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-basics,/guides/beginner-pdf-basics,1500-4000,Thin template — rewrite to 1500+ words
+363,pdf bookmarks,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-bookmarks,/guides/beginner-pdf-bookmarks,1500-4000,Thin template — rewrite to 1500+ words
+364,pdf color space rgb cmyk,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-color-space-rgb-cmyk,/guides/beginner-pdf-color-space-rgb-cmyk,1500-4000,Thin template — rewrite to 1500+ words
+365,pdf compression basics,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-compression-basics,/guides/beginner-pdf-compression-basics,1500-4000,Thin template — rewrite to 1500+ words
+366,pdf file structure,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-file-structure,/guides/beginner-pdf-file-structure,1500-4000,Thin template — rewrite to 1500+ words
+367,pdf fonts embedding,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-fonts-embedding,/guides/beginner-pdf-fonts-embedding,1500-4000,Thin template — rewrite to 1500+ words
+368,pdf forms basics,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-forms-basics,/guides/beginner-pdf-forms-basics,1500-4000,Thin template — rewrite to 1500+ words
+369,pdf hyperlinks,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-hyperlinks,/guides/beginner-pdf-hyperlinks,1500-4000,Thin template — rewrite to 1500+ words
+371,pdf page size a4 letter,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-page-size-a4-letter,/guides/beginner-pdf-page-size-a4-letter,1500-4000,Thin template — rewrite to 1500+ words
+372,pdf security basics,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-security-basics,/guides/beginner-pdf-security-basics,1500-4000,Thin template — rewrite to 1500+ words
+373,pdf tags accessibility,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-tags-accessibility,/guides/beginner-pdf-tags-accessibility,1500-4000,Thin template — rewrite to 1500+ words
+374,pdf vs docx,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-vs-docx,/guides/beginner-pdf-vs-docx,1500-4000,Thin template — rewrite to 1500+ words
+375,pdf vs png,PDF Productivity,informational,medium,67,UPGRADE,beginner-pdf-vs-png,/guides/beginner-pdf-vs-png,1500-4000,Thin template — rewrite to 1500+ words
+376,vector vs raster pdf,PDF Productivity,informational,medium,67,UPGRADE,beginner-vector-vs-raster-pdf,/guides/beginner-vector-vs-raster-pdf,1500-4000,Thin template — rewrite to 1500+ words
+377,what is a pdf,PDF Productivity,informational,medium,67,UPGRADE,beginner-what-is-a-pdf,/guides/beginner-what-is-a-pdf,1500-4000,Thin template — rewrite to 1500+ words
+378,when to use pdf,PDF Productivity,informational,medium,67,UPGRADE,beginner-when-to-use-pdf,/guides/beginner-when-to-use-pdf,1500-4000,Thin template — rewrite to 1500+ words
+393,how do i compare two text files,PDF Conversion,informational,medium,67,UPGRADE,how-to-compare-two-text-files,/guides/how-to-compare-two-text-files,1500-4000,Thin template — rewrite to 1500+ words
+394,how do i extract text from pdf,PDF Conversion,informational,medium,67,UPGRADE,how-to-extract-text-from-pdf,/guides/how-to-extract-text-from-pdf,1500-4000,Thin template — rewrite to 1500+ words
+395,how do i make pdf searchable,PDF Conversion,informational,medium,67,UPGRADE,how-to-make-pdf-searchable,/guides/how-to-make-pdf-searchable,1500-4000,Thin template — rewrite to 1500+ words
+396,how do i ocr a scanned pdf,PDF Conversion,informational,medium,67,UPGRADE,how-to-ocr-a-scanned-pdf,/guides/how-to-ocr-a-scanned-pdf,1500-4000,Thin template — rewrite to 1500+ words
+495,email attachment limits 2024,PDF Compliance,informational,medium,67,UPGRADE,email-attachment-limits-2024,/guides/email-attachment-limits-2024,1500-4000,Thin template — rewrite to 1500+ words
+496,email attachment limits 2025,PDF Compliance,informational,medium,67,UPGRADE,email-attachment-limits-2025,/guides/email-attachment-limits-2025,1500-4000,Thin template — rewrite to 1500+ words
+497,email attachment limits 2026,PDF Compliance,informational,medium,67,UPGRADE,email-attachment-limits-2026,/guides/email-attachment-limits-2026,1500-4000,Thin template — rewrite to 1500+ words
+498,email attachment limits 2027,PDF Compliance,informational,medium,67,UPGRADE,email-attachment-limits-2027,/guides/email-attachment-limits-2027,1500-4000,Thin template — rewrite to 1500+ words
+505,how do i add signature pdf free,PDF Security,informational,medium,67,UPGRADE,how-to-add-signature-pdf-free,/guides/how-to-add-signature-pdf-free,1500-4000,Thin template — rewrite to 1500+ words
+506,how do i password protect a pdf,PDF Security,informational,medium,67,UPGRADE,how-to-password-protect-a-pdf,/guides/how-to-password-protect-a-pdf,1500-4000,Thin template — rewrite to 1500+ words
+507,how do i protect pdf before sending,PDF Security,informational,medium,67,UPGRADE,how-to-protect-pdf-before-sending,/guides/how-to-protect-pdf-before-sending,1500-4000,Thin template — rewrite to 1500+ words
+508,how do i redact sensitive information pdf,PDF Security,informational,medium,67,UPGRADE,how-to-redact-sensitive-information-pdf,/guides/how-to-redact-sensitive-information-pdf,1500-4000,Thin template — rewrite to 1500+ words
+509,how do i sign a pdf,PDF Security,informational,medium,67,UPGRADE,how-to-sign-a-pdf,/guides/how-to-sign-a-pdf,1500-4000,Thin template — rewrite to 1500+ words
+510,how do i unlock a pdf,PDF Security,informational,medium,67,UPGRADE,how-to-unlock-a-pdf,/guides/how-to-unlock-a-pdf,1500-4000,Thin template — rewrite to 1500+ words
+511,how do i watermark a pdf,PDF Security,informational,medium,67,UPGRADE,how-to-watermark-a-pdf,/guides/how-to-watermark-a-pdf,1500-4000,Thin template — rewrite to 1500+ words
+786,pdf font subsetting explained,PDF Productivity,informational,low,67,CREATE,,/guides/beginner-pdf-font-subsetting,1500-4000,
+793,best pdf ocr for lawyers,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-lawyers,1500-4000,Best-of segment
+798,best pdf ocr for students,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-students,1500-4000,Best-of segment
+803,best pdf ocr for accountants,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-accountants,1500-4000,Best-of segment
+808,best pdf ocr for teachers,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-teachers,1500-4000,Best-of segment
+813,best pdf ocr for freelancers,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-freelancers,1500-4000,Best-of segment
+818,best pdf ocr for small business,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-small-business,1500-4000,Best-of segment
+823,best pdf ocr for healthcare,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-healthcare,1500-4000,Best-of segment
+828,best pdf ocr for real estate agents,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-real-estate-agents,1500-4000,Best-of segment
+833,best pdf ocr for remote teams,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-remote-teams,1500-4000,Best-of segment
+838,best pdf ocr for nonprofits,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-nonprofits,1500-4000,Best-of segment
+843,best pdf ocr for government,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-government,1500-4000,Best-of segment
+848,best pdf ocr for researchers,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-researchers,1500-4000,Best-of segment
+853,best pdf ocr for designers,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-designers,1500-4000,Best-of segment
+858,best pdf ocr for developers,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-developers,1500-4000,Best-of segment
+863,best pdf ocr for sales teams,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-sales-teams,1500-4000,Best-of segment
+868,best pdf ocr for hr teams,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-hr-teams,1500-4000,Best-of segment
+873,best pdf ocr for consultants,PDF OCR,commercial,medium,67,CREATE,,/guides/best-pdf-ocr-for-consultants,1500-4000,Best-of segment
+969,pdf shared drive naming convention,PDF Collaboration,workflow,low,67,CREATE,,/guides/pdf-shared-drive-naming-convention,1500-4000,
+379,empty text extraction pdf,PDF Conversion,problem-solving,medium,66,UPGRADE,pdf-text-extraction-empty,/guides/pdf-text-extraction-empty,1500-4000,Thin template — rewrite to 1500+ words
+397,ocr accuracy tips,PDF Conversion,informational,medium,66,UPGRADE,ocr-accuracy-tips,/guides/ocr-accuracy-tips,1500-4000,Thin template — rewrite to 1500+ words
+398,ocr historical documents,PDF Conversion,industry,medium,66,UPGRADE,ocr-historical-documents,/guides/ocr-historical-documents,1500-4000,Thin template — rewrite to 1500+ words
+399,ocr lecture notes,PDF Conversion,industry,medium,66,UPGRADE,ocr-lecture-notes-students,/guides/ocr-lecture-notes-students,1500-4000,Thin template — rewrite to 1500+ words
+787,pdf linearization fast web view,PDF Productivity,informational,low,66,CREATE,,/guides/beginner-pdf-linearization,1500-4000,
+962,pdf to kindle,PDF Conversion,transactional,medium,66,CREATE,,/guides/pdf-to-kindle,1500-4000,
+956,pdf to xml,PDF Conversion,transactional,medium,65,CREATE,,/guides/pdf-to-xml,1500-4000,
+341,pdf workflow accountants,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-accountants,/guides/pdf-workflow-accountants,1500-4000,Thin template — rewrite to 1500+ words
+342,pdf workflow construction,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-construction,/guides/pdf-workflow-construction,1500-4000,Thin template — rewrite to 1500+ words
+343,pdf workflow ecommerce,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-ecommerce,/guides/pdf-workflow-ecommerce,1500-4000,Thin template — rewrite to 1500+ words
+344,pdf workflow freelancers,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-freelancers,/guides/pdf-workflow-freelancers,1500-4000,Thin template — rewrite to 1500+ words
+346,pdf workflow healthcare-admin,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-healthcare-admin,/guides/pdf-workflow-healthcare-admin,1500-4000,Thin template — rewrite to 1500+ words
+347,pdf workflow hr,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-hr,/guides/pdf-workflow-hr,1500-4000,Thin template — rewrite to 1500+ words
+348,pdf workflow insurance,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-insurance,/guides/pdf-workflow-insurance,1500-4000,Thin template — rewrite to 1500+ words
+349,pdf workflow lawyers,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-lawyers,/guides/pdf-workflow-lawyers,1500-4000,Thin template — rewrite to 1500+ words
+350,pdf workflow marketing-agencies,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-marketing-agencies,/guides/pdf-workflow-marketing-agencies,1500-4000,Thin template — rewrite to 1500+ words
+351,pdf workflow nonprofits,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-nonprofits,/guides/pdf-workflow-nonprofits,1500-4000,Thin template — rewrite to 1500+ words
+352,pdf workflow real-estate,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-real-estate,/guides/pdf-workflow-real-estate,1500-4000,Thin template — rewrite to 1500+ words
+353,pdf workflow recruiters,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-recruiters,/guides/pdf-workflow-recruiters,1500-4000,Thin template — rewrite to 1500+ words
+354,pdf workflow students,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-students,/guides/pdf-workflow-students,1500-4000,Thin template — rewrite to 1500+ words
+355,pdf workflow teachers,PDF for Businesses,informational,medium,64,UPGRADE,pdf-workflow-teachers,/guides/pdf-workflow-teachers,1500-4000,Thin template — rewrite to 1500+ words
+380,extract text from pdf for blackboard,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-blackboard,/guides/pdf-to-text-for-blackboard,1500-4000,Thin template — rewrite to 1500+ words
+381,extract text from pdf for canvas,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-canvas,/guides/pdf-to-text-for-canvas,1500-4000,Thin template — rewrite to 1500+ words
+382,extract text from pdf for gmail,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-gmail,/guides/pdf-to-text-for-gmail,1500-4000,Thin template — rewrite to 1500+ words
+383,extract text from pdf for indeed,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-indeed,/guides/pdf-to-text-for-indeed,1500-4000,Thin template — rewrite to 1500+ words
+384,extract text from pdf for linkedin,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-linkedin,/guides/pdf-to-text-for-linkedin,1500-4000,Thin template — rewrite to 1500+ words
+385,extract text from pdf for moodle,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-moodle,/guides/pdf-to-text-for-moodle,1500-4000,Thin template — rewrite to 1500+ words
+386,extract text from pdf for naukri,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-naukri,/guides/pdf-to-text-for-naukri,1500-4000,Thin template — rewrite to 1500+ words
+387,extract text from pdf for outlook,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-outlook,/guides/pdf-to-text-for-outlook,1500-4000,Thin template — rewrite to 1500+ words
+388,extract text from pdf for protonmail,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-protonmail,/guides/pdf-to-text-for-protonmail,1500-4000,Thin template — rewrite to 1500+ words
+389,extract text from pdf for telegram,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-telegram,/guides/pdf-to-text-for-telegram,1500-4000,Thin template — rewrite to 1500+ words
+390,extract text from pdf for whatsapp,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-whatsapp,/guides/pdf-to-text-for-whatsapp,1500-4000,Thin template — rewrite to 1500+ words
+391,extract text from pdf for workday,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-workday,/guides/pdf-to-text-for-workday,1500-4000,Thin template — rewrite to 1500+ words
+392,extract text from pdf for yahoo mail,PDF Conversion,task-based,medium,64,UPGRADE,pdf-to-text-for-yahoo-mail,/guides/pdf-to-text-for-yahoo-mail,1500-4000,Thin template — rewrite to 1500+ words
+401,bank-statement pdf workflow brazil,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-brazil,/guides/bank-statement-pdf-workflow-brazil,1500-4000,Thin template — rewrite to 1500+ words
+403,bank-statement pdf workflow france,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-france,/guides/bank-statement-pdf-workflow-france,1500-4000,Thin template — rewrite to 1500+ words
+406,bank-statement pdf workflow ireland,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-ireland,/guides/bank-statement-pdf-workflow-ireland,1500-4000,Thin template — rewrite to 1500+ words
+407,bank-statement pdf workflow italy,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-italy,/guides/bank-statement-pdf-workflow-italy,1500-4000,Thin template — rewrite to 1500+ words
+408,bank-statement pdf workflow japan,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-japan,/guides/bank-statement-pdf-workflow-japan,1500-4000,Thin template — rewrite to 1500+ words
+409,bank-statement pdf workflow mexico,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-mexico,/guides/bank-statement-pdf-workflow-mexico,1500-4000,Thin template — rewrite to 1500+ words
+410,bank-statement pdf workflow netherlands,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-netherlands,/guides/bank-statement-pdf-workflow-netherlands,1500-4000,Thin template — rewrite to 1500+ words
+411,bank-statement pdf workflow new-zealand,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-new-zealand,/guides/bank-statement-pdf-workflow-new-zealand,1500-4000,Thin template — rewrite to 1500+ words
+413,bank-statement pdf workflow south-africa,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-south-africa,/guides/bank-statement-pdf-workflow-south-africa,1500-4000,Thin template — rewrite to 1500+ words
+414,bank-statement pdf workflow south-korea,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-south-korea,/guides/bank-statement-pdf-workflow-south-korea,1500-4000,Thin template — rewrite to 1500+ words
+415,bank-statement pdf workflow spain,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-spain,/guides/bank-statement-pdf-workflow-spain,1500-4000,Thin template — rewrite to 1500+ words
+416,bank-statement pdf workflow uae,PDF Workflows,informational,medium,64,UPGRADE,bank-statement-pdf-workflow-uae,/guides/bank-statement-pdf-workflow-uae,1500-4000,Thin template — rewrite to 1500+ words
+420,contract pdf workflow brazil,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-brazil,/guides/contract-pdf-workflow-brazil,1500-4000,Thin template — rewrite to 1500+ words
+421,contract pdf workflow canada,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-canada,/guides/contract-pdf-workflow-canada,1500-4000,Thin template — rewrite to 1500+ words
+422,contract pdf workflow france,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-france,/guides/contract-pdf-workflow-france,1500-4000,Thin template — rewrite to 1500+ words
+424,contract pdf workflow india,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-india,/guides/contract-pdf-workflow-india,1500-4000,Thin template — rewrite to 1500+ words
+425,contract pdf workflow ireland,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-ireland,/guides/contract-pdf-workflow-ireland,1500-4000,Thin template — rewrite to 1500+ words
+426,contract pdf workflow italy,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-italy,/guides/contract-pdf-workflow-italy,1500-4000,Thin template — rewrite to 1500+ words
+427,contract pdf workflow japan,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-japan,/guides/contract-pdf-workflow-japan,1500-4000,Thin template — rewrite to 1500+ words
+428,contract pdf workflow mexico,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-mexico,/guides/contract-pdf-workflow-mexico,1500-4000,Thin template — rewrite to 1500+ words
+429,contract pdf workflow netherlands,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-netherlands,/guides/contract-pdf-workflow-netherlands,1500-4000,Thin template — rewrite to 1500+ words
+430,contract pdf workflow new-zealand,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-new-zealand,/guides/contract-pdf-workflow-new-zealand,1500-4000,Thin template — rewrite to 1500+ words
+431,contract pdf workflow singapore,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-singapore,/guides/contract-pdf-workflow-singapore,1500-4000,Thin template — rewrite to 1500+ words
+432,contract pdf workflow south-africa,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-south-africa,/guides/contract-pdf-workflow-south-africa,1500-4000,Thin template — rewrite to 1500+ words
+433,contract pdf workflow south-korea,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-south-korea,/guides/contract-pdf-workflow-south-korea,1500-4000,Thin template — rewrite to 1500+ words
+434,contract pdf workflow spain,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-spain,/guides/contract-pdf-workflow-spain,1500-4000,Thin template — rewrite to 1500+ words
+435,contract pdf workflow uae,PDF Workflows,informational,medium,64,UPGRADE,contract-pdf-workflow-uae,/guides/contract-pdf-workflow-uae,1500-4000,Thin template — rewrite to 1500+ words
+438,tax-document pdf workflow australia,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-australia,/guides/tax-document-pdf-workflow-australia,1500-4000,Thin template — rewrite to 1500+ words
+439,tax-document pdf workflow brazil,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-brazil,/guides/tax-document-pdf-workflow-brazil,1500-4000,Thin template — rewrite to 1500+ words
+440,tax-document pdf workflow canada,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-canada,/guides/tax-document-pdf-workflow-canada,1500-4000,Thin template — rewrite to 1500+ words
+441,tax-document pdf workflow france,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-france,/guides/tax-document-pdf-workflow-france,1500-4000,Thin template — rewrite to 1500+ words
+442,tax-document pdf workflow germany,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-germany,/guides/tax-document-pdf-workflow-germany,1500-4000,Thin template — rewrite to 1500+ words
+444,tax-document pdf workflow ireland,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-ireland,/guides/tax-document-pdf-workflow-ireland,1500-4000,Thin template — rewrite to 1500+ words
+445,tax-document pdf workflow italy,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-italy,/guides/tax-document-pdf-workflow-italy,1500-4000,Thin template — rewrite to 1500+ words
+446,tax-document pdf workflow japan,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-japan,/guides/tax-document-pdf-workflow-japan,1500-4000,Thin template — rewrite to 1500+ words
+447,tax-document pdf workflow mexico,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-mexico,/guides/tax-document-pdf-workflow-mexico,1500-4000,Thin template — rewrite to 1500+ words
+448,tax-document pdf workflow netherlands,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-netherlands,/guides/tax-document-pdf-workflow-netherlands,1500-4000,Thin template — rewrite to 1500+ words
+449,tax-document pdf workflow new-zealand,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-new-zealand,/guides/tax-document-pdf-workflow-new-zealand,1500-4000,Thin template — rewrite to 1500+ words
+450,tax-document pdf workflow singapore,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-singapore,/guides/tax-document-pdf-workflow-singapore,1500-4000,Thin template — rewrite to 1500+ words
+451,tax-document pdf workflow south-africa,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-south-africa,/guides/tax-document-pdf-workflow-south-africa,1500-4000,Thin template — rewrite to 1500+ words
+452,tax-document pdf workflow south-korea,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-south-korea,/guides/tax-document-pdf-workflow-south-korea,1500-4000,Thin template — rewrite to 1500+ words
+453,tax-document pdf workflow spain,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-spain,/guides/tax-document-pdf-workflow-spain,1500-4000,Thin template — rewrite to 1500+ words
+454,tax-document pdf workflow uae,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-uae,/guides/tax-document-pdf-workflow-uae,1500-4000,Thin template — rewrite to 1500+ words
+455,tax-document pdf workflow uk,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-uk,/guides/tax-document-pdf-workflow-uk,1500-4000,Thin template — rewrite to 1500+ words
+456,tax-document pdf workflow usa,PDF Workflows,informational,medium,64,UPGRADE,tax-document-pdf-workflow-usa,/guides/tax-document-pdf-workflow-usa,1500-4000,Thin template — rewrite to 1500+ words
+457,university-application pdf workflow australia,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-australia,/guides/university-application-pdf-workflow-australia,1500-4000,Thin template — rewrite to 1500+ words
+458,university-application pdf workflow brazil,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-brazil,/guides/university-application-pdf-workflow-brazil,1500-4000,Thin template — rewrite to 1500+ words
+459,university-application pdf workflow canada,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-canada,/guides/university-application-pdf-workflow-canada,1500-4000,Thin template — rewrite to 1500+ words
+460,university-application pdf workflow france,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-france,/guides/university-application-pdf-workflow-france,1500-4000,Thin template — rewrite to 1500+ words
+461,university-application pdf workflow germany,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-germany,/guides/university-application-pdf-workflow-germany,1500-4000,Thin template — rewrite to 1500+ words
+463,university-application pdf workflow ireland,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-ireland,/guides/university-application-pdf-workflow-ireland,1500-4000,Thin template — rewrite to 1500+ words
+464,university-application pdf workflow italy,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-italy,/guides/university-application-pdf-workflow-italy,1500-4000,Thin template — rewrite to 1500+ words
+465,university-application pdf workflow japan,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-japan,/guides/university-application-pdf-workflow-japan,1500-4000,Thin template — rewrite to 1500+ words
+466,university-application pdf workflow mexico,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-mexico,/guides/university-application-pdf-workflow-mexico,1500-4000,Thin template — rewrite to 1500+ words
+467,university-application pdf workflow netherlands,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-netherlands,/guides/university-application-pdf-workflow-netherlands,1500-4000,Thin template — rewrite to 1500+ words
+468,university-application pdf workflow new-zealand,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-new-zealand,/guides/university-application-pdf-workflow-new-zealand,1500-4000,Thin template — rewrite to 1500+ words
+469,university-application pdf workflow singapore,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-singapore,/guides/university-application-pdf-workflow-singapore,1500-4000,Thin template — rewrite to 1500+ words
+470,university-application pdf workflow south-africa,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-south-africa,/guides/university-application-pdf-workflow-south-africa,1500-4000,Thin template — rewrite to 1500+ words
+471,university-application pdf workflow south-korea,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-south-korea,/guides/university-application-pdf-workflow-south-korea,1500-4000,Thin template — rewrite to 1500+ words
+472,university-application pdf workflow spain,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-spain,/guides/university-application-pdf-workflow-spain,1500-4000,Thin template — rewrite to 1500+ words
+473,university-application pdf workflow uae,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-uae,/guides/university-application-pdf-workflow-uae,1500-4000,Thin template — rewrite to 1500+ words
+474,university-application pdf workflow uk,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-uk,/guides/university-application-pdf-workflow-uk,1500-4000,Thin template — rewrite to 1500+ words
+475,university-application pdf workflow usa,PDF Workflows,informational,medium,64,UPGRADE,university-application-pdf-workflow-usa,/guides/university-application-pdf-workflow-usa,1500-4000,Thin template — rewrite to 1500+ words
+483,visa-application pdf workflow italy,PDF Workflows,informational,medium,64,UPGRADE,visa-application-pdf-workflow-italy,/guides/visa-application-pdf-workflow-italy,1500-4000,Thin template — rewrite to 1500+ words
+485,visa-application pdf workflow mexico,PDF Workflows,informational,medium,64,UPGRADE,visa-application-pdf-workflow-mexico,/guides/visa-application-pdf-workflow-mexico,1500-4000,Thin template — rewrite to 1500+ words
+487,visa-application pdf workflow new-zealand,PDF Workflows,informational,medium,64,UPGRADE,visa-application-pdf-workflow-new-zealand,/guides/visa-application-pdf-workflow-new-zealand,1500-4000,Thin template — rewrite to 1500+ words
+489,visa-application pdf workflow south-africa,PDF Workflows,informational,medium,64,UPGRADE,visa-application-pdf-workflow-south-africa,/guides/visa-application-pdf-workflow-south-africa,1500-4000,Thin template — rewrite to 1500+ words
+490,visa-application pdf workflow south-korea,PDF Workflows,informational,medium,64,UPGRADE,visa-application-pdf-workflow-south-korea,/guides/visa-application-pdf-workflow-south-korea,1500-4000,Thin template — rewrite to 1500+ words
+963,pdf to audio read aloud,PDF Accessibility,transactional,medium,64,CREATE,,/guides/pdf-to-audio,1500-4000,
+168,irs tax document pdf format,PDF Compliance,compliance,medium,63,UPGRADE,irs-tax-pdf-format,/guides/irs-tax-pdf-format,1500-4000,Thin template — rewrite to 1500+ words
+173,compress bank statement pdf,PDF Compression,industry,medium,63,UPGRADE,compress-bank-statement-pdf,/guides/compress-bank-statement-pdf,1500-4000,Thin template — rewrite to 1500+ words
+175,compress scanned pdf vs digital pdf,PDF Compression,informational,medium,63,UPGRADE,compress-scanned-vs-digital-pdf,/guides/compress-scanned-vs-digital-pdf,1500-4000,Thin template — rewrite to 1500+ words
+176,ghostscript pdf compression explained,PDF Compression,informational,medium,63,UPGRADE,ghostscript-pdf-compression,/guides/ghostscript-pdf-compression,1500-4000,Thin template — rewrite to 1500+ words
+177,pdf compression for accountants,PDF Compression,industry,medium,63,UPGRADE,compress-pdf-accountants,/guides/compress-pdf-accountants,1500-4000,Thin template — rewrite to 1500+ words
+178,pdf compression for lawyers,PDF Compression,industry,medium,63,UPGRADE,compress-pdf-lawyers,/guides/compress-pdf-lawyers,1500-4000,Thin template — rewrite to 1500+ words
+179,why is my pdf so large,PDF Compression,problem-solving,medium,63,UPGRADE,why-is-pdf-file-so-large,/guides/why-is-pdf-file-so-large,1500-4000,Thin template — rewrite to 1500+ words
+513,password protect pdf before email,PDF Security,informational,medium,63,UPGRADE,password-protect-before-email,/guides/password-protect-before-email,1500-4000,Thin template — rewrite to 1500+ words
+514,password protect pdf mac,PDF Security,informational,medium,63,UPGRADE,password-protect-pdf-mac,/guides/password-protect-pdf-mac,1500-4000,Thin template — rewrite to 1500+ words
+515,pdf encryption aes,PDF Security,informational,medium,63,UPGRADE,pdf-encryption-aes-explained,/guides/pdf-encryption-aes-explained,1500-4000,Thin template — rewrite to 1500+ words
+516,pdf password best practices,PDF Security,informational,medium,63,UPGRADE,pdf-password-best-practices,/guides/pdf-password-best-practices,1500-4000,Thin template — rewrite to 1500+ words
+518,pdf redaction vs black box,PDF Security,informational,medium,63,UPGRADE,pdf-redaction-vs-black-box,/guides/pdf-redaction-vs-black-box,1500-4000,Thin template — rewrite to 1500+ words
+519,pdf security for lawyers,PDF Security,informational,medium,63,UPGRADE,pdf-security-lawyers,/guides/pdf-security-lawyers,1500-4000,Thin template — rewrite to 1500+ words
+520,redact pdf gdpr,PDF Security,informational,medium,63,UPGRADE,redact-pdf-gdpr,/guides/redact-pdf-gdpr,1500-4000,Thin template — rewrite to 1500+ words
+521,secure pdf remote work,PDF Security,informational,medium,63,UPGRADE,secure-pdf-remote-work,/guides/secure-pdf-remote-work,1500-4000,Thin template — rewrite to 1500+ words
+523,share confidential pdf,PDF Security,informational,medium,63,UPGRADE,share-confidential-pdf,/guides/share-confidential-pdf,1500-4000,Thin template — rewrite to 1500+ words
+524,sign pdf legally,PDF Security,informational,medium,63,UPGRADE,sign-pdf-legally,/guides/sign-pdf-legally,1500-4000,Thin template — rewrite to 1500+ words
+525,sign pdf without docusign,PDF Security,informational,medium,63,UPGRADE,sign-pdf-without-docusign,/guides/sign-pdf-without-docusign,1500-4000,Thin template — rewrite to 1500+ words
+527,watermark pdf draft,PDF Security,informational,medium,63,UPGRADE,watermark-pdf-draft,/guides/watermark-pdf-draft,1500-4000,Thin template — rewrite to 1500+ words
+528,watermark vs password pdf,PDF Security,informational,medium,63,UPGRADE,watermark-vs-password-pdf,/guides/watermark-vs-password-pdf,1500-4000,Thin template — rewrite to 1500+ words
+957,pdf to hwp,PDF Conversion,transactional,medium,62,CREATE,,/guides/pdf-to-hwp,1500-4000,
+196,what is 128-bit encryption,PDF Productivity,informational,medium,59,UPGRADE,glossary-128-bit-encryption,/guides/glossary-128-bit-encryption,1500-4000,Thin template — rewrite to 1500+ words
+197,what is 256-bit aes encryption,PDF Productivity,informational,medium,59,UPGRADE,glossary-256-bit-aes-encryption,/guides/glossary-256-bit-aes-encryption,1500-4000,Thin template — rewrite to 1500+ words
+198,what is accessibility,PDF Productivity,informational,medium,59,UPGRADE,glossary-accessibility,/guides/glossary-accessibility,1500-4000,Thin template — rewrite to 1500+ words
+199,what is acroform,PDF Productivity,informational,medium,59,UPGRADE,glossary-acroform,/guides/glossary-acroform,1500-4000,Thin template — rewrite to 1500+ words
+200,what is alt text,PDF Productivity,informational,medium,59,UPGRADE,glossary-alt-text,/guides/glossary-alt-text,1500-4000,Thin template — rewrite to 1500+ words
+201,what is annotation,PDF Productivity,informational,medium,59,UPGRADE,glossary-annotation,/guides/glossary-annotation,1500-4000,Thin template — rewrite to 1500+ words
+202,what is attachments,PDF Productivity,informational,medium,59,UPGRADE,glossary-attachments,/guides/glossary-attachments,1500-4000,Thin template — rewrite to 1500+ words
+203,what is batch processing,PDF Productivity,informational,medium,59,UPGRADE,glossary-batch-processing,/guides/glossary-batch-processing,1500-4000,Thin template — rewrite to 1500+ words
+204,what is bleed box,PDF Productivity,informational,medium,59,UPGRADE,glossary-bleed-box,/guides/glossary-bleed-box,1500-4000,Thin template — rewrite to 1500+ words
+205,what is blob storage,PDF Productivity,informational,medium,59,UPGRADE,glossary-blob-storage,/guides/glossary-blob-storage,1500-4000,Thin template — rewrite to 1500+ words
+206,what is bookmark,PDF Productivity,informational,medium,59,UPGRADE,glossary-bookmark,/guides/glossary-bookmark,1500-4000,Thin template — rewrite to 1500+ words
+207,what is browser-based processing,PDF Productivity,informational,medium,59,UPGRADE,glossary-browser-based-processing,/guides/glossary-browser-based-processing,1500-4000,Thin template — rewrite to 1500+ words
+208,what is calc export,PDF Productivity,informational,medium,59,UPGRADE,glossary-calc-export,/guides/glossary-calc-export,1500-4000,Thin template — rewrite to 1500+ words
+209,what is certificate signature,PDF Productivity,informational,medium,59,UPGRADE,glossary-certificate-signature,/guides/glossary-certificate-signature,1500-4000,Thin template — rewrite to 1500+ words
+210,what is certificate-based signature,PDF Productivity,informational,medium,59,UPGRADE,glossary-certificate-based-signature,/guides/glossary-certificate-based-signature,1500-4000,Thin template — rewrite to 1500+ words
+211,what is cgst,PDF Productivity,informational,medium,59,UPGRADE,glossary-cgst,/guides/glossary-cgst,1500-4000,Thin template — rewrite to 1500+ words
+212,what is cid font,PDF Productivity,informational,medium,59,UPGRADE,glossary-cid-font,/guides/glossary-cid-font,1500-4000,Thin template — rewrite to 1500+ words
+213,what is client-side pdf,PDF Productivity,informational,medium,59,UPGRADE,glossary-client-side-pdf,/guides/glossary-client-side-pdf,1500-4000,Thin template — rewrite to 1500+ words
+214,what is cmap,PDF Productivity,informational,medium,59,UPGRADE,glossary-cmap,/guides/glossary-cmap,1500-4000,Thin template — rewrite to 1500+ words
+215,what is cmyk,PDF Productivity,informational,medium,59,UPGRADE,glossary-cmyk,/guides/glossary-cmyk,1500-4000,Thin template — rewrite to 1500+ words
+216,what is color profile,PDF Productivity,informational,medium,59,UPGRADE,glossary-color-profile,/guides/glossary-color-profile,1500-4000,Thin template — rewrite to 1500+ words
+217,what is composite font,PDF Productivity,informational,medium,59,UPGRADE,glossary-composite-font,/guides/glossary-composite-font,1500-4000,Thin template — rewrite to 1500+ words
+218,what is compression,PDF Productivity,informational,medium,59,UPGRADE,glossary-compression,/guides/glossary-compression,1500-4000,Thin template — rewrite to 1500+ words
+219,what is credit note,PDF Productivity,informational,medium,59,UPGRADE,glossary-credit-note,/guides/glossary-credit-note,1500-4000,Thin template — rewrite to 1500+ words
+220,what is crop box,PDF Productivity,informational,medium,59,UPGRADE,glossary-crop-box,/guides/glossary-crop-box,1500-4000,Thin template — rewrite to 1500+ words
+221,what is cross reference table,PDF Productivity,informational,medium,59,UPGRADE,glossary-cross-reference-table,/guides/glossary-cross-reference-table,1500-4000,Thin template — rewrite to 1500+ words
+222,what is debit note,PDF Productivity,informational,medium,59,UPGRADE,glossary-debit-note,/guides/glossary-debit-note,1500-4000,Thin template — rewrite to 1500+ words
+223,what is digital signature,PDF Productivity,informational,medium,59,UPGRADE,glossary-digital-signature,/guides/glossary-digital-signature,1500-4000,Thin template — rewrite to 1500+ words
+224,what is downsampling,PDF Productivity,informational,medium,59,UPGRADE,glossary-downsampling,/guides/glossary-downsampling,1500-4000,Thin template — rewrite to 1500+ words
+225,what is dpi,PDF Productivity,informational,medium,59,UPGRADE,glossary-dpi,/guides/glossary-dpi,1500-4000,Thin template — rewrite to 1500+ words
+226,what is embedded files,PDF Productivity,informational,medium,59,UPGRADE,glossary-embedded-files,/guides/glossary-embedded-files,1500-4000,Thin template — rewrite to 1500+ words
+227,what is encoding,PDF Productivity,informational,medium,59,UPGRADE,glossary-encoding,/guides/glossary-encoding,1500-4000,Thin template — rewrite to 1500+ words
+228,what is extract,PDF Productivity,informational,medium,59,UPGRADE,glossary-extract,/guides/glossary-extract,1500-4000,Thin template — rewrite to 1500+ words
+229,what is factur-x,PDF Productivity,informational,medium,59,UPGRADE,glossary-factur-x,/guides/glossary-factur-x,1500-4000,Thin template — rewrite to 1500+ words
+230,what is fast web view,PDF Productivity,informational,medium,59,UPGRADE,glossary-fast-web-view,/guides/glossary-fast-web-view,1500-4000,Thin template — rewrite to 1500+ words
+231,what is flate compression,PDF Productivity,informational,medium,59,UPGRADE,glossary-flate-compression,/guides/glossary-flate-compression,1500-4000,Thin template — rewrite to 1500+ words
+233,what is font embedding,PDF Productivity,informational,medium,59,UPGRADE,glossary-font-embedding,/guides/glossary-font-embedding,1500-4000,Thin template — rewrite to 1500+ words
+234,what is form field,PDF Productivity,informational,medium,59,UPGRADE,glossary-form-field,/guides/glossary-form-field,1500-4000,Thin template — rewrite to 1500+ words
+235,what is full embedding,PDF Productivity,informational,medium,59,UPGRADE,glossary-full-embedding,/guides/glossary-full-embedding,1500-4000,Thin template — rewrite to 1500+ words
+236,what is ghostscript,PDF Productivity,informational,medium,59,UPGRADE,glossary-ghostscript,/guides/glossary-ghostscript,1500-4000,Thin template — rewrite to 1500+ words
+237,what is grayscale,PDF Productivity,informational,medium,59,UPGRADE,glossary-grayscale,/guides/glossary-grayscale,1500-4000,Thin template — rewrite to 1500+ words
+238,what is hra receipt,PDF Productivity,informational,medium,59,UPGRADE,glossary-hra-receipt,/guides/glossary-hra-receipt,1500-4000,Thin template — rewrite to 1500+ words
+239,what is hsn code,PDF Productivity,informational,medium,59,UPGRADE,glossary-hsn-code,/guides/glossary-hsn-code,1500-4000,Thin template — rewrite to 1500+ words
+240,what is html to pdf converter,PDF Productivity,informational,medium,59,UPGRADE,glossary-html-to-pdf-converter,/guides/glossary-html-to-pdf-converter,1500-4000,Thin template — rewrite to 1500+ words
+241,what is hyperlink,PDF Productivity,informational,medium,59,UPGRADE,glossary-hyperlink,/guides/glossary-hyperlink,1500-4000,Thin template — rewrite to 1500+ words
+242,what is identity-h,PDF Productivity,informational,medium,59,UPGRADE,glossary-identity-h,/guides/glossary-identity-h,1500-4000,Thin template — rewrite to 1500+ words
+243,what is igst,PDF Productivity,informational,medium,59,UPGRADE,glossary-igst,/guides/glossary-igst,1500-4000,Thin template — rewrite to 1500+ words
+244,what is impress export,PDF Productivity,informational,medium,59,UPGRADE,glossary-impress-export,/guides/glossary-impress-export,1500-4000,Thin template — rewrite to 1500+ words
+245,what is incremental update,PDF Productivity,informational,medium,59,UPGRADE,glossary-incremental-update,/guides/glossary-incremental-update,1500-4000,Thin template — rewrite to 1500+ words
+246,what is irn,PDF Productivity,informational,medium,59,UPGRADE,glossary-irn,/guides/glossary-irn,1500-4000,Thin template — rewrite to 1500+ words
+247,what is iso 32000,PDF Productivity,informational,medium,59,UPGRADE,glossary-iso-32000,/guides/glossary-iso-32000,1500-4000,Thin template — rewrite to 1500+ words
+248,what is itext,PDF Productivity,informational,medium,59,UPGRADE,glossary-itext,/guides/glossary-itext,1500-4000,Thin template — rewrite to 1500+ words
+249,what is javascript in pdf,PDF Productivity,informational,medium,59,UPGRADE,glossary-javascript-in-pdf,/guides/glossary-javascript-in-pdf,1500-4000,Thin template — rewrite to 1500+ words
+250,what is jbig2,PDF Productivity,informational,medium,59,UPGRADE,glossary-jbig2,/guides/glossary-jbig2,1500-4000,Thin template — rewrite to 1500+ words
+251,what is job queue,PDF Productivity,informational,medium,59,UPGRADE,glossary-job-queue,/guides/glossary-job-queue,1500-4000,Thin template — rewrite to 1500+ words
+252,what is jpeg compression,PDF Productivity,informational,medium,59,UPGRADE,glossary-jpeg-compression,/guides/glossary-jpeg-compression,1500-4000,Thin template — rewrite to 1500+ words
+253,what is layers,PDF Productivity,informational,medium,59,UPGRADE,glossary-layers,/guides/glossary-layers,1500-4000,Thin template — rewrite to 1500+ words
+254,what is libreoffice headless,PDF Productivity,informational,medium,59,UPGRADE,glossary-libreoffice-headless,/guides/glossary-libreoffice-headless,1500-4000,Thin template — rewrite to 1500+ words
+255,what is linearization,PDF Productivity,informational,medium,59,UPGRADE,glossary-linearization,/guides/glossary-linearization,1500-4000,Thin template — rewrite to 1500+ words
+256,what is linearized,PDF Productivity,informational,medium,59,UPGRADE,glossary-linearized,/guides/glossary-linearized,1500-4000,Thin template — rewrite to 1500+ words
+257,what is linearized pdf,PDF Productivity,informational,medium,59,UPGRADE,glossary-linearized-pdf,/guides/glossary-linearized-pdf,1500-4000,Thin template — rewrite to 1500+ words
+258,what is lossless compression,PDF Productivity,informational,medium,59,UPGRADE,glossary-lossless-compression,/guides/glossary-lossless-compression,1500-4000,Thin template — rewrite to 1500+ words
+259,what is lossy compression,PDF Productivity,informational,medium,59,UPGRADE,glossary-lossy-compression,/guides/glossary-lossy-compression,1500-4000,Thin template — rewrite to 1500+ words
+260,what is marked content,PDF Productivity,informational,medium,59,UPGRADE,glossary-marked-content,/guides/glossary-marked-content,1500-4000,Thin template — rewrite to 1500+ words
+261,what is media box,PDF Productivity,informational,medium,59,UPGRADE,glossary-media-box,/guides/glossary-media-box,1500-4000,Thin template — rewrite to 1500+ words
+262,what is merge,PDF Productivity,informational,medium,59,UPGRADE,glossary-merge,/guides/glossary-merge,1500-4000,Thin template — rewrite to 1500+ words
+263,what is metadata,PDF Productivity,informational,medium,59,UPGRADE,glossary-metadata,/guides/glossary-metadata,1500-4000,Thin template — rewrite to 1500+ words
+264,what is monochrome,PDF Productivity,informational,medium,59,UPGRADE,glossary-monochrome,/guides/glossary-monochrome,1500-4000,Thin template — rewrite to 1500+ words
+265,what is mrc compression,PDF Productivity,informational,medium,59,UPGRADE,glossary-mrc-compression,/guides/glossary-mrc-compression,1500-4000,Thin template — rewrite to 1500+ words
+266,what is object stream,PDF Productivity,informational,medium,59,UPGRADE,glossary-object-stream,/guides/glossary-object-stream,1500-4000,Thin template — rewrite to 1500+ words
+267,what is ocr,PDF Productivity,informational,medium,59,UPGRADE,glossary-ocr,/guides/glossary-ocr,1500-4000,Thin template — rewrite to 1500+ words
+268,what is opentype,PDF Productivity,informational,medium,59,UPGRADE,glossary-opentype,/guides/glossary-opentype,1500-4000,Thin template — rewrite to 1500+ words
+269,what is optical character recognition,PDF Productivity,informational,medium,59,UPGRADE,glossary-optical-character-recognition,/guides/glossary-optical-character-recognition,1500-4000,Thin template — rewrite to 1500+ words
+270,what is optional content,PDF Productivity,informational,medium,59,UPGRADE,glossary-optional-content,/guides/glossary-optional-content,1500-4000,Thin template — rewrite to 1500+ words
+272,what is owner password,PDF Productivity,informational,medium,59,UPGRADE,glossary-owner-password,/guides/glossary-owner-password,1500-4000,Thin template — rewrite to 1500+ words
+273,what is page box,PDF Productivity,informational,medium,59,UPGRADE,glossary-page-box,/guides/glossary-page-box,1500-4000,Thin template — rewrite to 1500+ words
+274,what is pdf,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf,/guides/glossary-pdf,1500-4000,Thin template — rewrite to 1500+ words
+275,what is pdf 1.7,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-17,/guides/glossary-pdf-17,1500-4000,Thin template — rewrite to 1500+ words
+276,what is pdf 2.0,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-20,/guides/glossary-pdf-20,1500-4000,Thin template — rewrite to 1500+ words
+277,what is pdf package,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-package,/guides/glossary-pdf-package,1500-4000,Thin template — rewrite to 1500+ words
+278,what is pdf portfolio,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-portfolio,/guides/glossary-pdf-portfolio,1500-4000,Thin template — rewrite to 1500+ words
+279,what is pdf vt,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-vt,/guides/glossary-pdf-vt,1500-4000,Thin template — rewrite to 1500+ words
+280,what is pdf.js,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdfjs,/guides/glossary-pdfjs,1500-4000,Thin template — rewrite to 1500+ words
+281,what is pdf/a,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-a,/guides/glossary-pdf-a,1500-4000,Thin template — rewrite to 1500+ words
+282,what is pdf/ua,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-ua,/guides/glossary-pdf-ua,1500-4000,Thin template — rewrite to 1500+ words
+283,what is pdf/ua-1,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-ua-1,/guides/glossary-pdf-ua-1,1500-4000,Thin template — rewrite to 1500+ words
+284,what is pdf/ua-2,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-ua-2,/guides/glossary-pdf-ua-2,1500-4000,Thin template — rewrite to 1500+ words
+285,what is pdf/x,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-x,/guides/glossary-pdf-x,1500-4000,Thin template — rewrite to 1500+ words
+286,what is pdf/x-1a,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-x-1a,/guides/glossary-pdf-x-1a,1500-4000,Thin template — rewrite to 1500+ words
+287,what is pdf/x-3,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-x-3,/guides/glossary-pdf-x-3,1500-4000,Thin template — rewrite to 1500+ words
+288,what is pdf/x-4,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-x-4,/guides/glossary-pdf-x-4,1500-4000,Thin template — rewrite to 1500+ words
+289,what is pdf2docx,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf2docx,/guides/glossary-pdf2docx,1500-4000,Thin template — rewrite to 1500+ words
+290,what is pdf-lib,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdf-lib,/guides/glossary-pdf-lib,1500-4000,Thin template — rewrite to 1500+ words
+291,what is pdfpig,PDF Productivity,informational,medium,59,UPGRADE,glossary-pdfpig,/guides/glossary-pdfpig,1500-4000,Thin template — rewrite to 1500+ words
+292,what is peppol,PDF Productivity,informational,medium,59,UPGRADE,glossary-peppol,/guides/glossary-peppol,1500-4000,Thin template — rewrite to 1500+ words
+293,what is portable document format,PDF Productivity,informational,medium,59,UPGRADE,glossary-portable-document-format,/guides/glossary-portable-document-format,1500-4000,Thin template — rewrite to 1500+ words
+294,what is portfolio,PDF Productivity,informational,medium,59,UPGRADE,glossary-portfolio,/guides/glossary-portfolio,1500-4000,Thin template — rewrite to 1500+ words
+295,what is preflight,PDF Productivity,informational,medium,59,UPGRADE,glossary-preflight,/guides/glossary-preflight,1500-4000,Thin template — rewrite to 1500+ words
+296,what is pymupdf,PDF Productivity,informational,medium,59,UPGRADE,glossary-pymupdf,/guides/glossary-pymupdf,1500-4000,Thin template — rewrite to 1500+ words
+297,what is raster image,PDF Productivity,informational,medium,59,UPGRADE,glossary-raster-image,/guides/glossary-raster-image,1500-4000,Thin template — rewrite to 1500+ words
+298,what is reading order,PDF Productivity,informational,medium,59,UPGRADE,glossary-reading-order,/guides/glossary-reading-order,1500-4000,Thin template — rewrite to 1500+ words
+299,what is redaction,PDF Productivity,informational,medium,59,UPGRADE,glossary-redaction,/guides/glossary-redaction,1500-4000,Thin template — rewrite to 1500+ words
+300,what is rgb,PDF Productivity,informational,medium,59,UPGRADE,glossary-rgb,/guides/glossary-rgb,1500-4000,Thin template — rewrite to 1500+ words
+301,what is sac code,PDF Productivity,informational,medium,59,UPGRADE,glossary-sac-code,/guides/glossary-sac-code,1500-4000,Thin template — rewrite to 1500+ words
+302,what is screen reader,PDF Productivity,informational,medium,59,UPGRADE,glossary-screen-reader,/guides/glossary-screen-reader,1500-4000,Thin template — rewrite to 1500+ words
+303,what is server-side pdf,PDF Productivity,informational,medium,59,UPGRADE,glossary-server-side-pdf,/guides/glossary-server-side-pdf,1500-4000,Thin template — rewrite to 1500+ words
+304,what is sgst,PDF Productivity,informational,medium,59,UPGRADE,glossary-sgst,/guides/glossary-sgst,1500-4000,Thin template — rewrite to 1500+ words
+305,what is split,PDF Productivity,informational,medium,59,UPGRADE,glossary-split,/guides/glossary-split,1500-4000,Thin template — rewrite to 1500+ words
+306,what is structure tree,PDF Productivity,informational,medium,59,UPGRADE,glossary-structure-tree,/guides/glossary-structure-tree,1500-4000,Thin template — rewrite to 1500+ words
+307,what is subsampling,PDF Productivity,informational,medium,59,UPGRADE,glossary-subsampling,/guides/glossary-subsampling,1500-4000,Thin template — rewrite to 1500+ words
+308,what is subset,PDF Productivity,informational,medium,59,UPGRADE,glossary-subset,/guides/glossary-subset,1500-4000,Thin template — rewrite to 1500+ words
+309,what is subset fonts,PDF Productivity,informational,medium,59,UPGRADE,glossary-subset-fonts,/guides/glossary-subset-fonts,1500-4000,Thin template — rewrite to 1500+ words
+310,what is tagged pdf,PDF Productivity,informational,medium,59,UPGRADE,glossary-tagged-pdf,/guides/glossary-tagged-pdf,1500-4000,Thin template — rewrite to 1500+ words
+311,what is tds,PDF Productivity,informational,medium,59,UPGRADE,glossary-tds,/guides/glossary-tds,1500-4000,Thin template — rewrite to 1500+ words
+312,what is tesseract,PDF Productivity,informational,medium,59,UPGRADE,glossary-tesseract,/guides/glossary-tesseract,1500-4000,Thin template — rewrite to 1500+ words
+313,what is toUnicode,PDF Productivity,informational,medium,59,UPGRADE,glossary-toUnicode,/guides/glossary-toUnicode,1500-4000,Thin template — rewrite to 1500+ words
+314,what is transparency,PDF Productivity,informational,medium,59,UPGRADE,glossary-transparency,/guides/glossary-transparency,1500-4000,Thin template — rewrite to 1500+ words
+315,what is trim box,PDF Productivity,informational,medium,59,UPGRADE,glossary-trim-box,/guides/glossary-trim-box,1500-4000,Thin template — rewrite to 1500+ words
+316,what is truetype,PDF Productivity,informational,medium,59,UPGRADE,glossary-truetype,/guides/glossary-truetype,1500-4000,Thin template — rewrite to 1500+ words
+317,what is type0 font,PDF Productivity,informational,medium,59,UPGRADE,glossary-type0-font,/guides/glossary-type0-font,1500-4000,Thin template — rewrite to 1500+ words
+318,what is type1 font,PDF Productivity,informational,medium,59,UPGRADE,glossary-type1-font,/guides/glossary-type1-font,1500-4000,Thin template — rewrite to 1500+ words
+319,what is unicode mapping,PDF Productivity,informational,medium,59,UPGRADE,glossary-unicode-mapping,/guides/glossary-unicode-mapping,1500-4000,Thin template — rewrite to 1500+ words
+320,what is user password,PDF Productivity,informational,medium,59,UPGRADE,glossary-user-password,/guides/glossary-user-password,1500-4000,Thin template — rewrite to 1500+ words
+321,what is vector graphics,PDF Productivity,informational,medium,59,UPGRADE,glossary-vector-graphics,/guides/glossary-vector-graphics,1500-4000,Thin template — rewrite to 1500+ words
+322,what is wasm pdf,PDF Productivity,informational,medium,59,UPGRADE,glossary-wasm-pdf,/guides/glossary-wasm-pdf,1500-4000,Thin template — rewrite to 1500+ words
+323,what is watermark,PDF Productivity,informational,medium,59,UPGRADE,glossary-watermark,/guides/glossary-watermark,1500-4000,Thin template — rewrite to 1500+ words
+324,what is winansi,PDF Productivity,informational,medium,59,UPGRADE,glossary-winansi,/guides/glossary-winansi,1500-4000,Thin template — rewrite to 1500+ words
+325,what is writer export,PDF Productivity,informational,medium,59,UPGRADE,glossary-writer-export,/guides/glossary-writer-export,1500-4000,Thin template — rewrite to 1500+ words
+326,what is xfa forms,PDF Productivity,informational,medium,59,UPGRADE,glossary-xfa-forms,/guides/glossary-xfa-forms,1500-4000,Thin template — rewrite to 1500+ words
+327,what is xmp metadata,PDF Productivity,informational,medium,59,UPGRADE,glossary-xmp-metadata,/guides/glossary-xmp-metadata,1500-4000,Thin template — rewrite to 1500+ words
+328,what is zugferd,PDF Productivity,informational,medium,59,UPGRADE,glossary-zugferd,/guides/glossary-zugferd,1500-4000,Thin template — rewrite to 1500+ words
+180,how to excel to pdf without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/excel-to-pdf-without-adobe,1500-4000,Wave upgraded
+182,how to html to pdf without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/html-to-pdf-without-adobe,1500-4000,Wave upgraded
+183,how to images to pdf without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/images-to-pdf-without-adobe,1500-4000,Wave upgraded
+184,how to pdf to excel without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/pdf-to-excel-without-adobe,1500-4000,Wave upgraded
+185,how to pdf to jpg without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/pdf-to-jpg-without-adobe,1500-4000,Wave upgraded
+186,how to pdf to markdown without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/pdf-to-markdown-without-adobe,1500-4000,Wave upgraded
+187,how to pdf to png without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/pdf-to-png-without-adobe,1500-4000,Wave upgraded
+189,how to powerpoint to pdf without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/powerpoint-to-pdf-without-adobe,1500-4000,Wave upgraded
+191,how to word to pdf without adobe,PDF Conversion,commercial,medium,56,MAINTAIN,,/guides/word-to-pdf-without-adobe,1500-4000,Wave upgraded
+331,pdf tools for government,PDF for Businesses,commercial,medium,56,MAINTAIN,,/guides/pdf-tools-government-applicants,1500-4000,Wave upgraded
+501,job portal pdf upload limits india,PDF Compliance,informational,medium,55,MAINTAIN,,/guides/india-job-portal-pdf-limits,1500-4000,Wave upgraded
+529,corrupted pdf repair,PDF Troubleshooting,problem-solving,medium,55,MAINTAIN,,/guides/corrupted-pdf-repair,1500-4000,Wave upgraded
+530,pdf blank pages after merge,PDF Troubleshooting,problem-solving,medium,55,MAINTAIN,,/guides/pdf-blank-pages-after-merge,1500-4000,Wave upgraded
+531,pdf file too large to email,PDF Troubleshooting,problem-solving,medium,55,MAINTAIN,,/guides/pdf-file-too-large-to-email,1500-4000,Wave upgraded
+532,pdf fonts missing,PDF Troubleshooting,problem-solving,medium,55,MAINTAIN,,/guides/pdf-fonts-missing,1500-4000,Wave upgraded
+533,pdf text not selectable,PDF Troubleshooting,problem-solving,medium,55,MAINTAIN,,/guides/pdf-text-not-selectable,1500-4000,Wave upgraded
+534,pdf upload failed portal,PDF Troubleshooting,problem-solving,medium,55,MAINTAIN,,/guides/pdf-upload-failed-portal,1500-4000,Wave upgraded
+535,pdf won't open password unknown,PDF Troubleshooting,problem-solving,medium,55,MAINTAIN,,/guides/pdf-wont-open-password-unknown,1500-4000,Wave upgraded
+370,pdf metadata explained,PDF Productivity,informational,medium,52,MAINTAIN,,/guides/beginner-pdf-metadata-explained,1500-4000,Wave upgraded
+163,browser pdf tools vs desktop,PDF Collaboration,informational,medium,51,MAINTAIN,,/guides/browser-vs-desktop-pdf-tools,1500-4000,Wave upgraded
+345,pdf workflow government,PDF for Businesses,informational,medium,49,MAINTAIN,,/guides/pdf-workflow-government,1500-4000,Wave upgraded
+400,bank-statement pdf workflow australia,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/bank-statement-pdf-workflow-australia,1500-4000,Wave upgraded
+402,bank-statement pdf workflow canada,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/bank-statement-pdf-workflow-canada,1500-4000,Wave upgraded
+404,bank-statement pdf workflow germany,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/bank-statement-pdf-workflow-germany,1500-4000,Wave upgraded
+405,bank-statement pdf workflow india,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/bank-statement-pdf-workflow-india,1500-4000,Wave upgraded
+412,bank-statement pdf workflow singapore,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/bank-statement-pdf-workflow-singapore,1500-4000,Wave upgraded
+417,bank-statement pdf workflow uk,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/bank-statement-pdf-workflow-uk,1500-4000,Wave upgraded
+418,bank-statement pdf workflow usa,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/bank-statement-pdf-workflow-usa,1500-4000,Wave upgraded
+419,contract pdf workflow australia,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/contract-pdf-workflow-australia,1500-4000,Wave upgraded
+423,contract pdf workflow germany,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/contract-pdf-workflow-germany,1500-4000,Wave upgraded
+436,contract pdf workflow uk,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/contract-pdf-workflow-uk,1500-4000,Wave upgraded
+437,contract pdf workflow usa,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/contract-pdf-workflow-usa,1500-4000,Wave upgraded
+443,tax-document pdf workflow india,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/tax-document-pdf-workflow-india,1500-4000,Wave upgraded
+462,university-application pdf workflow india,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/university-application-pdf-workflow-india,1500-4000,Wave upgraded
+476,visa-application pdf workflow australia,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-australia,1500-4000,Wave upgraded
+477,visa-application pdf workflow brazil,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-brazil,1500-4000,Wave upgraded
+478,visa-application pdf workflow canada,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-canada,1500-4000,Wave upgraded
+479,visa-application pdf workflow france,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-france,1500-4000,Wave upgraded
+480,visa-application pdf workflow germany,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-germany,1500-4000,Wave upgraded
+481,visa-application pdf workflow india,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-india,1500-4000,Wave upgraded
+482,visa-application pdf workflow ireland,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-ireland,1500-4000,Wave upgraded
+484,visa-application pdf workflow japan,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-japan,1500-4000,Wave upgraded
+486,visa-application pdf workflow netherlands,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-netherlands,1500-4000,Wave upgraded
+488,visa-application pdf workflow singapore,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-singapore,1500-4000,Wave upgraded
+491,visa-application pdf workflow spain,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-spain,1500-4000,Wave upgraded
+492,visa-application pdf workflow uae,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-uae,1500-4000,Wave upgraded
+493,visa-application pdf workflow uk,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-uk,1500-4000,Wave upgraded
+494,visa-application pdf workflow usa,PDF Workflows,informational,medium,49,MAINTAIN,,/guides/visa-application-pdf-workflow-usa,1500-4000,Wave upgraded
+166,gdpr pdf redaction requirements,PDF Compliance,compliance,medium,48,MAINTAIN,,/guides/gdpr-pdf-redaction,1500-4000,Wave upgraded
+167,hipaa pdf handling admin,PDF Compliance,compliance,medium,48,MAINTAIN,,/guides/hipaa-pdf-handling,1500-4000,Wave upgraded
+169,section 508 pdf accessibility,PDF Compliance,compliance,medium,48,MAINTAIN,,/guides/section-508-pdf,1500-4000,Wave upgraded
+170,sox document retention pdf,PDF Compliance,compliance,medium,48,MAINTAIN,,/guides/sox-pdf-retention,1500-4000,Wave upgraded
+171,wcag 2.2 pdf requirements,PDF Compliance,compliance,medium,48,MAINTAIN,,/guides/wcag-22-pdf,1500-4000,Wave upgraded
+504,flatten pdf forms,PDF Security,informational,medium,48,MAINTAIN,,/guides/flatten-pdf,1500-4000,Wave upgraded
+512,password protect pdf,PDF Security,informational,medium,48,MAINTAIN,,/guides/password-protect-pdf,1500-4000,Wave upgraded
+517,pdf redaction permanent,PDF Security,informational,medium,48,MAINTAIN,,/guides/pdf-redaction-permanent,1500-4000,Wave upgraded
+522,secure pdf workflow hub,PDF Security,informational,medium,48,MAINTAIN,,/guides/secure-pdf-workflow,1500-4000,Wave upgraded
+526,unlock pdf remove password,PDF Security,informational,medium,48,MAINTAIN,,/guides/unlock-pdf,1500-4000,Wave upgraded
+232,what is flattened pdf,PDF Productivity,informational,medium,44,MAINTAIN,,/guides/glossary-flattened-pdf,1500-4000,Wave upgraded
+271,what is overprint,PDF Productivity,informational,medium,44,MAINTAIN,,/guides/glossary-overprint,1500-4000,Wave upgraded

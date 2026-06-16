@@ -58,6 +58,25 @@ namespace ratpdf.Services.Seo
                 <p>Open PDF to Word in Safari, upload from Files or iCloud, download DOCX to Files. Wi-Fi recommended for large scans.</p>
                 """,
                 ["pdf-to-word", "convert-pdf-to-word"]);
+
+            yield return Pillar(
+                "how-to-convert-pdf-to-word",
+                "How to Convert PDF to Word",
+                "Step-by-step tutorial: convert PDF to editable Word (DOCX) with RatPDF. Digital PDFs, scans with OCR, and quality checks.",
+                """
+                <h2>Before you convert</h2>
+                <p>Try selecting text in your PDF viewer. If words highlight, the file is digital — go straight to PDF to Word. If not, run <a href="/pdf/ocrpdf">OCR PDF</a> first.</p>
+                <h2>Step-by-step</h2>
+                <ol>
+                <li>Open <a href="/pdf/pdftodoc">PDF to Word</a></li>
+                <li>Upload the PDF (unlock password-protected files first)</li>
+                <li>Download DOCX when processing completes</li>
+                <li>Open in Word or Google Docs — check tables and headers on page 1</li>
+                </ol>
+                <h2>Editorial depth</h2>
+                <p>Full guide: <a href="/guides/pdf-to-word">PDF to Word guide</a> · Scans: <a href="/guides/scanned-pdf-to-word">scanned PDF to Word</a> · Formatting: <a href="/guides/pdf-to-word-keep-formatting">keep formatting</a>.</p>
+                """,
+                ["pdf-to-word", "convert-pdf-to-word", "pdf-to-word-iphone"]);
         }
 
         private static ProgrammaticPillarPage Pillar(string slug, string h1, string meta, string html, string[] related) => new(

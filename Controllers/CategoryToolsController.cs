@@ -9,9 +9,6 @@ namespace ratpdf.Controllers
         [HttpGet("/tools")]
         public IActionResult AllTools() => Render("all-tools");
 
-        [HttpGet("/tools/medical")]
-        public IActionResult Medical() => Render("medical");
-
         [HttpGet("/tools/developer")]
         public IActionResult Developer() => Render("developer");
 
