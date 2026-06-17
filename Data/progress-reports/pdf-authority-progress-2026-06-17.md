@@ -4,7 +4,7 @@
 
 | Metric | Value |
 |--------|-------|
-| Authority pages (wave + pillar layers) | **672** |
+| Authority pages (wave + pillar layers) | **706** |
 | UPGRADE completed | **406 / 406** (100.0%) |
 | Priority score captured (UPGRADE) | **100.0%** |
 | CREATE remaining | **450** |
