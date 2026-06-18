@@ -1,0 +1,48 @@
+{
+  "product": {
+    "name": "RatPDF",
+    "alternateName": "Rat PDF",
+    "url": "https://ratpdf.com",
+    "logoUrl": "https://ratpdf.com/images/ratpdf-logo.png",
+    "founded": "2024",
+    "contactName": "Ethan Brooks",
+    "contactEmail": "ethan.brooks@ratpdf.com",
+    "twitter": "https://twitter.com/ratpdf",
+    "facebook": "https://facebook.com/ratpdf",
+    "category": "Productivity / Document Management / PDF Software",
+    "pricing": "Freemium — free tier: 3 uses/tool/day, 200 MB/file; Pro: unlimited use, 4 GB uploads"
+  },
+  "copy": {
+    "tagline": "Free online PDF tools — compress, convert, merge, OCR",
+    "headline8words": "Free browser PDF tools compress convert merge OCR",
+    "shortDescription": "RatPDF is a browser-based PDF toolkit with 26+ tools: compress, merge, split, convert PDF↔Word/Excel, OCR, sign, watermark, and password-protect. Free tier with no signup; Pro for large files.",
+    "mediumDescription": "RatPDF (https://ratpdf.com) is a privacy-focused online PDF platform for compressing, merging, splitting, converting (PDF to Word/Excel/PowerPoint/text/images), OCR on scanned PDFs, signing, watermarking, and password protection. Built on Ghostscript, LibreOffice, pdf2docx, PyMuPDF, and Tesseract. Free tier: 3 uses per tool per day, 200 MB uploads, HTTPS, files deleted after download. Pro unlocks unlimited daily use and 4 GB uploads. Also includes GST/VAT invoice generators and 600+ workflow guides.",
+    "longDescription": "RatPDF is a browser-based document productivity platform offering free and Pro PDF tools for everyday document work. Users can compress PDFs for email and web uploads, merge and split documents, convert between PDF and Office formats, extract text from scanned files with OCR, add typed signatures and watermarks, password-protect or unlock PDFs, and flatten forms — all without installing desktop software.\n\nUnlike many PDF sites, RatPDF publishes original research (email attachment size limits, PDF compression benchmarks) and detailed comparison guides vs iLovePDF, Smallpdf, Adobe, PDF24, and Sejda. Processing runs on secure cloud servers; files are encrypted in transit and deleted after download on the free tier.\n\nIdeal for students, freelancers, SMBs, accountants, and legal teams who need reliable PDF utilities with transparent limits. Founded 2024. Editorial team: Ethan Brooks (Editor-in-Chief), Priya Sharma (Business documents), James Cole (Security).",
+    "tags": "PDF, compress PDF, merge PDF, PDF to Word, OCR, document tools, productivity, SaaS, free tools, invoice generator",
+    "alternativetoTags": "PDF, document-management, compress-pdf, ocr, pdf-converter, productivity",
+    "alternativetoAlternatives": "iLovePDF, Smallpdf, Sejda, PDF24, Adobe Acrobat, PDFgear",
+    "productHuntTagline": "26+ free PDF tools in your browser — compress, convert, OCR, sign",
+    "productHuntDescription": "RatPDF bundles compress, merge, split, PDF↔Office conversion, OCR, sign, watermark, and password tools in one place. Free tier needs no signup. We also publish attachment-limit research and PDF compression benchmarks.",
+    "g2Category": "PDF Software / Document Management",
+    "capterraCategory": "PDF Software",
+    "sourceforgeCategory": "Office/Business :: Document Management",
+    "competitorsList": "iLovePDF, Smallpdf, Sejda, PDF24, Adobe Acrobat, PDFgear, PDF Candy"
+  },
+  "landingPages": {
+    "hub": "https://ratpdf.com/guides/pdf-tools",
+    "compare": "https://ratpdf.com/compare",
+    "compressTool": "https://ratpdf.com/pdf/compress",
+    "compressHub": "https://ratpdf.com/compress-pdf",
+    "ocrTool": "https://ratpdf.com/pdf/ocrpdf",
+    "pdfToText": "https://ratpdf.com/pdf-to-txt/pdf-to-text-online",
+    "researchAttachmentLimits": "https://ratpdf.com/research/attachment-size-limits",
+    "researchCompressBench": "https://ratpdf.com/research/pdf-compression-benchmark"
+  },
+  "freeForDevPrLine": " * [RatPDF](https://ratpdf.com/) - Browser-based PDF toolkit: compress, merge, split, convert PDF↔Office, OCR, sign, watermark. Free tier: 3 uses/tool/day, 200 MB/file, no signup.",
+  "awesomePrivacyPrLine": " * [RatPDF](https://ratpdf.com/) - Online PDF tools with HTTPS upload and auto-delete after download; privacy-focused workflow guides.",
+  "launchingNext": {
+    "startupType": "bootstrapped",
+    "marketingBudget": "$0",
+    "tags": "PDF, productivity, SaaS, document tools, OCR, compress, free tools, browser, invoice"
+  }
+}
