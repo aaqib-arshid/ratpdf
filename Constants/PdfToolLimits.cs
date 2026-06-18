@@ -27,9 +27,6 @@ namespace ratpdf.Constants
         /// <summary>Merge PDF — Pro/Business max files per job.</summary>
         public const int MergeMaxBatchFilesPremium = 40;
 
-        /// <summary>Compare PDF — always requires exactly two files.</summary>
-        public const int CompareMaxBatchFiles = 2;
-
         /// <summary>Merge PDF — free tier per-file cap.</summary>
         public const long MergeMaxFileSizeBytes = 10L * 1024 * 1024; // 10 MB
 
@@ -74,23 +71,10 @@ namespace ratpdf.Constants
             if (string.Equals(toolId, PdfToolIds.Merge, StringComparison.OrdinalIgnoreCase))
                 return MergeMaxBatchFiles;
 
-            if (string.Equals(toolId, PdfToolIds.ComparePdf, StringComparison.OrdinalIgnoreCase))
-                return CompareMaxBatchFiles;
-
             if (IsMultiFileTool(toolId))
                 return MaxBatchFiles;
 
             return 1;
-        }
-
-        /// <summary>Daily free-tier usage units per job (compare/merge = 1 job, not per file).</summary>
-        public static int ResolveUsageUnits(string toolId, int fileCount)
-        {
-            if (string.Equals(toolId, PdfToolIds.ComparePdf, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(toolId, PdfToolIds.Merge, StringComparison.OrdinalIgnoreCase))
-                return 1;
-
-            return Math.Max(1, fileCount);
         }
 
         public static bool IsMultiFileTool(string toolId) =>

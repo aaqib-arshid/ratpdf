@@ -1762,8 +1762,7 @@ namespace ratpdf.Controllers
             if (files.Count > limits.MaxBatchFiles)
                 return new JobFileValidation(null, BadRequest(new { error = $"Maximum {limits.MaxBatchFiles} files allowed." }));
 
-            var access = await _pdfToolsAccess.CheckAccessAsync(
-                toolId, PdfToolLimits.ResolveUsageUnits(toolId, files.Count));
+            var access = await _pdfToolsAccess.CheckAccessAsync(toolId, files.Count);
             if (!access.Allowed)
                 return new JobFileValidation(null, StatusCode(402, new { error = access.DenyReason, paywall = true }));
 
@@ -1854,7 +1853,7 @@ namespace ratpdf.Controllers
             Func<PdfExtendedToolJobService, CancellationToken, Task> work)
         {
             _jobResultStore.CreateJob(jobId, jobKind);
-            await _pdfToolsAccess.RecordUsageAsync(toolId, PdfToolLimits.ResolveUsageUnits(toolId, inputs.Count));
+            await _pdfToolsAccess.RecordUsageAsync(toolId, Math.Max(1, inputs.Count));
 
             _jobQueue.Queue(async ct =>
             {
@@ -1879,7 +1878,7 @@ namespace ratpdf.Controllers
             Func<PdfItextToolJobService, CancellationToken, Task> work)
         {
             _jobResultStore.CreateJob(jobId, jobKind);
-            await _pdfToolsAccess.RecordUsageAsync(toolId, PdfToolLimits.ResolveUsageUnits(toolId, inputs.Count));
+            await _pdfToolsAccess.RecordUsageAsync(toolId, Math.Max(1, inputs.Count));
 
             _jobQueue.Queue(async ct =>
             {
