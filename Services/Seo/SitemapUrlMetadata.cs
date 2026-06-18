@@ -9,6 +9,7 @@ namespace ratpdf.Services.Seo
         {
             "/" => "daily",
             "/pdf/compress" or "/compress-pdf" => "weekly",
+            var p when p.StartsWith("/pdf/", StringComparison.OrdinalIgnoreCase) => "weekly",
             var p when p.StartsWith("/PDF/", StringComparison.OrdinalIgnoreCase) => "weekly",
             var p when p.StartsWith("/pdf-to-txt/", StringComparison.OrdinalIgnoreCase) => "monthly",
             var p when IsCompressLanding(p) => "monthly",
@@ -23,6 +24,7 @@ namespace ratpdf.Services.Seo
             "/" => 1.0,
             "/pdf/compress" => 1.0,
             "/compress-pdf" => 0.98,
+            var p when p.StartsWith("/pdf/", StringComparison.OrdinalIgnoreCase) => 0.9,
             var p when p.StartsWith("/PDF/", StringComparison.OrdinalIgnoreCase) => 0.9,
             var p when p.StartsWith("/pdf-to-txt/", StringComparison.OrdinalIgnoreCase) => 0.72,
             var p when IsCompressLanding(p) => 0.75,

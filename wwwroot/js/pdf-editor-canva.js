@@ -871,6 +871,10 @@ window.PdfCanvaEditor = (function () {
 
         el.addEventListener('mousedown', e => {
             if (state.editing) return;
+            if (e.target.closest('.cv-handle')) return;
+            // While a text box is being edited, let clicks place the caret instead
+            // of starting a drag / re-selecting the box (which would end editing).
+            if (e.target.closest('.cv-text-add-inner[contenteditable="true"]')) return;
             e.stopPropagation();
             selectItem('box', { index, edit, el });
             state.drag = {
@@ -885,13 +889,78 @@ window.PdfCanvaEditor = (function () {
             e.stopPropagation();
             const inner = edit._inner || el.querySelector('.cv-text-add-inner');
             if (!inner) return;
+            // selectItem() commits/clears prior edits (disabling contentEditable),
+            // so it must run before we (re-)enable typing on this inner.
+            selectItem('textAdd', { index, edit, el, inner });
             inner.contentEditable = 'true';
             bindTextAddInner(inner, edit, index);
             inner.focus();
-            selectItem('textAdd', { index, edit, el, inner });
+            selectDefaultText(inner);
         });
 
+        if (edit.type === 'image') addResizeHandles(el, edit, index);
         overlay.appendChild(el);
+    }
+
+    function addResizeHandles(el, edit, index) {
+        ['nw', 'ne', 'sw', 'se'].forEach(corner => {
+            const h = document.createElement('div');
+            h.className = 'cv-handle cv-handle-' + corner;
+            h.dataset.corner = corner;
+            h.addEventListener('pointerdown', ev => startResize(ev, edit, index, el, corner));
+            el.appendChild(h);
+        });
+    }
+
+    function startResize(ev, edit, index, el, corner) {
+        if (state.editing) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        selectItem('box', { index, edit, el });
+        const scale = overlayScale();
+        const start = { x: ev.clientX, y: ev.clientY, ox: edit.x, oy: edit.y, ow: edit.width, oh: edit.height };
+        const ratio = edit.height ? edit.width / edit.height : 1;
+        const keepRatio = edit.type === 'image';
+        const minW = 12, minH = 12;
+        const east = corner === 'ne' || corner === 'se';
+        const west = corner === 'nw' || corner === 'sw';
+        const north = corner === 'nw' || corner === 'ne';
+        const south = corner === 'sw' || corner === 'se';
+        let snapped = false;
+        state._resizing = true;
+        try { el.setPointerCapture(ev.pointerId); } catch (_) { }
+
+        const onMove = e => {
+            const d = pointerDeltaToPdf(e.clientX - start.x, e.clientY - start.y);
+            let x = start.ox, y = start.oy, w = start.ow, h = start.oh;
+            if (east) w = Math.max(minW, start.ow + d.dx);
+            if (west) { w = Math.max(minW, start.ow - d.dx); x = start.ox + (start.ow - w); }
+            if (south) h = Math.max(minH, start.oh + d.dy);
+            if (north) { h = Math.max(minH, start.oh - d.dy); y = start.oy + (start.oh - h); }
+            // Images keep aspect ratio by default; hold Shift to distort freely.
+            if (keepRatio && !e.shiftKey) {
+                h = w / ratio;
+                if (north) y = start.oy + (start.oh - h);
+            }
+            if (!snapped) { snapshot(); snapped = true; }
+            edit.x = x; edit.y = y; edit.width = w; edit.height = h;
+            const pos = pdfToScreen(edit, scale);
+            el.style.left = pos.left + 'px';
+            el.style.top = pos.top + 'px';
+            el.style.width = Math.max(pos.width, 4) + 'px';
+            el.style.height = Math.max(pos.height, 4) + 'px';
+        };
+        const onUp = () => {
+            el.removeEventListener('pointermove', onMove);
+            el.removeEventListener('pointerup', onUp);
+            el.removeEventListener('pointercancel', onUp);
+            try { el.releasePointerCapture(ev.pointerId); } catch (_) { }
+            state._resizing = false;
+            if (snapped) updateBadge();
+        };
+        el.addEventListener('pointermove', onMove);
+        el.addEventListener('pointerup', onUp);
+        el.addEventListener('pointercancel', onUp);
     }
 
     function hexToRgba(hex, a) {
@@ -1001,10 +1070,11 @@ window.PdfCanvaEditor = (function () {
                     const idx = state.edits.length - 1;
                     const edit = state.edits[idx];
                     if (edit._inner) {
+                        selectItem('textAdd', { index: idx, edit, el: edit._el, inner: edit._inner });
                         edit._inner.contentEditable = 'true';
                         bindTextAddInner(edit._inner, edit, idx);
                         edit._inner.focus();
-                        selectItem('textAdd', { index: idx, edit, el: edit._el, inner: edit._inner });
+                        selectDefaultText(edit._inner);
                         updateFloatBarVisibility();
                     }
                 });
@@ -1400,7 +1470,7 @@ window.PdfCanvaEditor = (function () {
     async function uploadFile(file) {
         const access = await PdfToolkit.checkToolAccess('editpdf');
         if (!access.allowed) { PdfToolkit.showPaywall(access.denyReason); throw new Error('Paywall'); }
-        const maxBytes = access.maxFileSizeBytes || (50 * 1024 * 1024);
+        const maxBytes = access.maxFileSizeBytes || (10 * 1024 * 1024);
         const v = PdfToolkit.validatePdfFiles([file], { maxFiles: 1, maxSizeBytes: maxBytes });
         if (!v.ok) throw new Error(v.error);
 
@@ -1741,13 +1811,16 @@ window.PdfCanvaEditor = (function () {
         floatBar?.addEventListener('mousedown', e => {
             if (!state.editing) return;
             saveEditSelection();
+            // Native <select> dropdowns (font/size) must keep focus to stay open —
+            // refocusing the editor on mouseup would close them instantly.
+            if (e.target.closest('select')) return;
             if (e.target.closest('.fb-format, .fb-highlight-label, #fbColor, #fbTextBg')) {
                 state._deferEditBlur = true;
             }
         }, true);
         $('fbUndo')?.addEventListener('click', () => undo());
         $('fbRedo')?.addEventListener('click', () => redo());
-        $('fbAddText')?.addEventListener('click', () => setPending('text'));
+        $('fbAddText')?.addEventListener('click', () => addTextOnActivePage());
         $('fbAddImage')?.addEventListener('click', () => pickImage());
         ['fbBold', 'fbItalic', 'fbLink'].forEach(id => {
             $(id)?.addEventListener('mousedown', keepSelPrevent);
@@ -1911,6 +1984,77 @@ window.PdfCanvaEditor = (function () {
         URL.revokeObjectURL(a.href);
     }
 
+    function currentPageIndex() {
+        const pages = getActivePages();
+        const wrap = $('canvasWrap');
+        if (wrap) {
+            const wr = wrap.getBoundingClientRect();
+            let best = null, bestDist = Infinity;
+            for (const idx of pages) {
+                const el = state.pageViews[idx]?.wrap;
+                if (!el) continue;
+                const r = el.getBoundingClientRect();
+                if (r.bottom < wr.top + 4 || r.top > wr.bottom - 4) continue;
+                const dist = Math.abs(r.top - wr.top);
+                if (dist < bestDist) { bestDist = dist; best = idx; }
+            }
+            if (best != null) return best;
+        }
+        const activeThumb = document.querySelector('.cv-thumb.active');
+        if (activeThumb) {
+            const idx = parseInt(activeThumb.dataset.page, 10);
+            if (!isNaN(idx) && pages.includes(idx)) return idx;
+        }
+        return pages[0] ?? 0;
+    }
+
+    function selectDefaultText(inner) {
+        try {
+            const txt = (inner.textContent || '').trim();
+            if (txt && txt !== 'Type here') return;
+            const range = document.createRange();
+            range.selectNodeContents(inner);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        } catch (_) { }
+    }
+
+    function addTextOnActivePage() {
+        if (!state.sessionId) { setStatus('Open a PDF first', true); return; }
+        finishTextEdit();
+        state.pending = null;
+        $('topBar')?.classList.remove('pending-text', 'pending-image', 'pending-whiteout');
+        document.querySelector('.cv-app')?.classList.remove('cv-pending-draw');
+        const pageIdx = currentPageIndex();
+        const pg = state.model?.pages?.[pageIdx];
+        const pw = pg?.width || 400;
+        const x = Math.max(24, Math.round(pw * 0.12));
+        const y = 56;
+        pushEdit({
+            type: 'text_add', page: pageIdx,
+            x, y, width: 220, height: 32,
+            text: '', richHtml: '', fontSize: 14, fontFamily: 'Arial',
+            color: '#000000', bold: false, italic: false,
+        });
+        invalidatePage(pageIdx).then(() => {
+            const idx = state.edits.length - 1;
+            const edit = state.edits[idx];
+            if (edit && edit._inner) {
+                // selectItem() commits/clears any prior edit (which would disable
+                // contentEditable), so it MUST run before we enable typing here.
+                selectItem('textAdd', { index: idx, edit, el: edit._el, inner: edit._inner });
+                edit._inner.contentEditable = 'true';
+                bindTextAddInner(edit._inner, edit, idx);
+                edit._inner.focus();
+                selectDefaultText(edit._inner);
+                updateFloatBarVisibility();
+                edit._el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+        setStatus('Text added — type to edit');
+    }
+
     function setPending(action) {
         if (action && !state.sessionId) { setStatus('Open a PDF first', true); return; }
         finishTextEdit();
@@ -1941,6 +2085,10 @@ window.PdfCanvaEditor = (function () {
                 setStatus('Choose a PNG or JPG image', true);
                 return;
             }
+            if (file.size > 5 * 1024 * 1024) {
+                setStatus('Image must be under 5 MB', true);
+                return;
+            }
             const reader = new FileReader();
             reader.onload = () => {
                 state._imageDataUrl = reader.result;
@@ -1964,7 +2112,7 @@ window.PdfCanvaEditor = (function () {
         $('btnUndo')?.addEventListener('click', undo);
         $('btnRedo')?.addEventListener('click', redo);
         $('btnDownload')?.addEventListener('click', exportPdf);
-        $('btnAddText')?.addEventListener('click', () => setPending('text'));
+        $('btnAddText')?.addEventListener('click', () => addTextOnActivePage());
         $('btnAddImage')?.addEventListener('click', pickImage);
         bindFloatBar();
         $('zoomInBtn')?.addEventListener('click', () => setZoom(Math.min(3, state.scale + 0.15)));

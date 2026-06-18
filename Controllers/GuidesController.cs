@@ -12,7 +12,7 @@ namespace ratpdf.Controllers
         public IActionResult Index()
         {
             ViewData["Title"] = "PDF & Document Guides — Free Tutorials | RatPDF";
-            ViewData["Description"] = "20+ step-by-step guides for every RatPDF tool: compress, merge, convert PDF to Word/Excel, invoices, OCR, and more.";
+            ViewData["Description"] = $"{PdfToolSeo.ToolCountLabel} step-by-step guides for every RatPDF tool: compress, merge, convert PDF to Word/Excel, invoices, OCR, repair, PDF/A, and more.";
             ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/guides");
             return View(ContentLibrary.Guides.OrderBy(g => g.Category).ThenBy(g => g.Title).ToList());
         }

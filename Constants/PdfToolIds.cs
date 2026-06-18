@@ -30,5 +30,12 @@ namespace ratpdf.Constants
         public const string OcrPdf = "ocrpdf";
         public const string PageNumbers = "pagenumbers";
         public const string PdfMetadata = "pdfmetadata";
+        public const string Crop = "crop";
+        public const string Organize = "organize";
+        public const string RepairPdf = "repairpdf";
+        public const string SummarizePdf = "summarizepdf";
+        public const string PdfA = "pdfa";
+        public const string ComparePdf = "comparepdf";
+        public const string FillForm = "fillform";
     }
 }

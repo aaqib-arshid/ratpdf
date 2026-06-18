@@ -127,6 +127,29 @@ public class PdfItextToolJobService
             "Removing page…", ct,
             path => _fileOps.RemovePageFromPath(path, pageNumber));
 
+    public async Task RunCropJobAsync(
+        string jobId,
+        string stagingBlob,
+        long inputSize,
+        float marginTop,
+        float marginRight,
+        float marginBottom,
+        float marginLeft,
+        CancellationToken ct)
+        => await RunSinglePdfTransformAsync(jobId, "crop", stagingBlob, inputSize, "cropped.pdf",
+            "Cropping PDF…", ct,
+            path => _fileOps.CropPdfFromPath(path, marginTop, marginRight, marginBottom, marginLeft));
+
+    public async Task RunOrganizeJobAsync(
+        string jobId,
+        string stagingBlob,
+        long inputSize,
+        IReadOnlyList<int> pageOrder,
+        CancellationToken ct)
+        => await RunSinglePdfTransformAsync(jobId, "organize", stagingBlob, inputSize, "organized.pdf",
+            "Organizing pages…", ct,
+            path => _fileOps.ReorderPagesFromPath(path, pageOrder));
+
     public async Task RunConvertImagesJobAsync(
         string jobId,
         IReadOnlyList<(string StagingBlobName, string OriginalName, long Size)> inputs,

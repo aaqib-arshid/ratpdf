@@ -104,6 +104,8 @@ public static class UserFacingErrorMapper
             return PdfUnreadable;
         if (lower.Contains("ocr") || lower.Contains("tesseract"))
             return "OCR couldn't read this document. Try a clearer scan at 300 DPI.";
+        if (lower.Contains("pdf/a") || lower.Contains("pdfa"))
+            return "PDF/A conversion failed. Try Repair PDF first if the file is damaged, or Unlock PDF if it is password-protected.";
         if (lower.Contains("ghostscript") || lower.Contains("compress"))
             return "PDF compression failed. Try a different file or compression level.";
         if (lower.Contains("merge") || lower.Contains("split") || lower.Contains("watermark")

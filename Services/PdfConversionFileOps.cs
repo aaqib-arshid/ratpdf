@@ -4,6 +4,7 @@ using iText.Html2pdf.Resolver.Font;
 using iText.IO.Font.Constants;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
+using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
 using iText.Layout.Element;
@@ -192,6 +193,69 @@ public class PdfConversionFileOps
         return ToResult(outputPath);
     }
 
+    public PdfConversionFileResult CropPdfFromPath(
+        string inputPath,
+        float marginTop,
+        float marginRight,
+        float marginBottom,
+        float marginLeft,
+        string? outputPath = null)
+    {
+        if (marginTop < 0 || marginRight < 0 || marginBottom < 0 || marginLeft < 0)
+            throw new ArgumentException("Margins cannot be negative.");
+
+        outputPath ??= PdfTempPaths.NewOutput(".pdf");
+        using var cropStream = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(cropStream);
+        using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
+        using var pdfDoc = new PdfDocument(reader, writer);
+
+        for (var i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
+        {
+            var page = pdfDoc.GetPage(i);
+            var pageSize = page.GetPageSize();
+            var width = pageSize.GetWidth() - marginLeft - marginRight;
+            var height = pageSize.GetHeight() - marginTop - marginBottom;
+
+            if (width <= 1 || height <= 1)
+                throw new ArgumentException("Crop margins are too large for one or more pages.");
+
+            var rect = new Rectangle(marginLeft, marginBottom, width, height);
+            page.SetMediaBox(rect);
+            page.SetCropBox(rect);
+        }
+
+        pdfDoc.Close();
+        return ToResult(outputPath);
+    }
+
+    public PdfConversionFileResult ReorderPagesFromPath(
+        string inputPath, IReadOnlyList<int> pageOrderZeroBased, string? outputPath = null)
+    {
+        if (pageOrderZeroBased == null || pageOrderZeroBased.Count == 0)
+            throw new ArgumentException("Select at least one page.");
+
+        outputPath ??= PdfTempPaths.NewOutput(".pdf");
+        using var srcStream = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(srcStream);
+        using var src = new PdfDocument(reader);
+        var total = src.GetNumberOfPages();
+
+        using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
+        using var dest = new PdfDocument(writer);
+
+        foreach (var idx in pageOrderZeroBased)
+        {
+            if (idx < 0 || idx >= total)
+                throw new ArgumentException($"Invalid page index: {idx}.");
+            var pageNum = idx + 1;
+            src.CopyPagesTo(pageNum, pageNum, dest);
+        }
+
+        dest.Close();
+        return ToResult(outputPath);
+    }
+
     public PdfConversionFileResult RemovePageFromPath(
         string inputPath, int pageNumber, string? outputPath = null)
     {
@@ -273,7 +337,7 @@ public class PdfConversionFileOps
 
         var converterProperties = new ConverterProperties();
         var fontProvider = new DefaultFontProvider(true, true, true);
-        var notoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fonts", "NotoSans-Regular.ttf");
+        var notoPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fonts", "NotoSans-Regular.ttf");
         if (File.Exists(notoPath))
             fontProvider.AddFont(notoPath);
         converterProperties.SetFontProvider(fontProvider);
@@ -446,6 +510,103 @@ public class PdfConversionFileOps
             outputPath,
             JsonSerializer.Serialize(meta, new JsonSerializerOptions { WriteIndented = true }),
             ct);
+        return ToResult(outputPath);
+    }
+
+    /// <summary>Rebuild PDF for archival use — copies pages into a self-contained file with PDF/A-friendly version.</summary>
+    public PdfConversionFileResult ConvertToPdfAFromPath(string inputPath, bool pdfA2 = false, string? outputPath = null)
+    {
+        outputPath ??= PdfTempPaths.NewOutput(".pdf");
+        using var fs = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(fs);
+        using var src = new PdfDocument(reader);
+        var pageCount = src.GetNumberOfPages();
+        if (pageCount == 0)
+            throw new InvalidOperationException("PDF has no readable pages.");
+
+        var writerProps = new WriterProperties()
+            .UseSmartMode()
+            .SetPdfVersion(pdfA2 ? PdfVersion.PDF_1_7 : PdfVersion.PDF_1_4);
+
+        using var writer = new PdfWriter(outputPath, writerProps);
+        using var dest = new PdfDocument(writer);
+        src.CopyPagesTo(1, pageCount, dest);
+
+        var info = dest.GetDocumentInfo();
+        info.SetProducer("RatPDF PDF/A Converter");
+        info.SetKeywords($"PDF/A-{(pdfA2 ? "2" : "1")}b");
+
+        dest.Close();
+        return ToResult(outputPath);
+    }
+
+    /// <summary>Rebuild PDF by copying pages into a fresh file — fixes many xref/structure errors.</summary>
+    public PdfConversionFileResult RepairPdfFromPath(string inputPath, string? outputPath = null)
+    {
+        outputPath ??= PdfTempPaths.NewOutput(".pdf");
+        using var fs = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(fs);
+        using var src = new PdfDocument(reader);
+        var pageCount = src.GetNumberOfPages();
+        if (pageCount == 0)
+            throw new InvalidOperationException("PDF has no readable pages.");
+
+        using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
+        using var dest = new PdfDocument(writer);
+        src.CopyPagesTo(1, pageCount, dest);
+        dest.Close();
+        return ToResult(outputPath);
+    }
+
+    public sealed record PdfFormFieldInfo(string Name, string Type, string? Value);
+
+    public IReadOnlyList<PdfFormFieldInfo> ListFormFieldsFromPath(string inputPath)
+    {
+        using var fs = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(fs);
+        using var pdfDoc = new PdfDocument(reader);
+        var form = PdfAcroForm.GetAcroForm(pdfDoc, false);
+        if (form == null)
+            return Array.Empty<PdfFormFieldInfo>();
+
+        var fields = new List<PdfFormFieldInfo>();
+        foreach (var entry in form.GetAllFormFields())
+        {
+            var field = entry.Value;
+            fields.Add(new PdfFormFieldInfo(
+                entry.Key,
+                field.GetFormType().ToString(),
+                field.GetValueAsString()));
+        }
+
+        return fields;
+    }
+
+    public PdfConversionFileResult FillPdfFormFromPath(
+        string inputPath,
+        IReadOnlyDictionary<string, string> values,
+        bool flatten = false,
+        string? outputPath = null)
+    {
+        outputPath ??= PdfTempPaths.NewOutput(".pdf");
+        using var fs = OpenReadStream(inputPath);
+        using var reader = OpenPermissiveReader(fs);
+        using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
+        using var pdfDoc = new PdfDocument(reader, writer);
+        var form = PdfAcroForm.GetAcroForm(pdfDoc, true)
+            ?? throw new InvalidOperationException("This PDF has no fillable form fields.");
+
+        foreach (var kv in values)
+        {
+            var field = form.GetField(kv.Key);
+            if (field != null)
+                field.SetValue(kv.Value ?? string.Empty);
+        }
+
+        if (flatten)
+            form.FlattenFields();
+
+        pdfDoc.Close();
         return ToResult(outputPath);
     }
 

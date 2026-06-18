@@ -37,6 +37,203 @@ public class PdfExtendedToolJobService
         => RunSingleOutputAsync(jobId, "flattenpdf", stagingBlob, inputSize, "flattened.pdf", "application/pdf",
             "Flattening forms…", path => _fileOps.FlattenPdfFromPath(path), ct);
 
+    public async Task RunRepairJobAsync(string jobId, string stagingBlob, long inputSize, CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "repairpdf", jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Preparing file…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+
+            _jobStore.SetProgress(jobId, 45, "Repairing structure…");
+            try
+            {
+                var result = _fileOps.RepairPdfFromPath(tempInput);
+                outputPath = result.FilePath;
+                await UploadAsync(jobId, "repairpdf", outputPath, "repaired.pdf", "application/pdf",
+                    inputSize, result.SizeBytes, ct);
+                metrics.Checkpoint("completed", inputSize, result.SizeBytes);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "iText repair failed for job {JobId}, trying PyMuPDF", jobId);
+                outputPath = PdfTempPaths.NewOutput(".pdf");
+                _jobStore.SetProgress(jobId, 60, "Deep repair pass…");
+                await _python.RunScriptAsync(
+                    "pdf_repair.py",
+                    $"\"{tempInput}\" \"{outputPath}\"",
+                    outputPath,
+                    expectedOutputDirectory: null,
+                    inputPathForTimeout: tempInput,
+                    ct: ct);
+
+                var size = new FileInfo(outputPath).Length;
+                await UploadAsync(jobId, "repairpdf", outputPath, "repaired.pdf", "application/pdf", inputSize, size, ct);
+                metrics.Checkpoint("completed", inputSize, size);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Repair job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
+        }
+        finally
+        {
+            Cleanup(tempInput, outputPath, stagingBlob, ct);
+        }
+    }
+
+    public async Task RunSummarizeJobAsync(
+        string jobId, string stagingBlob, long inputSize, int sentenceCount, int maxPages, CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "summarizepdf", jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Preparing file…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+            outputPath = PdfTempPaths.NewOutput(".json");
+
+            _jobStore.SetProgress(jobId, 40, "Extracting text…");
+            await _python.RunScriptAsync(
+                "pdf_summarize.py",
+                $"\"{tempInput}\" \"{outputPath}\" --sentences {sentenceCount} --max-pages {maxPages}",
+                outputPath,
+                expectedOutputDirectory: null,
+                inputPathForTimeout: tempInput,
+                ct: ct);
+
+            var size = new FileInfo(outputPath).Length;
+            await UploadAsync(jobId, "summarizepdf", outputPath, "summary.json", "application/json", inputSize, size, ct);
+            metrics.Checkpoint("completed", inputSize, size);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Summarize job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
+        }
+        finally
+        {
+            Cleanup(tempInput, outputPath, stagingBlob, ct);
+        }
+    }
+
+    public async Task RunPdfAJobAsync(
+        string jobId, string stagingBlob, long inputSize, string level, CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "pdfa", jobId);
+        string? tempInput = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Preparing file…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+            var pdfA2 = level.StartsWith("2", StringComparison.OrdinalIgnoreCase);
+
+            _jobStore.SetProgress(jobId, 45, "Converting to PDF/A…");
+            long outputSize;
+            try
+            {
+                var result = _fileOps.ConvertToPdfAFromPath(tempInput, pdfA2);
+                outputPath = result.FilePath;
+                outputSize = result.SizeBytes;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "iText PDF/A conversion failed for job {JobId}, trying Python", jobId);
+                outputPath = PdfTempPaths.NewOutput(".pdf");
+                var gsLevel = pdfA2 ? "2b" : "1b";
+                await _python.RunScriptAsync(
+                    "pdf_pdfa.py",
+                    $"\"{tempInput}\" \"{outputPath}\" --level {gsLevel}",
+                    outputPath,
+                    expectedOutputDirectory: null,
+                    inputPathForTimeout: tempInput,
+                    ct: ct);
+                outputSize = new FileInfo(outputPath).Length;
+            }
+
+            await UploadAsync(jobId, "pdfa", outputPath, "pdfa.pdf", "application/pdf", inputSize, outputSize, ct);
+            metrics.Checkpoint("completed", inputSize, outputSize);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "PDF/A job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
+        }
+        finally
+        {
+            Cleanup(tempInput, outputPath, stagingBlob, ct);
+        }
+    }
+
+    public async Task RunComparePdfJobAsync(
+        string jobId,
+        string stagingBlobA,
+        string stagingBlobB,
+        long inputSizeA,
+        long inputSizeB,
+        CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "comparepdf", jobId);
+        string? tempA = null;
+        string? tempB = null;
+        string? outputPath = null;
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Preparing files…");
+            tempA = await _jobStorage.MaterializeToTempFileAsync(stagingBlobA, ".pdf", ct);
+            tempB = await _jobStorage.MaterializeToTempFileAsync(stagingBlobB, ".pdf", ct);
+            outputPath = PdfTempPaths.NewOutput(".json");
+
+            _jobStore.SetProgress(jobId, 40, "Extracting and comparing text…");
+            await _python.RunScriptAsync(
+                "pdf_compare.py",
+                $"\"{tempA}\" \"{tempB}\" \"{outputPath}\"",
+                outputPath,
+                expectedOutputDirectory: null,
+                inputPathForTimeout: tempA,
+                ct: ct);
+
+            var size = new FileInfo(outputPath).Length;
+            var totalInput = inputSizeA + inputSizeB;
+            await UploadAsync(jobId, "comparepdf", outputPath, "comparison.json", "application/json", totalInput, size, ct);
+            metrics.Checkpoint("completed", totalInput, size);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Compare PDF job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
+        }
+        finally
+        {
+            PdfJobStorageService.TryDeleteLocalFile(tempA);
+            PdfJobStorageService.TryDeleteLocalFile(tempB);
+            PdfJobStorageService.TryDeleteLocalFile(outputPath);
+            try { _jobStorage.DeleteStagingAsync(stagingBlobA, ct).GetAwaiter().GetResult(); } catch { }
+            try { _jobStorage.DeleteStagingAsync(stagingBlobB, ct).GetAwaiter().GetResult(); } catch { }
+        }
+    }
+
+    public Task RunFillFormJobAsync(
+        string jobId,
+        string stagingBlob,
+        long inputSize,
+        IReadOnlyDictionary<string, string> values,
+        bool flatten,
+        CancellationToken ct)
+        => RunSingleOutputAsync(jobId, "fillform", stagingBlob, inputSize, "filled.pdf", "application/pdf",
+            "Filling form fields…",
+            path => _fileOps.FillPdfFormFromPath(path, values, flatten),
+            ct);
+
     public Task RunPageNumbersJobAsync(string jobId, string stagingBlob, long inputSize, string format, CancellationToken ct)
         => RunSingleOutputAsync(jobId, "pagenumbers", stagingBlob, inputSize, "numbered.pdf", "application/pdf",
             "Adding page numbers…", path => _fileOps.AddPageNumbersFromPath(path, format: format), ct);

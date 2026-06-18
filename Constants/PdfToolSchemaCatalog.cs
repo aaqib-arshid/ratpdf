@@ -136,6 +136,34 @@ namespace ratpdf.Constants
                 ["Upload PDF.", "View properties.", "Copy JSON export if needed."],
                 Faqs("view PDF metadata", "Inspect title, author, dates, and page count."));
 
+            yield return Schema("crop", "Crop PDF", "/pdf/crop",
+                ["Upload your PDF.", "Set margin trim in points or use inch presets.", "Download the cropped PDF."],
+                Faqs("crop a PDF online", "Removes blank scanner borders and excess white space from every page."));
+
+            yield return Schema("organize", "Organize PDF", "/pdf/organize",
+                ["Upload a PDF.", "Drag pages to reorder or remove unwanted pages.", "Export the organized PDF."],
+                Faqs("organize PDF pages", "Reorder and delete pages in one document without merging separate files."));
+
+            yield return Schema("repairpdf", "Repair PDF", "/pdf/repair",
+                ["Upload a damaged or unreadable PDF.", "We rebuild the document structure.", "Download the repaired PDF."],
+                Faqs("repair a corrupt PDF", "Rebuilds xref tables and page streams when viewers refuse to open the file."));
+
+            yield return Schema("summarizepdf", "AI PDF Summarizer", "/pdf/summarize",
+                ["Upload a text-based PDF.", "Choose brief, standard, or detailed length.", "Read the summary and download JSON."],
+                Faqs("summarize a PDF", "Extracts text and highlights the most important sentences — no account API key required."));
+
+            yield return Schema("pdfa", "PDF/A Converter", "/pdf/pdfa",
+                ["Upload your PDF.", "Choose PDF/A-1b or PDF/A-2b.", "Download the archival PDF and validate if required."],
+                Faqs("convert PDF to PDF/A", "Creates PDF/A output for long-term archiving — validate with veraPDF for certified submissions."));
+
+            yield return Schema("comparepdf", "Compare PDFs", "/pdf/compare",
+                ["Upload original and revised PDFs.", "We extract text from both.", "Review highlighted differences and similarity score."],
+                Faqs("compare two PDFs", "Text diff for digital PDFs — scanned documents need OCR first."));
+
+            yield return Schema("fillform", "Fill PDF Form", "/pdf/fillform",
+                ["Upload a fillable AcroForm PDF.", "Enter values in detected fields.", "Download filled PDF — optionally flatten."],
+                Faqs("fill a PDF form online", "Works with standard AcroForm fields — XFA-only forms may not be supported."));
+
             yield return Schema("exceltopdf", "Excel to PDF", "/pdf/exceltopdf",
                 ["Upload XLSX or XLS.", "Wait for LibreOffice export.", "Download print-ready PDF."],
                 Faqs("convert Excel to PDF", "Preserves sheet layout for finance and reporting."));

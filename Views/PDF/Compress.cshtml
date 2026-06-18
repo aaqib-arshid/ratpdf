@@ -69,8 +69,8 @@
                                 <input class="form-check-input" type="radio" name="compressionLevel"
                                        id="levelExtreme" value="extreme">
                                 <label class="form-check-label" for="levelExtreme">
-                                    <strong>🚀 Extreme Compression</strong><br>
-                                    <span class="text-muted small">Low quality, highest file size reduction (up to 90%)</span>
+                                    <strong>🚀 Strong Compression</strong> <span id="strongProBadge" class="badge bg-warning text-dark d-none">Pro</span><br>
+                                    <span class="text-muted small">Maximum size reduction — best for email and portal limits</span>
                                 </label>
                             </div>
                             <div class="form-check">
@@ -600,6 +600,15 @@
             const hint = document.getElementById('limitHint');
             if (hint) {
                 hint.textContent = `Up to ${compressLimits.maxFiles} PDFs · ${compressLimits.maxFileSizeLabel} per file (4 GB on Pro)`;
+            }
+            const extreme = document.getElementById('levelExtreme');
+            const proBadge = document.getElementById('strongProBadge');
+            if (!access.isPremium && extreme) {
+                extreme.disabled = true;
+                proBadge?.classList.remove('d-none');
+                if (extreme.checked) {
+                    document.getElementById('levelRecommended')?.click();
+                }
             }
         }
         loadCompressLimits();

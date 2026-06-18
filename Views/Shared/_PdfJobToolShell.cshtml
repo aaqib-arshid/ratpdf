@@ -20,6 +20,15 @@
                     </div>
 
                     <div id="fileList" class="mb-3"></div>
+                    @if (ViewData["ShowPdfPasswordField"] as bool? == true)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="pdfPassword">PDF password</label>
+                            <input type="password" id="pdfPassword" name="password" class="form-control"
+                                   placeholder="Enter the PDF password" autocomplete="current-password" required>
+                            <div class="form-text">Enter the password that opens this PDF. We do not crack unknown passwords.</div>
+                        </div>
+                    }
                     @await Html.PartialAsync("_PdfLargeFileNotice")
                     <div id="errorArea" class="alert alert-danger d-none" role="alert"></div>
 

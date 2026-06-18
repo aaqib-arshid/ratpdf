@@ -42,6 +42,15 @@ public partial class Program
             return;
         }
 
+        if (args.Contains("--generate-tools-sitemap", StringComparer.OrdinalIgnoreCase))
+        {
+            var webRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var result = ToolsSitemapFileGenerator.Generate(webRoot);
+            Console.WriteLine($"Generated sitemaptools.xml with {result.UrlCount} URLs.");
+            Console.WriteLine($"  {result.FilePath}");
+            return;
+        }
+
         if (args.Contains("--fix-seo-head", StringComparer.OrdinalIgnoreCase))
         {
             var root = Directory.GetCurrentDirectory();
@@ -221,8 +230,7 @@ public partial class Program
         //{
         //    options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50MB
         //});
-        const long maxUploadBytes = ratpdf.Constants.PdfToolLimits.MaxPremiumFileSizeBytes
-            * ratpdf.Constants.PdfToolLimits.MaxBatchFiles;
+        const long maxUploadBytes = ratpdf.Constants.PdfToolLimits.GlobalMaxUploadRequestBytes;
 
         builder.Services.Configure<FormOptions>(o =>
         {

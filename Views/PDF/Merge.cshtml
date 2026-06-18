@@ -232,12 +232,12 @@
 </div>
 @section Scripts {
     <script>
-        let mergeLimits = { maxFiles: 30, maxSizeBytes: 200 * 1024 * 1024, maxTotalBytes: null, maxTotalBatchLabel: null };
+        let mergeLimits = { maxFiles: 10, maxSizeBytes: 10 * 1024 * 1024, maxTotalBytes: 100 * 1024 * 1024, maxTotalBatchLabel: '100 MB combined' };
 
         async function loadLimits() {
             const access = await PdfToolkit.checkToolAccess('merge');
             mergeLimits = {
-                maxFiles: access.maxBatchFiles || 30,
+                maxFiles: access.maxBatchFiles || 10,
                 maxSizeBytes: access.maxFileSizeBytes || mergeLimits.maxSizeBytes,
                 maxTotalBytes: access.maxTotalBatchBytes || null,
                 maxTotalBatchLabel: access.maxTotalBatchLabel || null,
@@ -245,9 +245,9 @@
             const hint = document.getElementById('limitHint');
             if (hint) {
                 if (access.isPremium && mergeLimits.maxTotalBatchLabel) {
-                    hint.textContent = `2–${mergeLimits.maxFiles} PDFs · up to ${mergeLimits.maxTotalBatchLabel} · ${access.maxFileSizeLabel || '4 GB'} per file`;
+                    hint.textContent = `2–${mergeLimits.maxFiles} PDFs · up to ${mergeLimits.maxTotalBatchLabel} · ${access.maxFileSizeLabel || '100 MB'} per file`;
                 } else {
-                    hint.textContent = `2–${mergeLimits.maxFiles} PDFs · ${access.maxFileSizeLabel || PdfToolkit.fmtBytes(mergeLimits.maxSizeBytes)} per file (Pro: 4 GB combined)`;
+                    hint.textContent = `2–${mergeLimits.maxFiles} PDFs · ${access.maxFileSizeLabel || PdfToolkit.fmtBytes(mergeLimits.maxSizeBytes)} per file · ${mergeLimits.maxTotalBatchLabel || '100 MB combined'} (Pro: up to 40 PDFs, 100 MB each)`;
                 }
             }
         }

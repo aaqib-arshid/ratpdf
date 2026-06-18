@@ -309,6 +309,11 @@
         // Handle file selection
         async function handleFile(file) {
             if (!file) return;
+            const v = await ImageToolkit.validateImageFile(file, 'bgremove');
+            if (!v.ok) {
+                showMessage(v.error, true);
+                return;
+            }
             const url = URL.createObjectURL(file);
             originalPreview.src = url;
             originalPreview.style.display = 'block';

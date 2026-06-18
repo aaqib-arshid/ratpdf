@@ -308,6 +308,34 @@
         }
 
         .cv-box.cv-selected { box-shadow: 0 0 0 2px #6366f1; z-index: 25; }
+        .cv-text-add-inner[contenteditable="true"] { cursor: text; outline: none; }
+
+        .cv-box .cv-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border: 2px solid #6366f1;
+            border-radius: 50%;
+            box-sizing: border-box;
+            display: none;
+            z-index: 30;
+            touch-action: none;
+        }
+
+        .cv-box.cv-selected .cv-handle { display: block; }
+        .cv-handle-nw { left: -6px; top: -6px; cursor: nwse-resize; }
+        .cv-handle-ne { right: -6px; top: -6px; cursor: nesw-resize; }
+        .cv-handle-sw { left: -6px; bottom: -6px; cursor: nesw-resize; }
+        .cv-handle-se { right: -6px; bottom: -6px; cursor: nwse-resize; }
+
+        @@media (max-width: 768px) {
+            .cv-box .cv-handle { width: 20px; height: 20px; }
+            .cv-handle-nw { left: -10px; top: -10px; }
+            .cv-handle-ne { right: -10px; top: -10px; }
+            .cv-handle-sw { left: -10px; bottom: -10px; }
+            .cv-handle-se { right: -10px; bottom: -10px; }
+        }
 
         .cv-draw-preview {
             position: absolute;

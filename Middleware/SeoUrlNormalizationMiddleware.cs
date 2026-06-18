@@ -14,6 +14,7 @@ namespace ratpdf.Middleware
             new(StringComparer.OrdinalIgnoreCase)
             {
                 ["/PDF/Compress"] = "/pdf/compress",
+                ["/PDF/UnlockPdf"] = "/pdf/unlockpdf",
                 ["/pdf/compress/"] = "/pdf/compress",
                 ["/compress-pdf/"] = "/compress-pdf",
                 ["/Account/Login"] = "/account/login",

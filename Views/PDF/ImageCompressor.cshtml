@@ -215,9 +215,8 @@
     <script>
         async function compressImageAction() {
             try {
-                await ImageToolkit.runWithAccess('imagecompress', () => {
-                    compressImage();
-                    return Promise.resolve();
+                await ImageToolkit.runWithAccess('imagecompress', async () => {
+                    await compressImage();
                 });
             } catch (e) {
                 if (!e.paywall) {
@@ -228,7 +227,7 @@
             }
         }
 
-        function compressImage() {
+        async function compressImage() {
             const input = document.getElementById("imageInput");
             const errorBox = document.getElementById("errorBox");
             const outputSection = document.getElementById("outputSection");
@@ -249,6 +248,12 @@
             }
 
             const file = input.files[0];
+            const v = await ImageToolkit.validateImageFile(file, 'imagecompress');
+            if (!v.ok) {
+                errorBox.innerText = v.error;
+                errorBox.classList.remove("d-none");
+                return;
+            }
             originalSize.innerText = (file.size / 1024).toFixed(2) + " KB";
 
             const reader = new FileReader();

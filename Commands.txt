@@ -1,5 +1,6 @@
 dotnet run -- --fix-seo-head
 dotnet run -- --generate-vertical-sitemaps
+dotnet run -- --generate-tools-sitemap
 dotnet run -- --generate-og-images
 python Pdf-Engine/tests/run_golden_tests.py
 taskkill /IM ratpdf.exe /Fh

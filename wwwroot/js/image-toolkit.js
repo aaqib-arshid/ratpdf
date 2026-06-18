@@ -5,10 +5,25 @@ window.ImageToolkit = (function () {
     'use strict';
 
     const PRICING_URL = '/Subscription/Plans?source=image-tools';
+    const DEFAULT_MAX_BYTES = 5 * 1024 * 1024;
+
+    function fmtBytes(b) {
+        if (b < 1024) return b + ' B';
+        if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+        return (b / (1024 * 1024)).toFixed(0) + ' MB';
+    }
 
     async function checkAccess(toolId) {
         const res = await fetch(`/Tools/tool-access?tool=${encodeURIComponent(toolId)}`);
-        if (!res.ok) return { allowed: true, remaining: 3, isPremium: false };
+        if (!res.ok) {
+            return {
+                allowed: true,
+                remaining: 3,
+                isPremium: false,
+                maxFileSizeBytes: DEFAULT_MAX_BYTES,
+                maxFileSizeLabel: '5 MB',
+            };
+        }
         return res.json();
     }
 
@@ -25,6 +40,29 @@ window.ImageToolkit = (function () {
             throw e;
         }
         return access;
+    }
+
+    async function validateImageFile(file, toolId) {
+        const access = await checkAccess(toolId);
+        const maxBytes = access.maxFileSizeBytes || DEFAULT_MAX_BYTES;
+        const label = access.maxFileSizeLabel || fmtBytes(maxBytes);
+        if (!file) return { ok: false, error: 'No file selected.' };
+        if (file.size > maxBytes) {
+            return { ok: false, error: `"${file.name}" exceeds the ${label} limit.` };
+        }
+        return { ok: true };
+    }
+
+    async function validateImageFiles(files, toolId) {
+        const access = await checkAccess(toolId);
+        const maxBytes = access.maxFileSizeBytes || DEFAULT_MAX_BYTES;
+        const label = access.maxFileSizeLabel || fmtBytes(maxBytes);
+        for (const file of files) {
+            if (file.size > maxBytes) {
+                return { ok: false, error: `"${file.name}" exceeds the ${label} limit.` };
+            }
+        }
+        return { ok: true };
     }
 
     async function recordUsage(toolId, count = 1) {
@@ -62,9 +100,12 @@ window.ImageToolkit = (function () {
     return {
         checkAccess,
         ensureAccess,
+        validateImageFile,
+        validateImageFiles,
         recordUsage,
         refreshBadge,
         showPaywall,
         runWithAccess,
+        fmtBytes,
     };
 })();

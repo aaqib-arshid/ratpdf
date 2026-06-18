@@ -107,8 +107,24 @@ namespace ratpdf.Controllers
         public IActionResult PdfToDoc() => View();
         public IActionResult SignText() => View();
         public IActionResult RotateOrRemove() => View();
-        [HttpGet]
-        public IActionResult UnlockPdf() => View();
+        [HttpGet("/pdf/crop")]
+        public IActionResult CropPdf()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/crop");
+            return View();
+        }
+        [HttpGet("/pdf/organize")]
+        public IActionResult OrganizePdf()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/organize");
+            return View();
+        }
+        [HttpGet("/pdf/unlockpdf")]
+        public IActionResult UnlockPdf()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/unlockpdf");
+            return View();
+        }
         [HttpGet]
         public IActionResult FlattenPdf() => View();
         [HttpGet]
@@ -121,6 +137,36 @@ namespace ratpdf.Controllers
         public IActionResult PageNumbers() => View();
         [HttpGet]
         public IActionResult PdfMetadata() => View();
+        [HttpGet("/pdf/repair")]
+        public IActionResult RepairPdf()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/repair");
+            return View();
+        }
+        [HttpGet("/pdf/summarize")]
+        public IActionResult SummarizePdf()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/summarize");
+            return View();
+        }
+        [HttpGet("/pdf/pdfa")]
+        public IActionResult ConvertPdfA()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/pdfa");
+            return View();
+        }
+        [HttpGet("/pdf/compare")]
+        public IActionResult ComparePdf()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/compare");
+            return View();
+        }
+        [HttpGet("/pdf/fillform")]
+        public IActionResult FillPdfForm()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/fillform");
+            return View();
+        }
         public IActionResult PdfToExcel() => View();
         public IActionResult ExcelToPdf() => View();
         public IActionResult PdfToPpt() => View();
@@ -239,6 +285,20 @@ namespace ratpdf.Controllers
                 "less" => CompressionLevel.Less,
                 _ => CompressionLevel.Recommended,
             };
+
+            if (level == CompressionLevel.Extreme)
+            {
+                var compressStatus = await _pdfToolsAccess.GetStatusAsync(PdfToolIds.Compress);
+                if (!compressStatus.IsPremium)
+                {
+                    return StatusCode(402, new
+                    {
+                        error = "Strong compression is a Pro feature. Upgrade for maximum file size reduction.",
+                        paywall = true,
+                    });
+                }
+            }
+
             _jobResultStore.CreateJob(jobId);
             await _pdfToolsAccess.RecordUsageAsync(PdfToolIds.Compress, 1);
 
@@ -357,6 +417,13 @@ namespace ratpdf.Controllers
                     "pagenumbers" => "numbered.pdf",
                     "pdfmetadata" => "metadata.json",
                     "editpdf" => "edited.pdf",
+                    "crop" => "cropped.pdf",
+                    "organize" => "organized.pdf",
+                    "repairpdf" => "repaired.pdf",
+                    "summarizepdf" => "summary.json",
+                    "pdfa" => "pdfa.pdf",
+                    "comparepdf" => "comparison.json",
+                    "fillform" => "filled.pdf",
                     _ => "compressed.pdf",
                 };
                 return File(stream, mime, name, enableRangeProcessing: true);
@@ -843,6 +910,68 @@ namespace ratpdf.Controllers
                     jobId, stagingBlob, file.Length, pageNumber, ct));
         }
 
+        [HttpPost("/pdf/crop")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> CropPdf(
+            IFormFile file,
+            float marginTop = 36,
+            float marginRight = 36,
+            float marginBottom = 36,
+            float marginLeft = 36)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file },
+                PdfToolIds.Crop,
+                "PDF",
+                ".pdf");
+            if (validation.Error != null)
+                return validation.Error;
+
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+
+            return await QueueItextJobAsync(jobId, PdfToolIds.Crop, "crop",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunCropJobAsync(
+                    jobId, stagingBlob, file.Length, marginTop, marginRight, marginBottom, marginLeft, ct));
+        }
+
+        [HttpPost("/pdf/organize")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> OrganizePdf(IFormFile file, string pageOrder)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file },
+                PdfToolIds.Organize,
+                "PDF",
+                ".pdf");
+            if (validation.Error != null)
+                return validation.Error;
+
+            if (string.IsNullOrWhiteSpace(pageOrder))
+                return BadRequest(new { error = "Page order is required." });
+
+            var order = pageOrder.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Select(s => int.TryParse(s, out var n) ? n : -1)
+                .Where(n => n >= 0)
+                .ToList();
+
+            if (order.Count == 0)
+                return BadRequest(new { error = "Invalid page order." });
+
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+
+            return await QueueItextJobAsync(jobId, PdfToolIds.Organize, "organize",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunOrganizeJobAsync(
+                    jobId, stagingBlob, file.Length, order, ct));
+        }
+
         [HttpPost]
         [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
@@ -991,6 +1120,157 @@ namespace ratpdf.Controllers
                 async (svc, ct) => await svc.RunMetadataJobAsync(jobId, stagingBlob, file.Length, ct));
         }
 
+        [HttpPost("/pdf/repair")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> RepairPdf(IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.RepairPdf, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.RepairPdf, "repairpdf",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunRepairJobAsync(jobId, stagingBlob, file.Length, ct));
+        }
+
+        [HttpPost("/pdf/summarize")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> SummarizePdf(IFormFile file, string length = "standard")
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.SummarizePdf, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.SummarizePdf, 1);
+            var maxPages = access.IsPremium ? 200 : 50;
+            var sentences = length?.ToLowerInvariant() switch
+            {
+                "brief" => 8,
+                "detailed" => 25,
+                _ => 15,
+            };
+
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.SummarizePdf, "summarizepdf",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunSummarizeJobAsync(
+                    jobId, stagingBlob, file.Length, sentences, maxPages, ct));
+        }
+
+        [HttpPost("/pdf/pdfa")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> ConvertPdfA(IFormFile file, string level = "1b")
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.PdfA, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+
+            var access = await _pdfToolsAccess.CheckAccessAsync(PdfToolIds.PdfA, 1);
+            if (!access.IsPremium && level.StartsWith("2", StringComparison.OrdinalIgnoreCase))
+                return StatusCode(402, new { error = "PDF/A-2b conversion is a Pro feature.", paywall = true });
+
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            var pdfaLevel = level.StartsWith("2", StringComparison.OrdinalIgnoreCase) ? "2b" : "1b";
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.PdfA, "pdfa",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunPdfAJobAsync(jobId, stagingBlob, file.Length, pdfaLevel, ct));
+        }
+
+        [HttpPost("/pdf/compare")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> ComparePdf(IFormFile fileA, IFormFile fileB)
+        {
+            if (fileA == null || fileB == null)
+                return BadRequest(new { error = "Please upload both PDF files to compare." });
+
+            var validation = await ValidateJobFilesAsync(
+                new List<IFormFile> { fileA, fileB }, PdfToolIds.ComparePdf, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+
+            var files = validation.Files!;
+            var jobId = Guid.NewGuid().ToString();
+            var blobA = await _jobStorage.StageFormFileAsync(files[0], jobId);
+            var blobB = await _jobStorage.StageFormFileAsync(files[1], jobId);
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.ComparePdf, "comparepdf",
+                new[] { (blobA, files[0].FileName, files[0].Length), (blobB, files[1].FileName, files[1].Length) },
+                async (svc, ct) => await svc.RunComparePdfJobAsync(
+                    jobId, blobA, blobB, files[0].Length, files[1].Length, ct));
+        }
+
+        [HttpPost("/pdf/fillform/scan")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> ScanPdfFormFields(IFormFile file)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.FillForm, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+
+            var tempPath = PdfTempPaths.NewOutput(".pdf");
+            try
+            {
+                await using (var fs = System.IO.File.Create(tempPath))
+                    await file.CopyToAsync(fs);
+
+                var fields = _fileOps.ListFormFieldsFromPath(tempPath);
+                if (fields.Count == 0)
+                    return BadRequest(new { error = "No fillable form fields found in this PDF." });
+
+                return Ok(new
+                {
+                    fields = fields.Select(f => new { name = f.Name, type = f.Type, value = f.Value }),
+                });
+            }
+            finally
+            {
+                PdfJobStorageService.TryDeleteLocalFile(tempPath);
+            }
+        }
+
+        [HttpPost("/pdf/fillform")]
+        [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
+        public async Task<IActionResult> FillPdfForm(IFormFile file, string fieldsJson, bool flatten = false)
+        {
+            var validation = await ValidateJobFilesAsync(
+                file == null ? null : new List<IFormFile> { file }, PdfToolIds.FillForm, "PDF", ".pdf");
+            if (validation.Error != null) return validation.Error;
+            file = validation.Files![0];
+
+            Dictionary<string, string>? values;
+            try
+            {
+                values = JsonSerializer.Deserialize<Dictionary<string, string>>(fieldsJson ?? "{}");
+            }
+            catch
+            {
+                return BadRequest(new { error = "Invalid form field data." });
+            }
+
+            if (values == null || values.Count == 0)
+                return BadRequest(new { error = "Enter at least one field value." });
+
+            var jobId = Guid.NewGuid().ToString();
+            var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
+            var fieldValues = values;
+            var doFlatten = flatten;
+            return await QueueExtendedJobAsync(jobId, PdfToolIds.FillForm, "fillform",
+                new[] { (stagingBlob, file.FileName, file.Length) },
+                async (svc, ct) => await svc.RunFillFormJobAsync(
+                    jobId, stagingBlob, file.Length, fieldValues, doFlatten, ct));
+        }
+
         [HttpPost]
         public async Task<IActionResult> ImgToBase64(IFormFile file)
         {
@@ -1041,8 +1321,8 @@ namespace ratpdf.Controllers
         }
 
         [HttpPost("/PDF/Edit/Upload")]
-        [RequestSizeLimit(PdfToolLimits.MaxPremiumFileSizeBytes)]
-        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxPremiumFileSizeBytes)]
+        [RequestSizeLimit(PdfToolLimits.EditPdfMaxPremiumFileSizeBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.EditPdfMaxPremiumFileSizeBytes)]
         public async Task<IActionResult> EditUpload(IFormFile file)
         {
             var error = await TryCreateEditSessionAsync(file);
@@ -1135,7 +1415,7 @@ namespace ratpdf.Controllers
         }
 
         [HttpPost("/PDF/Edit/Asset")]
-        [RequestSizeLimit(10 * 1024 * 1024)]
+        [RequestSizeLimit(PdfToolLimits.ImageMaxFileSizeBytes)]
         public async Task<IActionResult> EditUploadAsset([FromForm] string sessionId, IFormFile file)
         {
             if (string.IsNullOrEmpty(sessionId) || file == null || file.Length == 0)
@@ -1162,7 +1442,7 @@ namespace ratpdf.Controllers
             if (!allowed.Any(e => ext.Equals(e, StringComparison.OrdinalIgnoreCase)))
                 return BadRequest(new { error = "Only PNG, JPG, WebP, or GIF images are supported." });
 
-            if (file.Length > 5 * 1024 * 1024)
+            if (file.Length > PdfToolLimits.ImageMaxFileSizeBytes)
                 return BadRequest(new { error = "Image must be under 5 MB." });
 
             var assetId = Guid.NewGuid().ToString("N");
@@ -1275,8 +1555,8 @@ namespace ratpdf.Controllers
         }
 
         [HttpPost]
-        [RequestSizeLimit(PdfToolLimits.MaxFileSizeBytes)]
-        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxFileSizeBytes)]
+        [RequestSizeLimit(PdfToolLimits.EditPdfMaxPremiumFileSizeBytes)]
+        [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.EditPdfMaxPremiumFileSizeBytes)]
         public async Task<IActionResult> UploadPdf(IFormFile file)
         {
             var error = await TryCreateEditSessionAsync(file);
@@ -1420,7 +1700,7 @@ namespace ratpdf.Controllers
                 {
                     return new JobFileValidation(null, BadRequest(new
                     {
-                        error = $"Combined file size must be under {limits.MaxTotalBatchLabel ?? "4 GB"} for Merge PDF on Pro.",
+                        error = $"Combined file size must be under {limits.MaxTotalBatchLabel ?? "the plan limit"}.",
                     }));
                 }
             }

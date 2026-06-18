@@ -1,0 +1,93 @@
+@using ratpdf.Constants
+@{
+    ViewData["Title"] = "Crop PDF Online Free — Trim Margins & Pages | RatPDF";
+    ViewData["Description"] = "Crop PDF online free. Remove white margins from every page. Secure upload, auto-delete, 3 free uses per day.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/crop");
+    ViewData["PdfToolId"] = "crop";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-4 p-md-5" style="max-width: 640px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+            <img src="~/images/ratpdf-logo.png" alt="Rat PDF" height="60" class="mb-3" />
+            <h1 class="fw-bold mb-2">Crop PDF</h1>
+            <p class="text-muted mb-2">Trim white margins from every page — great for scans and print-ready exports.</p>
+            @await Html.PartialAsync("_PdfToolUsageBadge")
+            @await Html.PartialAsync("_PdfToolTrustPills")
+
+            <form asp-action="CropPdf" asp-controller="PDF" method="post" enctype="multipart/form-data" id="cropForm" data-pdf-tool="crop">
+                <div id="dropZone" class="border border-dashed rounded p-4 mb-3 text-center" style="cursor:pointer;background:#f8f9fa;">
+                    <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
+                    <p class="mb-0 text-muted">Drag &amp; drop PDF or click to select</p>
+                    <input type="file" name="file" id="fileInput" class="d-none" accept="application/pdf" />
+                </div>
+                @await Html.PartialAsync("_PdfFilePreviewCard")
+
+                <div class="text-start mb-3">
+                    <label class="form-label fw-semibold">Margins to remove (points — 72 pt = 1 inch)</label>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-3">
+                            <label class="form-label small text-muted">Top</label>
+                            <input type="number" name="marginTop" id="marginTop" class="form-control" value="36" min="0" step="1" />
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label small text-muted">Right</label>
+                            <input type="number" name="marginRight" id="marginRight" class="form-control" value="36" min="0" step="1" />
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label small text-muted">Bottom</label>
+                            <input type="number" name="marginBottom" id="marginBottom" class="form-control" value="36" min="0" step="1" />
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label small text-muted">Left</label>
+                            <input type="number" name="marginLeft" id="marginLeft" class="form-control" value="36" min="0" step="1" />
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary preset-margin" data-pt="18">¼ inch</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary preset-margin" data-pt="36">½ inch</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary preset-margin" data-pt="72">1 inch</button>
+                    </div>
+                </div>
+
+                <div id="errorArea" class="alert alert-danger d-none text-start"></div>
+                @await Html.PartialAsync("_PdfProgressBar")
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-crop me-2"></i>Crop PDF
+                </button>
+            </form>
+            @await Html.PartialAsync("_PdfToolTrustFooter")
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+
+<div class="container py-5">
+    <h2 class="fw-bold">How to crop a PDF online</h2>
+    <ol>
+        <li>Upload your PDF.</li>
+        <li>Set how many points to trim from each edge (use presets for common margins).</li>
+        <li>Click <strong>Crop PDF</strong> and download the trimmed file.</li>
+    </ol>
+    <h2 class="fw-bold mt-4">When to crop PDF pages</h2>
+    <p>Cropping removes blank scanner borders, excess white space around slides, and uneven margins before email or portal upload. It is not the same as resizing — crop changes the visible page area.</p>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.preset-margin').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pt = btn.getAttribute('data-pt');
+                ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = pt;
+                });
+            });
+        });
+
+        document.getElementById('cropForm')?.addEventListener('submit', e => {
+            e.preventDefault();
+            submitWithLoader('cropForm', 'Cropping PDF…', 'cropped.pdf');
+        });
+    </script>
+}

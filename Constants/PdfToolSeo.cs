@@ -38,6 +38,13 @@ namespace ratpdf.Constants
             ("OCR PDF", "/pdf/ocrpdf", "ocr pdf searchable"),
             ("Page Numbers", "/pdf/pagenumbers", "add page numbers pdf"),
             ("PDF Metadata", "/pdf/pdfmetadata", "pdf metadata viewer"),
+            ("Crop PDF", "/pdf/crop", "crop pdf online"),
+            ("Organize PDF", "/pdf/organize", "organize pdf online"),
+            ("Repair PDF", "/pdf/repair", "repair pdf online"),
+            ("AI PDF Summarizer", "/pdf/summarize", "pdf summarizer ai"),
+            ("PDF/A Converter", "/pdf/pdfa", "convert pdf to pdfa"),
+            ("Compare PDFs", "/pdf/compare", "compare pdf online"),
+            ("Fill PDF Form", "/pdf/fillform", "fill pdf form online"),
         ];
 
         /// <summary>Number of core PDF tools in <see cref="AllTools"/> (display as e.g. "22+").</summary>

@@ -331,10 +331,15 @@
             }
             
 
-            function handleFile(file) {
+            async function handleFile(file) {
                 if (!file) return;
                 if (!file.type.startsWith('image/')) {
                     showMessage('Please select an image file.', true);
+                    return;
+                }
+                const v = await ImageToolkit.validateImageFile(file, 'imageformatconverter');
+                if (!v.ok) {
+                    showMessage(v.error, true);
                     return;
                 }
                 currentFile = file;

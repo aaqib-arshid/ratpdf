@@ -417,12 +417,18 @@
             function handleFiles(files) {
                 const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
                 if (imageFiles.length === 0) return;
+                ImageToolkit.validateImageFiles(imageFiles, 'bulkimagecompress').then(v => {
+                    if (!v.ok) {
+                        showMessage(v.error, true);
+                        return;
+                    }
                 selectedFiles = imageFiles;
                 compressedResults = [];
                 updateFileCount();
                 renderImageList();
                 compressBtn.disabled = false;
                 downloadZipBtn.disabled = true;
+                });
             }
             
             dropZone.addEventListener('click', () => fileInput.click());

@@ -1,0 +1,264 @@
+@using ratpdf.Constants
+@{
+    ViewData["Title"] = "Organize PDF Online Free — Reorder & Delete Pages | RatPDF";
+    ViewData["Description"] = "Organize PDF pages online. Drag to reorder, delete unwanted pages, download a new PDF. Free, secure, no signup.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/organize");
+    ViewData["PdfToolId"] = "organize";
+}
+
+@section Head {
+    <style>
+        .org-page-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 420px; overflow-y: auto; }
+        .org-page-item {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 8px;
+            background: #fff; cursor: grab; user-select: none;
+            touch-action: none; transition: box-shadow 0.15s ease;
+        }
+        .org-page-item:active { cursor: grabbing; }
+        .org-page-item.org-drag-over { box-shadow: 0 0 0 2px #6366f1; }
+        .org-page-item.org-dragging { opacity: 0.45; }
+        .org-drag-handle { color: #6c757d; padding: 0.25rem; cursor: grab; flex-shrink: 0; }
+        .org-thumb {
+            width: 48px; height: 62px; object-fit: contain;
+            border: 1px solid #eee; border-radius: 4px; background: #f8f9fa;
+            pointer-events: none;
+        }
+    </style>
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-4 p-md-5" style="max-width: 720px; width: 100%; border-radius: 15px;">
+        <div class="card-body text-center">
+            <img src="~/images/ratpdf-logo.png" alt="Rat PDF" height="60" class="mb-3" />
+            <h1 class="fw-bold mb-2">Organize PDF</h1>
+            <p class="text-muted mb-2">Reorder pages with drag-and-drop, remove pages you do not need, then export.</p>
+            @await Html.PartialAsync("_PdfToolUsageBadge")
+            @await Html.PartialAsync("_PdfToolTrustPills")
+
+            <div id="uploadStep">
+                <div id="dropZone" class="border border-dashed rounded p-4 mb-3 text-center" style="cursor:pointer;background:#f8f9fa;">
+                    <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
+                    <p class="mb-0 text-muted">Drag &amp; drop a PDF to organize pages</p>
+                    <input type="file" id="fileInput" class="d-none" accept="application/pdf" />
+                </div>
+            </div>
+
+            <form asp-action="OrganizePdf" asp-controller="PDF" method="post" enctype="multipart/form-data" id="organizeForm" class="d-none">
+                <input type="file" name="file" id="hiddenFileInput" class="d-none" />
+                <input type="hidden" name="pageOrder" id="pageOrderInput" />
+
+                <p class="text-muted small text-start mb-2">Drag rows to reorder. Click <i class="bi bi-x-lg"></i> to remove a page.</p>
+                <div id="pageList" class="org-page-list mb-3"></div>
+
+                <div id="errorArea" class="alert alert-danger d-none text-start"></div>
+                @await Html.PartialAsync("_PdfProgressBar")
+                <button type="submit" class="btn btn-primary btn-lg w-100" id="organizeBtn">
+                    <i class="bi bi-layout-text-sidebar-reverse me-2"></i>Export organized PDF
+                </button>
+                <button type="button" class="btn btn-link btn-sm mt-2" id="resetBtn">Choose another file</button>
+            </form>
+            @await Html.PartialAsync("_PdfToolTrustFooter")
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+
+<div class="container py-5">
+    <h2 class="fw-bold">Organize PDF vs merge PDF</h2>
+    <p><strong>Organize</strong> reorders or deletes pages inside one document. <strong><a href="/pdf/merge">Merge PDF</a></strong> combines multiple separate PDF files. Use organize when you already have one file but need a different page sequence.</p>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        (function () {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const hiddenFileInput = document.getElementById('hiddenFileInput');
+            const uploadStep = document.getElementById('uploadStep');
+            const organizeForm = document.getElementById('organizeForm');
+            const pageList = document.getElementById('pageList');
+            const pageOrderInput = document.getElementById('pageOrderInput');
+            const organizeBtn = document.getElementById('organizeBtn');
+            const resetBtn = document.getElementById('resetBtn');
+
+            let pages = [];
+            let dragEl = null;
+
+            function syncPageOrder() {
+                pageOrderInput.value = pages.map(p => p.srcIndex).join(',');
+            }
+
+            function syncPagesFromDom() {
+                pages = [...pageList.querySelectorAll('.org-page-item')].map(row => ({
+                    srcIndex: parseInt(row.dataset.srcIndex, 10),
+                    thumb: row.querySelector('.org-thumb')?.src || '',
+                }));
+                syncPageOrder();
+            }
+
+            function enableExport() {
+                if (organizeBtn) organizeBtn.disabled = pages.length === 0;
+            }
+
+            function renderList() {
+                pageList.innerHTML = '';
+                pages.forEach(p => {
+                    const row = document.createElement('div');
+                    row.className = 'org-page-item';
+                    row.draggable = true;
+                    row.dataset.srcIndex = String(p.srcIndex);
+                    row.innerHTML = `
+                        <span class="org-drag-handle" title="Drag to reorder"><i class="bi bi-grip-vertical"></i></span>
+                        <img class="org-thumb" src="${p.thumb}" alt="Page ${p.srcIndex + 1}" draggable="false" />
+                        <span class="flex-grow-1 text-start">Page ${p.srcIndex + 1}</span>
+                        <button type="button" class="btn btn-sm btn-outline-danger org-remove-btn" title="Remove page"><i class="bi bi-x-lg"></i></button>`;
+                    pageList.appendChild(row);
+                });
+                syncPageOrder();
+                enableExport();
+            }
+
+            // Single delegated DnD — move DOM only; never re-render during drag
+            pageList.addEventListener('dragstart', e => {
+                if (e.target.closest('.org-remove-btn')) {
+                    e.preventDefault();
+                    return;
+                }
+                const row = e.target.closest('.org-page-item');
+                if (!row) return;
+                dragEl = row;
+                row.classList.add('org-dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', row.dataset.srcIndex);
+            });
+
+            pageList.addEventListener('dragend', () => {
+                if (dragEl) dragEl.classList.remove('org-dragging');
+                pageList.querySelectorAll('.org-drag-over').forEach(el => el.classList.remove('org-drag-over'));
+                dragEl = null;
+                syncPagesFromDom();
+            });
+
+            pageList.addEventListener('dragover', e => {
+                e.preventDefault();
+                if (!dragEl) return;
+                const target = e.target.closest('.org-page-item');
+                if (!target || target === dragEl) return;
+
+                pageList.querySelectorAll('.org-drag-over').forEach(el => {
+                    if (el !== target) el.classList.remove('org-drag-over');
+                });
+                target.classList.add('org-drag-over');
+
+                const rect = target.getBoundingClientRect();
+                const before = e.clientY < rect.top + rect.height / 2;
+                if (before) {
+                    if (dragEl.nextSibling !== target) pageList.insertBefore(dragEl, target);
+                } else {
+                    const after = target.nextSibling;
+                    if (dragEl !== after) pageList.insertBefore(dragEl, after);
+                }
+            });
+
+            pageList.addEventListener('dragleave', e => {
+                const row = e.target.closest('.org-page-item');
+                if (row) row.classList.remove('org-drag-over');
+            });
+
+            pageList.addEventListener('drop', e => e.preventDefault());
+
+            pageList.addEventListener('click', e => {
+                const btn = e.target.closest('.org-remove-btn');
+                if (!btn) return;
+                const row = btn.closest('.org-page-item');
+                if (!row) return;
+                if (pages.length <= 1) {
+                    alert('Keep at least one page.');
+                    return;
+                }
+                row.remove();
+                syncPagesFromDom();
+                enableExport();
+            });
+
+            async function loadPdf(file) {
+                const access = await PdfToolkit.checkToolAccess('organize');
+                const v = PdfToolkit.validatePdfFiles([file], {
+                    maxFiles: 1,
+                    multiple: false,
+                    maxSizeBytes: access.maxFileSizeBytes || (200 * 1024 * 1024),
+                });
+                if (!v.ok) {
+                    alert(v.error);
+                    return;
+                }
+
+                const buf = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+                const count = pdf.numPages;
+                if (count > 150) {
+                    alert('This tool supports up to 150 pages for preview. Split large files first.');
+                    return;
+                }
+
+                pages = [];
+                for (let i = 1; i <= count; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale: 0.2 });
+                    const canvas = document.createElement('canvas');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+                    pages.push({ srcIndex: i - 1, thumb: canvas.toDataURL('image/jpeg', 0.7) });
+                }
+
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                hiddenFileInput.files = dt.files;
+
+                uploadStep.classList.add('d-none');
+                organizeForm.classList.remove('d-none');
+                renderList();
+            }
+
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('border-primary'); });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-primary'));
+            dropZone.addEventListener('drop', e => {
+                e.preventDefault();
+                dropZone.classList.remove('border-primary');
+                const f = e.dataTransfer.files?.[0];
+                if (f) loadPdf(f);
+            });
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files?.[0]) loadPdf(fileInput.files[0]);
+            });
+
+            resetBtn.addEventListener('click', () => {
+                pages = [];
+                fileInput.value = '';
+                hiddenFileInput.value = '';
+                pageList.innerHTML = '';
+                pageOrderInput.value = '';
+                organizeForm.classList.add('d-none');
+                uploadStep.classList.remove('d-none');
+                if (organizeBtn) organizeBtn.disabled = true;
+            });
+
+            organizeForm.addEventListener('submit', e => {
+                e.preventDefault();
+                if (!pages.length || !hiddenFileInput.files?.length) return;
+                syncPageOrder();
+                submitWithLoader('organizeForm', 'Organizing pages…', 'organized.pdf');
+            });
+
+            // Not using data-pdf-tool — avoid global submit-disable on empty hidden input
+            if (organizeBtn) organizeBtn.disabled = true;
+        })();
+    </script>
+}

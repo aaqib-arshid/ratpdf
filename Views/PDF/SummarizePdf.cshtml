@@ -1,0 +1,262 @@
+@using ratpdf.Constants
+@{
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.SummarizePdf, ViewData);
+    ViewData["ToolTitle"] = "AI PDF Summarizer";
+    ViewData["ToolSubtitle"] = "Get a quick summary of any text-based PDF";
+    ViewData["AcceptHint"] = "PDF with selectable text (up to 50 pages free)";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-journal-text";
+    ViewData["BtnLabel"] = "Summarize PDF";
+}
+@await Html.PartialAsync("_PdfToolBreadcrumbs")
+<div class="rp-content-page">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rp-tool-hero" id="rpToolHero">
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-3 text-center text-md-start">
+                        @await Html.PartialAsync("_PdfToolTrustPills")
+                        <h1 class="h2 fw-bold mb-1">@ViewData["ToolTitle"]</h1>
+                        <p class="text-muted mb-2">@ViewData["ToolSubtitle"]</p>
+                        @await Html.PartialAsync("_PdfToolUsageBadge")
+                    </div>
+
+                    <div id="dropZone" class="rp-dropzone border border-2 border-dashed rounded-4 p-4 p-md-5 text-center mb-3">
+                        <i class="bi bi-cloud-arrow-up display-5 text-primary"></i>
+                        <p class="mb-1 fw-semibold mt-2">Drag &amp; drop here or tap to browse</p>
+                        <p id="limitHint" class="text-muted small mb-0">@ViewData["AcceptHint"]</p>
+                        <input type="file" id="fileInput" class="d-none" accept="@ViewData["AcceptAttr"]">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="lengthSelect" class="form-label fw-semibold small text-muted">Summary length</label>
+                        <select id="lengthSelect" class="form-select">
+                            <option value="brief">Brief (about 8 key points)</option>
+                            <option value="standard" selected>Standard (about 15 sentences)</option>
+                            <option value="detailed">Detailed (about 25 sentences)</option>
+                        </select>
+                    </div>
+
+                    <div id="fileList" class="mb-3"></div>
+                    @await Html.PartialAsync("_PdfLargeFileNotice")
+                    <div id="errorArea" class="alert alert-danger d-none" role="alert"></div>
+
+                    <div id="progressArea" class="mb-3" style="display:none;">
+                        <div class="d-flex justify-content-between small text-muted mb-1">
+                            <span id="progressMsg">Processing…</span>
+                            <span id="progressPct">0%</span>
+                        </div>
+                        <div class="progress" style="height:10px;border-radius:6px;">
+                            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width:0%;background:linear-gradient(90deg,#4a90e2,#667eea);"></div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="convertBtn" class="btn btn-primary btn-lg w-100 py-3 fw-semibold rp-tool-primary-btn" disabled>
+                        <i class="bi @ViewData["BtnIcon"] me-2"></i>@ViewData["BtnLabel"]
+                    </button>
+                    @await Html.PartialAsync("_PdfSubmitHint")
+                    @await Html.PartialAsync("_PdfToolTrustFooter")
+                </div>
+            </div>
+
+            <div id="summaryCard" class="card shadow-sm border-0 mt-4 d-none">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">Summary</h2>
+                            <p id="summaryMeta" class="text-muted small mb-0"></p>
+                        </div>
+                        <button type="button" id="copySummaryBtn" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-clipboard me-1"></i>Copy
+                        </button>
+                    </div>
+                    <div id="summaryOutput" class="rp-summary-output border rounded-3 p-3 bg-light"></div>
+                    <a id="downloadSummaryLink" href="#" class="btn btn-link btn-sm px-0 mt-2 d-none" download="summary.json">Download JSON</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+@section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<style>
+.rp-summary-output { line-height: 1.65; white-space: pre-wrap; max-height: 28rem; overflow-y: auto; }
+</style>
+<script>
+(function () {
+    const cfg = {
+        toolId: 'summarizepdf',
+        convertUrl: '/pdf/summarize',
+        extensions: ['.pdf'],
+        typeLabel: 'PDF',
+        multiple: false,
+        dropZoneId: 'dropZone',
+        fileInputId: 'fileInput',
+        fileListId: 'fileList',
+        convertBtnId: 'convertBtn',
+        errorAreaId: 'errorArea',
+        progressAreaId: 'progressArea',
+        progressBarId: 'progressBar',
+        progressMsgId: 'progressMsg',
+        progressPctId: 'progressPct',
+        badgeId: 'usageBadge',
+        limitHintId: 'limitHint',
+    };
+
+    const dropZone = document.getElementById(cfg.dropZoneId);
+    const fileInput = document.getElementById(cfg.fileInputId);
+    const fileList = document.getElementById(cfg.fileListId);
+    const convertBtn = document.getElementById(cfg.convertBtnId);
+    const errorArea = document.getElementById(cfg.errorAreaId);
+    const lengthSelect = document.getElementById('lengthSelect');
+    const summaryCard = document.getElementById('summaryCard');
+    const summaryOutput = document.getElementById('summaryOutput');
+    const summaryMeta = document.getElementById('summaryMeta');
+    const copyBtn = document.getElementById('copySummaryBtn');
+    const downloadLink = document.getElementById('downloadSummaryLink');
+    const progressElements = {
+        area: document.getElementById(cfg.progressAreaId),
+        bar: document.getElementById(cfg.progressBarId),
+        msg: document.getElementById(cfg.progressMsgId),
+        pct: document.getElementById(cfg.progressPctId),
+    };
+
+    let selectedFiles = [];
+    let lastSummaryText = '';
+
+    function showError(msg) {
+        if (!errorArea) return;
+        errorArea.textContent = PdfToolkit.sanitizeErrorMessage(msg);
+        errorArea.classList.remove('d-none');
+    }
+    function clearError() { errorArea?.classList.add('d-none'); }
+
+    function renderFileList() {
+        if (!fileList) return;
+        if (!selectedFiles.length) {
+            PdfToolkit.renderPdfFilePreview(fileList, [], {});
+            if (convertBtn) convertBtn.disabled = true;
+            PdfToolkit.updateSubmitHint(false);
+            PdfToolkit.syncStickyCtaState();
+            return;
+        }
+        PdfToolkit.renderPdfFilePreview(fileList, selectedFiles, {
+            onClear: () => {
+                selectedFiles = [];
+                PdfToolkit.assignFilesToInput(fileInput, []);
+                renderFileList();
+                PdfToolkit.showLargeFileNotice([]);
+                clearError();
+            },
+        });
+        if (convertBtn) convertBtn.disabled = false;
+        PdfToolkit.updateSubmitHint(true);
+        PdfToolkit.syncStickyCtaState();
+    }
+
+    async function init() {
+        const access = await PdfToolkit.checkToolAccess(cfg.toolId);
+        const limits = {
+            maxFiles: 1,
+            maxSizeBytes: access.maxFileSizeBytes,
+            extensions: cfg.extensions,
+            typeLabel: cfg.typeLabel,
+            multiple: false,
+        };
+        const hint = document.getElementById(cfg.limitHintId);
+        if (hint) {
+            const pages = access.isPremium ? '200 pages on Pro' : '50 pages on free tier';
+            hint.textContent = `${access.maxFileSizeLabel || '200 MB'} per file · ${pages}`;
+        }
+        const badge = document.getElementById(cfg.badgeId);
+        if (badge) PdfToolkit.setUsageBadgeEl(badge, access);
+
+        function setFiles(fileListObj) {
+            const v = PdfToolkit.validateFiles(fileListObj, limits);
+            if (!v.ok) { showError(v.error); return; }
+            clearError();
+            selectedFiles = v.files;
+            renderFileList();
+            PdfToolkit.showLargeFileNotice(selectedFiles);
+        }
+
+        dropZone?.addEventListener('click', () => fileInput?.click());
+        dropZone?.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.background = '#eef2ff'; });
+        dropZone?.addEventListener('dragleave', () => { dropZone.style.background = '#f8fafc'; });
+        dropZone?.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.style.background = '#f8fafc';
+            const dt = e.dataTransfer?.files;
+            if (dt?.length) setFiles(dt);
+        });
+        fileInput?.addEventListener('change', () => setFiles(fileInput.files));
+
+        copyBtn?.addEventListener('click', async () => {
+            if (!lastSummaryText) return;
+            try {
+                await navigator.clipboard.writeText(lastSummaryText);
+                copyBtn.innerHTML = '<i class="bi bi-check2 me-1"></i>Copied';
+                setTimeout(() => { copyBtn.innerHTML = '<i class="bi bi-clipboard me-1"></i>Copy'; }, 2000);
+            } catch {
+                showError('Could not copy to clipboard.');
+            }
+        });
+
+        convertBtn?.addEventListener('click', async () => {
+            if (!selectedFiles.length) return;
+            clearError();
+            convertBtn.disabled = true;
+            summaryCard?.classList.add('d-none');
+
+            const formData = new FormData();
+            formData.append('file', selectedFiles[0]);
+            formData.append('length', lengthSelect?.value || 'standard');
+
+            try {
+                const accepted = await PdfToolkit.runJobFlow({
+                    url: cfg.convertUrl,
+                    formData,
+                    elements: progressElements,
+                    toolId: cfg.toolId,
+                    defaultFileName: 'summary.json',
+                    skipAutoDownload: true,
+                });
+                if (!accepted) return;
+
+                const dlRes = await fetch(accepted.downloadUrl);
+                if (!dlRes.ok) throw new Error('Download failed');
+                const data = await dlRes.json();
+                lastSummaryText = data.summary || '';
+                summaryOutput.textContent = lastSummaryText;
+                const pages = data.pageCount ?? '—';
+                const words = data.wordCount != null ? data.wordCount.toLocaleString() : '—';
+                summaryMeta.textContent = `${pages} pages · ${words} words extracted`;
+                summaryCard?.classList.remove('d-none');
+                summaryCard?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                if (downloadLink) {
+                    downloadLink.href = url;
+                    downloadLink.classList.remove('d-none');
+                }
+
+                const s = await PdfToolkit.checkToolAccess(cfg.toolId);
+                if (badge) PdfToolkit.setUsageBadgeEl(badge, s);
+            } catch (err) {
+                if (err.paywall) PdfToolkit.showPaywall(err.message);
+                else showError(err.message || 'Summarization failed.');
+            } finally {
+                convertBtn.disabled = !selectedFiles.length;
+            }
+        });
+    }
+
+    init();
+})();
+</script>
+}

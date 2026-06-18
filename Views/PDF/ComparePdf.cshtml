@@ -1,0 +1,219 @@
+@using ratpdf.Constants
+@{
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.ComparePdf, ViewData);
+    ViewData["ToolTitle"] = "Compare PDFs";
+    ViewData["ToolSubtitle"] = "Diff text between two PDF versions";
+}
+@section Head {
+    <script src="https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.js"></script>
+    <style>
+        .rp-compare-slot { min-height: 120px; }
+        .diff-added { background: #d4edda; color: #155724; }
+        .diff-removed { background: #f8d7da; color: #721c24; }
+        .rp-diff-view { font-family: 'SF Mono', Consolas, monospace; font-size: 0.85rem; line-height: 1.55;
+            white-space: pre-wrap; max-height: 420px; overflow-y: auto; background: #f8f9fa; border-radius: 12px; padding: 1rem; }
+    </style>
+}
+@await Html.PartialAsync("_PdfToolBreadcrumbs")
+<div class="rp-content-page">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 rp-tool-hero">
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-3 text-center text-md-start">
+                        @await Html.PartialAsync("_PdfToolTrustPills")
+                        <h1 class="h2 fw-bold mb-1">@ViewData["ToolTitle"]</h1>
+                        <p class="text-muted mb-2">@ViewData["ToolSubtitle"]</p>
+                        @await Html.PartialAsync("_PdfToolUsageBadge")
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Original PDF</label>
+                            <div id="dropZoneA" class="rp-dropzone rp-compare-slot border border-2 border-dashed rounded-4 p-4 text-center">
+                                <i class="bi bi-file-earmark-pdf text-primary fs-3"></i>
+                                <p class="mb-0 small mt-2" id="labelA">Drop or click to browse</p>
+                                <input type="file" id="fileInputA" class="d-none" accept=".pdf,application/pdf">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Revised PDF</label>
+                            <div id="dropZoneB" class="rp-dropzone rp-compare-slot border border-2 border-dashed rounded-4 p-4 text-center">
+                                <i class="bi bi-file-earmark-diff text-primary fs-3"></i>
+                                <p class="mb-0 small mt-2" id="labelB">Drop or click to browse</p>
+                                <input type="file" id="fileInputB" class="d-none" accept=".pdf,application/pdf">
+                            </div>
+                        </div>
+                    </div>
+
+                    <p id="limitHint" class="text-muted small mb-3"></p>
+                    <div id="errorArea" class="alert alert-danger d-none" role="alert"></div>
+
+                    <div id="progressArea" class="mb-3" style="display:none;">
+                        <div class="d-flex justify-content-between small text-muted mb-1">
+                            <span id="progressMsg">Processing…</span>
+                            <span id="progressPct">0%</span>
+                        </div>
+                        <div class="progress" style="height:10px;border-radius:6px;">
+                            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width:0%;background:linear-gradient(90deg,#4a90e2,#667eea);"></div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="compareBtn" class="btn btn-primary btn-lg w-100 py-3 fw-semibold" disabled>
+                        <i class="bi bi-intersect me-2"></i>Compare PDFs
+                    </button>
+                    @await Html.PartialAsync("_PdfSubmitHint")
+                    @await Html.PartialAsync("_PdfToolTrustFooter")
+                </div>
+            </div>
+
+            <div id="resultCard" class="card shadow-sm border-0 mt-4 d-none">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-0">Comparison</h2>
+                            <p id="compareMeta" class="text-muted small mb-0"></p>
+                        </div>
+                        <span id="similarityBadge" class="badge bg-primary fs-6 ms-auto"></span>
+                    </div>
+                    <div id="diffView" class="rp-diff-view"></div>
+                    <p id="diffNote" class="text-muted small mt-2 mb-0 d-none"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+@section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+(function () {
+    const toolId = 'comparepdf';
+    let fileA = null, fileB = null;
+    const dropA = document.getElementById('dropZoneA');
+    const dropB = document.getElementById('dropZoneB');
+    const inputA = document.getElementById('fileInputA');
+    const inputB = document.getElementById('fileInputB');
+    const labelA = document.getElementById('labelA');
+    const labelB = document.getElementById('labelB');
+    const compareBtn = document.getElementById('compareBtn');
+    const errorArea = document.getElementById('errorArea');
+    const resultCard = document.getElementById('resultCard');
+    const diffView = document.getElementById('diffView');
+    const compareMeta = document.getElementById('compareMeta');
+    const similarityBadge = document.getElementById('similarityBadge');
+    const diffNote = document.getElementById('diffNote');
+    const progressElements = PdfToolkit.getStandardProgressElements();
+
+    function showError(msg) {
+        errorArea.textContent = PdfToolkit.sanitizeErrorMessage(msg);
+        errorArea.classList.remove('d-none');
+    }
+    function clearError() { errorArea.classList.add('d-none'); }
+
+    function updateBtn() {
+        compareBtn.disabled = !(fileA && fileB);
+    }
+
+    function bindDrop(zone, input, setFile, label) {
+        zone.addEventListener('click', () => input.click());
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.background = '#eef2ff'; });
+        zone.addEventListener('dragleave', () => { zone.style.background = '' });
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.style.background = '';
+            const f = e.dataTransfer?.files?.[0];
+            if (f) pickFile(f, setFile, label);
+        });
+        input.addEventListener('change', () => {
+            const f = input.files?.[0];
+            if (f) pickFile(f, setFile, label);
+        });
+    }
+
+    function pickFile(file, setter, label) {
+        if (!file.name.toLowerCase().endsWith('.pdf')) {
+            showError('Please select PDF files only.');
+            return;
+        }
+        clearError();
+        setter(file);
+        label.textContent = file.name;
+        updateBtn();
+    }
+
+    bindDrop(dropA, inputA, f => { fileA = f; }, labelA);
+    bindDrop(dropB, inputB, f => { fileB = f; }, labelB);
+
+    PdfToolkit.checkToolAccess(toolId).then(access => {
+        const hint = document.getElementById('limitHint');
+        if (hint) hint.textContent = `${access.maxFileSizeLabel || '200 MB'} per file · text-based PDFs work best`;
+        const badge = document.getElementById('usageBadge');
+        if (badge) PdfToolkit.setUsageBadgeEl(badge, access);
+    });
+
+    function renderDiff(textA, textB) {
+        const dmp = new diff_match_patch();
+        const diffs = dmp.diff_main(textA, textB);
+        dmp.diff_cleanupSemantic(diffs);
+        let html = '';
+        for (const [op, data] of diffs) {
+            const esc = data.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            if (op === 1) html += `<span class="diff-added">${esc}</span>`;
+            else if (op === -1) html += `<span class="diff-removed">${esc}</span>`;
+            else html += esc;
+        }
+        diffView.innerHTML = html;
+    }
+
+    compareBtn.addEventListener('click', async () => {
+        if (!fileA || !fileB) return;
+        clearError();
+        compareBtn.disabled = true;
+        resultCard.classList.add('d-none');
+
+        const formData = new FormData();
+        formData.append('fileA', fileA);
+        formData.append('fileB', fileB);
+
+        try {
+            const accepted = await PdfToolkit.runJobFlow({
+                url: '/pdf/compare',
+                formData,
+                elements: progressElements,
+                toolId,
+                defaultFileName: 'comparison.json',
+                skipAutoDownload: true,
+            });
+            if (!accepted) return;
+
+            const res = await fetch(accepted.downloadUrl);
+            if (!res.ok) throw new Error('Could not load comparison result.');
+            const data = await res.json();
+
+            similarityBadge.textContent = `${data.similarityPercent}% similar`;
+            compareMeta.textContent =
+                `Original: ${data.pagesA} pages · ${(data.wordCountA || 0).toLocaleString()} words · ` +
+                `Revised: ${data.pagesB} pages · ${(data.wordCountB || 0).toLocaleString()} words · ` +
+                `+${data.linesAdded} / −${data.linesRemoved} lines`;
+            renderDiff(data.textA || '', data.textB || '');
+            if (data.truncatedDiff) {
+                diffNote.textContent = 'Unified diff truncated for large documents — inline highlight shows full text comparison.';
+                diffNote.classList.remove('d-none');
+            } else {
+                diffNote.classList.add('d-none');
+            }
+            resultCard.classList.remove('d-none');
+            resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } catch (err) {
+            if (err.paywall) PdfToolkit.showPaywall(err.message);
+            else showError(err.message || 'Comparison failed.');
+        } finally {
+            compareBtn.disabled = !(fileA && fileB);
+        }
+    });
+})();
+</script>
+}

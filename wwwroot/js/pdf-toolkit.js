@@ -6,7 +6,7 @@ window.PdfToolkit = (function () {
 
     const DEFAULTS = {
         maxFiles: 3,
-        maxSizeBytes: 50 * 1024 * 1024,
+        maxSizeBytes: 200 * 1024 * 1024,
     };
 
     const LARGE_FILE_BYTES = 10 * 1024 * 1024;
@@ -590,7 +590,7 @@ window.PdfToolkit = (function () {
         };
     }
 
-    async function runJobFlow({ url, formData, statusUrl, downloadUrl, elements, toolId, defaultFileName }) {
+    async function runJobFlow({ url, formData, statusUrl, downloadUrl, elements, toolId, defaultFileName, skipAutoDownload }) {
         if (toolId) {
             const access = await checkToolAccess(toolId);
             if (!access.allowed) {
@@ -617,9 +617,18 @@ window.PdfToolkit = (function () {
         const convertMsg = uploadMsg || 'Converting with high-fidelity engine…';
         setProgress(elements, 45, convertMsg);
         const result = await pollJob(statusUrl || accepted.statusUrl, elements);
+        const resolvedDownloadUrl = downloadUrl || accepted.downloadUrl;
+
+        if (skipAutoDownload) {
+            setProgress(elements, 100, 'Ready');
+            hideProgress(elements);
+            if (toolId) await onToolUseSuccess(toolId);
+            return { ...accepted, ...result, downloadUrl: resolvedDownloadUrl };
+        }
+
         setProgress(elements, 98, 'Downloading…');
 
-        const dlRes = await fetch(downloadUrl || accepted.downloadUrl);
+        const dlRes = await fetch(resolvedDownloadUrl);
         if (!dlRes.ok) throw new Error('Download failed');
         const blob = await dlRes.blob();
 
@@ -917,6 +926,9 @@ window.PdfToolkit = (function () {
         sanitizeErrorMessage,
         getLargeFileMessage,
         showLargeFileNotice,
+        setUsageBadgeEl,
+        updateSubmitHint,
+        syncStickyCtaState,
         LARGE_FILE_MSG,
     };
 })();

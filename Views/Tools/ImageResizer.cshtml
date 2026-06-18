@@ -367,6 +367,11 @@
                     showMessage('Please select an image file.', true);
                     return;
                 }
+                const v = await ImageToolkit.validateImageFile(file, 'imageresizer');
+                if (!v.ok) {
+                    showMessage(v.error, true);
+                    return;
+                }
                 currentFile = file;
                 fileNameSpan.innerText = file.name;
                 const url = URL.createObjectURL(file);
@@ -388,8 +393,8 @@
                 // Set default dimensions in inputs (preserve aspect)
                 widthInput.value = originalWidth;
                 heightInput.value = originalHeight;
-                // Auto-resize preview?
-                performResize();
+                // Auto-render a free preview (no usage consumed).
+                renderPreview();
             }
             
             function updateQualityUI() {
@@ -419,13 +424,10 @@
                 return { width: newWidth, height: newHeight };
             }
             
-            async function performResize() {
+            // Live preview only — FREE, no usage recorded. Runs on every input
+            // change so the user can tweak dimensions without spending uses.
+            async function renderPreview() {
                 if (!currentFile || !originalWidth) return;
-                try {
-                    await ImageToolkit.ensureAccess('imageresizer');
-                } catch (e) {
-                    return;
-                }
                 let reqWidth = parseInt(widthInput.value);
                 let reqHeight = parseInt(heightInput.value);
                 if (isNaN(reqWidth)) reqWidth = originalWidth;
@@ -456,28 +458,46 @@
                     resizedImg.style.display = 'block';
                     resizedPlaceholder.style.display = 'none';
                     resizedDimensionsSpan.innerText = `${newWidth} × ${newHeight} px`;
-                    downloadBtn.disabled = false;
                     resizedImg.onload = () => URL.revokeObjectURL(url);
-                    await ImageToolkit.recordUsage('imageresizer');
-                    await ImageToolkit.refreshBadge('imageresizer');
+                    // Preview is free; downloading requires an explicit metered resize.
+                    downloadBtn.disabled = true;
                 } catch (err) {
                     console.error(err);
                     showMessage('Resize failed: ' + err.message, true);
                 }
             }
+
+            // Explicit, metered action: consumes exactly ONE use, then unlocks download.
+            async function applyResize() {
+                if (!currentFile || !originalWidth) {
+                    showMessage('Please select an image first.', true);
+                    return;
+                }
+                try {
+                    await ImageToolkit.ensureAccess('imageresizer');
+                } catch (e) {
+                    return; // paywall handled inside the toolkit
+                }
+                await renderPreview();
+                if (!resizedBlob) return;
+                downloadBtn.disabled = false;
+                await ImageToolkit.recordUsage('imageresizer');
+                await ImageToolkit.refreshBadge('imageresizer');
+                showMessage('Resized — click Download to save your image.');
+            }
             
             function onDimensionChange() {
-                if (currentFile) performResize();
+                if (currentFile) renderPreview();
             }
             
             function onFormatChange() {
                 updateQualityUI();
-                if (currentFile) performResize();
+                if (currentFile) renderPreview();
             }
             
             function onQualityChange() {
                 qualityValue.innerText = qualitySlider.value + '%';
-                if (currentFile) performResize();
+                if (currentFile) renderPreview();
             }
             
             function setPreset(width, height) {
@@ -487,7 +507,7 @@
                 }
                 widthInput.value = width;
                 heightInput.value = height;
-                performResize();
+                renderPreview();
             }
             
             function downloadResized() {
@@ -548,7 +568,7 @@
             keepAspectCheck.addEventListener('change', onDimensionChange);
             outputFormatSelect.addEventListener('change', onFormatChange);
             qualitySlider.addEventListener('input', onQualityChange);
-            resizeBtn.addEventListener('click', performResize);
+            resizeBtn.addEventListener('click', applyResize);
             downloadBtn.addEventListener('click', downloadResized);
             clearBtn.addEventListener('click', clearAll);
             presetBtns.forEach(btn => {

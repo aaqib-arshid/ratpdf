@@ -151,7 +151,7 @@ namespace ratpdf.Constants
                     ("HTTPS / TLS", "Yes", "Yes"),
                     ("File retention", "Auto-deleted after download", "1–24 hours (vendor policy)"),
                     ("Watermarks", "No within free daily limits", c.Slug == "sejda" ? "Some free tasks watermarked" : "Varies"),
-                    ("Toolkit breadth", "22+ PDF tools + invoice generator", "One primary tool per landing page"),
+                    ("Toolkit breadth", $"{PdfToolSeo.ToolCountLabel} PDF tools + invoice generator", "One primary tool per landing page"),
                     ("Guides & tutorials", $"{ContentLibrary.Guides.Count()} step-by-step guides", "Tutorial sections on major tool pages"),
                 };
                 return new ComparePage(

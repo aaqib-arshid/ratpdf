@@ -161,22 +161,66 @@ namespace ratpdf.Services.PdfTools
         {
             var ctx = _httpContextAccessor.HttpContext;
             var isPremium = ctx != null && await IsPremiumUserAsync(ctx);
-            var perFileMax = isPremium ? PdfToolLimits.MaxPremiumFileSizeBytes : PdfToolLimits.MaxFileSizeBytes;
-            var isMerge = string.Equals(toolId, PdfToolIds.Merge, StringComparison.OrdinalIgnoreCase);
 
+            if (PdfToolLimits.IsImageTool(toolId))
+            {
+                return new PdfToolLimitsDto
+                {
+                    IsPremium = isPremium,
+                    MaxFileSizeBytes = PdfToolLimits.ImageMaxFileSizeBytes,
+                    MaxBatchFiles = 1,
+                    FreeUsesPerDay = PdfToolLimits.FreeUsesPerDay,
+                    MaxFileSizeLabel = FormatBytes(PdfToolLimits.ImageMaxFileSizeBytes),
+                };
+            }
+
+            if (string.Equals(toolId, PdfToolIds.EditPdf, StringComparison.OrdinalIgnoreCase))
+            {
+                var editMax = isPremium
+                    ? PdfToolLimits.EditPdfMaxPremiumFileSizeBytes
+                    : PdfToolLimits.EditPdfMaxFileSizeBytes;
+                return new PdfToolLimitsDto
+                {
+                    IsPremium = isPremium,
+                    MaxFileSizeBytes = editMax,
+                    MaxBatchFiles = 1,
+                    FreeUsesPerDay = PdfToolLimits.FreeUsesPerDay,
+                    MaxFileSizeLabel = FormatBytes(editMax),
+                };
+            }
+
+            var isMerge = string.Equals(toolId, PdfToolIds.Merge, StringComparison.OrdinalIgnoreCase);
+            long perFileMax;
+            int maxBatch;
             long? totalBatchMax = null;
             string? totalBatchLabel = null;
-            if (isMerge && isPremium)
+
+            if (isMerge)
             {
-                totalBatchMax = PdfToolLimits.MergeMaxTotalBatchBytesPremium;
-                totalBatchLabel = "4 GB combined";
+                perFileMax = isPremium
+                    ? PdfToolLimits.MergeMaxPremiumFileSizeBytes
+                    : PdfToolLimits.MergeMaxFileSizeBytes;
+                maxBatch = isPremium
+                    ? PdfToolLimits.MergeMaxBatchFilesPremium
+                    : PdfToolLimits.MergeMaxBatchFiles;
+                totalBatchMax = isPremium
+                    ? PdfToolLimits.MergeMaxTotalBatchBytesPremium
+                    : PdfToolLimits.MergeMaxTotalBatchBytesFree;
+                totalBatchLabel = isPremium ? "4 GB combined" : "100 MB combined";
+            }
+            else
+            {
+                perFileMax = isPremium
+                    ? PdfToolLimits.MaxPremiumFileSizeBytes
+                    : PdfToolLimits.MaxFileSizeBytes;
+                maxBatch = PdfToolLimits.ResolveMaxBatchFiles(toolId);
             }
 
             return new PdfToolLimitsDto
             {
                 IsPremium = isPremium,
                 MaxFileSizeBytes = perFileMax,
-                MaxBatchFiles = PdfToolLimits.ResolveMaxBatchFiles(toolId),
+                MaxBatchFiles = maxBatch,
                 MaxTotalBatchBytes = totalBatchMax,
                 MaxTotalBatchLabel = totalBatchLabel,
                 FreeUsesPerDay = PdfToolLimits.FreeUsesPerDay,

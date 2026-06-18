@@ -1,0 +1,245 @@
+@using ratpdf.Constants
+@{
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.FillForm, ViewData);
+    ViewData["ToolTitle"] = "Fill PDF Form";
+    ViewData["ToolSubtitle"] = "Complete AcroForm fields online and download";
+}
+@await Html.PartialAsync("_PdfToolBreadcrumbs")
+<div class="rp-content-page">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rp-tool-hero">
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-3 text-center text-md-start">
+                        @await Html.PartialAsync("_PdfToolTrustPills")
+                        <h1 class="h2 fw-bold mb-1">@ViewData["ToolTitle"]</h1>
+                        <p class="text-muted mb-2">@ViewData["ToolSubtitle"]</p>
+                        @await Html.PartialAsync("_PdfToolUsageBadge")
+                    </div>
+
+                    <div id="dropZone" class="rp-dropzone border border-2 border-dashed rounded-4 p-4 p-md-5 text-center mb-3">
+                        <i class="bi bi-ui-checks display-5 text-primary"></i>
+                        <p class="mb-1 fw-semibold mt-2">Upload a fillable PDF</p>
+                        <p id="limitHint" class="text-muted small mb-0">AcroForm PDFs (IRS, HR, government forms)</p>
+                        <input type="file" id="fileInput" class="d-none" accept=".pdf,application/pdf">
+                    </div>
+
+                    <div id="fileList" class="mb-3"></div>
+                    <div id="errorArea" class="alert alert-danger d-none" role="alert"></div>
+                    <div id="scanProgress" class="text-muted small mb-3 d-none">Scanning form fields…</div>
+
+                    <div id="fieldsCard" class="card bg-light border-0 mb-3 d-none">
+                        <div class="card-body">
+                            <h2 class="h6 fw-bold mb-3">Form fields</h2>
+                            <div id="fieldsContainer" class="vstack gap-3"></div>
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="checkbox" id="flattenCheck">
+                                <label class="form-check-label small" for="flattenCheck">
+                                    Flatten after fill (lock values into page content)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="progressArea" class="mb-3" style="display:none;">
+                        <div class="d-flex justify-content-between small text-muted mb-1">
+                            <span id="progressMsg">Processing…</span>
+                            <span id="progressPct">0%</span>
+                        </div>
+                        <div class="progress" style="height:10px;border-radius:6px;">
+                            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width:0%;background:linear-gradient(90deg,#4a90e2,#667eea);"></div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="fillBtn" class="btn btn-primary btn-lg w-100 py-3 fw-semibold d-none">
+                        <i class="bi bi-check2-square me-2"></i>Fill &amp; Download PDF
+                    </button>
+                    @await Html.PartialAsync("_PdfSubmitHint")
+                    @await Html.PartialAsync("_PdfToolTrustFooter")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
+@section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+(function () {
+    const toolId = 'fillform';
+    let selectedFile = null;
+    let scannedFields = [];
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const errorArea = document.getElementById('errorArea');
+    const scanProgress = document.getElementById('scanProgress');
+    const fieldsCard = document.getElementById('fieldsCard');
+    const fieldsContainer = document.getElementById('fieldsContainer');
+    const fillBtn = document.getElementById('fillBtn');
+    const flattenCheck = document.getElementById('flattenCheck');
+    const progressElements = PdfToolkit.getStandardProgressElements();
+
+    function showError(msg) {
+        errorArea.textContent = PdfToolkit.sanitizeErrorMessage(msg);
+        errorArea.classList.remove('d-none');
+    }
+    function clearError() { errorArea.classList.add('d-none'); }
+
+    function resetFormUi() {
+        fieldsCard.classList.add('d-none');
+        fillBtn.classList.add('d-none');
+        fieldsContainer.innerHTML = '';
+        scannedFields = [];
+    }
+
+    function renderFieldInputs(fields) {
+        fieldsContainer.innerHTML = '';
+        fields.forEach((field, idx) => {
+            const id = `field_${idx}`;
+            const wrap = document.createElement('div');
+            const label = document.createElement('label');
+            label.className = 'form-label small fw-semibold mb-1';
+            label.htmlFor = id;
+            label.textContent = field.name + (field.type ? ` (${field.type})` : '');
+
+            let input;
+            const type = (field.type || '').toLowerCase();
+            if (type.includes('btn') || type.includes('signature')) {
+                wrap.appendChild(label);
+                const note = document.createElement('p');
+                note.className = 'text-muted small mb-0';
+                note.textContent = 'This field type cannot be filled in the browser — use Sign PDF or flatten after manual entry.';
+                wrap.appendChild(note);
+                fieldsContainer.appendChild(wrap);
+                return;
+            }
+
+            if (type.includes('checkbox')) {
+                input = document.createElement('input');
+                input.type = 'checkbox';
+                input.className = 'form-check-input';
+                input.id = id;
+                input.dataset.fieldName = field.name;
+                input.checked = field.value === 'Yes' || field.value === 'On' || field.value === 'true';
+                wrap.className = 'form-check';
+                wrap.appendChild(input);
+                const lbl = document.createElement('label');
+                lbl.className = 'form-check-label';
+                lbl.htmlFor = id;
+                lbl.textContent = field.name;
+                wrap.appendChild(lbl);
+            } else {
+                input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'form-control';
+                input.id = id;
+                input.dataset.fieldName = field.name;
+                input.value = field.value || '';
+                wrap.appendChild(label);
+                wrap.appendChild(input);
+            }
+            fieldsContainer.appendChild(wrap);
+        });
+    }
+
+    async function scanFile(file) {
+        resetFormUi();
+        scanProgress.classList.remove('d-none');
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const res = await fetch('/pdf/fillform/scan', { method: 'POST', body: formData });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.error || 'Could not read form fields.');
+            scannedFields = data.fields || [];
+            if (!scannedFields.length) throw new Error('No fillable fields found.');
+            renderFieldInputs(scannedFields);
+            fieldsCard.classList.remove('d-none');
+            fillBtn.classList.remove('d-none');
+        } catch (err) {
+            showError(err.message || 'Scan failed.');
+            selectedFile = null;
+            PdfToolkit.assignFilesToInput(fileInput, []);
+            if (fileList) fileList.innerHTML = '';
+        } finally {
+            scanProgress.classList.add('d-none');
+        }
+    }
+
+    async function setFile(file) {
+        clearError();
+        selectedFile = file;
+        PdfToolkit.renderPdfFilePreview(fileList, [file], {
+            onClear: () => {
+                selectedFile = null;
+                PdfToolkit.assignFilesToInput(fileInput, []);
+                if (fileList) fileList.innerHTML = '';
+                resetFormUi();
+            },
+        });
+        await scanFile(file);
+    }
+
+    dropZone?.addEventListener('click', () => fileInput?.click());
+    dropZone?.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.background = '#eef2ff'; });
+    dropZone?.addEventListener('dragleave', () => { dropZone.style.background = '' });
+    dropZone?.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.style.background = '';
+        const f = e.dataTransfer?.files?.[0];
+        if (f) setFile(f);
+    });
+    fileInput?.addEventListener('change', () => {
+        const f = fileInput.files?.[0];
+        if (f) setFile(f);
+    });
+
+    PdfToolkit.checkToolAccess(toolId).then(access => {
+        const hint = document.getElementById('limitHint');
+        if (hint) hint.textContent = `${access.maxFileSizeLabel || '200 MB'} per file · AcroForm PDFs`;
+        const badge = document.getElementById('usageBadge');
+        if (badge) PdfToolkit.setUsageBadgeEl(badge, access);
+    });
+
+    fillBtn?.addEventListener('click', async () => {
+        if (!selectedFile) return;
+        clearError();
+        fillBtn.disabled = true;
+
+        const values = {};
+        fieldsContainer.querySelectorAll('[data-field-name]').forEach(el => {
+            const name = el.dataset.fieldName;
+            if (el.type === 'checkbox') values[name] = el.checked ? 'Yes' : 'Off';
+            else values[name] = el.value ?? '';
+        });
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('fieldsJson', JSON.stringify(values));
+        formData.append('flatten', flattenCheck?.checked ? 'true' : 'false');
+
+        try {
+            await PdfToolkit.runJobFlow({
+                url: '/pdf/fillform',
+                formData,
+                elements: progressElements,
+                toolId,
+                defaultFileName: 'filled.pdf',
+            });
+            const s = await PdfToolkit.checkToolAccess(toolId);
+            const badge = document.getElementById('usageBadge');
+            if (badge) PdfToolkit.setUsageBadgeEl(badge, s);
+        } catch (err) {
+            if (err.paywall) PdfToolkit.showPaywall(err.message);
+            else showError(err.message || 'Fill failed.');
+        } finally {
+            fillBtn.disabled = false;
+        }
+    });
+})();
+</script>
+}
