@@ -101,11 +101,21 @@ namespace ratpdf.Controllers
             return View();
         }
 
-        public IActionResult Watermark() => View();
+        [HttpGet("/pdf/watermark")]
+        public IActionResult Watermark()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/watermark");
+            return View();
+        }
         public IActionResult Password() => View();
         public IActionResult DocToPdf() => View();
         public IActionResult PdfToDoc() => View();
-        public IActionResult SignText() => View();
+        [HttpGet("/pdf/signtext")]
+        public IActionResult SignText()
+        {
+            ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/pdf/signtext");
+            return View();
+        }
         public IActionResult RotateOrRemove() => View();
         [HttpGet("/pdf/crop")]
         public IActionResult CropPdf()
@@ -735,10 +745,26 @@ namespace ratpdf.Controllers
         [HttpPost]
         [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
-        public async Task<IActionResult> Watermark(IFormFile file, string watermarkText)
+        public async Task<IActionResult> Watermark(
+            IFormFile file,
+            string? watermarkText,
+            IFormFile? watermarkImage,
+            string? mode = "text",
+            float opacity = 35f,
+            float fontSize = 48f,
+            float rotation = -45f,
+            string? pages = "all",
+            int pageStart = 1,
+            int pageEnd = 1,
+            string? layout = "diagonal")
         {
-            if (file == null || string.IsNullOrWhiteSpace(watermarkText))
-                return BadRequest(new { error = "Upload PDF and provide watermark text." });
+            var wmMode = mode?.ToLowerInvariant() == "image" ? "image" : "text";
+            if (file == null)
+                return BadRequest(new { error = "Please upload a PDF." });
+            if (wmMode == "image" && watermarkImage == null)
+                return BadRequest(new { error = "Please upload a watermark image." });
+            if (wmMode == "text" && string.IsNullOrWhiteSpace(watermarkText))
+                return BadRequest(new { error = "Please enter watermark text." });
 
             var validation = await ValidateJobFilesAsync(new List<IFormFile> { file }, PdfToolIds.Watermark, "PDF", ".pdf");
             if (validation.Error != null)
@@ -747,12 +773,27 @@ namespace ratpdf.Controllers
             file = validation.Files![0];
             var jobId = Guid.NewGuid().ToString();
             var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
-            var text = watermarkText;
+            string? imageBlob = null;
+            if (wmMode == "image" && watermarkImage != null)
+                imageBlob = await _jobStorage.StageFormFileAsync(watermarkImage, jobId);
+
+            var options = new WatermarkOptions
+            {
+                Mode = wmMode,
+                Text = watermarkText?.Trim(),
+                Opacity = Math.Clamp(opacity, 5f, 100f) / 100f,
+                FontSize = Math.Clamp(fontSize, 12f, 120f),
+                RotationDegrees = rotation,
+                Pages = pages ?? "all",
+                PageStart = pageStart,
+                PageEnd = pageEnd,
+                Layout = layout ?? "diagonal",
+            };
 
             return await QueueItextJobAsync(jobId, PdfToolIds.Watermark, "watermark",
                 new[] { (stagingBlob, file.FileName, file.Length) },
                 async (svc, ct) => await svc.RunWatermarkJobAsync(
-                    jobId, stagingBlob, file.FileName, file.Length, text, ct));
+                    jobId, stagingBlob, file.FileName, file.Length, options, imageBlob, ct));
         }
 
         [HttpPost]
@@ -792,12 +833,30 @@ namespace ratpdf.Controllers
         [HttpPost]
         [RequestSizeLimit(PdfToolLimits.MaxUploadRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = PdfToolLimits.MaxUploadRequestBytes)]
-        public async Task<IActionResult> SignText(IFormFile file, string name)
+        public async Task<IActionResult> SignText(
+            IFormFile file,
+            string? name,
+            IFormFile? signatureImage,
+            string? mode = "typed",
+            string? pageTarget = "last",
+            int pageNumber = 1,
+            string? position = "bottom-right",
+            string? fontStyle = "script",
+            bool includeDate = false)
         {
             if (file == null)
                 return BadRequest(new { error = "Please upload a PDF." });
-            if (string.IsNullOrWhiteSpace(name))
-                return BadRequest(new { error = "Please enter a name for signature." });
+
+            var signMode = mode?.ToLowerInvariant() switch
+            {
+                "draw" or "image" => mode!.ToLowerInvariant(),
+                _ => "typed",
+            };
+
+            if (signMode == "typed" && string.IsNullOrWhiteSpace(name))
+                return BadRequest(new { error = "Please enter your name for the signature." });
+            if (signMode != "typed" && signatureImage == null)
+                return BadRequest(new { error = "Please draw or upload a signature image." });
 
             var validation = await ValidateJobFilesAsync(new List<IFormFile> { file }, PdfToolIds.SignPdf, "PDF", ".pdf");
             if (validation.Error != null)
@@ -806,11 +865,25 @@ namespace ratpdf.Controllers
             file = validation.Files![0];
             var jobId = Guid.NewGuid().ToString();
             var stagingBlob = await _jobStorage.StageFormFileAsync(file, jobId);
-            var signerName = name;
+            string? imageBlob = null;
+            if (signMode != "typed" && signatureImage != null)
+                imageBlob = await _jobStorage.StageFormFileAsync(signatureImage, jobId);
+
+            var options = new SignPdfOptions
+            {
+                Mode = signMode,
+                Name = name?.Trim(),
+                PageTarget = pageTarget ?? "last",
+                PageNumber = pageNumber,
+                Position = position ?? "bottom-right",
+                FontStyle = fontStyle ?? "script",
+                IncludeDate = includeDate,
+            };
 
             return await QueueItextJobAsync(jobId, PdfToolIds.SignPdf, "signpdf",
                 new[] { (stagingBlob, file.FileName, file.Length) },
-                async (svc, ct) => await svc.RunSignJobAsync(jobId, stagingBlob, file.Length, signerName, ct));
+                async (svc, ct) => await svc.RunSignJobAsync(
+                    jobId, stagingBlob, file.Length, options, imageBlob, ct));
         }
         [HttpPost]
         public async Task<IActionResult> AddText(IFormFile file, string text, int pageNumber = 0)

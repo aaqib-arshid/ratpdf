@@ -1,4 +1,5 @@
 using System.Text;
+using ratpdf.Models;
 using ratpdf.Services.PdfProcessing;
 
 namespace ratpdf.Services;
@@ -98,10 +99,63 @@ public class PdfItextToolJobService
     }
 
     public async Task RunWatermarkJobAsync(
+        string jobId, string stagingBlob, string originalName, long inputSize,
+        WatermarkOptions options, string? imageStagingBlob, CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "watermark", jobId);
+        string? tempInput = null;
+        string? tempImage = null;
+        string? outputPath = null;
+        var stagingBlobs = new List<string> { stagingBlob };
+        if (imageStagingBlob != null) stagingBlobs.Add(imageStagingBlob);
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Preparing file…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+            if (options.Mode == "image" && imageStagingBlob != null)
+            {
+                tempImage = await _jobStorage.MaterializeToTempFileAsync(imageStagingBlob, ".png", ct);
+                options = new WatermarkOptions
+                {
+                    Mode = options.Mode,
+                    Text = options.Text,
+                    ImagePath = tempImage,
+                    Opacity = options.Opacity,
+                    FontSize = options.FontSize,
+                    RotationDegrees = options.RotationDegrees,
+                    Pages = options.Pages,
+                    PageStart = options.PageStart,
+                    PageEnd = options.PageEnd,
+                    Layout = options.Layout,
+                };
+            }
+
+            _jobStore.SetProgress(jobId, 50, "Applying watermark…");
+            var result = _fileOps.AddWatermarkFromPath(tempInput, options);
+            outputPath = result.FilePath;
+
+            await UploadResultAsync(jobId, "watermark", result.FilePath, "watermarked.pdf", "application/pdf",
+                inputSize, result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputSize, result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "watermark job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
+        }
+        finally
+        {
+            if (tempImage != null) PdfJobStorageService.TryDeleteLocalFile(tempImage);
+            Cleanup(tempInput != null ? new[] { tempInput } : Array.Empty<string>(),
+                outputPath, stagingBlobs, ct);
+        }
+    }
+
+    public async Task RunWatermarkJobAsync(
         string jobId, string stagingBlob, string originalName, long inputSize, string watermarkText, CancellationToken ct)
-        => await RunSinglePdfTransformAsync(jobId, "watermark", stagingBlob, inputSize, "watermarked.pdf",
-            "Applying watermark…", ct,
-            path => _fileOps.AddWatermarkFromPath(path, watermarkText));
+        => await RunWatermarkJobAsync(jobId, stagingBlob, originalName, inputSize,
+            new WatermarkOptions { Mode = "text", Text = watermarkText }, null, ct);
 
     public async Task RunPasswordJobAsync(
         string jobId, string stagingBlob, long inputSize, string password, CancellationToken ct)
@@ -110,10 +164,63 @@ public class PdfItextToolJobService
             path => _fileOps.AddPasswordFromPath(path, password));
 
     public async Task RunSignJobAsync(
+        string jobId, string stagingBlob, long inputSize,
+        SignPdfOptions options, string? signatureImageStagingBlob, CancellationToken ct)
+    {
+        using var metrics = PdfProcessingMetrics.Start(_logger, "signpdf", jobId);
+        string? tempInput = null;
+        string? tempImage = null;
+        string? outputPath = null;
+        var stagingBlobs = new List<string> { stagingBlob };
+        if (signatureImageStagingBlob != null) stagingBlobs.Add(signatureImageStagingBlob);
+
+        try
+        {
+            _jobStore.SetProgress(jobId, 15, "Preparing file…");
+            tempInput = await _jobStorage.MaterializeToTempFileAsync(stagingBlob, ".pdf", ct);
+            if (options.Mode != "typed" && signatureImageStagingBlob != null)
+            {
+                var ext = Path.GetExtension(signatureImageStagingBlob);
+                if (string.IsNullOrEmpty(ext)) ext = ".png";
+                tempImage = await _jobStorage.MaterializeToTempFileAsync(signatureImageStagingBlob, ext, ct);
+                options = new SignPdfOptions
+                {
+                    Mode = options.Mode,
+                    Name = options.Name,
+                    ImagePath = tempImage,
+                    PageTarget = options.PageTarget,
+                    PageNumber = options.PageNumber,
+                    Position = options.Position,
+                    FontStyle = options.FontStyle,
+                    IncludeDate = options.IncludeDate,
+                };
+            }
+
+            _jobStore.SetProgress(jobId, 50, "Adding signature…");
+            var result = _fileOps.SignPdfFromPath(tempInput, options);
+            outputPath = result.FilePath;
+
+            await UploadResultAsync(jobId, "signpdf", result.FilePath, "signed.pdf", "application/pdf",
+                inputSize, result.SizeBytes, ct);
+            metrics.Checkpoint("completed", inputSize, result.SizeBytes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "signpdf job {JobId} failed", jobId);
+            _jobStore.SetFailed(jobId, UserFacingErrorMapper.FromException(ex));
+        }
+        finally
+        {
+            if (tempImage != null) PdfJobStorageService.TryDeleteLocalFile(tempImage);
+            Cleanup(tempInput != null ? new[] { tempInput } : Array.Empty<string>(),
+                outputPath, stagingBlobs, ct);
+        }
+    }
+
+    public async Task RunSignJobAsync(
         string jobId, string stagingBlob, long inputSize, string name, CancellationToken ct)
-        => await RunSinglePdfTransformAsync(jobId, "signpdf", stagingBlob, inputSize, "signed.pdf",
-            "Adding signature…", ct,
-            path => _fileOps.SignPdfFromPath(path, name));
+        => await RunSignJobAsync(jobId, stagingBlob, inputSize,
+            new SignPdfOptions { Mode = "typed", Name = name }, null, ct);
 
     public async Task RunRotateJobAsync(
         string jobId, string stagingBlob, long inputSize, int pageNumber, int degree, CancellationToken ct)

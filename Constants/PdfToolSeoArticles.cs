@@ -21,6 +21,8 @@ namespace ratpdf.Constants
             "ocrpdf" => OcrPdf,
             "pagenumbers" => PageNumbers,
             "pdfmetadata" => PdfMetadata,
+            "signpdf" => SignPdf,
+            "watermark" => Watermark,
             "htmltopdf" => HtmlToPdf,
             "pdftomarkdown" => PdfToMarkdown,
             _ => null
@@ -245,6 +247,30 @@ namespace ratpdf.Constants
             <li>Batch-inspect archives before migration to ECM</li>
             </ul>
             <p>Export is JSON for scripting. For content edits, use <a href='/PDF/EditPDF'>Edit PDF</a> or conversion tools.</p>
+            """;
+
+        private const string SignPdf = """
+            <h2 class='h4 fw-semibold mt-4'>Three ways to sign</h2>
+            <p>Competitors like iLovePDF and Smallpdf offer type, draw, and upload flows — RatPDF matches that pattern. Pick the method that fits your device: keyboard for desktop, finger draw on mobile, or a scanned signature PNG.</p>
+            <h2 class='h4 fw-semibold mt-4'>Placement options</h2>
+            <ul>
+            <li><strong>Last page</strong> — default for contracts and offer letters</li>
+            <li><strong>All pages</strong> — initial every page of a short NDA</li>
+            <li><strong>Bottom right / left / center</strong> — matches common signature blocks</li>
+            </ul>
+            <p>For password-protected PDFs, <a href='/pdf/unlockpdf'>Unlock PDF</a> first. To lock filled forms after signing, use <a href='/PDF/FlattenPdf'>Flatten PDF</a>.</p>
+            """;
+
+        private const string Watermark = """
+            <h2 class='h4 fw-semibold mt-4'>Text vs image watermarks</h2>
+            <p>Use diagonal text for DRAFT and CONFIDENTIAL labels. Upload a logo when you need brand presence without obscuring content — typical for photography proofs and internal reports.</p>
+            <h2 class='h4 fw-semibold mt-4'>Opacity and layout</h2>
+            <ul>
+            <li><strong>Center diagonal</strong> — classic draft stamp across the page</li>
+            <li><strong>Tiled repeat</strong> — harder to crop out on shared samples</li>
+            <li><strong>Page range</strong> — watermark only the cover or appendix</li>
+            </ul>
+            <p>Watermarks are a deterrent, not encryption. For access control, combine with <a href='/PDF/Password'>Password Protect PDF</a>.</p>
             """;
     }
 }

@@ -1,291 +1,363 @@
+@using ratpdf.Constants
 @{
-    ViewData["Title"] = "Sign PDF with your Name online free";
-    ViewData["Description"] = "Sign PDF online for free. Fast and secure PDF Signing tool.";
-    ViewData["PdfToolId"] = "signpdf";
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.SignPdf, ViewData);
+    ViewData["ToolTitle"] = "Sign PDF Online";
+    ViewData["ToolSubtitle"] = "Type, draw, or upload your signature";
+    ViewData["AcceptHint"] = "PDF files";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-pen";
+    ViewData["BtnLabel"] = "Sign PDF";
 }
+@await Html.PartialAsync("_PdfJobToolShell")
+<div class="container pb-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <ul class="nav nav-pills nav-fill mb-3" id="signModeTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" data-mode="typed" type="button">Type name</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-mode="draw" type="button">Draw</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-mode="image" type="button">Upload image</button>
+                        </li>
+                    </ul>
 
-<div class="container py-5 d-flex justify-content-center align-items-start">
-    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
-        <div class="card-body text-center">
-            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
-            <h1 class="fw-bold mb-3">Sign PDF with Your Name</h1>
-            <p class="text-muted mb-2">Upload a PDF and enter your name to sign it in italic.</p>
-            @await Html.PartialAsync("_PdfToolUsageBadge")
-            @await Html.PartialAsync("_PdfToolTrustPills")
-
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger text-start" role="alert">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <div>@error.ErrorMessage</div>
-                    }
-                </div>
-            }
-
-            <form asp-action="SignText" method="post" enctype="multipart/form-data" id="signPdfForm" data-pdf-tool="signpdf">
-                <div class="mb-3">
-                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
-                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
-                        <p class="mb-0 text-muted">Drag & drop PDF here or click to select</p>
-                        <input type="file" name="file" id="fileInput" class="d-none" accept="application/pdf">
+                    <div id="typedPanel">
+                        <label class="form-label fw-semibold" for="signerName">Your name</label>
+                        <input type="text" id="signerName" class="form-control form-control-lg mb-3" placeholder="Jane Smith" maxlength="80">
+                        <label class="form-label fw-semibold" for="fontStyle">Signature style</label>
+                        <select id="fontStyle" class="form-select mb-3">
+                            <option value="script">Script (italic)</option>
+                            <option value="classic">Classic serif</option>
+                            <option value="modern">Modern sans</option>
+                        </select>
                     </div>
-                </div>
-                @await Html.PartialAsync("_PdfFilePreviewCard")
 
-                <div class="mb-3">
-                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Enter your name for signature">
-                </div>
+                    <div id="drawPanel" class="d-none">
+                        <label class="form-label fw-semibold">Draw your signature</label>
+                        <div id="signCanvasWrap" class="border rounded-3 bg-light position-relative mb-2" style="touch-action:none;height:180px;">
+                            <canvas id="signCanvas" class="d-block w-100 h-100" style="cursor:crosshair;touch-action:none;"></canvas>
+                        </div>
+                        <button type="button" id="clearCanvas" class="btn btn-sm btn-outline-secondary">Clear drawing</button>
+                    </div>
 
-                <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
-                @await Html.PartialAsync("_PdfProgressBar")
-                <button type="submit" class="btn btn-primary btn-lg w-100">
-                    <i class="bi bi-pencil-square me-2"></i> Sign PDF
-                </button>
-            </form>
-            @await Html.PartialAsync("_PdfToolTrustFooter")
+                    <div id="imagePanel" class="d-none">
+                        <label class="form-label fw-semibold" for="signatureUpload">Signature image (PNG/JPG)</label>
+                        <input type="file" id="signatureUpload" class="form-control" accept="image/png,image/jpeg,image/webp">
+                    </div>
+
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold" for="pageTarget">Page</label>
+                            <select id="pageTarget" class="form-select">
+                                <option value="last">Last page</option>
+                                <option value="first">First page</option>
+                                <option value="all">All pages</option>
+                                <option value="page">Specific page</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4" id="pageNumberWrap" style="display:none;">
+                            <label class="form-label fw-semibold" for="pageNumber">Page number</label>
+                            <input type="number" id="pageNumber" class="form-control" min="1" value="1">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold" for="position">Position</label>
+                            <select id="position" class="form-select">
+                                <option value="bottom-right">Bottom right</option>
+                                <option value="bottom-left">Bottom left</option>
+                                <option value="center">Center</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="includeDate">
+                        <label class="form-check-label" for="includeDate">Add date below signature</label>
+                    </div>
+                    <p class="text-muted small mt-3 mb-0">Visual signature only — not a certificate-based digital signature. For legal e-sign with audit trails, use a dedicated e-sign platform.</p>
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-@await Html.PartialAsync("_PdfToolInternalLinks")
-<div class="container py-5">
-    <div class="card shadow-sm p-4" style="border-radius: 12px;">
-        <h1 class="fw-bold mb-3">How to Sign a PDF Online with Your Name</h1>
-
-          <p>
-        Signing PDF documents digitally has become essential for modern workflows. Our <strong>PDF signing tool online</strong> allows you to add your name as a signature to any PDF document quickly and securely. Whether you’re signing contracts, forms, invoices, or agreements, this tool makes the process simple, fast, and free—without requiring any software installation or account registration.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Introduction</h2>
-
-    <p>
-        PDFs are widely used for official documents because they maintain formatting across devices and platforms. However, physically signing a PDF requires printing, signing, and scanning—an inefficient process prone to delays. Our online PDF signing tool eliminates this hassle by allowing you to digitally sign documents directly in your browser.
-    </p>
-
-    <p>
-        The tool generates a clean, italicized name signature that can be added to any PDF page. It works seamlessly on Windows, Mac, Android, and iOS devices, giving you the flexibility to sign PDFs anytime, anywhere. Whether for business, academic, or personal use, this tool streamlines your document signing workflow.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Step-by-Step Guide to Sign a PDF with Your Name</h2>
-
-    <p>
-        Adding your name as a digital signature is simple and intuitive. Follow these steps:
-    </p>
-
-    <ol class="mb-4">
-        <li>
-            <strong>Upload your PDF file:</strong> Click the upload button or drag and drop your PDF into the designated area.
-        </li>
-        <li>
-            <strong>Enter your name:</strong> Type your name in the field provided. The tool will automatically generate a stylish, italicized signature.
-        </li>
-        <li>
-            <strong>Click “Sign PDF”:</strong> The tool applies your name as a signature to the PDF. You can adjust the placement on the page as needed.
-        </li>
-        <li>
-            <strong>Download your signed PDF:</strong> After processing, download the signed PDF instantly. Your document is ready for sharing or submission.
-        </li>
-    </ol>
-
-    <p>
-        The process is fully online, secure, and requires no technical expertise, making it accessible for anyone needing to sign PDF documents digitally.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Benefits of Using Our PDF Signing Tool</h2>
-
-    <p>
-        Using our online PDF signing tool offers multiple advantages:
-    </p>
-
-    <ul>
-        <li><strong>Free and accessible:</strong> Sign PDFs online without paying or registering an account.</li>
-        <li><strong>Fast and efficient:</strong> Add your signature in seconds without printing or scanning.</li>
-        <li><strong>Secure and private:</strong> Files are encrypted and deleted from our servers after processing.</li>
-        <li><strong>Cross-platform support:</strong> Works on Windows, Mac, Android, and iOS devices directly in your browser.</li>
-        <li><strong>No installation required:</strong> Complete the signing process without downloading software.</li>
-        <li><strong>Professional appearance:</strong> Generates a clean, italicized signature suitable for formal documents.</li>
-    </ul>
-
-    <p class="mt-3">
-        By using this tool, you save time, reduce paper waste, and maintain a professional standard for digitally signed PDFs.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Use Cases for PDF Signing</h2>
-
-    <p>
-        Our PDF signing tool is suitable for a wide variety of professional, academic, and personal scenarios:
-    </p>
-
-    <h4 class="fw-semibold mt-3">1. Business Contracts and Agreements</h4>
-    <p>
-        Businesses can sign contracts, NDAs, or partnership agreements digitally, eliminating the need for physical signatures and speeding up the approval process.
-    </p>
-
-    <h4 class="fw-semibold mt-3">2. Academic Submissions</h4>
-    <p>
-        Students and educators can digitally sign certificates, assignments, or permission forms, ensuring quick and verified submission without printing.
-    </p>
-
-    <h4 class="fw-semibold mt-3">3. Financial Documents</h4>
-    <p>
-        Invoices, purchase orders, or receipts can be signed with a digital name signature to confirm approvals or validate transactions efficiently.
-    </p>
-
-    <h4 class="fw-semibold mt-3">4. Personal Documents</h4>
-    <p>
-        Individuals can sign letters, applications, or forms digitally, reducing paper use and simplifying document sharing.
-    </p>
-
-    <h4 class="fw-semibold mt-3">5. Remote Work and Collaboration</h4>
-    <p>
-        Remote teams can sign PDFs quickly, allowing contracts, project approvals, and other documents to be processed instantly, regardless of location.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Why Choose Our Online PDF Signing Tool?</h2>
-
-    <p>
-        While many PDF signing tools exist, our solution stands out due to its simplicity, security, and versatility:
-    </p>
-
-    <ul>
-        <li><strong>Ease of use:</strong> No technical skills required. Sign PDFs with just a few clicks.</li>
-        <li><strong>Secure processing:</strong> Your files are encrypted during upload and deleted after processing.</li>
-        <li><strong>Device compatibility:</strong> Works on any modern browser across Windows, Mac, Android, and iOS.</li>
-        <li><strong>Instant results:</strong> Sign PDFs immediately without waiting for lengthy processing.</li>
-        <li><strong>Professional output:</strong> Generates a clean, italicized signature for formal documents.</li>
-    </ul>
-
-    <p>
-        This tool is continuously updated to ensure compatibility with all PDF standards, guaranteeing smooth performance and reliable results every time.
-    </p>
-
-    <h2 class="fw-semibold mt-5">FAQ: Frequently Asked Questions About PDF Signing</h2>
-
-    <h4 class="fw-semibold mt-3">Q1: Is this PDF signing tool free?</h4>
-    <p>
-        Yes, our PDF signing tool is completely free. You can add your name as a signature to any PDF without paying or subscribing.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q2: Do I need to create an account?</h4>
-    <p>
-        No registration or account is required. Simply upload your PDF, sign it with your name, and download the document instantly.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q3: Can I sign PDFs on mobile devices?</h4>
-    <p>
-        Yes, the tool is fully responsive and works on Android and iOS devices directly in your browser.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q4: Can I place the signature anywhere on the page?</h4>
-    <p>
-        Yes, you can adjust the placement of your name signature to ensure it appears exactly where you want on the PDF.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q5: Is my PDF secure during signing?</h4>
-    <p>
-        Absolutely. Files are uploaded securely over HTTPS and deleted from our servers after processing to maintain your privacy.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q6: Can I sign multiple PDFs at once?</h4>
-    <p>
-        Currently, the tool supports signing one PDF at a time. Each file is processed individually for accuracy.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q7: Will the quality of my PDF change after signing?</h4>
-    <p>
-        No, adding a name signature does not affect the quality, formatting, or content of your PDF.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q8: Can I edit or remove a signature after downloading?</h4>
-    <p>
-        Once a PDF is signed and downloaded, the signature becomes part of the document. Keep a backup of your original PDF if you may need to make changes later.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Conclusion</h2>
-
-    <p>
-        Digitally signing PDFs with your name has never been easier. Our free PDF signing tool allows you to add your name as a signature quickly, securely, and without any software or account requirements. Perfect for contracts, forms, invoices, and agreements, this tool saves time, reduces paper usage, and streamlines your workflow.
-    </p>
-
-    <p>
-        With full compatibility across devices and a simple, user-friendly interface, signing PDFs online is fast, secure, and convenient. Start signing your PDF files today and enjoy hassle-free digital document management.
-    </p>
-
-    <p class="mt-3">
-        Upload your PDF, enter your name, click “Sign PDF,” and download your signed document instantly. Simplify your digital signing process with our free online PDF signing tool.
-    </p>
-    </div>
 </div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
 @section Scripts {
-   <script type="application/ld+json">
-@Html.Raw(@"{
-  ""@context"": ""https://schema.org"",
-  ""@graph"": [
-    {
-      ""@type"": ""SoftwareApplication"",
-      ""name"": ""Sign PDF Online"",
-      ""applicationCategory"": ""UtilityApplication"",
-      ""operatingSystem"": ""Web"",
-      ""url"": ""https://ratpdf.com/PDF/SignText"",
-      ""description"": ""Add your signature to PDF files online for free. Easy and secure PDF signing tool."",
-      ""offers"": {
-        ""@type"": ""Offer"",
-        ""price"": ""0"",
-        ""priceCurrency"": ""USD""
-      }
-    },
-    {
-      ""@type"": ""FAQPage"",
-      ""mainEntity"": [
-        {
-          ""@type"": ""Question"",
-          ""name"": ""How do I sign a PDF online with my name?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Upload your PDF file, enter your name in the provided field, click 'Sign PDF', and download the signed PDF.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Is signing PDFs online free?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, our PDF signing tool is completely free and does not require any registration or software installation.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Is my PDF secure when using this tool?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, all files are processed securely and privately. Uploaded PDFs are not stored permanently and are deleted after signing.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Which devices can I use to sign PDFs?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""This online PDF signing tool works on any device with a web browser, including Windows, Mac, Android, and iOS.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Can I customize the signature style?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, this tool adds your name as a signature in italic style.""
-          }
-        }
-      ]
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+(async function () {
+    const toolId = 'signpdf';
+    const access = await PdfToolkit.checkToolAccess(toolId);
+    const elements = PdfToolkit.getStandardProgressElements();
+    let selected = null;
+    let signMode = 'typed';
+    let uploadedSignature = null;
+
+    const fileInput = document.getElementById('fileInput');
+    const convertBtn = document.getElementById('convertBtn');
+    const errorArea = document.getElementById('errorArea');
+    const pageTarget = document.getElementById('pageTarget');
+    const pageNumberWrap = document.getElementById('pageNumberWrap');
+    const canvas = document.getElementById('signCanvas');
+    const canvasWrap = document.getElementById('signCanvasWrap');
+    const ctx = canvas.getContext('2d');
+    let canvasReady = false;
+    let deviceRatio = 1;
+
+    const hint = document.getElementById('limitHint');
+    if (hint) hint.textContent = `${access.maxFileSizeLabel || '200 MB'} per file`;
+    const badge = document.getElementById('usageBadge');
+    if (badge) PdfToolkit.setUsageBadgeEl(badge, access);
+
+    function applyStrokeStyle() {
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#1a1a2e';
     }
-  ]
-}");
-    </script>
-    <script>
-        $('#signPdfForm').on('submit', function (e) {
-         e.preventDefault();
-            submitWithLoader('signPdfForm', 'Signing…', 'signed.pdf');
+
+    function resizeCanvas() {
+        if (!canvasWrap || canvasWrap.offsetParent === null) return false;
+        const rect = canvasWrap.getBoundingClientRect();
+        if (rect.width < 10 || rect.height < 10) return false;
+
+        deviceRatio = window.devicePixelRatio || 1;
+        const w = Math.floor(rect.width * deviceRatio);
+        const h = Math.floor(rect.height * deviceRatio);
+        if (canvas.width === w && canvas.height === h) return canvasReady;
+
+        canvas.width = w;
+        canvas.height = h;
+        canvas.style.width = rect.width + 'px';
+        canvas.style.height = rect.height + 'px';
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+        ctx.setTransform(deviceRatio, 0, 0, deviceRatio, 0, 0);
+        applyStrokeStyle();
+        canvasReady = true;
+        return true;
+    }
+
+    let drawing = false;
+    let lastPoint = null;
+
+    function canvasPos(e) {
+        const r = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - r.left, y: clientY - r.top };
+    }
+
+    function startDraw(e) {
+        if (!canvasReady && !resizeCanvas()) return;
+        drawing = true;
+        lastPoint = canvasPos(e);
+        ctx.beginPath();
+        ctx.moveTo(lastPoint.x, lastPoint.y);
+        if (e.pointerId != null && canvas.setPointerCapture) {
+            try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+        }
+        e.preventDefault();
+    }
+
+    function moveDraw(e) {
+        if (!drawing || !lastPoint) return;
+        const p = canvasPos(e);
+        ctx.beginPath();
+        ctx.moveTo(lastPoint.x, lastPoint.y);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+        lastPoint = p;
+        e.preventDefault();
+    }
+
+    function endDraw(e) {
+        if (!drawing) return;
+        drawing = false;
+        lastPoint = null;
+        if (e?.pointerId != null && canvas.releasePointerCapture) {
+            try { canvas.releasePointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+        }
+    }
+
+    canvas.addEventListener('pointerdown', startDraw);
+    canvas.addEventListener('pointermove', moveDraw);
+    canvas.addEventListener('pointerup', endDraw);
+    canvas.addEventListener('pointerleave', endDraw);
+    canvas.addEventListener('pointercancel', endDraw);
+
+    if (canvasWrap && typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(() => {
+            if (signMode === 'draw' && canvasWrap.offsetParent !== null && !canvasReady) resizeCanvas();
         });
-  </script>
+        ro.observe(canvasWrap);
+    }
+
+    document.getElementById('clearCanvas')?.addEventListener('click', () => {
+        if (!canvasReady) resizeCanvas();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.setTransform(deviceRatio, 0, 0, deviceRatio, 0, 0);
+        applyStrokeStyle();
+    });
+
+    document.querySelectorAll('#signModeTabs .nav-link').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#signModeTabs .nav-link').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            signMode = btn.dataset.mode;
+            document.getElementById('typedPanel').classList.toggle('d-none', signMode !== 'typed');
+            document.getElementById('drawPanel').classList.toggle('d-none', signMode !== 'draw');
+            document.getElementById('imagePanel').classList.toggle('d-none', signMode !== 'image');
+            if (signMode === 'draw') {
+                requestAnimationFrame(() => resizeCanvas());
+            }
+        });
+    });
+
+    document.getElementById('signatureUpload')?.addEventListener('change', (e) => {
+        uploadedSignature = e.target.files?.[0] || null;
+    });
+
+    pageTarget?.addEventListener('change', () => {
+        pageNumberWrap.style.display = pageTarget.value === 'page' ? '' : 'none';
+    });
+
+    await PdfToolkit.bindPdfUpload({
+        fileInput,
+        dropZone: document.getElementById('dropZone'),
+        previewContainer: document.getElementById('fileList'),
+        errorArea,
+        toolId,
+        multiple: false,
+        onChange: (files) => {
+            selected = files[0] || null;
+            convertBtn.disabled = !selected;
+        },
+    });
+
+    function getSignatureBounds() {
+        if (!canvasReady || !canvas.width || !canvas.height) return null;
+        const w = canvas.width;
+        const h = canvas.height;
+        const imageData = ctx.getImageData(0, 0, w, h);
+        const d = imageData.data;
+        let minX = w, minY = h, maxX = -1, maxY = -1;
+        for (let y = 0; y < h; y++) {
+            for (let x = 0; x < w; x++) {
+                const a = d[(y * w + x) * 4 + 3];
+                if (a > 8) {
+                    if (x < minX) minX = x;
+                    if (y < minY) minY = y;
+                    if (x > maxX) maxX = x;
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+        if (maxX < minX) return null;
+        const pad = Math.max(4, Math.floor(deviceRatio * 4));
+        minX = Math.max(0, minX - pad);
+        minY = Math.max(0, minY - pad);
+        maxX = Math.min(w - 1, maxX + pad);
+        maxY = Math.min(h - 1, maxY + pad);
+        return { x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1 };
+    }
+
+    async function canvasToPngFile() {
+        const bounds = getSignatureBounds();
+        if (!bounds) return null;
+
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = bounds.w;
+        exportCanvas.height = bounds.h;
+        const exportCtx = exportCanvas.getContext('2d');
+        exportCtx.drawImage(canvas, bounds.x, bounds.y, bounds.w, bounds.h, 0, 0, bounds.w, bounds.h);
+
+        return new Promise((resolve) => {
+            exportCanvas.toBlob((blob) => {
+                if (!blob) return resolve(null);
+                resolve(new File([blob], 'signature.png', { type: 'image/png' }));
+            }, 'image/png');
+        });
+    }
+
+    function canvasIsBlank() {
+        return getSignatureBounds() === null;
+    }
+
+    convertBtn?.addEventListener('click', async () => {
+        if (!selected) return;
+        errorArea.classList.add('d-none');
+
+        const formData = new FormData();
+        formData.append('file', selected);
+        formData.append('mode', signMode);
+        formData.append('pageTarget', pageTarget.value);
+        formData.append('pageNumber', document.getElementById('pageNumber').value || '1');
+        formData.append('position', document.getElementById('position').value);
+        formData.append('fontStyle', document.getElementById('fontStyle').value);
+        formData.append('includeDate', document.getElementById('includeDate').checked ? 'true' : 'false');
+
+        if (signMode === 'typed') {
+            const name = document.getElementById('signerName').value.trim();
+            if (!name) {
+                errorArea.textContent = 'Please enter your name.';
+                errorArea.classList.remove('d-none');
+                return;
+            }
+            formData.append('name', name);
+        } else if (signMode === 'draw') {
+            if (!resizeCanvas()) {
+                errorArea.textContent = 'Signature pad is not ready. Click Draw again or refresh the page.';
+                errorArea.classList.remove('d-none');
+                return;
+            }
+            if (canvasIsBlank()) {
+                errorArea.textContent = 'Please draw your signature first.';
+                errorArea.classList.remove('d-none');
+                return;
+            }
+            const sigFile = await canvasToPngFile();
+            if (!sigFile) {
+                errorArea.textContent = 'Could not capture signature drawing.';
+                errorArea.classList.remove('d-none');
+                return;
+            }
+            formData.append('signatureImage', sigFile);
+        } else {
+            if (!uploadedSignature) {
+                errorArea.textContent = 'Please upload a signature image.';
+                errorArea.classList.remove('d-none');
+                return;
+            }
+            formData.append('signatureImage', uploadedSignature);
+        }
+
+        convertBtn.disabled = true;
+        try {
+            await PdfToolkit.runJobFlow({
+                url: '/PDF/SignText',
+                formData,
+                elements,
+                toolId,
+                defaultFileName: 'signed.pdf',
+            });
+            const s = await PdfToolkit.checkToolAccess(toolId);
+            if (badge) PdfToolkit.setUsageBadgeEl(badge, s);
+        } catch (e) {
+            if (e.paywall) PdfToolkit.showPaywall(e.message);
+            else {
+                errorArea.textContent = PdfToolkit.sanitizeErrorMessage(e.message || 'Signing failed.');
+                errorArea.classList.remove('d-none');
+            }
+        } finally {
+            convertBtn.disabled = !selected;
+        }
+    });
+})();
+</script>
 }

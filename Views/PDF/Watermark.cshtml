@@ -1,292 +1,220 @@
+@using ratpdf.Constants
 @{
-    ViewData["Title"] = "Add Watermark To PDF Online Free";
-    ViewData["Description"] = "Add Watermark to PDF online for free. Fast and secure Water mark tool.";
-    ViewData["PdfToolId"] = "watermark";
+    PdfToolSeoMeta.ApplyToViewData(PdfToolIds.Watermark, ViewData);
+    ViewData["ToolTitle"] = "Watermark PDF";
+    ViewData["ToolSubtitle"] = "Text or image · opacity · page range";
+    ViewData["AcceptHint"] = "PDF files";
+    ViewData["AcceptAttr"] = ".pdf,application/pdf";
+    ViewData["Multiple"] = false;
+    ViewData["BtnIcon"] = "bi-droplet-half";
+    ViewData["BtnLabel"] = "Add Watermark";
 }
+@await Html.PartialAsync("_PdfJobToolShell")
+<div class="container pb-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <ul class="nav nav-pills nav-fill mb-3" id="wmModeTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" data-mode="text" type="button">Text</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-mode="image" type="button">Image / logo</button>
+                        </li>
+                    </ul>
 
-<div class="container py-5 d-flex justify-content-center align-items-start">
-    <div class="card shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 15px;">
-        <div class="card-body text-center">
+                    <div id="textWmPanel">
+                        <label class="form-label fw-semibold" for="watermarkText">Watermark text</label>
+                        <input type="text" id="watermarkText" class="form-control form-control-lg mb-2" placeholder="CONFIDENTIAL" maxlength="80">
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <button type="button" class="btn btn-sm btn-outline-secondary wm-preset" data-text="DRAFT">DRAFT</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary wm-preset" data-text="CONFIDENTIAL">CONFIDENTIAL</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary wm-preset" data-text="SAMPLE">SAMPLE</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary wm-preset" data-text="COPY">COPY</button>
+                        </div>
+                    </div>
 
-            <img src="~/images/ratpdf-logo.png" alt="Rat PDF Logo" height="60" class="mb-3">
-            <h1 class="fw-bold mb-3">Add Watermark</h1>
-            <p class="text-muted mb-2">Upload a PDF and add a text watermark to all pages.</p>
-            @await Html.PartialAsync("_PdfToolUsageBadge")
-            @await Html.PartialAsync("_PdfToolTrustPills")
+                    <div id="imageWmPanel" class="d-none">
+                        <label class="form-label fw-semibold" for="watermarkImage">Watermark image (PNG/JPG)</label>
+                        <input type="file" id="watermarkImage" class="form-control" accept="image/png,image/jpeg,image/webp">
+                    </div>
 
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger text-start" role="alert">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <div>@error.ErrorMessage</div>
-                    }
-                </div>
-            }
-
-            <form asp-action="Watermark" method="post" enctype="multipart/form-data" id="watermarkForm" data-pdf-tool="watermark">
-                <div class="mb-3">
-                    <div id="dropZone" class="border border-dashed rounded p-4 mb-3" style="cursor: pointer; background-color: #f8f9fa;">
-                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-2"></i>
-                        <p class="mb-0 text-muted">Drag & drop PDF here or click to select</p>
-                        <input type="file" name="file" id="fileInput" class="d-none" accept="application/pdf">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" for="opacity">Opacity <span id="opacityVal" class="text-muted">35%</span></label>
+                            <input type="range" id="opacity" class="form-range" min="5" max="80" value="35">
+                        </div>
+                        <div class="col-md-6" id="fontSizeWrap">
+                            <label class="form-label fw-semibold" for="fontSize">Text size</label>
+                            <select id="fontSize" class="form-select">
+                                <option value="36">Small</option>
+                                <option value="48" selected>Medium</option>
+                                <option value="64">Large</option>
+                                <option value="84">Extra large</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" id="rotationWrap">
+                            <label class="form-label fw-semibold" for="rotation">Rotation</label>
+                            <select id="rotation" class="form-select">
+                                <option value="-45">Diagonal (-45°)</option>
+                                <option value="0">Horizontal</option>
+                                <option value="45">Diagonal (+45°)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" for="layout">Layout</label>
+                            <select id="layout" class="form-select">
+                                <option value="diagonal">Center diagonal</option>
+                                <option value="horizontal">Center horizontal</option>
+                                <option value="tile">Tiled repeat</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" for="pages">Pages</label>
+                            <select id="pages" class="form-select">
+                                <option value="all">All pages</option>
+                                <option value="first">First page only</option>
+                                <option value="range">Page range</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3" id="pageStartWrap" style="display:none;">
+                            <label class="form-label fw-semibold" for="pageStart">From</label>
+                            <input type="number" id="pageStart" class="form-control" min="1" value="1">
+                        </div>
+                        <div class="col-md-3" id="pageEndWrap" style="display:none;">
+                            <label class="form-label fw-semibold" for="pageEnd">To</label>
+                            <input type="number" id="pageEnd" class="form-control" min="1" value="1">
+                        </div>
                     </div>
                 </div>
-                @await Html.PartialAsync("_PdfFilePreviewCard")
-                <div class="mb-3">
-                    <input type="text" name="watermarkText" class="form-control" placeholder="Watermark Text">
-                </div>
-                <div id="errorArea" class="alert alert-danger d-none text-start" role="alert"></div>
-                @await Html.PartialAsync("_PdfProgressBar")
-                <button type="submit" class="btn btn-primary w-100">
-                    <i class="bi bi-droplet-half me-2"></i> Add Watermark
-                </button>
-            </form>
-            @await Html.PartialAsync("_PdfToolTrustFooter")
+            </div>
         </div>
     </div>
-    </div>
-@await Html.PartialAsync("_PdfToolInternalLinks")
-<div class="container py-5">
-    <div class="card shadow-sm p-4" style="border-radius: 12px;">
-        <h1 class="fw-bold mb-3">How to Add a Watermark to Your PDF</h1>
-
-          <p>
-        Adding a watermark to your PDF is a simple way to protect your content, mark drafts, or brand your documents professionally. Our <strong>PDF watermark tool online</strong> allows you to add custom text watermarks to one or multiple pages of your PDF quickly and securely. The process works entirely in your browser, requires no software installation, and is completely free.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Introduction</h2>
-
-    <p>
-        PDFs are commonly used for sharing official documents, reports, eBooks, and presentations. However, when sharing sensitive or original content, there is always a risk of unauthorized copying or distribution. Adding a watermark ensures that your content is clearly labeled, branded, or protected without altering the original information.
-    </p>
-
-    <p>
-        Our online PDF watermark tool enables users to insert customized text watermarks across all pages or specific pages of a PDF. This method enhances document security, maintains professional appearance, and works on Windows, Mac, Android, and iOS devices directly in your browser.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Step-by-Step Guide to Add a Watermark to PDF</h2>
-
-    <p>
-        Adding a watermark to your PDF online is simple and intuitive. Follow these steps:
-    </p>
-
-    <ol class="mb-4">
-        <li>
-            <strong>Upload your PDF file:</strong> Drag and drop your PDF into the upload area or select it from your device.
-        </li>
-        <li>
-            <strong>Enter the watermark text:</strong> Type the text you want to appear on your PDF pages. This could be “DRAFT,” “CONFIDENTIAL,” or a brand name.
-        </li>
-        <li>
-            <strong>Click “Add Watermark”:</strong> The tool applies the watermark across all selected pages instantly.
-        </li>
-        <li>
-            <strong>Download your watermarked PDF:</strong> Once processing is complete, download your PDF with the watermark applied.
-        </li>
-    </ol>
-
-    <p>
-        The process is fully online, safe, and requires no technical expertise, making it ideal for professionals, students, and casual users alike.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Benefits of Using Our PDF Watermark Tool</h2>
-
-    <p>
-        Using our online watermark tool provides multiple advantages:
-    </p>
-
-    <ul>
-        <li><strong>Free and easy to use:</strong> Add watermarks without paying or registering an account.</li>
-        <li><strong>Protect sensitive content:</strong> Mark your PDFs as drafts, confidential, or proprietary.</li>
-        <li><strong>Brand your documents:</strong> Use your company name, logo, or unique text for branding purposes.</li>
-        <li><strong>Fast and reliable:</strong> Apply watermarks to one or multiple pages instantly.</li>
-        <li><strong>Cross-platform support:</strong> Works on Windows, Mac, Android, and iOS directly in your browser.</li>
-        <li><strong>No software installation required:</strong> Complete the process entirely online.</li>
-        <li><strong>Secure and private:</strong> Files are encrypted during upload and deleted after processing.</li>
-    </ul>
-
-    <p class="mt-3">
-        By using this tool, you can maintain control over your documents while ensuring professional presentation and compliance with privacy or copyright standards.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Use Cases for PDF Watermarks</h2>
-
-    <p>
-        Our PDF watermark tool is versatile and suitable for a wide variety of scenarios:
-    </p>
-
-    <h4 class="fw-semibold mt-3">1. Protect Confidential Documents</h4>
-    <p>
-        Mark reports, contracts, or sensitive files as “CONFIDENTIAL” to prevent unauthorized sharing or copying.
-    </p>
-
-    <h4 class="fw-semibold mt-3">2. Draft Versions of Reports</h4>
-    <p>
-        Use the watermark “DRAFT” on incomplete reports or presentations to indicate that the document is a work in progress.
-    </p>
-
-    <h4 class="fw-semibold mt-3">3. Branding Business Documents</h4>
-    <p>
-        Add your company name or slogan as a watermark to invoices, proposals, or marketing materials to reinforce branding and professionalism.
-    </p>
-
-    <h4 class="fw-semibold mt-3">4. Academic Work</h4>
-    <p>
-        Students and educators can watermark assignments, research papers, or teaching materials with their name, school, or “COPYRIGHT” to indicate ownership.
-    </p>
-
-    <h4 class="fw-semibold mt-3">5. eBooks and Digital Publications</h4>
-    <p>
-        Authors can add watermarks to eBooks or digital publications to protect their content from unauthorized distribution.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Why Choose Our Online PDF Watermark Tool?</h2>
-
-    <p>
-        While there are many watermark tools available, our solution stands out for its simplicity, speed, and security:
-    </p>
-
-    <ul>
-        <li><strong>Intuitive interface:</strong> Add watermarks in just a few clicks, with no learning curve.</li>
-        <li><strong>Quick processing:</strong> Apply watermarks to multiple pages instantly.</li>
-        <li><strong>Full browser compatibility:</strong> Works on all modern browsers and devices.</li>
-        <li><strong>Customizable text:</strong> Choose any text for your watermark, making it suitable for branding, protection, or labeling.</li>
-        <li><strong>Secure and private:</strong> All files are processed over secure HTTPS connections and deleted after completion.</li>
-    </ul>
-
-    <p>
-        Our tool is continuously updated to ensure smooth performance across devices and all PDF standards.
-    </p>
-
-    <h2 class="fw-semibold mt-5">FAQ: Frequently Asked Questions About PDF Watermarks</h2>
-
-    <h4 class="fw-semibold mt-3">Q1: Is this PDF watermark tool free?</h4>
-    <p>
-        Yes, our online PDF watermark tool is completely free. You can add watermarks to PDFs without paying or subscribing.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q2: Do I need an account?</h4>
-    <p>
-        No registration is required. Simply upload your PDF, add the watermark, and download your document instantly.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q3: Can I use this tool on mobile devices?</h4>
-    <p>
-        Yes, the tool is fully responsive and works on Android and iOS devices directly in your browser.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q4: Can I watermark all pages of a PDF?</h4>
-    <p>
-        Yes, the tool can apply your watermark to all pages automatically or you can choose specific pages.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q5: Will adding a watermark affect the PDF quality?</h4>
-    <p>
-        No, your PDF’s quality, layout, and formatting remain intact. Only the watermark is added on top of your existing content.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q6: Can I customize the watermark text?</h4>
-    <p>
-        Yes, you can add any text you want as a watermark, including “DRAFT,” “CONFIDENTIAL,” your name, or company branding.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q7: Are my files secure during processing?</h4>
-    <p>
-        Absolutely. Files are encrypted during upload and deleted from our servers immediately after processing to protect your privacy.
-    </p>
-
-    <h4 class="fw-semibold mt-3">Q8: Can I remove the watermark after adding it?</h4>
-    <p>
-        Once the watermark is applied and the PDF is downloaded, it becomes part of the document. Keep a backup of your original file if you may need an unmarked version later.
-    </p>
-
-    <h2 class="fw-semibold mt-5">Conclusion</h2>
-
-    <p>
-        Adding watermarks to PDFs has never been easier. Our free online PDF watermark tool allows you to protect, label, and brand your documents securely and efficiently. Whether for business, academic, or personal use, the tool ensures your PDFs are professional and secure.
-    </p>
-
-    <p>
-        Fully compatible across devices and browsers, this tool allows you to add custom text watermarks to any PDF instantly. Start protecting your documents today by uploading your PDF, entering your watermark text, clicking “Add Watermark,” and downloading your updated file.
-    </p>
-
-    <p class="mt-3">
-        Simplify PDF protection and branding with our free online PDF watermark tool—secure, fast, and easy to use.
-    </p>
-    </div>
 </div>
+@await Html.PartialAsync("_PdfToolInternalLinks")
+@await Html.PartialAsync("_PdfToolSeoArticle")
 @section Scripts {
+@await Html.PartialAsync("_PdfToolJsonLd")
+<script>
+(async function () {
+    const toolId = 'watermark';
+    const access = await PdfToolkit.checkToolAccess(toolId);
+    const elements = PdfToolkit.getStandardProgressElements();
+    let selected = null;
+    let wmMode = 'text';
+    let wmImage = null;
 
-    <script type="application/ld+json">
-@Html.Raw(@"{
-  ""@context"": ""https://schema.org"",
-  ""@graph"": [
-    {
-      ""@type"": ""SoftwareApplication"",
-      ""name"": ""Add Watermark to PDF"",
-      ""applicationCategory"": ""UtilityApplication"",
-      ""operatingSystem"": ""Web"",
-      ""url"": ""https://ratpdf.com/PDF/Watermark"",
-      ""description"": ""Add custom text or image watermarks to your PDF files online for free."",
-      ""offers"": {
-        ""@type"": ""Offer"",
-        ""price"": ""0"",
-        ""priceCurrency"": ""USD""
-      }
-    },
-    {
-      ""@type"": ""FAQPage"",
-      ""mainEntity"": [
-        {
-          ""@type"": ""Question"",
-          ""name"": ""How do I add a watermark to a PDF online?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Upload your PDF file, enter the text you want as a watermark, click 'Add Watermark', and download the new PDF.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Is adding watermarks online free?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, our PDF watermark tool is completely free and does not require registration or software installation.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Can I apply a watermark to all pages?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, the tool applies the watermark text to all pages of your PDF automatically.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Is my PDF file secure when using this tool?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""Yes, all PDFs are processed securely and deleted after processing to ensure privacy.""
-          }
-        },
-        {
-          ""@type"": ""Question"",
-          ""name"": ""Which devices can I use to add watermarks?"",
-          ""acceptedAnswer"": {
-            ""@type"": ""Answer"",
-            ""text"": ""This online watermark tool works on any device with a browser, including Windows, Mac, Android, and iOS.""
-          }
-        }
-      ]
-    }
-  ]
-}");
-    </script>
-    <script>
-         $('#watermarkForm').on('submit', function (e) {
-         e.preventDefault();
-            submitWithLoader('watermarkForm', 'Applying watermark…', 'watermarked.pdf');
+    const fileInput = document.getElementById('fileInput');
+    const convertBtn = document.getElementById('convertBtn');
+    const errorArea = document.getElementById('errorArea');
+    const opacity = document.getElementById('opacity');
+    const opacityVal = document.getElementById('opacityVal');
+    const pages = document.getElementById('pages');
+
+    const hint = document.getElementById('limitHint');
+    if (hint) hint.textContent = `${access.maxFileSizeLabel || '200 MB'} per file`;
+    const badge = document.getElementById('usageBadge');
+    if (badge) PdfToolkit.setUsageBadgeEl(badge, access);
+
+    opacity?.addEventListener('input', () => {
+        opacityVal.textContent = opacity.value + '%';
+    });
+
+    document.querySelectorAll('#wmModeTabs .nav-link').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#wmModeTabs .nav-link').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            wmMode = btn.dataset.mode;
+            document.getElementById('textWmPanel').classList.toggle('d-none', wmMode !== 'text');
+            document.getElementById('imageWmPanel').classList.toggle('d-none', wmMode !== 'image');
+            document.getElementById('fontSizeWrap').classList.toggle('d-none', wmMode !== 'text');
+            document.getElementById('rotationWrap').classList.toggle('d-none', wmMode !== 'text');
         });
-    </script>
+    });
+
+    document.querySelectorAll('.wm-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('watermarkText').value = btn.dataset.text;
+        });
+    });
+
+    document.getElementById('watermarkImage')?.addEventListener('change', (e) => {
+        wmImage = e.target.files?.[0] || null;
+    });
+
+    pages?.addEventListener('change', () => {
+        const show = pages.value === 'range';
+        document.getElementById('pageStartWrap').style.display = show ? '' : 'none';
+        document.getElementById('pageEndWrap').style.display = show ? '' : 'none';
+    });
+
+    await PdfToolkit.bindPdfUpload({
+        fileInput,
+        dropZone: document.getElementById('dropZone'),
+        previewContainer: document.getElementById('fileList'),
+        errorArea,
+        toolId,
+        multiple: false,
+        onChange: (files) => {
+            selected = files[0] || null;
+            convertBtn.disabled = !selected;
+        },
+    });
+
+    convertBtn?.addEventListener('click', async () => {
+        if (!selected) return;
+        errorArea.classList.add('d-none');
+
+        const formData = new FormData();
+        formData.append('file', selected);
+        formData.append('mode', wmMode);
+        formData.append('opacity', opacity.value);
+        formData.append('fontSize', document.getElementById('fontSize').value);
+        formData.append('rotation', document.getElementById('rotation').value);
+        formData.append('layout', document.getElementById('layout').value);
+        formData.append('pages', pages.value);
+        formData.append('pageStart', document.getElementById('pageStart').value || '1');
+        formData.append('pageEnd', document.getElementById('pageEnd').value || '1');
+
+        if (wmMode === 'text') {
+            const text = document.getElementById('watermarkText').value.trim();
+            if (!text) {
+                errorArea.textContent = 'Please enter watermark text.';
+                errorArea.classList.remove('d-none');
+                return;
+            }
+            formData.append('watermarkText', text);
+        } else {
+            if (!wmImage) {
+                errorArea.textContent = 'Please upload a watermark image.';
+                errorArea.classList.remove('d-none');
+                return;
+            }
+            formData.append('watermarkImage', wmImage);
+        }
+
+        convertBtn.disabled = true;
+        try {
+            await PdfToolkit.runJobFlow({
+                url: '/PDF/Watermark',
+                formData,
+                elements,
+                toolId,
+                defaultFileName: 'watermarked.pdf',
+            });
+            const s = await PdfToolkit.checkToolAccess(toolId);
+            if (badge) PdfToolkit.setUsageBadgeEl(badge, s);
+        } catch (e) {
+            if (e.paywall) PdfToolkit.showPaywall(e.message);
+            else {
+                errorArea.textContent = PdfToolkit.sanitizeErrorMessage(e.message || 'Watermark failed.');
+                errorArea.classList.remove('d-none');
+            }
+        } finally {
+            convertBtn.disabled = !selected;
+        }
+    });
+})();
+</script>
 }
