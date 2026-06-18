@@ -15,8 +15,6 @@ namespace ratpdf.Middleware
             {
                 ["/PDF/Compress"] = "/pdf/compress",
                 ["/PDF/UnlockPdf"] = "/pdf/unlockpdf",
-                ["/PDF/SignText"] = "/pdf/signtext",
-                ["/PDF/Watermark"] = "/pdf/watermark",
                 ["/pdf/compress/"] = "/pdf/compress",
                 ["/compress-pdf/"] = "/compress-pdf",
                 ["/Account/Login"] = "/account/login",

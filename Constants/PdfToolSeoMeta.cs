@@ -25,7 +25,7 @@ namespace ratpdf.Constants
                     "Remove PDF password protection online. Decrypt owner and user passwords securely. Free 200 MB, Pro 4 GB. No software install.",
                     "Unlock PDF Online — Remove Password Protection",
                     "Decrypt password-protected PDFs in your browser. Enter the known password and download an unlocked copy — content, fonts, and layout preserved.",
-                    "/pdf/unlockpdf",
+                    "/PDF/UnlockPdf",
                     "Unlock PDF",
                     "Remove PDF password protection online. Decrypt protected PDFs securely with RatPDF.",
                     [
@@ -57,46 +57,6 @@ namespace ratpdf.Constants
                             "Sometimes slightly, because interactive form structures are removed. Visual appearance stays the same."),
                         ("Is flatten PDF free?",
                             "Yes on the free tier (3 uses/day, 200 MB). Pro removes daily limits and supports 4 GB files."),
-                    ]),
-
-                [PdfToolIds.SignPdf] = new(
-                    PdfToolIds.SignPdf,
-                    "Sign PDF Online Free — Type, Draw, or Upload Signature",
-                    "Sign PDF documents online. Type your name, draw on canvas, or upload a signature image. Choose page and position. Free 200 MB.",
-                    "Sign PDF Online — Type, Draw, or Upload",
-                    "Add a visual signature to contracts, forms, and agreements. Pick last page, first page, or all pages — with optional date stamp.",
-                    "/pdf/signtext",
-                    "Sign PDF",
-                    "Sign PDF documents online by typing, drawing, or uploading your signature image.",
-                    [
-                        ("How do I sign a PDF online for free?",
-                            "Upload your PDF, choose Type, Draw, or Upload image, set page and position, then click Sign PDF to download."),
-                        ("Is this a legal digital signature?",
-                            "RatPDF adds a visual signature block — not a certificate-based digital signature with audit trail. Many informal agreements accept typed or drawn signatures."),
-                        ("Can I sign on mobile?",
-                            "Yes — use the Draw tab with your finger or stylus on phones and tablets."),
-                        ("Can I add a date with my signature?",
-                            "Yes — enable Add date below signature before processing."),
-                    ]),
-
-                [PdfToolIds.Watermark] = new(
-                    PdfToolIds.Watermark,
-                    "Watermark PDF Online Free — Text or Image Overlay",
-                    "Add text or image watermarks to PDF pages. Adjust opacity, rotation, tiled layout, and page range. DRAFT and CONFIDENTIAL presets.",
-                    "Watermark PDF — Text or Logo Overlay",
-                    "Mark drafts, confidential reports, and brand documents with diagonal text or a logo watermark. Control opacity and which pages are stamped.",
-                    "/pdf/watermark",
-                    "Watermark PDF",
-                    "Add customizable text or image watermarks to PDF documents online.",
-                    [
-                        ("How do I watermark a PDF online?",
-                            "Upload the PDF, enter text or upload a logo, adjust opacity and layout, then click Add Watermark."),
-                        ("Can I watermark only some pages?",
-                            "Yes — choose first page only or enter a custom page range."),
-                        ("Can I use my company logo as a watermark?",
-                            "Yes — switch to Image / logo and upload a PNG or JPG with adjustable opacity."),
-                        ("Will the watermark block reading the PDF?",
-                            "Default opacity is light enough to read content underneath. Increase opacity for stronger DRAFT or CONFIDENTIAL marks."),
                     ]),
 
                 [PdfToolIds.PdfToImages] = new(

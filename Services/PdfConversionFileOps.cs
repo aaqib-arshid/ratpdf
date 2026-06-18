@@ -1,4 +1,3 @@
-using iText.IO.Image;
 using iText.Forms;
 using iText.Html2pdf;
 using iText.Html2pdf.Resolver.Font;
@@ -12,7 +11,6 @@ using iText.Layout.Element;
 using iText.Layout.Properties;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf.IO;
-using ratpdf.Models;
 using ratpdf.Services.PdfProcessing;
 using System.Text;
 using System.Text.Json;
@@ -82,20 +80,9 @@ public class PdfConversionFileOps
 
     public PdfConversionFileResult AddWatermarkFromPath(
         string inputPath, string watermarkText, string? outputPath = null)
-        => AddWatermarkFromPath(inputPath, new WatermarkOptions { Mode = "text", Text = watermarkText }, outputPath);
-
-    public PdfConversionFileResult AddWatermarkFromPath(
-        string inputPath, WatermarkOptions options, string? outputPath = null)
     {
-        if (options.Mode == "image")
-        {
-            if (string.IsNullOrWhiteSpace(options.ImagePath))
-                throw new ArgumentException("Watermark image is required.");
-        }
-        else if (string.IsNullOrWhiteSpace(options.Text))
-        {
+        if (string.IsNullOrWhiteSpace(watermarkText))
             throw new ArgumentException("Watermark text is required.");
-        }
 
         outputPath ??= PdfTempPaths.NewOutput(".pdf");
         using var wmStream = OpenReadStream(inputPath);
@@ -103,133 +90,34 @@ public class PdfConversionFileOps
         using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
         using var pdfDoc = new PdfDocument(reader, writer);
 
-        var opacity = Math.Clamp(options.Opacity, 0.05f, 1f);
-        foreach (var pageNum in ResolveWatermarkPages(pdfDoc, options))
+        var font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+        const float fontSize = 42f;
+        var angle = (float)(-Math.PI / 4);
+
+        for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
         {
-            var page = pdfDoc.GetPage(pageNum);
+            var page = pdfDoc.GetPage(i);
+            var canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
             var pageSize = page.GetPageSize();
 
-            if (options.Mode == "image")
-                ApplyImageWatermark(pdfDoc, page, pageSize, options.ImagePath!, opacity, options.Layout);
-            else
-                ApplyTextWatermark(pdfDoc, page, pageSize, options.Text!, opacity, options);
+            canvas.SaveState();
+            canvas.SetFillColor(new DeviceGray(0.82f));
+            canvas.BeginText();
+            canvas.SetFontAndSize(font, fontSize);
+
+            var cx = pageSize.GetWidth() / 2;
+            var cy = pageSize.GetHeight() / 2;
+            canvas.SetTextMatrix(
+                (float)Math.Cos(angle), (float)Math.Sin(angle),
+                -(float)Math.Sin(angle), (float)Math.Cos(angle),
+                cx, cy);
+            canvas.ShowText(watermarkText);
+            canvas.EndText();
+            canvas.RestoreState();
         }
 
         pdfDoc.Close();
         return ToResult(outputPath);
-    }
-
-    private static IEnumerable<int> ResolveWatermarkPages(PdfDocument pdfDoc, WatermarkOptions options)
-    {
-        var total = pdfDoc.GetNumberOfPages();
-        return options.Pages?.ToLowerInvariant() switch
-        {
-            "first" => [1],
-            "range" =>
-            [
-                ..Enumerable.Range(
-                    Math.Clamp(options.PageStart, 1, total),
-                    Math.Max(1, Math.Clamp(options.PageEnd, options.PageStart, total)
-                        - Math.Clamp(options.PageStart, 1, total) + 1))
-            ],
-            _ => Enumerable.Range(1, total),
-        };
-    }
-
-    private static void ApplyTextWatermark(
-        PdfDocument pdfDoc, PdfPage page, Rectangle pageSize,
-        string text, float opacity, WatermarkOptions options)
-    {
-        var font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
-        var fontSize = Math.Clamp(options.FontSize, 12f, 120f);
-        var rotation = options.RotationDegrees;
-        var layout = options.Layout?.ToLowerInvariant() ?? "diagonal";
-
-        if (layout == "tile")
-        {
-            var canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
-            canvas.SaveState();
-            canvas.SetFillColor(new DeviceGray(0.75f));
-            var gs = new iText.Kernel.Pdf.Extgstate.PdfExtGState().SetFillOpacity(opacity);
-            canvas.SetExtGState(gs);
-            canvas.BeginText();
-            canvas.SetFontAndSize(font, fontSize * 0.65f);
-            var stepX = fontSize * 4.5f;
-            var stepY = fontSize * 3.5f;
-            var angleRad = rotation * Math.PI / 180;
-            var cos = (float)Math.Cos(angleRad);
-            var sin = (float)Math.Sin(angleRad);
-            for (var y = -pageSize.GetHeight(); y < pageSize.GetHeight() * 2; y += stepY)
-            {
-                for (var x = -pageSize.GetWidth(); x < pageSize.GetWidth() * 2; x += stepX)
-                {
-                    canvas.SetTextMatrix(cos, sin, -sin, cos, x, y);
-                    canvas.ShowText(text);
-                }
-            }
-            canvas.EndText();
-            canvas.RestoreState();
-            return;
-        }
-
-        var pdfCanvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
-        using var layoutCanvas = new iText.Layout.Canvas(pdfCanvas, pageSize);
-        layoutCanvas.SetOpacity(opacity);
-        var paragraph = new Paragraph(text)
-            .SetFont(font)
-            .SetFontSize(fontSize)
-            .SetFontColor(ColorConstants.LIGHT_GRAY)
-            .SetTextAlignment(TextAlignment.CENTER)
-            .SetRotationAngle(rotation);
-
-        if (layout == "horizontal")
-        {
-            layoutCanvas.ShowTextAligned(
-                paragraph, pageSize.GetWidth() / 2, pageSize.GetHeight() / 2,
-                TextAlignment.CENTER, VerticalAlignment.MIDDLE);
-        }
-        else
-        {
-            layoutCanvas.ShowTextAligned(
-                paragraph, pageSize.GetWidth() / 2, pageSize.GetHeight() / 2,
-                TextAlignment.CENTER, VerticalAlignment.MIDDLE);
-        }
-    }
-
-    private static void ApplyImageWatermark(
-        PdfDocument pdfDoc, PdfPage page, Rectangle pageSize,
-        string imagePath, float opacity, string layout)
-    {
-        var imgData = ImageDataFactory.Create(imagePath);
-        var canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
-        canvas.SaveState();
-        var gs = new iText.Kernel.Pdf.Extgstate.PdfExtGState().SetFillOpacity(opacity);
-        canvas.SetExtGState(gs);
-
-        var maxW = pageSize.GetWidth() * 0.35f;
-        var maxH = pageSize.GetHeight() * 0.35f;
-        var scale = Math.Min(maxW / imgData.GetWidth(), maxH / imgData.GetHeight());
-        var drawW = imgData.GetWidth() * scale;
-        var drawH = imgData.GetHeight() * scale;
-
-        if (layout?.ToLowerInvariant() == "tile")
-        {
-            var stepX = drawW * 1.4f;
-            var stepY = drawH * 1.4f;
-            for (var y = 0f; y < pageSize.GetHeight(); y += stepY)
-            {
-                for (var x = 0f; x < pageSize.GetWidth(); x += stepX)
-                    canvas.AddImageFittedIntoRectangle(imgData, new Rectangle(x, y, drawW, drawH), false);
-            }
-        }
-        else
-        {
-            var x = (pageSize.GetWidth() - drawW) / 2;
-            var y = (pageSize.GetHeight() - drawH) / 2;
-            canvas.AddImageFittedIntoRectangle(imgData, new Rectangle(x, y, drawW, drawH), false);
-        }
-
-        canvas.RestoreState();
     }
 
     public PdfConversionFileResult AddPasswordFromPath(
@@ -256,126 +144,33 @@ public class PdfConversionFileOps
 
     public PdfConversionFileResult SignPdfFromPath(
         string inputPath, string name, string? outputPath = null)
-        => SignPdfFromPath(inputPath, new SignPdfOptions { Mode = "typed", Name = name }, outputPath);
-
-    public PdfConversionFileResult SignPdfFromPath(
-        string inputPath, SignPdfOptions options, string? outputPath = null)
     {
-        if (options.Mode == "typed" && string.IsNullOrWhiteSpace(options.Name))
+        if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name cannot be empty.");
-        if (options.Mode != "typed" && string.IsNullOrWhiteSpace(options.ImagePath))
-            throw new ArgumentException("Signature image is required.");
 
         outputPath ??= PdfTempPaths.NewOutput(".pdf");
         using var pdfStream = OpenReadStream(inputPath);
         using var reader = OpenPermissiveReader(pdfStream);
         using var writer = new PdfWriter(outputPath, new WriterProperties().UseSmartMode());
         using var pdfDoc = new PdfDocument(reader, writer);
+        using var document = new iText.Layout.Document(pdfDoc);
 
-        var pages = ResolveSignPages(pdfDoc, options).ToList();
-        if (options.Mode == "typed")
-        {
-            using var document = new iText.Layout.Document(pdfDoc);
-            foreach (var pageNum in pages)
-                ApplyTypedSignature(document, pdfDoc, pageNum, options);
-        }
-        else
-        {
-            foreach (var pageNum in pages)
-                ApplyImageSignature(pdfDoc, pageNum, options);
-            pdfDoc.Close();
-        }
-
-        return ToResult(outputPath);
-    }
-
-    private static IEnumerable<int> ResolveSignPages(PdfDocument pdfDoc, SignPdfOptions options)
-    {
-        var total = pdfDoc.GetNumberOfPages();
-        return options.PageTarget?.ToLowerInvariant() switch
-        {
-            "first" => [1],
-            "all" => Enumerable.Range(1, total),
-            "page" => [Math.Clamp(options.PageNumber, 1, total)],
-            _ => [total],
-        };
-    }
-
-    private static void ApplyImageSignature(PdfDocument pdfDoc, int pageNum, SignPdfOptions options)
-    {
-        var page = pdfDoc.GetPage(pageNum);
-        var pageSize = page.GetPageSize();
-        const float margin = 48f;
-
-        var imgData = ImageDataFactory.Create(options.ImagePath!);
-        var maxWidth = Math.Min(220f, pageSize.GetWidth() * 0.45f);
-        var maxHeight = Math.Min(90f, pageSize.GetHeight() * 0.18f);
-        var scale = Math.Min(maxWidth / imgData.GetWidth(), maxHeight / imgData.GetHeight());
-        if (scale <= 0) scale = 1f;
-        var drawW = imgData.GetWidth() * scale;
-        var drawH = imgData.GetHeight() * scale;
-        var (x, y) = ResolveSignCoords(pageSize, options.Position, drawW, drawH, margin);
-
-        var canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
-        canvas.AddImageFittedIntoRectangle(imgData, new Rectangle(x, y, drawW, drawH), false);
-
-        if (options.IncludeDate)
-            StampDateLine(pdfDoc, pageNum, x, y - 16f, drawW);
-    }
-
-    private static void ApplyTypedSignature(
-        iText.Layout.Document document, PdfDocument pdfDoc, int pageNum, SignPdfOptions options)
-    {
-        var pageSize = pdfDoc.GetPage(pageNum).GetPageSize();
-        const float margin = 48f;
-        var (font, fontSize) = ResolveSignFont(options.FontStyle);
-        var sigWidth = Math.Min(260f, pageSize.GetWidth() * 0.55f);
-        var name = options.Name!.Trim();
-        var textHeight = fontSize * 1.4f;
-        var (sigX, sigY) = ResolveSignCoords(pageSize, options.Position, sigWidth, textHeight, margin);
+        var font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_OBLIQUE);
+        var lastPage = pdfDoc.GetNumberOfPages();
+        var pageSize = pdfDoc.GetPage(lastPage).GetPageSize();
+        var sigWidth = Math.Min(220f, pageSize.GetWidth() * 0.45f);
+        var sigX = pageSize.GetWidth() - sigWidth - 48f;
 
         var signature = new Paragraph(name)
             .SetFont(font)
-            .SetFontSize(fontSize)
+            .SetFontSize(22)
             .SetFontColor(ColorConstants.DARK_GRAY)
-            .SetTextAlignment(options.Position == "bottom-left" ? TextAlignment.LEFT : TextAlignment.RIGHT)
-            .SetFixedPosition(pageNum, sigX, sigY, sigWidth);
+            .SetTextAlignment(TextAlignment.RIGHT)
+            .SetFixedPosition(lastPage, sigX, 56f, sigWidth);
+
         document.Add(signature);
-
-        if (options.IncludeDate)
-            StampDateLine(pdfDoc, pageNum, sigX, sigY - 14f, sigWidth);
-    }
-
-    private static (PdfFont font, float size) ResolveSignFont(string style) =>
-        style?.ToLowerInvariant() switch
-        {
-            "classic" => (PdfFontFactory.CreateFont(StandardFonts.TIMES_ITALIC), 22f),
-            "modern" => (PdfFontFactory.CreateFont(StandardFonts.HELVETICA), 20f),
-            _ => (PdfFontFactory.CreateFont(StandardFonts.HELVETICA_OBLIQUE), 24f),
-        };
-
-    private static (float x, float y) ResolveSignCoords(
-        Rectangle pageSize, string position, float width, float height, float margin) =>
-        position?.ToLowerInvariant() switch
-        {
-            "bottom-left" => (margin, margin),
-            "center" => ((pageSize.GetWidth() - width) / 2, (pageSize.GetHeight() - height) / 2),
-            _ => (pageSize.GetWidth() - width - margin, margin),
-        };
-
-    private static void StampDateLine(PdfDocument pdfDoc, int pageNum, float x, float y, float width)
-    {
-        var page = pdfDoc.GetPage(pageNum);
-        var dateText = DateTime.UtcNow.ToString("MMMM d, yyyy");
-        var pdfCanvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
-        var rect = new Rectangle(x, Math.Max(12f, y), width, 14);
-        using var layoutCanvas = new iText.Layout.Canvas(pdfCanvas, rect);
-        layoutCanvas.Add(new Paragraph(dateText)
-            .SetFont(PdfFontFactory.CreateFont(StandardFonts.HELVETICA))
-            .SetFontSize(10)
-            .SetFontColor(ColorConstants.GRAY)
-            .SetMargin(0)
-            .SetPadding(0));
+        document.Close();
+        return ToResult(outputPath);
     }
 
     public PdfConversionFileResult RotatePageFromPath(
