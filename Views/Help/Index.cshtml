@@ -1,0 +1,138 @@
+@using ratpdf.Constants
+@using ratpdf.Content
+@using ratpdf.Helpers
+@{
+    ViewData["Title"] = "Help Center — PDF Tools Support & FAQs | RatPDF";
+    ViewData["Description"] = "Get help with RatPDF PDF tools: upload limits, conversion errors, file privacy, Pro subscriptions, and step-by-step guides for every tool.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(SiteEntity.HelpPath);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var faqs = new (string Q, string A)[]
+    {
+        ("How do I compress a PDF for email?",
+            "Open the <a href=\"/pdf/compress\">Compress PDF tool</a>, upload your file, choose a compression level (Medium works for most emails), and download the result. See our <a href=\"/guides/compress-pdf-guide\">compression guide</a> for size targets like 200 KB or 1 MB."),
+        ("Why did my PDF to Word conversion lose formatting?",
+            "Scanned PDFs and complex layouts (multi-column tables, embedded fonts) are harder to convert. Digital PDFs with real text usually convert well. Try our <a href=\"/pdf/pdftodoc\">PDF to Word tool</a> — it uses pdf2docx first and falls back to page rendering. Read the <a href=\"/guides/pdf-to-word\">full conversion guide</a> for troubleshooting."),
+        ("Are my files stored on your servers?",
+            "Most PDF tools upload files over HTTPS to our Azure cloud servers for processing. Files are stored temporarily and deleted automatically. Lightweight utilities like JSON formatters may run entirely in your browser. See our <a href=\"/home/security\">Security policy</a> and <a href=\"/home/privacy\">Privacy policy</a> for details."),
+        ("What are the free tier limits?",
+            "Free users get 3 uses per tool per day and can upload files up to 200 MB. Pro subscribers get unlimited daily use and 4 GB uploads. View <a href=\"/subscription/plans\">Pro plans</a> for pricing."),
+        ("My conversion failed or timed out. What should I do?",
+            "Large files, password-protected PDFs, and corrupted documents can cause failures. Try: (1) removing the password first with <a href=\"/pdf/unlock\">Unlock PDF</a>, (2) compressing before converting, (3) upgrading to Pro for larger files. If the error persists, <a href=\"/home/contact\">contact us</a> with the tool name, file size, and error message."),
+        ("How do I merge multiple PDFs in order?",
+            "Use the <a href=\"/pdf/merge\">Merge PDF tool</a>. Drag files to reorder them before merging. For step-by-step instructions, see the <a href=\"/guides/merge-pdf\">merge guide</a>."),
+        ("Can I password-protect or watermark a PDF?",
+            "Yes. Use <a href=\"/pdf/password\">Password Protect PDF</a> to add encryption, or <a href=\"/pdf/watermark\">Add Watermark</a> for text/image overlays. Our <a href=\"/guides/secure-pdf-workflow\">Secure PDF workflow hub</a> covers the full sharing checklist."),
+        ("How do I create a GST invoice or payslip?",
+            "Use the <a href=\"/invoice/create\">Invoice Generator</a> for GST-compliant invoices, or the <a href=\"/free-payslip-generator\">Payslip Generator</a> for salary slips. Guides: <a href=\"/guides/invoice-generator-guide\">Invoice guide</a> and <a href=\"/guides/salary-slip-format-india\">Salary slip format (India)</a>."),
+        ("How do I cancel or manage my Pro subscription?",
+            "Sign in to your account and visit <a href=\"/subscription/plans\">Plans</a>. For billing issues, email <a href=\"mailto:@SiteEntity.ContactEmail\">@SiteEntity.ContactEmail</a> with your account email."),
+        ("Where can I find tutorials for each tool?",
+            "Every major tool has a dedicated guide at <a href=\"/guides\">/guides</a> plus video walkthroughs at <a href=\"/learn\">/learn</a>. Start with the <a href=\"/guides/choose-pdf-tool\">Choose a PDF tool</a> guide if you are unsure which tool to use."),
+    };
+}
+
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "RatPDF Help Center",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical(SiteEntity.HelpPath),
+        "WebPage",
+        new[] { "h1", ".lead", "section" }))
+    </script>
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "FAQPage",
+      "mainEntity": [
+        @for (var i = 0; i < faqs.Length; i++)
+        {
+            var f = faqs[i];
+            @:{"@@type":"Question","name":@Html.Raw(System.Text.Json.JsonSerializer.Serialize(f.Q)),"acceptedAnswer":{"@@type":"Answer","text":@Html.Raw(System.Text.Json.JsonSerializer.Serialize(System.Text.RegularExpressions.Regex.Replace(f.A, "<[^>]+>", "")))}}@(i < faqs.Length - 1 ? "," : "")
+        }
+      ]
+    }
+    </script>
+}
+
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <h1 class="fw-bold mb-3">Help center</h1>
+        <p class="lead text-muted">
+            Answers to common questions about @SiteEntity.Name tools, file limits, privacy, and subscriptions.
+        </p>
+
+        @await Html.PartialAsync("_AiCitationBlock")
+
+        <section class="mt-4" aria-labelledby="quick-links">
+            <h2 id="quick-links" class="h5 fw-semibold mb-3">Quick links</h2>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-light p-3">
+                        <h3 class="h6 fw-bold"><i class="bi bi-journal-text me-2"></i>Guides</h3>
+                        <p class="small text-muted mb-2">@ContentLibrary.Guides.Count() step-by-step tutorials for every tool.</p>
+                        <a href="/guides" class="small fw-semibold">Browse guides →</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-light p-3">
+                        <h3 class="h6 fw-bold"><i class="bi bi-play-circle me-2"></i>Video tutorials</h3>
+                        <p class="small text-muted mb-2">Visual walkthroughs for compress, merge, convert, and more.</p>
+                        <a href="/learn" class="small fw-semibold">Watch tutorials →</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-light p-3">
+                        <h3 class="h6 fw-bold"><i class="bi bi-shield-check me-2"></i>Trust &amp; privacy</h3>
+                        <p class="small text-muted mb-2">How we handle uploads, cookies, and editorial standards.</p>
+                        <a href="@SiteEntity.TrustHubPath" class="small fw-semibold">Trust center →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-5" aria-labelledby="faqs">
+            <h2 id="faqs" class="h5 fw-semibold mb-3">Frequently asked questions</h2>
+            <div class="accordion" id="helpFaqs">
+                @for (var i = 0; i < faqs.Length; i++)
+                {
+                    var f = faqs[i];
+                    var id = $"faq-{i}";
+                    <div class="accordion-item border-0 mb-2 rounded overflow-hidden">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button @(i > 0 ? "collapsed" : "") fw-semibold" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#@id" aria-expanded="@(i == 0 ? "true" : "false")" aria-controls="@id">
+                                @f.Q
+                            </button>
+                        </h3>
+                        <div id="@id" class="accordion-collapse collapse @(i == 0 ? "show" : "")" data-bs-parent="#helpFaqs">
+                            <div class="accordion-body small">@Html.Raw(f.A)</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+
+        <section class="mt-5 pt-4 border-top" aria-labelledby="popular-guides">
+            <h2 id="popular-guides" class="h5 fw-semibold mb-3">Popular guides</h2>
+            <ul class="small mb-0">
+                <li class="mb-2"><a href="/guides/compress-pdf-guide">How to compress PDF online</a></li>
+                <li class="mb-2"><a href="/guides/pdf-to-word">PDF to Word conversion guide</a></li>
+                <li class="mb-2"><a href="/guides/merge-pdf">How to merge PDF files</a></li>
+                <li class="mb-2"><a href="/guides/choose-pdf-tool">How to choose the right PDF tool</a></li>
+                <li class="mb-2"><a href="/guides/secure-pdf-workflow">Secure PDF workflow checklist</a></li>
+                <li class="mb-2"><a href="/guides/invoice-generator-guide">Invoice generator guide</a></li>
+            </ul>
+        </section>
+
+        <section class="mt-5 pt-4 border-top" aria-labelledby="contact-support">
+            <h2 id="contact-support" class="h5 fw-semibold mb-3">Still need help?</h2>
+            <p class="small text-muted mb-2">
+                Use our <a href="@SiteEntity.ContactPath">contact form</a> or email
+                <a href="mailto:@SiteEntity.ContactEmail">@SiteEntity.ContactEmail</a>.
+                Include the tool name, browser, file size, and a description of the issue for faster support.
+            </p>
+        </section>
+    </div>
+</article>

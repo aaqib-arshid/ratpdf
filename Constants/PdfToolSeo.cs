@@ -75,6 +75,7 @@ namespace ratpdf.Constants
                 "/home/security",
                 "/home/corrections",
                 SiteEntity.TrustHubPath,
+                SiteEntity.HelpPath,
                 SiteAuthors.HubPath,
                 "/home/contact",
                 "/home/privacy",

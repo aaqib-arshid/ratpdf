@@ -1,4 +1,5 @@
-﻿@{
+﻿@using ratpdf.Constants
+@{
     ViewData["Title"] = "Contact Us";
     ViewData["Description"] = "Contact RatPDF for support, questions, or feedback about our online PDF tools.";
 }
@@ -32,7 +33,7 @@
     <h1>Contact Us</h1>
 
     <p>
-        If you have any questions, suggestions, or need assistance with our PDF tools, please use the contact form below or email us at support@ratpdf.com.
+        If you have any questions, suggestions, or need assistance with our PDF tools, please use the contact form below or email us at <a href="mailto:@SiteEntity.ContactEmail">@SiteEntity.ContactEmail</a>.
     </p>
 
     <hr />

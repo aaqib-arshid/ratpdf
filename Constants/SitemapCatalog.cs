@@ -20,15 +20,10 @@ namespace ratpdf.Constants
             "/sitemaps/sitemap-pdftotxt-seo.xml",
             "/sitemaps/sitemap-editpdf.xml",
             "/sitemaps/sitemap_bgremove.xml",
-            "/sitemaps/sitemap_wordcounterseo.xml",
-            "/sitemaps/sitemap_ring_converter.xml",
-            "/sitemaps/sitemap_my_ip.xml",
-            "/sitemaps/sitemap_content_decay_detector.xml",
             "/sitemaps/sitemap-invoice.xml",
             "/sitemaps/html_sitemap.xml",
             "/sitemaps/json_sitemap.xml",
             "/sitemaps/jwt_sitemap.xml",
-            "/sitemaps/payslip_sitemap.xml",
         ];
 
         /// <summary>Compress programmatic chunks (urlsets, up to 10k URLs each).</summary>

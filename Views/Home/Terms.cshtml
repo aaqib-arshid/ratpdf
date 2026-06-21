@@ -1,186 +1,153 @@
-﻿@{
-    ViewData["Title"] = "Terms & Conditions";
-    ViewData["Description"] = "Read the Terms and Conditions for using RatPDF online PDF tools. Understand user responsibilities, service limitations, and website usage policies.";
+﻿@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    ViewData["Title"] = "Terms & Conditions — RatPDF";
+    ViewData["Description"] = "Terms and conditions for using RatPDF online PDF tools. User responsibilities, file handling, service limits, and acceptable use.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/home/terms");
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<head>
-    <meta name="robots" content="index, follow">
-</head>
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "RatPDF Terms & Conditions",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/home/terms"),
+        "WebPage",
+        new[] { "h1", "section" }))
+    </script>
+}
 
-<div class="card p-4">
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <h1 class="fw-bold mb-3">Terms &amp; Conditions</h1>
+        <p class="text-muted">Last updated: June 2025</p>
+        <p>
+            Welcome to <strong>@SiteEntity.Name</strong>. By accessing or using our website and online PDF tools,
+            you agree to these Terms &amp; Conditions. If you do not agree, please do not use our services.
+        </p>
 
-    <h1>Terms & Conditions</h1>
+        <section aria-labelledby="use-of-services">
+            <h2 id="use-of-services" class="h5 fw-semibold mt-4">1. Use of services</h2>
+            <p>
+                @SiteEntity.Name provides browser-based tools for processing PDF files including conversion,
+                compression, merging, splitting, editing, OCR, and business document generation.
+            </p>
+            <p>By using our services, you agree that you will:</p>
+            <ul>
+                <li>Use the website only for lawful purposes.</li>
+                <li>Not attempt to misuse, reverse-engineer, or disrupt the functionality of the website.</li>
+                <li>Not upload or process illegal, harmful, or malicious content.</li>
+                <li>Respect daily usage limits on the free tier (3 uses per tool per day, 200 MB per file).</li>
+            </ul>
+        </section>
 
-    <p>
-        Welcome to <strong>RatPDF</strong>. By accessing or using our website and online PDF tools,
-        you agree to comply with and be bound by the following Terms and Conditions.
-        If you do not agree with these terms, please do not use our services.
-    </p>
+        <section aria-labelledby="file-processing">
+            <h2 id="file-processing" class="h5 fw-semibold mt-4">2. File processing &amp; privacy</h2>
+            <p>
+                @SiteEntity.Name processes most PDF operations on secure cloud servers (Microsoft Azure).
+                This is described in detail in our <a href="@SiteEntity.PrivacyPath">Privacy Policy</a>
+                and <a href="@SiteEntity.SecurityPath">Security policy</a>.
+            </p>
+            <ul>
+                <li>Files are transmitted over HTTPS (TLS) to our application servers for processing.</li>
+                <li>Uploaded files are stored temporarily only for the duration of the conversion job.</li>
+                <li>Output files may be held in private cloud storage until you download them or they expire.</li>
+                <li>Automated cleanup jobs delete stale files and job metadata on a schedule.</li>
+                <li>Some lightweight utilities (formatters, counters, previews) may process data entirely in your browser; each tool page describes its behaviour.</li>
+            </ul>
+            <p>
+                We do not manually review document contents except when investigating abuse or technical failures you report.
+                You remain fully responsible for the files you choose to process.
+            </p>
+        </section>
 
-    <hr>
+        <section aria-labelledby="user-responsibility">
+            <h2 id="user-responsibility" class="h5 fw-semibold mt-4">3. User responsibility</h2>
+            <p>You are solely responsible for:</p>
+            <ul>
+                <li>The files you upload or process using our tools.</li>
+                <li>Ensuring that you have the legal rights to use and modify those files.</li>
+                <li>Ensuring your content does not violate any laws, copyrights, or third-party rights.</li>
+                <li>Verifying important documents after processing (conversion quality varies by file type).</li>
+            </ul>
+            <p>@SiteEntity.Name does not monitor the content of files processed by users.</p>
+        </section>
 
-    <h3>1. Use of Services</h3>
+        <section aria-labelledby="subscriptions">
+            <h2 id="subscriptions" class="h5 fw-semibold mt-4">4. Subscriptions &amp; payments</h2>
+            <p>
+                Pro subscriptions are billed through <strong>Razorpay</strong>. By subscribing, you agree to the
+                pricing and billing terms shown on our <a href="/subscription/plans">Plans page</a>.
+                Refunds are handled according to the policy stated at checkout.
+            </p>
+        </section>
 
-    <p>
-        RatPDF provides browser-based tools for processing PDF files including conversion,
-        compression, merging, splitting, and editing.
-    </p>
+        <section aria-labelledby="service-availability">
+            <h2 id="service-availability" class="h5 fw-semibold mt-4">5. Service availability</h2>
+            <p>
+                While we strive to keep our services available, we do not guarantee uninterrupted or error-free operation.
+                We may temporarily suspend or modify services for maintenance, updates, or security improvements.
+            </p>
+        </section>
 
-    <p>
-        By using our services, you agree that:
-    </p>
+        <section aria-labelledby="limitation">
+            <h2 id="limitation" class="h5 fw-semibold mt-4">6. Limitation of liability</h2>
+            <p>@SiteEntity.Name is provided on an <strong>"as-is" and "as-available"</strong> basis.</p>
+            <p>We make no warranties regarding accuracy, compatibility with all file types, or continuous service.</p>
+            <p>
+                Under no circumstances shall @SiteEntity.Name be liable for any direct, indirect, incidental,
+                or consequential damages resulting from the use of our website or tools.
+            </p>
+        </section>
 
-    <ul>
-        <li>You will use the website only for lawful purposes.</li>
-        <li>You will not attempt to misuse or disrupt the functionality of the website.</li>
-        <li>You will not upload or process illegal, harmful, or malicious content.</li>
-    </ul>
+        <section aria-labelledby="ip">
+            <h2 id="ip" class="h5 fw-semibold mt-4">7. Intellectual property</h2>
+            <p>
+                All website content including text, design, branding, logos, and software is the property of
+                @SiteEntity.Name unless otherwise stated. You may not copy, reproduce, distribute, or modify
+                any part of the website without permission.
+            </p>
+        </section>
 
-    <hr>
+        <section aria-labelledby="third-party">
+            <h2 id="third-party" class="h5 fw-semibold mt-4">8. Third-party services</h2>
+            <p>
+                Our website may use third-party services including analytics providers and advertising networks
+                such as <strong>Google AdSense</strong>. These services may use cookies in accordance with their
+                own privacy policies. See our <a href="@SiteEntity.PrivacyPath">Privacy Policy</a> for details.
+            </p>
+        </section>
 
-    <h3>2. File Processing & Privacy</h3>
+        <section aria-labelledby="security">
+            <h2 id="security" class="h5 fw-semibold mt-4">9. Security</h2>
+            <p>We implement reasonable security measures including:</p>
+            <ul>
+                <li>HTTPS encrypted connections for all uploads and downloads</li>
+                <li>Private cloud storage with no public listing of uploads</li>
+                <li>Automated deletion of temporary files</li>
+                <li>Least-privilege access to production systems</li>
+            </ul>
+            <p>
+                Users should also take appropriate precautions when handling sensitive documents online.
+                See our <a href="@SiteEntity.SecurityPath">Security policy</a> for full details.
+            </p>
+        </section>
 
-    <p>
-        RatPDF is designed with privacy as a core principle.
-    </p>
+        <section aria-labelledby="changes">
+            <h2 id="changes" class="h5 fw-semibold mt-4">10. Changes to terms</h2>
+            <p>
+                We may update these Terms &amp; Conditions at any time. Changes take effect upon posting on this page.
+                Continued use of the site after changes constitutes acceptance of the updated terms.
+            </p>
+        </section>
 
-    <ul>
-        <li>All file processing occurs directly in your browser.</li>
-        <li>Files are not uploaded to our servers.</li>
-        <li>We do not store, copy, or retain any uploaded documents.</li>
-        <li>No user files are saved in databases or server storage.</li>
-    </ul>
-
-    <p>
-        Users remain fully responsible for the files they choose to process using the website.
-    </p>
-
-    <hr>
-
-    <h3>3. User Responsibility</h3>
-
-    <p>
-        You are solely responsible for:
-    </p>
-
-    <ul>
-        <li>The files you upload or process using our tools.</li>
-        <li>Ensuring that you have the legal rights to use and modify those files.</li>
-        <li>Ensuring your content does not violate any laws, copyrights, or third-party rights.</li>
-    </ul>
-
-    <p>
-        RatPDF does not review or monitor the content of files processed by users.
-    </p>
-
-    <hr>
-
-    <h3>4. Service Availability</h3>
-
-    <p>
-        While we strive to keep our services available at all times, we do not guarantee
-        that the website will always operate without interruptions or errors.
-    </p>
-
-    <p>
-        We may temporarily suspend or modify services for maintenance, updates,
-        or security improvements without prior notice.
-    </p>
-
-    <hr>
-
-    <h3>5. Limitation of Liability</h3>
-
-    <p>
-        RatPDF is provided on an <strong>"as-is" and "as-available"</strong> basis.
-    </p>
-
-    <p>
-        We make no warranties regarding:
-    </p>
-
-    <ul>
-        <li>Accuracy or reliability of the tools</li>
-        <li>Compatibility with all file types</li>
-        <li>Continuous or uninterrupted service</li>
-    </ul>
-
-    <p>
-        Under no circumstances shall RatPDF be liable for any direct, indirect,
-        incidental, or consequential damages resulting from the use of our website
-        or tools.
-    </p>
-
-    <hr>
-
-    <h3>6. Intellectual Property</h3>
-
-    <p>
-        All website content including text, design, branding, logos, and software
-        is the property of RatPDF unless otherwise stated.
-    </p>
-
-    <p>
-        You may not copy, reproduce, distribute, or modify any part of the website
-        without permission.
-    </p>
-
-    <hr>
-
-    <h3>7. Third-Party Services</h3>
-
-    <p>
-        Our website may use third-party services including analytics providers
-        and advertising networks such as Google AdSense.
-    </p>
-
-    <p>
-        These services may use cookies or similar technologies in accordance
-        with their own privacy policies.
-    </p>
-
-    <hr>
-
-    <h3>8. Security</h3>
-
-    <p>
-        We implement reasonable security measures to protect the integrity
-        of our website and services, including:
-    </p>
-
-    <ul>
-        <li>HTTPS encrypted connections</li>
-        <li>Secure content delivery</li>
-        <li>Browser-based file processing</li>
-    </ul>
-
-    <p>
-        However, users should also take appropriate precautions when handling
-        sensitive documents online.
-    </p>
-
-    <hr>
-
-    <h3>9. Changes to Terms</h3>
-
-    <p>
-        We reserve the right to update or modify these Terms & Conditions
-        at any time without prior notice.
-    </p>
-
-    <p>
-        Changes will be effective immediately upon posting on this page.
-    </p>
-
-    <hr>
-
-    <h3>10. Contact</h3>
-
-    <p>
-        If you have any questions regarding these Terms & Conditions,
-        please visit our <a href="/Home/Contact">Contact Page</a>.
-    </p>
-
-    <p><strong>Last Updated:</strong> @DateTime.Now.Year</p>
-
-</div>
+        <section aria-labelledby="contact">
+            <h2 id="contact" class="h5 fw-semibold mt-4">11. Contact</h2>
+            <p>
+                Questions about these terms? Visit our <a href="@SiteEntity.ContactPath">Contact page</a>
+                or email <a href="mailto:@SiteEntity.ContactEmail">@SiteEntity.ContactEmail</a>.
+            </p>
+        </section>
+    </div>
+</article>

@@ -16,6 +16,9 @@ namespace ratpdf.Controllers
 
             if (page == null)
                 return NotFound();
+
+            Response.Headers["X-Robots-Tag"] = "noindex, follow";
+            ViewData["Robots"] = "noindex, follow";
             return View("DynamicRingSizerSEO",page);
         }
     }

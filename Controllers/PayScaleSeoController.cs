@@ -28,6 +28,9 @@ namespace ratpdf.Controllers
             if (content == null)
                 return NotFound();
 
+            Response.Headers["X-Robots-Tag"] = "noindex, follow";
+            ViewData["Robots"] = "noindex, follow";
+
             var viewModel = new PayslipSeoViewModel
             {
                 Content = content,

@@ -14,8 +14,9 @@ namespace ratpdf.Constants
             "RatPDF is a browser-based document productivity platform offering free and Pro PDF tools — compress, merge, split, convert PDF to Word/Excel, OCR, sign, watermark, and business invoice generation — using Ghostscript, LibreOffice, pdf2docx, and iText engines.";
 
         public const string FoundingDate = "2024";
-        public const string ContactEmail = "ethan.brooks@ratpdf.com";
+        public const string ContactEmail = "support@ratpdf.com";
         public const string ContactPath = "/Home/Contact";
+        public const string HelpPath = "/help";
         public const string AboutPath = "/Home/About";
         public const string EditorialPolicyPath = "/Home/EditorialPolicy";
         public const string PrivacyPath = "/Home/Privacy";

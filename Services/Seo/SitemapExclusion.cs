@@ -21,6 +21,10 @@ namespace ratpdf.Services.Seo
             "/pdf-to-excel/",
             "/sign-pdf/",
             "/watermark-pdf/",
+            "/salary-slip/",
+            "/ring-size/",
+            "/my-ip/",
+            "/content-decay-detector/",
         ];
 
         public static bool IsExcluded(string? path)

@@ -1,119 +1,102 @@
-﻿@{
-    ViewData["Title"] = "Disclaimer";
-    ViewData["Description"] = "Read the RatPDF disclaimer regarding the use of our online PDF tools, service availability, limitations, and responsibility for uploaded files.";
+﻿@using ratpdf.Constants
+@using ratpdf.Helpers
+@{
+    ViewData["Title"] = "Disclaimer — RatPDF";
+    ViewData["Description"] = "RatPDF disclaimer: service accuracy, file handling, user responsibilities, and limitations of liability for online PDF tools.";
+    ViewData["CanonicalUrl"] = PdfToolSeo.Canonical("/home/disclaimer");
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<head>
-    <meta name="robots" content="index, follow">
-</head>
+@section Head {
+    <script type="application/ld+json">
+    @Html.Raw(SchemaHelper.BuildWebPageLdJson(
+        "RatPDF Disclaimer",
+        ViewData["Description"]!.ToString()!,
+        PdfToolSeo.Canonical("/home/disclaimer"),
+        "WebPage",
+        new[] { "h1", "section" }))
+    </script>
+}
 
-<div class="card p-4">
+<article class="container my-5">
+    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px;">
+        <h1 class="fw-bold mb-3">Disclaimer</h1>
+        <p class="text-muted">Last updated: June 2025</p>
+        <p>
+            The information and services provided on <strong>@SiteEntity.Name</strong> are offered
+            for general informational and utility purposes only. By using this website, you agree to the terms below.
+        </p>
 
-    <h1>Disclaimer</h1>
+        <section aria-labelledby="accuracy">
+            <h2 id="accuracy" class="h5 fw-semibold mt-4">Service accuracy</h2>
+            <p>
+                While we strive to ensure that our tools function correctly, we do not guarantee that all services
+                will be error-free, uninterrupted, or suitable for every file type. Conversion quality depends on
+                whether a PDF is digital, scanned, password-protected, or contains complex layouts.
+            </p>
+            <p>Users should verify important documents after processing them through our tools.</p>
+        </section>
 
-    <p>
-        The information and services provided on <strong>RatPDF</strong> are offered
-        for general informational and utility purposes only.
-    </p>
+        <section aria-labelledby="file-handling">
+            <h2 id="file-handling" class="h5 fw-semibold mt-4">File handling</h2>
+            <p>
+                Most PDF operations are processed on secure cloud servers. Files are transmitted over HTTPS,
+                stored temporarily during processing, and deleted on a schedule. Some lightweight utilities
+                may run entirely in your browser. Full details are in our
+                <a href="@SiteEntity.PrivacyPath">Privacy Policy</a> and
+                <a href="@SiteEntity.SecurityPath">Security policy</a>.
+            </p>
+            <p>Users remain fully responsible for managing and safeguarding their files.</p>
+        </section>
 
-    <p>
-        By using this website, you agree to the terms outlined in this disclaimer.
-    </p>
+        <section aria-labelledby="user-responsibility">
+            <h2 id="user-responsibility" class="h5 fw-semibold mt-4">User responsibility</h2>
+            <p>
+                Users are responsible for ensuring they have the legal right to upload and process any documents
+                used with our tools. You must not use @SiteEntity.Name for processing illegal, copyrighted,
+                or unauthorized materials without permission.
+            </p>
+        </section>
 
-    <hr>
+        <section aria-labelledby="guides">
+            <h2 id="guides" class="h5 fw-semibold mt-4">Guides &amp; editorial content</h2>
+            <p>
+                Our guides, blog posts, and comparisons are written for educational purposes. While we test
+                procedures against real PDF engines, software versions and portal requirements change.
+                Always confirm current requirements with the receiving institution or platform.
+            </p>
+        </section>
 
-    <h3>Service Accuracy</h3>
+        <section aria-labelledby="external-links">
+            <h2 id="external-links" class="h5 fw-semibold mt-4">External links</h2>
+            <p>
+                Our website may contain links to third-party websites or services. We are not responsible
+                for the content, policies, or practices of those external sites.
+            </p>
+        </section>
 
-    <p>
-        While we strive to ensure that our tools function correctly and efficiently,
-        we do not guarantee that all services will be error-free, uninterrupted,
-        or suitable for every file type.
-    </p>
+        <section aria-labelledby="limitation">
+            <h2 id="limitation" class="h5 fw-semibold mt-4">Limitation of liability</h2>
+            <p>
+                @SiteEntity.Name shall not be held liable for any direct, indirect, or consequential damages
+                resulting from the use or inability to use our website or tools. All services are provided
+                on an <strong>"as-is"</strong> basis without warranties of any kind.
+            </p>
+        </section>
 
-    <p>
-        Users should verify important documents after processing them through
-        our tools.
-    </p>
+        <section aria-labelledby="changes">
+            <h2 id="changes" class="h5 fw-semibold mt-4">Changes</h2>
+            <p>
+                We may update this disclaimer from time to time. Users are encouraged to review this page periodically.
+            </p>
+        </section>
 
-    <hr>
-
-    <h3>No File Storage</h3>
-
-    <p>
-        RatPDF is designed to prioritize user privacy.
-    </p>
-
-    <ul>
-        <li>Files are processed locally within the user's browser.</li>
-        <li>Documents are not stored on our servers.</li>
-        <li>We do not retain or archive user files.</li>
-    </ul>
-
-    <p>
-        Users remain fully responsible for managing and safeguarding their files.
-    </p>
-
-    <hr>
-
-    <h3>User Responsibility</h3>
-
-    <p>
-        Users are responsible for ensuring that they have the legal right to
-        upload and process any documents used with our tools.
-    </p>
-
-    <p>
-        You must not use RatPDF for processing illegal, copyrighted, or
-        unauthorized materials without permission.
-    </p>
-
-    <hr>
-
-    <h3>External Links</h3>
-
-    <p>
-        Our website may contain links to third-party websites or services.
-        We are not responsible for the content, policies, or practices
-        of those external sites.
-    </p>
-
-    <hr>
-
-    <h3>Limitation of Liability</h3>
-
-    <p>
-        RatPDF shall not be held liable for any direct, indirect, or
-        consequential damages resulting from the use or inability to use
-        our website or tools.
-    </p>
-
-    <p>
-        All services are provided on an <strong>"as-is"</strong> basis without
-        any warranties of any kind.
-    </p>
-
-    <hr>
-
-    <h3>Changes to This Disclaimer</h3>
-
-    <p>
-        We may update this disclaimer from time to time to reflect
-        changes to our services or policies.
-    </p>
-
-    <p>
-        Users are encouraged to review this page periodically.
-    </p>
-
-    <hr>
-
-    <h3>Contact</h3>
-
-    <p>
-        If you have any questions regarding this disclaimer, please visit our
-        <a href="/Home/Contact">Contact Page</a>.
-    </p>
-
-    <p><strong>Last Updated:</strong> @DateTime.Now.Year</p>
-
-</div>
+        <section aria-labelledby="contact">
+            <h2 id="contact" class="h5 fw-semibold mt-4">Contact</h2>
+            <p>
+                Questions about this disclaimer? Visit our <a href="@SiteEntity.ContactPath">Contact page</a>
+                or email <a href="mailto:@SiteEntity.ContactEmail">@SiteEntity.ContactEmail</a>.
+            </p>
+        </section>
+    </div>
+</article>
