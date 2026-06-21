@@ -28,14 +28,14 @@ namespace ratpdf.Services.Seo
 
         public static string BuildContent(PdfToolVertical vertical, IntentClassification intent, string displayTitle, string slug, string toolHref)
         {
-            var v = Math.Abs(StringComparer.Ordinal.GetHashCode(slug)) % 3;
+            var v = Math.Abs(StringComparer.Ordinal.GetHashCode(slug)) % 12;
             var product = ProductName(vertical);
-            var intro = BuildIntro(vertical, intent, displayTitle, toolHref, product, v);
+            var intro = BuildIntro(vertical, intent, displayTitle, toolHref, product, v % 4);
             var body = vertical switch
             {
-                PdfToolVertical.PdfToWord => WordBody(v),
-                PdfToolVertical.EditPdf => EditBody(v),
-                PdfToolVertical.CompressPdf => CompressBody(v),
+                PdfToolVertical.PdfToWord => WordBody(v % 3) + ExtraSection(vertical, slug, v),
+                PdfToolVertical.EditPdf => EditBody(v % 3) + ExtraSection(vertical, slug, v),
+                PdfToolVertical.CompressPdf => CompressBody(v % 3) + ExtraSection(vertical, slug, v),
                 _ => "",
             };
             var workflow = BuildWorkflow(vertical, intent, toolHref);
@@ -45,15 +45,68 @@ namespace ratpdf.Services.Seo
         public static IReadOnlyList<(string Question, string Answer)> BuildFaqs(
             PdfToolVertical vertical, IntentClassification intent, string toolHref, string slug)
         {
-            var v = Math.Abs(StringComparer.Ordinal.GetHashCode(slug)) % 2;
+            var v = Math.Abs(StringComparer.Ordinal.GetHashCode(slug)) % 4;
             return vertical switch
             {
-                PdfToolVertical.PdfToWord => WordFaqs(toolHref, v),
-                PdfToolVertical.EditPdf => EditFaqs(toolHref, v),
-                PdfToolVertical.CompressPdf => CompressFaqs(toolHref, v),
+                PdfToolVertical.PdfToWord => WordFaqs(toolHref, v % 2),
+                PdfToolVertical.EditPdf => EditFaqs(toolHref, v % 2),
+                PdfToolVertical.CompressPdf => CompressFaqs(toolHref, v % 2),
                 _ => [],
             };
         }
+
+        private static string ExtraSection(PdfToolVertical vertical, string slug, int v) => (vertical, v / 3) switch
+        {
+            (PdfToolVertical.PdfToWord, 0) => """
+                <h2>After conversion</h2>
+                <p>Proofread headings and tables in Word before sending externally. For contracts, keep the original PDF archived.</p>
+                """,
+            (PdfToolVertical.PdfToWord, 1) => """
+                <h2>File size tips</h2>
+                <p>Large PDFs may need <a href="/pdf/split">Split PDF</a> on the free tier before upload. Pro supports up to 4 GB.</p>
+                """,
+            (PdfToolVertical.PdfToWord, 2) => """
+                <h2>Related tools</h2>
+                <p>Need plain text only? Use <a href="/pdf/pdftotext">PDF to Text</a>. Need spreadsheets? Try <a href="/pdf/pdftoexcel">PDF to Excel</a>.</p>
+                """,
+            (PdfToolVertical.PdfToWord, _) => """
+                <h2>Quality check</h2>
+                <p>Open the DOCX once and verify page breaks, footers, and merged cells before client delivery.</p>
+                """,
+            (PdfToolVertical.EditPdf, 0) => """
+                <h2>Before sharing</h2>
+                <p>Flatten interactive forms with <a href="/pdf/flattenpdf">Flatten PDF</a> so recipients cannot change field values.</p>
+                """,
+            (PdfToolVertical.EditPdf, 1) => """
+                <h2>Mobile editing</h2>
+                <p>RatPDF Edit PDF works in mobile Safari and Chrome — save to Files before uploading from iOS.</p>
+                """,
+            (PdfToolVertical.EditPdf, 2) => """
+                <h2>Combine with security</h2>
+                <p>Add a <a href="/pdf/watermark">watermark</a> for drafts or <a href="/pdf/password">password protect</a> before email.</p>
+                """,
+            (PdfToolVertical.EditPdf, _) => """
+                <h2>Version control</h2>
+                <p>Rename downloads with date and version (v2, v3) — browsers may overwrite files in Downloads.</p>
+                """,
+            (PdfToolVertical.CompressPdf, 0) => """
+                <h2>Portal limits</h2>
+                <p>Government and job portals often cap uploads at 100KB–2MB — see <a href="/research/attachment-size-limits">attachment size limits</a>.</p>
+                """,
+            (PdfToolVertical.CompressPdf, 1) => """
+                <h2>When not to compress</h2>
+                <p>Legal stamps and fine print may blur at High compression — try Recommended first, then split pages if still too large.</p>
+                """,
+            (PdfToolVertical.CompressPdf, 2) => """
+                <h2>Email workflow</h2>
+                <p>Compress before Gmail or Outlook upload — typical provider limits are 20–25 MB per attachment.</p>
+                """,
+            (PdfToolVertical.CompressPdf, _) => """
+                <h2>Verify output</h2>
+                <p>Zoom to 100% on signatures, MRZ lines, and table totals after compression before submitting.</p>
+                """,
+            _ => "",
+        };
 
         private static string ProductName(PdfToolVertical v) => v switch
         {
@@ -75,7 +128,8 @@ namespace ratpdf.Services.Seo
             {
                 0 => $"<p class=\"lead\">Use RatPDF for <strong>{title}</strong> — <a href=\"{toolHref}\">{product}</a> runs in your browser with HTTPS upload and automatic file deletion.</p>",
                 1 => $"<p class=\"lead\"><strong>{title}</strong> with RatPDF: free tier (3 uses/day, 200 MB). Pro supports larger files and unlimited daily use.</p>",
-                _ => $"<p class=\"lead\">This guide covers <strong>{title}</strong>. Start at <a href=\"{toolHref}\">{product}</a> on ratpdf.com.</p>",
+                2 => $"<p class=\"lead\">This guide covers <strong>{title}</strong>. Start at <a href=\"{toolHref}\">{product}</a> on ratpdf.com.</p>",
+                _ => $"<p class=\"lead\"><strong>{title}</strong> — open <a href=\"{toolHref}\">{product}</a>, upload once, download in seconds. No install required.</p>",
             };
         }
 

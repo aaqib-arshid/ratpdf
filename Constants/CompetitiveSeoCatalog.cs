@@ -129,7 +129,11 @@ namespace ratpdf.Constants
             ComparePages.FirstOrDefault(p => p.Slug.Equals(slug, StringComparison.OrdinalIgnoreCase));
 
         public static IReadOnlyList<string> AllComparePaths() =>
-            ComparePages.Select(p => $"{CompareHubPath}/{p.Slug}").Prepend(CompareHubPath).ToList();
+            ComparePages.Select(p => $"{CompareHubPath}/{p.Slug}")
+                .Concat(InvoiceProfessionCompareCatalog.AllComparePaths())
+                .Prepend(CompareHubPath)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
 
         public static IReadOnlyList<KeywordGap> GapsForCompetitor(string competitorSlug) =>
             KeywordGaps.Where(g =>

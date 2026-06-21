@@ -19,20 +19,11 @@ namespace ratpdf.Content
                 => GuideBodiesWave13.Get(slug),
             "browser-vs-desktop-pdf-tools"
                 => GuideBodiesWave14.Get(slug),
-            "word-to-pdf" => WordToPdf,
-            "pdf-txt-guide" or "pdf-to-text" => PdfToText,
-            "text-to-pdf" => TextToPdf,
-            "sign-pdf" => SignPdf,
-            "images-to-pdf" => ImagesToPdf,
-            "background-remover" => BackgroundRemover,
-            "word-counter-guide" => WordCounter,
-            "ring-size-converter-guide" => RingSize,
-            "my-ip-guide" => MyIp,
-            "invoice-generator-guide" => InvoiceGenerator,
-            "extract-images-from-pdf" => ExtractImages,
-            "watermark-vs-password-pdf" => WatermarkVsPassword,
-            "sign-pdf-legally" => SignPdfLegally,
-            "pdf-tool-alternatives" => PdfToolAlternatives,
+            "word-to-pdf" or "text-to-pdf" or "sign-pdf" or "images-to-pdf" or "background-remover"
+                or "word-counter-guide" or "ring-size-converter-guide" or "my-ip-guide"
+                or "invoice-generator-guide" or "extract-images-from-pdf" or "pdf-tool-alternatives"
+                or "watermark-vs-password-pdf" or "sign-pdf-legally" or "pdf-txt-guide" or "pdf-to-text"
+                => GuideBodiesWave64.Get(slug),
             _ => GuideBodiesExtended.Get(slug)
         };
 

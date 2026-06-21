@@ -2986,7 +2986,8 @@ namespace ratpdf.Content
                     Sources = ContentSourcesCatalog.GetForSlug(m.Slug),
                     FaqQuestions = fq,
                     FaqAnswers = fa,
-                    HowToSteps = GuideHowToSteps.Get(m.Slug)?.ToArray(),
+                    HowToSteps = GuideHowToSteps.Get(m.Slug)?.ToArray()
+                        ?? ContentGuideSeo.DefaultHowToSteps(m.Tool, m.Slug),
                 };
             }
         }

@@ -50,16 +50,25 @@ INTENT_SCORE = {"Transactional": 3, "Commercial": 2.5, "Informational": 1.5, "":
 
 
 def parse_switch_slugs(path: Path) -> dict[str, str]:
-    """Map slug -> const name from switch expression."""
+    """Map slug -> const name from switch expression (skips .Get delegations)."""
     text = path.read_text(encoding="utf-8")
     mapping: dict[str, str] = {}
-    for m in SWITCH_CASE_RE.finditer(text):
-        slug1, slug2, const = m.groups()
-        if const in ("Get", "GuideBodiesExtended", "GuideBodiesGenerated"):
+    if "=> slug switch" not in text and "Get(string slug) => slug switch" not in text:
+        return mapping
+    switch_part = text.split("=> slug switch", 1)[-1]
+    switch_part = switch_part.split("_ =>")[0]
+    for segment in switch_part.split(","):
+        if "=>" not in segment:
             continue
-        mapping[slug1] = const
-        if slug2:
-            mapping[slug2] = const
+        lhs, rhs = segment.split("=>", 1)
+        rhs = rhs.strip()
+        if ".Get(" in rhs or rhs.startswith("GuideBodies"):
+            continue
+        const = rhs.split("(")[0].strip()
+        if const in ("Get", "null"):
+            continue
+        for slug_m in re.finditer(r'"([a-z0-9-]+)"', lhs):
+            mapping[slug_m.group(1)] = const
     return mapping
 
 
@@ -69,14 +78,17 @@ def parse_const_bodies(path: Path) -> dict[str, str]:
 
 
 def parse_bodies() -> dict[str, dict]:
-    layers = [
-        ("hand_core", BODY_FILES["hand_core"]),
-        ("hand_extended", BODY_FILES["hand_extended"]),
-        ("hand_medical", BODY_FILES["hand_medical"]),
-        ("generated", BODY_FILES["generated"]),
-    ]
-    layer_rank = {"generated": 0, "hand_extended": 1, "hand_core": 2}
+    layer_rank = {"generated": 0, "wave": 2, "hand_extended": 3, "hand_core": 4}
     bodies: dict[str, dict] = {}
+    wave_files = sorted(CONTENT.glob("GuideBodiesWave*.cs"))
+    layers: list[tuple[str, Path]] = [("generated", BODY_FILES["generated"])]
+    layers.extend(("wave", p) for p in wave_files)
+    layers.extend(
+        [
+            ("hand_extended", BODY_FILES["hand_extended"]),
+            ("hand_core", BODY_FILES["hand_core"]),
+        ]
+    )
     for layer, path in layers:
         if not path.exists():
             continue
@@ -84,7 +96,7 @@ def parse_bodies() -> dict[str, dict]:
         const_to_html = parse_const_bodies(path)
         for slug, const in slug_to_const.items():
             html = const_to_html.get(const, "")
-            if layer == "hand_medical":
+            if not html.strip():
                 continue
             if slug in bodies and layer_rank.get(bodies[slug]["layer"], 0) >= layer_rank[layer]:
                 continue

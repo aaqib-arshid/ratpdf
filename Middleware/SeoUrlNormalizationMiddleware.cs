@@ -22,6 +22,8 @@ namespace ratpdf.Middleware
                 ["/Subscription/Plans"] = "/subscription/plans",
                 ["/Invoice/Create"] = "/invoice/create",
                 ["/Home/About"] = "/home/about",
+                ["/compress-pdf-under-100kb"] = "/compress-pdf-to-100kb",
+                ["/compress-pdf-above-100kb-free"] = "/compress-pdf-to-100kb",
             };
 
         private static readonly Regex MultiSlash = new(@"/{2,}", RegexOptions.Compiled);

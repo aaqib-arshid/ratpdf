@@ -49,6 +49,21 @@
         </div>
     </section>
 
+    <section class="mb-5">
+        <h2 class="h5 fw-bold mb-3">Best invoice generators by profession</h2>
+        <div class="row g-3">
+            @foreach (var inv in InvoiceProfessionCompareCatalog.Pages)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <a href="@CompetitiveSeoCatalog.CompareHubPath/@inv.Slug" class="rp-guide-card d-block text-decoration-none h-100">
+                        <h3 class="h6 fw-bold text-dark mb-1">@inv.Profession</h3>
+                        <p class="small text-muted mb-0">@inv.Description</p>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+
     <section class="mb-4">
         <h2 class="h5 fw-bold mb-2">Related guide</h2>
         <p class="small text-muted mb-2"><a href="/guides/pdf-tool-alternatives">Best PDF tool alternatives in 2026</a> — how to choose and migrate from another service.</p>

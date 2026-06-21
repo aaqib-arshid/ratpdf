@@ -3,13 +3,13 @@ namespace ratpdf.Content
     /// <summary>Staggered review dates and default FAQ resolution for guides.</summary>
     internal static class ContentGuideSeo
     {
-        private static readonly DateTime ReviewEpoch = new(2026, 1, 1);
+        private static readonly DateTime ReviewEpoch = new(2026, 6, 1);
 
         public static DateTime LastReviewedFor(string slug, string? cluster, string category)
         {
             var key = cluster ?? category;
             var hash = Hash(slug) ^ Hash(key);
-            var dayOffset = Math.Abs(hash % 120);
+            var dayOffset = Math.Abs(hash % 90);
             return ReviewEpoch.AddDays(dayOffset);
         }
 
@@ -224,7 +224,50 @@ namespace ratpdf.Content
             if (c.Contains("compliance") || c.Contains("gst") || c.Contains("gdpr") || c.Contains("wcag"))
                 return ComplianceFaqs(slug);
 
-            return (null, null);
+            return DefaultFaqs(slug, toolUrl);
+        }
+
+        /// <summary>Generic HowTo steps when GuideHowToSteps has no slug-specific entry.</summary>
+        public static string[]? DefaultHowToSteps(string? toolUrl, string slug)
+        {
+            if (string.IsNullOrEmpty(toolUrl)) return null;
+            var tool = ToolLabel(toolUrl);
+            return
+            [
+                $"Open {tool} at ratpdf.com{toolUrl}.",
+                "Upload your file or enter the required details.",
+                "Process and wait for the result (most jobs finish in under a minute).",
+                "Download the output and verify quality before sharing externally.",
+            ];
+        }
+
+        private static string ToolLabel(string toolUrl)
+        {
+            if (toolUrl.Contains("/invoice", StringComparison.OrdinalIgnoreCase)) return "Create Invoice";
+            if (toolUrl.Contains("pdftodoc", StringComparison.OrdinalIgnoreCase)) return "PDF to Word";
+            if (toolUrl.Contains("compress", StringComparison.OrdinalIgnoreCase)) return "Compress PDF";
+            if (toolUrl.Contains("/merge", StringComparison.OrdinalIgnoreCase)) return "Merge PDF";
+            if (toolUrl.Contains("/split", StringComparison.OrdinalIgnoreCase)) return "Split PDF";
+            if (toolUrl.Contains("ocrpdf", StringComparison.OrdinalIgnoreCase)) return "OCR PDF";
+            return "the free tool";
+        }
+
+        private static (string[], string[]) DefaultFaqs(string slug, string? toolUrl)
+        {
+            var tool = string.IsNullOrEmpty(toolUrl) ? "/guides/pdf-tools" : toolUrl;
+            var label = ToolLabel(tool);
+            return (
+                [
+                    "How do I complete this task with RatPDF?",
+                    "Is this free on RatPDF?",
+                    "What are the upload and daily limits?",
+                ],
+                [
+                    $"Follow the workflow in this guide, then open {label} at ratpdf.com{tool}.",
+                    "Yes — RatPDF free tier includes 3 uses per tool per day (200 MB per file).",
+                    "Free: 200 MB per file, 3 uses/tool/day. Pro supports uploads up to 4 GB — see /subscription/plans.",
+                ]
+            );
         }
 
         private static (string[], string[]) InvoiceFaqs(string slug) =>

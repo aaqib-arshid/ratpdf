@@ -1,7 +1,6 @@
 @model ratpdf.Models.ContentEntry
 @using ratpdf.Content
 @using ratpdf.Constants
-
 <article class="rp-article">
     <div class="container py-4 py-lg-5">
         <nav aria-label="breadcrumb" class="mb-3">
@@ -47,6 +46,14 @@
                     @Html.Raw(Model.BodyHtml)
                 </div>
 
+                @if (!string.IsNullOrEmpty(Model.ToolUrl))
+                {
+                    ViewData["ToolUrl"] = Model.ToolUrl;
+                    ViewData["ToolCtaLabel"] = Model.ToolCtaLabel;
+                    ViewData["ToolCtaTitle"] = "Ready to try it?";
+                    @await Html.PartialAsync("_ToolTryCta")
+                }
+
                 @if (Model.FaqQuestions != null && Model.FaqAnswers != null && Model.FaqQuestions.Length > 0)
                 {
                     <section class="mt-5">
@@ -75,6 +82,23 @@
                     </ul>
                     <hr />
                     <p class="small text-muted mb-2">More PDF help</p>
+                    @if (Model.ToolUrl?.Contains("/invoice", StringComparison.OrdinalIgnoreCase) == true)
+                    {
+                        var professionSlug = InvoiceProfessionCompareCatalog.CompareSlugForGuide(Model.Slug);
+                        if (professionSlug != null)
+                        {
+                            <a href="/compare/@professionSlug" class="btn btn-outline-secondary btn-sm w-100 mb-2">Compare invoice tools</a>
+                        }
+                    }
+                    @if (Model.ToolUrl?.Contains("/compress", StringComparison.OrdinalIgnoreCase) == true
+                        || Model.Slug.Contains("compress", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <a href="/research/attachment-size-limits" class="btn btn-outline-secondary btn-sm w-100 mb-2">Email attachment limits</a>
+                    }
+                    @if (Model.Category is "PDF" or "Security" or "Business")
+                    {
+                        <a href="/compare" class="btn btn-outline-secondary btn-sm w-100 mb-2">PDF tool comparisons</a>
+                    }
                     <a href="@TopicalAuthority.PdfToolsHubPath" class="btn btn-outline-primary btn-sm w-100 mb-2">PDF tools hub</a>
                     @if (TopicalAuthority.IsDeveloperCategory(Model.Category))
                     {

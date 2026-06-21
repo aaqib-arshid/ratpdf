@@ -19,6 +19,16 @@ namespace ratpdf.Controllers
         [HttpGet("{slug}")]
         public IActionResult Alternative(string slug)
         {
+            var profession = InvoiceProfessionCompareCatalog.GetPage(slug);
+            if (profession != null)
+            {
+                ViewData["Title"] = profession.Title;
+                ViewData["Description"] = profession.Description;
+                ViewData["CanonicalUrl"] = PdfToolSeo.Canonical($"{CompetitiveSeoCatalog.CompareHubPath}/{profession.Slug}");
+                ViewData["LightLayout"] = true;
+                return View("ProfessionCompare", profession);
+            }
+
             var page = CompetitiveSeoCatalog.GetComparePage(slug);
             if (page == null) return NotFound();
 
