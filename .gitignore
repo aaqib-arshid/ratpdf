@@ -370,3 +370,7 @@ FodyWeavers.xsd
 /_*.pdf
 /_cookies*.txt
 /wwwroot/test-cert.pdf
+
+# Guide localization pipeline artifacts (regenerate via dotnet / python scripts)
+/Data/guides-manifest.json
+/Data/localization-log.jsonl

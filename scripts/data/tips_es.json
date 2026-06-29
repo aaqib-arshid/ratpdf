@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "locale": "es",
+  "categories": {
+    "compress": {
+      "tips": [
+        "Prueba el nivel Recomendado antes del Extremo — muchos portales aceptan el archivo tras una sola pasada moderada.",
+        "Renombra el archivo con sufijo -comprimido para no confundirlo con el original firmado.",
+        "Si el PDF tiene muchas páginas vectoriales puras, la reducción será menor; enfócate en escaneos y fotos incrustadas."
+      ]
+    },
+    "merge": {
+      "tips": [
+        "Usa prefijos numéricos en los nombres de archivo para garantizar el orden correcto sin arrastrar manualmente.",
+        "Revisa el total de páginas después de unir — un anexo en blanco suele indicar exportación incompleta.",
+        "Une solo lo que se enviará; mantén anexos sensibles en archivos separados cuando el pliego lo exija."
+      ]
+    },
+    "split": {
+      "tips": [
+        "Nombra cada parte con el rango de páginas (contrato-p12-18.pdf) para que el cliente encuentre sin abrir todo.",
+        "Divide antes de enviar por WhatsApp si el archivo supera 16 MB — la calidad visual queda mejor que con compresión extrema.",
+        "En lotes de recibos, un PDF por página facilita el registro contable después del OCR."
+      ]
+    },
+    "convert": {
+      "tips": [
+        "Abre el DOCX convertido y verifica encabezados de tabla antes de reenviar al cliente.",
+        "Para escaneos, el OCR es obligatorio — sáltalo y perderás horas formateando imágenes en Word.",
+        "Convierte una muestra de 2–3 páginas antes de migrar un lote completo de documentos antiguos."
+      ]
+    },
+    "sign": {
+      "tips": [
+        "Incluye fecha y cargo debajo de la firma digital en contratos B2B.",
+        "Envía la versión firmada en PDF, no una captura de pantalla del lector.",
+        "Para adendas, une el término firmado al contrato principal y reindexa el archivo en el CRM."
+      ]
+    },
+    "protect": {
+      "tips": [
+        "Envía la contraseña por un canal distinto al correo que lleva el PDF.",
+        "Usa frases largas en lugar de fechas de nacimiento — son más fáciles de recordar y más difíciles de adivinar.",
+        "Marca de agua en borrador; contraseña fuerte en la versión que sale al cliente."
+      ]
+    },
+    "edit": {
+      "tips": [
+        "Rota páginas antes de agregar numeración — si no, la paginación quedará invertida.",
+        "Usa marca de agua diagonal solo en borrador; en documento final prefiere un sello discreto en el pie.",
+        "Después de aplanar, intenta seleccionar texto del formulario — si no se selecciona, el aplanado funcionó."
+      ]
+    },
+    "ocr": {
+      "tips": [
+        "Prefiere escanear en escala de grises para documentos solo de texto — archivo más liviano y OCR más rápido.",
+        "Corrige manualmente números de protocolo y montos monetarios después del OCR.",
+        "Guarda una versión buscable y otra comprimida para envío si el portal tiene un tope estricto."
+      ]
+    }
+  }
+}

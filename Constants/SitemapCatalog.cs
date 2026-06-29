@@ -1,52 +1,42 @@
-namespace ratpdf.Constants
-{
-    /// <summary>Child sitemaps referenced by /sitemap.xml index.</summary>
-    public static class SitemapCatalog
-    {
-        /// <summary>Dynamically generated urlsets (SeoController).</summary>
-        public static readonly string[] DynamicChildren =
-        [
-            "/sitemaps/sitemap-core.xml",
-            "/sitemaps/sitemap-guides.xml",
-            "/sitemaps/sitemap-blog.xml",
-            "/sitemaps/sitemap-compare.xml",
-        ];
-
-        /// <summary>Static urlsets in wwwroot/sitemaps/.</summary>
-        public static readonly string[] StaticChildren =
-        [
-            "/sitemaps/sitemaptools.xml",
-            "/sitemaps/sitemap-pdf-to-word.xml",
-            "/sitemaps/sitemap-pdftotxt-seo.xml",
-            "/sitemaps/sitemap-editpdf.xml",
-            "/sitemaps/sitemap_bgremove.xml",
-            "/sitemaps/sitemap-invoice.xml",
-            "/sitemaps/html_sitemap.xml",
-            "/sitemaps/json_sitemap.xml",
-            "/sitemaps/jwt_sitemap.xml",
-        ];
-
-        /// <summary>Compress programmatic chunks (urlsets, up to 10k URLs each).</summary>
-        public static IEnumerable<string> CompressChunkPaths(IReadOnlyList<string> chunks) => chunks;
-
-        public static List<string> BuildMainIndexChildren(IReadOnlyList<string> compressSitemapChunks) =>
-            DynamicChildren
-                .Concat(StaticChildren)
-                .Concat(compressSitemapChunks.Select((p, i) => i == 0 && compressSitemapChunks.Count == 1
-                    ? "/sitemaps/sitemap-compress-seo.xml"
-                    : p))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToList();
-
-        /// <summary>Legacy paths kept as 301 redirects in SeoController.</summary>
-        public static readonly string[] LegacyRedirectPaths =
-        [
-            "/sitemaps/site.xml",
-            "/sitemaps/guides.xml",
-            "/sitemaps/blog.xml",
-            "/sitemaps/pdf-tool-landings.xml",
-            "/sitemaps/category-tool-landings.xml",
-            "/sitemaps/sitemap_pdf_to_txt.xml",
-        ];
-    }
-}
+namespace ratpdf.Constants
+{
+    /// <summary>Child sitemaps referenced by /sitemap.xml index (~7,906 URLs total).</summary>
+    public static class SitemapCatalog
+    {
+        /// <summary>Nine clean child sitemaps (no compress keyword chunks or legacy verticals).</summary>
+        public static readonly string[] MainIndexChildren =
+        [
+            "/sitemaps/sitemap-core.xml",
+            "/sitemaps/sitemap-tools.xml",
+            "/sitemaps/sitemap-blog.xml",
+            "/sitemaps/sitemap-programmatic.xml",
+            "/sitemaps/sitemap-guides-en.xml",
+            "/sitemaps/sitemap-guides-pt.xml",
+            "/sitemaps/sitemap-guides-es.xml",
+            "/sitemaps/sitemap-guides-de.xml",
+            "/sitemaps/sitemap-guides-id.xml",
+            "/sitemaps/sitemap-guides-fr.xml",
+        ];
+
+        public static List<string> BuildMainIndexChildren() =>
+            MainIndexChildren.ToList();
+
+        /// <summary>Legacy paths kept as 301 redirects in SeoController.</summary>
+        public static readonly string[] LegacyRedirectPaths =
+        [
+            "/sitemaps/site.xml",
+            "/sitemaps/guides.xml",
+            "/sitemaps/sitemap-guides.xml",
+            "/sitemaps/blog.xml",
+            "/sitemaps/sitemaptools.xml",
+            "/sitemaps/sitemap-compare.xml",
+            "/sitemaps/sitemap-guides-localized.xml",
+            "/sitemaps/guides-localized.xml",
+            "/sitemaps/pdf-tool-landings.xml",
+            "/sitemaps/category-tool-landings.xml",
+            "/sitemaps/sitemap_pdf_to_txt.xml",
+            "/sitemaps/sitemap-compress-seo.xml",
+            "/sitemaps/compress-pdf-programmatic.xml",
+        ];
+    }
+}

@@ -32,6 +32,10 @@ namespace ratpdf.Controllers
             return View();
         }
 
+        [HttpGet("/pricing")]
+        [AllowAnonymous]
+        public IActionResult Pricing() => View("Plans");
+
         // POST: /Subscription/CreateCheckout
         [HttpPost]
         [ValidateAntiForgeryToken]

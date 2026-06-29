@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "locale": "de",
+  "templates": [
+    "Sie müssen {action}? In diesem Guide zeigen wir, wie Sie {keyword} mit RatPDF — {benefit}.",
+    "Viele Nutzer in Deutschland suchen nach {keyword} ohne kostenpflichtige Desktop-Software. Hier ein direkter Browser-Workflow.",
+    "Wenn Sie gerade {keyword} versuchen, ist dieses Tutorial für die Lösung in Minuten statt Stunden gedacht.",
+    "{Action} wirkt kompliziert, mit dem richtigen Tool wird es einfach. Sehen Sie den vom RatPDF-Team getesteten Ablauf.",
+    "Bevor Sie eine Desktop-Lizenz kaufen, testen Sie {keyword} online: läuft in Chrome, Edge und Safari ohne Pflicht-Registrierung.",
+    "Dieser Artikel beantwortet die häufigsten Fragen zu {keyword} im deutschsprachigen Raum — E-Mail-Limits, Portale und Mobilgerät inklusive.",
+    "Büroprofis nutzen {keyword} täglich. Wir ordnen den Workflow, der Nacharbeit und abgelehnte Dateien vermeidet.",
+    "Sie wollen {benefit}? Starten Sie mit {keyword}: wann welche Stufe, Shortcuts und typische Fehler."
+  ],
+  "category_actions": {
+    "compress": ["ein schweres PDF komprimieren", "die Anhanggröße reduzieren", "PDF per Gmail ohne Fehler senden"],
+    "merge": ["mehrere PDFs zu einer Datei zusammenfügen", "Vertrag und Anhänge vereinen", "Dokumente für Versand ordnen"],
+    "split": ["großes PDF in Teile aufteilen", "Seiten aus einem Vertrag extrahieren", "langen Scan in Dateien trennen"],
+    "convert": ["PDF in Word konvertieren", "Tabelle nach Excel extrahieren", "DOCX in PDF umwandeln"],
+    "sign": ["einen Vertrag im PDF unterschreiben", "ein Angebot digital freigeben", "Unterschrift auf Kostenvoranschlag setzen"],
+    "protect": ["PDF mit Passwort schützen", "Kopieren des Vertrags sperren", "vertrauliches Dokument versenden"],
+    "edit": ["ein PDF schnell korrigieren", "Wasserzeichen auf Entwurf setzen", "Scan-Seiten drehen"],
+    "ocr": ["Scan durchsuchbar machen", "Text aus fotografiertem Dokument extrahieren", "PDF für Suche vorbereiten"]
+  },
+  "benefits": [
+    "im Alltag Zeit sparen",
+    "Ablehnung in Portalen und E-Mail vermeiden",
+    "Qualität ohne Software-Installation behalten",
+    "vom Handy oder Laptop arbeiten",
+    "Kosten für Desktop-Lizenzen senken",
+    "dateien kundenfertig liefern"
+  ],
+  "section_labels": {
+    "steps": "Schritt für Schritt",
+    "faq": "Häufig gestellte Fragen",
+    "tips": "Prof-Tipps",
+    "related": "Verwandte Guides",
+    "cta": "Jetzt ausprobieren",
+    "context": "Kontext im DACH-Raum",
+    "detail": "Wann dieser Ablauf passt",
+    "extra": "Best Practices"
+  },
+  "category_expansions": {
+    "compress": [
+      "In Deutschland begrenzen Jobportale, Hochschulen und Behörden Uploads oft auf 2 bis 10 MB. Vor dem Hochladen komprimieren vermeidet generische Fehler und Last-Minute-Nacharbeit.",
+      "Dateien mit vielen Fotos — Gutachten, Kataloge, Projekte — sprengen Limits am häufigsten. Bilder neu zu kodieren reduziert oft dutzende Megabyte ohne Vektortext zu löschen.",
+      "In Buchhaltung oder Recht ein Komprimierungsniveau pro Dokumenttyp festlegen: Gering für signierte Verträge, Empfohlen für interne E-Mail."
+    ],
+    "merge": [
+      "Angebote in Deutschland mischen oft Angebot, technischen Anhang und Bescheinigungen. Richtige Reihenfolge verhindert, dass Prüfer Dateien in falscher Folge öffnen.",
+      "Beim Zusammenfügen unterschiedlicher Scan-Qualitäten Seitenausrichtung prüfen. Eine quer liegende Seite mitten im Paket wirkt nachlässig.",
+      "Für Prüfungen Originale separat aufbewahren und nur für externen Versand ein zusammengefügtes Paket erzeugen."
+    ],
+    "split": [
+      "Wenn Komprimierung Gutachten oder Pläne verschlechtern würde, bewahrt Aufteilen nach Seitenbereich die Qualität und hält Upload-Limits ein.",
+      "Extrahieren Sie nur den unterschriebenen Anhang aus einem 80-seitigen Vertrag — Empfänger danken es, nicht das ganze Dokument laden zu müssen.",
+      "Nach dem Aufteilen gescannter Belege im Batch OCR auf jedem Teil ausführen, wenn Sie nach USt-IdNr. oder Datum suchen müssen."
+    ],
+    "convert": [
+      "Konvertierung ist kein Wunder: digitales PDF mit echten Tabellen geht besser als Dokumentenfoto. Dateityp vor Toolwahl erkennen.",
+      "Für lange Textbearbeitung ist Word produktiver als direkte PDF-Bearbeitung. Konvertieren, bearbeiten, PDF zurück exportieren.",
+      "Bei Kontoauszügen und Tabellen Dezimaltrennzeichen und deutsche Datumsformate (TT.MM.JJJJ) nach Excel-Export prüfen."
+    ],
+    "sign": [
+      "Für Freelancer und KMU schließt digitale PDF-Unterschrift oft Dienstleistungsverträge ohne Notarbesuch ab.",
+      "Entwurf und Finale trennen: Wasserzeichen in der Prüfung, Unterschrift und Passwort in der Version, die das Unternehmen verlässt.",
+      "Versand-E-Mail und Dateiname mit Datum aufbewahren — hilft bei einfachen Streitigkeiten ohne qualifizierte Signatur."
+    ],
+    "protect": [
+      "Einen Vertrag ungeschützt per gemeinsamem Postfach zu senden ist unnötiges Risiko — starkes Passwort und separater Kanal für das Passwort lösen die meisten Fälle.",
+      "Wasserzeichen ENTWURF signalisiert internen Status; Verschlüsselung verhindert, dass Unbefugte den Inhalt öffnen.",
+      "Standardpasswörter wechseln und dokumentieren, wer Zugang erhielt — Unternehmens-IT verlangt das oft von Lieferanten."
+    ],
+    "edit": [
+      "Leichte PDF-Bearbeitung löst Stempel, Anmerkung und Drehung ohne Word. Für punktuelle Korrekturen vor Veröffentlichung.",
+      "Wasserzeichen ENTWURF oder PRÜFUNG schützt visuell bei interner Freigabe, ersetzt aber keine Verschlüsselung.",
+      "Nach dem Flatten ein Formularfeld im Reader testen, bevor Upload zu Portalen mit Sperre für bearbeitbare Felder."
+    ],
+    "ocr": [
+      "Handy-Scan ist praktisch, Schatten und Perspektive schaden OCR. Dokument flach ablegen und gut beleuchten.",
+      "Nach OCR nach bekannter Steuernummer oder Betrag suchen, um die Textschicht zu validieren.",
+      "Bei Fristen ist OCR plus manuelle Zahlenprüfung schneller als ganze Seiten neu zu tippen."
+    ]
+  }
+}

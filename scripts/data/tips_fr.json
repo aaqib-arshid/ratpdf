@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "locale": "fr",
+  "categories": {
+    "compress": {
+      "tips": [
+        "Testez le niveau Recommandé avant Extrême — beaucoup de portails acceptent après un seul passage modéré.",
+        "Renommez le fichier avec suffixe -compresse pour ne pas le confondre avec l'original signé.",
+        "Si le PDF a beaucoup de pages vectorielles pures, la réduction sera faible ; ciblez scans et photos intégrées."
+      ]
+    },
+    "merge": {
+      "tips": [
+        "Utilisez des préfixes numériques dans les noms de fichiers pour garantir l'ordre sans glisser-déposer manuel.",
+        "Vérifiez le total de pages après fusion — une annexe vide signale souvent un export incomplet.",
+        "Fusionnez seulement ce qui part en envoi ; gardez les pièces sensibles séparées si le cahier des charges l'exige."
+      ]
+    },
+    "split": {
+      "tips": [
+        "Nommez chaque partie avec la plage de pages (contrat-p12-18.pdf) pour que le client trouve sans tout ouvrir.",
+        "Divisez avant envoi WhatsApp si le fichier dépasse 16 Mo — la qualité visuelle reste meilleure qu'une compression extrême.",
+        "Sur des lots de reçus, un PDF par page facilite la saisie comptable après OCR."
+      ]
+    },
+    "convert": {
+      "tips": [
+        "Ouvrez le DOCX converti et vérifiez les en-têtes de tableau avant renvoi client.",
+        "Pour les scans, l'OCR est obligatoire — sautez cette étape et vous perdez des heures à formater des images dans Word.",
+        "Convertissez un échantillon de 2–3 pages avant de migrer tout un lot de documents anciens."
+      ]
+    },
+    "sign": {
+      "tips": [
+        "Incluez date et fonction sous la signature numérique sur les contrats B2B.",
+        "Envoyez la version signée en PDF, pas une capture d'écran du lecteur.",
+        "Pour les avenants, fusionnez le document signé au contrat principal et réindexez le fichier dans le CRM."
+      ]
+    },
+    "protect": {
+      "tips": [
+        "Envoyez le mot de passe par un canal différent de l'e-mail qui porte le PDF.",
+        "Préférez des phrases longues aux dates de naissance — plus faciles à retenir et plus dures à deviner.",
+        "Filigrane sur brouillon ; mot de passe fort sur la version envoyée au client."
+      ]
+    },
+    "edit": {
+      "tips": [
+        "Pivotez les pages avant d'ajouter la numérotation — sinon la pagination sera inversée.",
+        "Filigrane diagonal uniquement sur brouillon ; sur document final préférez un tampon discret en pied de page.",
+        "Après aplatissement, essayez de sélectionner le texte du formulaire — si impossible, l'aplatissement a fonctionné."
+      ]
+    },
+    "ocr": {
+      "tips": [
+        "Préférez le scan en niveaux de gris pour documents texte seul — fichier plus léger et OCR plus rapide.",
+        "Corrigez manuellement numéros de dossier et montants après OCR.",
+        "Conservez une version searchable et une version compressée pour envoi si le portail a un plafond strict."
+      ]
+    }
+  }
+}

@@ -10,12 +10,22 @@ namespace ratpdf.Services.Seo
             var sb = new StringBuilder();
             sb.AppendLine("User-agent: *");
             sb.AppendLine("Allow: /");
-            sb.AppendLine("Disallow: /account/");
-            sb.AppendLine("Disallow: /invoicedashboard/");
-            sb.AppendLine("Disallow: /subscription/");
+            sb.AppendLine("Allow: /guides/");
+            sb.AppendLine("Allow: /pt/guides/");
+            sb.AppendLine("Allow: /es/guides/");
+            sb.AppendLine("Allow: /de/guides/");
+            sb.AppendLine("Allow: /id/guides/");
+            sb.AppendLine("Allow: /fr/guides/");
+            sb.AppendLine("Allow: /blog/");
+            sb.AppendLine("Allow: /tools/");
+            sb.AppendLine("Disallow: /*?*");
+            sb.AppendLine("Disallow: /login");
+            sb.AppendLine("Disallow: /register");
+            sb.AppendLine("Disallow: /dashboard");
+            sb.AppendLine("Disallow: /account");
             sb.AppendLine("Disallow: /api/");
-            sb.AppendLine("Disallow: /error/");
-            sb.AppendLine("Disallow: /*-keywords.txt");
+            sb.AppendLine("Disallow: /admin/");
+            sb.AppendLine("Disallow: /sitemaps/sitemap-guides-localized.xml");
             sb.AppendLine();
             sb.AppendLine("# AI search & answer engine crawlers (discoverability)");
             foreach (var bot in new[] { "GPTBot", "ChatGPT-User", "Google-Extended", "PerplexityBot", "ClaudeBot", "anthropic-ai", "Applebot-Extended", "cohere-ai" })

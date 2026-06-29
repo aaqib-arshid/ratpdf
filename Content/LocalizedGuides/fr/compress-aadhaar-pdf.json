@@ -1,0 +1,103 @@
+{
+  "slug": "compress-aadhaar-pdf",
+  "sourceSlug": "compress-aadhaar-pdf",
+  "locale": "fr",
+  "urlPrefix": "fr",
+  "title": "Compresser PDF - fichiers légers par e-mail | RatPDF",
+  "description": "Apprenez à compresser PDF en 3 étapes simples. Guide gratuit dans le navigateur avec RatPDF — rapide sans installation.",
+  "primaryKeyword": "compresser PDF",
+  "category": "PDF",
+  "contentCategory": "compress",
+  "toolUrl": "/pdf/compress",
+  "toolCtaLabel": "Utiliser l'outil gratuit →",
+  "bodyHtml": "<h1>Compresser PDF</h1>\n<p class=\"rp-intro\">Si vous essayez de compresser PDF maintenant, ce tutoriel est fait pour régler le problème en minutes, pas en heures.</p>\n<h2>Quand utiliser ce flux</h2>\n<p>Dans ce guide (compress aadhaar pdf), le scénario habituel est lorsque la date limite approche et le fichier doit respecter la taille max.</p>\n<p>Données personnelles en professionnels et équipes de bureau : compresser PDF ne remplace pas l&#x27;anonymisation.</p>\n<p>Ouvrez dans Adobe, Chrome, Edge après compresser PDF pour compatibilité.</p>\n<h2>Contexte en France</h2>\n<p>En France, portails emploi, universités et administrations limitent souvent les envois entre 2 Mo et 10 Mo. Compresser avant upload évite erreurs génériques et rush de dernière minute.</p>\n<p>Les fichiers avec beaucoup de photos — rapports, catalogues, projets — dépassent le plus souvent la limite. Réencoder les images réduit souvent des dizaines de mégaoctets sans effacer le texte vectoriel.</p>\n<p>En comptabilité ou juridique, standardisez un niveau de compression par type de document : Faible pour contrats signés, Recommandé pour e-mail interne.</p>\n<h2>Pas à pas</h2><ol>\n<li>Ouvrez l&#x27;outil RatPDF pour compresser PDF.</li>\n<li>Téléversez le document dans RatPDF pour compresser PDF.</li>\n<li>Téléchargez le fichier final et vérifiez la taille.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/pdf/compress\">Utiliser l&#x27;outil gratuit →</a></p>\n<h2>Questions fréquentes</h2>\n<h3>Un PDF scanné se compresse-t-il moins qu&#x27;un PDF natif ?</h3><p>En général oui, car chaque page est déjà une image. L&#x27;OCR avant compression aide pour la recherche, mais la réduction de taille vient surtout de la baisse de résolution des images internes.</p>\n<h3>Compresser avant ou après la fusion de plusieurs annexes ?</h3><p>Fusionnez dans l&#x27;ordre final avec RatPDF, puis compressez une seule fois à la fin. Recompresser le même lot plusieurs fois dégrade les images inutilement et peut créer des artefacts visibles.</p>\n<h3>La compression d&#x27;un PDF rend-elle le texte illisible ?</h3><p>Non pour les PDF numériques : le texte vectoriel reste net et seules les images intégrées sont réencodées. Si le document comporte des tampons ou de la petite police, choisissez le niveau Faible dans RatPDF et vérifiez l&#x27;affichage à 150 % avant envoi au client.</p>\n<h2>Conseils pro</h2><ul>\n<li>Testez le niveau Recommandé avant Extrême — beaucoup de portails acceptent après un seul passage modéré.</li>\n<li>Renommez le fichier avec suffixe -compresse pour ne pas le confondre avec l&#x27;original signé.</li>\n<li>Si le PDF a beaucoup de pages vectorielles pures, la réduction sera faible ; ciblez scans et photos intégrées.</li>\n</ul>\n<h2>Guides associés</h2><ul>\n<li><a href=\"/fr/guides/compress-pdf-government\">Compresser PDF</a></li>\n<li><a href=\"/fr/guides/compress-pdf-healthcare-admin\">Compresser PDF</a></li>\n<li><a href=\"/fr/guides/compress-pdf-hr\">Compresser PDF</a></li>\n</ul>\n<p><a href=\"/pdf/compress\">Utiliser l&#x27;outil gratuit →</a></p>\n<p><a href=\"/fr/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Compresser PDF - fichiers légers par e-mail | RatPDF\",\"description\":\"Apprenez à compresser PDF en 3 étapes simples. Guide gratuit dans le navigateur avec RatPDF — rapide sans installation.\",\"inLanguage\":\"fr\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Étape 1\",\"text\":\"Ouvrez l'outil RatPDF pour compresser PDF.\"},{\"@type\":\"HowToStep\",\"position\":2,\"name\":\"Étape 2\",\"text\":\"Téléversez le document dans RatPDF pour compresser PDF.\"},{\"@type\":\"HowToStep\",\"position\":3,\"name\":\"Étape 3\",\"text\":\"Téléchargez le fichier final et vérifiez la taille.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"fr\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"Un PDF scanné se compresse-t-il moins qu'un PDF natif ?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"En général oui, car chaque page est déjà une image. L'OCR avant compression aide pour la recherche, mais la réduction de taille vient surtout de la baisse de résolution des images internes.\"}},{\"@type\":\"Question\",\"name\":\"Compresser avant ou après la fusion de plusieurs annexes ?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Fusionnez dans l'ordre final avec RatPDF, puis compressez une seule fois à la fin. Recompresser le même lot plusieurs fois dégrade les images inutilement et peut créer des artefacts visibles.\"}},{\"@type\":\"Question\",\"name\":\"La compression d'un PDF rend-elle le texte illisible ?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Non pour les PDF numériques : le texte vectoriel reste net et seules les images intégrées sont réencodées. Si le document comporte des tampons ou de la petite police, choisissez le niveau Faible dans RatPDF et vérifiez l'affichage à 150 % avant envoi au client.\"}}]}]}</script>\n<h2>Liste avant envoi</h2><ul><li>J'ai testé l'ouverture du PDF sur un autre appareil après traitement.</li><li>J'ai renommé le fichier avec date et version.</li><li>J'ai vérifié que tableaux, tampons et signatures restent lisibles.</li><li>J'ai archivé l'original dans un dossier projet séparé.</li><li>J'ai noté le niveau de compression pour le mois suivant.</li><li>J'ai vérifié si le portail exige PDF/A ou PDF standard.</li></ul>\n<h2>Bonnes pratiques</h2>\n<p>Si trop gros, découpez par chapitres avec index par mail.</p>\n<h2>Bonnes pratiques (2)</h2>\n<p>Les pros en professionnels et équipes de bureau signalent moins de rejets après compresser PDF standardisé.</p>\n<h2>Bonnes pratiques (3)</h2>\n<p>Formez les stagiaires en professionnels et équipes de bureau avec ce flux (compress aadhaar pdf) en cinq minutes.</p>\n<h2>Bonnes pratiques (4)</h2>\n<p>Pour professionnels et équipes de bureau, combinez compresser PDF avec un nom de fichier daté et versionné.</p>\n<h2>Bonnes pratiques (5)</h2>\n<p>Si le portail refuse après compresser PDF, divisez par pages avant une nouvelle compression.</p>\n<h2>Bonnes pratiques (6)</h2>\n<p>Sur portable limité, fermez les onglets lourds avant compresser PDF sur gros PDF.</p>\n<h2>Bonnes pratiques (7)</h2>\n<p>Conservez l&#x27;original en dossier projet ; n&#x27;envoyez que la copie traitée — surtout en professionnels et équipes de bureau.</p>\n<h2>Bonnes pratiques (8)</h2>\n<p>Le sujet (compress aadhaar pdf) monte dans les recherches en fin de mois.</p>\n<h2>Bonnes pratiques (9)</h2>\n<p>Suffixe -final ou -envoye après compresser PDF pour éviter les anciennes versions.</p>\n<h2>Bonnes pratiques (10)</h2>\n<p>Quand la date limite approche et le fichier doit respecter la taille max, le niveau recommandé suffit souvent du premier coup.</p>\n<h2>Bonnes pratiques (11)</h2>\n<p>Vérifiez PDF/A si exigé par le portail après compresser PDF.</p>\n<h2>Bonnes pratiques (12)</h2>\n<p>Équipes distantes en professionnels et équipes de bureau : standardisez compresser PDF sur une page interne.</p>\n<h2>Bonnes pratiques (13)</h2>\n<p>Brouillon filigrané d&#x27;abord ; compresser PDF sur la version signée en professionnels et équipes de bureau.</p>\n<h2>Bonnes pratiques (14)</h2>\n<p>Le titre (compress aadhaar pdf) reflète des recherches réelles — flux adapté.</p>\n<h2>Bonnes pratiques (15)</h2>\n<p>Comparez taille avant/après dans les propriétés du fichier.</p>\n<h2>Bonnes pratiques (16)</h2>\n<p>Ceux qui cherchent compresser PDF dans ce contexte (compress aadhaar pdf) ont souvent déjà réenregistré sans réduire la taille.</p>\n<h2>Bonnes pratiques (17)</h2>\n<p>Dans le flux professionnels et équipes de bureau, compresser PDF intervient après validation et avant envoi externe.</p>\n<h2>Bonnes pratiques (18)</h2>\n<p>Documentez le niveau par type de fichier — accélère les audits en professionnels et équipes de bureau.</p>",
+  "faqQuestions": [
+    "Un PDF scanné se compresse-t-il moins qu'un PDF natif ?",
+    "Compresser avant ou après la fusion de plusieurs annexes ?",
+    "La compression d'un PDF rend-elle le texte illisible ?"
+  ],
+  "faqAnswers": [
+    "En général oui, car chaque page est déjà une image. L'OCR avant compression aide pour la recherche, mais la réduction de taille vient surtout de la baisse de résolution des images internes.",
+    "Fusionnez dans l'ordre final avec RatPDF, puis compressez une seule fois à la fin. Recompresser le même lot plusieurs fois dégrade les images inutilement et peut créer des artefacts visibles.",
+    "Non pour les PDF numériques : le texte vectoriel reste net et seules les images intégrées sont réencodées. Si le document comporte des tampons ou de la petite police, choisissez le niveau Faible dans RatPDF et vérifiez l'affichage à 150 % avant envoi au client."
+  ],
+  "howToSteps": [
+    "Ouvrez l'outil RatPDF pour compresser PDF.",
+    "Téléversez le document dans RatPDF pour compresser PDF.",
+    "Téléchargez le fichier final et vérifiez la taille."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Compresser PDF - fichiers légers par e-mail | RatPDF",
+      "description": "Apprenez à compresser PDF en 3 étapes simples. Guide gratuit dans le navigateur avec RatPDF — rapide sans installation.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Étape 1",
+          "text": "Ouvrez l'outil RatPDF pour compresser PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Étape 2",
+          "text": "Téléversez le document dans RatPDF pour compresser PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Étape 3",
+          "text": "Téléchargez le fichier final et vérifiez la taille."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "fr",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Un PDF scanné se compresse-t-il moins qu'un PDF natif ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En général oui, car chaque page est déjà une image. L'OCR avant compression aide pour la recherche, mais la réduction de taille vient surtout de la baisse de résolution des images internes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Compresser avant ou après la fusion de plusieurs annexes ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fusionnez dans l'ordre final avec RatPDF, puis compressez une seule fois à la fin. Recompresser le même lot plusieurs fois dégrade les images inutilement et peut créer des artefacts visibles."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "La compression d'un PDF rend-elle le texte illisible ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non pour les PDF numériques : le texte vectoriel reste net et seules les images intégrées sont réencodées. Si le document comporte des tampons ou de la petite police, choisissez le niveau Faible dans RatPDF et vérifiez l'affichage à 150 % avant envoi au client."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 1,
+  "generatedAt": "2026-06-29T08:36:46.424460+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 769,
+  "uniqueness": {
+    "englishSimilarity": 0.0099,
+    "localeSimilarities": {
+      "pt-BR": 0.0566,
+      "es": 0.0499,
+      "de": 0.0761,
+      "id": 0.0758
+    },
+    "wordCount": 769,
+    "flags": [],
+    "passed": true
+  }
+}

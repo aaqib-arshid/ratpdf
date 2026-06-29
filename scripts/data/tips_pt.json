@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "locale": "pt-BR",
+  "categories": {
+    "compress": {
+      "tips": [
+        "Teste o nível Recomendado antes do Extremo — muitos portais aceitam após uma única passagem moderada.",
+        "Renomeie o arquivo com sufixo -comprimido para não confundir com o original assinado.",
+        "Se o PDF tiver muitas páginas vetoriais puras, a redução será menor; foque em scans e fotos embutidas."
+      ]
+    },
+    "merge": {
+      "tips": [
+        "Use prefixos numéricos nos nomes dos arquivos para garantir ordem correta sem arrastar manualmente.",
+        "Confira a contagem total de páginas após mesclar — um anexo em branco costuma indicar exportação incompleta.",
+        "Mescle apenas o que será enviado; mantenha anexos sensíveis em arquivos separados quando o edital exigir."
+      ]
+    },
+    "split": {
+      "tips": [
+        "Nomeie cada parte com intervalo de páginas (contrato-p12-18.pdf) para o cliente achar sem abrir tudo.",
+        "Divida antes de enviar por WhatsApp se o arquivo passar de 16 MB — qualidade visual fica melhor que compressão extrema.",
+        "Em lotes de recibos, uma página por PDF facilita lançamento contábil depois do OCR."
+      ]
+    },
+    "convert": {
+      "tips": [
+        "Abra o DOCX convertido e verifique cabeçalhos de tabela antes de reenviar ao cliente.",
+        "Para scans, OCR é obrigatório — pule essa etapa e você perderá horas formatando imagens no Word.",
+        "Converta uma amostra de 2–3 páginas antes de migrar um lote inteiro de documentos legados."
+      ]
+    },
+    "sign": {
+      "tips": [
+        "Inclua data e cargo abaixo da assinatura digitada em contratos B2B.",
+        "Envie a versão assinada em PDF, não captura de tela do leitor.",
+        "Para aditivos, mescle termo assinado ao contrato principal e reindexe o arquivo no CRM."
+      ]
+    },
+    "protect": {
+      "tips": [
+        "Envie a senha por canal diferente do e-mail que leva o PDF.",
+        "Use frases longas em vez de datas de nascimento — são mais fáceis de lembrar e mais difíceis de adivinhar.",
+        "Marca d'água em rascunho; senha forte na versão que sai para o cliente."
+      ]
+    },
+    "edit": {
+      "tips": [
+        "Gire páginas antes de adicionar numeração — senão a paginação ficará invertida.",
+        "Depois de achatar, tente selecionar texto do formulário — se não selecionar, o achatamento funcionou.",
+        "Edite cópia; nunca o único PDF com assinatura válida."
+      ]
+    },
+    "ocr": {
+      "tips": [
+        "Prefira escanear em escala de cinza para documentos só de texto — arquivo menor e OCR mais rápido.",
+        "Corrija manualmente números de protocolo e valores monetários após OCR.",
+        "Salve uma versão searchable e outra comprimida para envio se o portal tiver teto rígido."
+      ]
+    }
+  }
+}

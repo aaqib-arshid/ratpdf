@@ -1,0 +1,246 @@
+{
+  "version": 2,
+  "locale": "pt-BR",
+  "categories": {
+    "compress": {
+      "label": "Compressão de PDF",
+      "faqs": [
+        {
+          "id": "compress-1",
+          "question": "Comprimir PDF deixa o texto ilegível?",
+          "answer": "Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente."
+        },
+        {
+          "id": "compress-2",
+          "question": "Qual tamanho devo mirar para anexar no Gmail?",
+          "answer": "Apesar do limite de 25 MB, a codificação do anexo adiciona cerca de 33% de peso. No Brasil, mire em 18 MB ou menos no arquivo final para evitar rejeição silenciosa em gateways corporativos."
+        },
+        {
+          "id": "compress-3",
+          "question": "Quando usar compressão Extrema?",
+          "answer": "Somente quando o portal ou ATS ainda rejeita o arquivo após o nível Recomendado. Documentos com tabelas financeiras finas podem perder nitidez — teste uma página antes de comprimir o pacote inteiro."
+        },
+        {
+          "id": "compress-4",
+          "question": "PDF escaneado comprime menos que PDF digital?",
+          "answer": "Geralmente sim, porque scans já são imagens por página. OCR antes da compressão ajuda em buscas, mas o ganho de tamanho vem sobretudo da redução de resolução das imagens internas."
+        },
+        {
+          "id": "compress-5",
+          "question": "Devo comprimir antes ou depois de mesclar vários anexos?",
+          "answer": "Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais."
+        }
+      ]
+    },
+    "merge": {
+      "label": "Mesclar PDF",
+      "faqs": [
+        {
+          "id": "merge-1",
+          "question": "Como garantir a ordem certa ao mesclar PDFs?",
+          "answer": "Renomeie arquivos com prefixos numéricos (01-contrato, 02-anexo-A) antes do upload. Em propostas comerciais, siga a ordem exigida no edital — avaliadores não reorganizam anexos fora de sequência."
+        },
+        {
+          "id": "merge-2",
+          "question": "Mesclar PDF aumenta muito o tamanho do arquivo?",
+          "answer": "O tamanho final é a soma aproximada dos originais. Se passar do limite do portal, mescle primeiro e comprima depois com nível Recomendado — nunca o contrário em lotes grandes."
+        },
+        {
+          "id": "merge-3",
+          "question": "Posso juntar PDF protegido por senha?",
+          "answer": "Você precisa da senha correta para abrir cada arquivo antes de mesclar. Arquivos bloqueados falham ou entram sem conteúdo visível — desbloqueie com a ferramenta adequada primeiro."
+        },
+        {
+          "id": "merge-4",
+          "question": "Mesclar no celular funciona para trabalho sério?",
+          "answer": "Sim no Chrome ou Safari, mas use Wi-Fi para pacotes acima de 15 MB. Confira a contagem total de páginas após mesclar — uma página em branco costuma indicar exportação incompleta."
+        },
+        {
+          "id": "merge-5",
+          "question": "Devo manter os PDFs originais após mesclar?",
+          "answer": "Sim. Guarde originais assinados separadamente e gere um pacote mesclado apenas para envio externo. Isso facilita auditoria se o cliente questionar uma página específica depois."
+        }
+      ]
+    },
+    "split": {
+      "label": "Dividir PDF",
+      "faqs": [
+        {
+          "id": "split-1",
+          "question": "Quando dividir PDF é melhor que comprimir?",
+          "answer": "Quando a qualidade visual não pode cair — laudos médicos, plantas ou contratos com selos. Divida por capítulo ou intervalo de páginas e envie links separados se o portal permitir múltiplos uploads."
+        },
+        {
+          "id": "split-2",
+          "question": "Como extrair só algumas páginas de um contrato longo?",
+          "answer": "Use intervalo de páginas (ex.: 12–18) para isolar cláusulas ou anexos assinados. Nomeie o arquivo com o intervalo no título para o destinatário localizar sem abrir o pacote inteiro."
+        },
+        {
+          "id": "split-3",
+          "question": "Dividir PDF altera a numeração original?",
+          "answer": "Cada arquivo extraído reinicia na página 1 internamente, mas o conteúdo das páginas permanece igual. Se precisar de numeração contínua, adicione números de página após dividir."
+        },
+        {
+          "id": "split-4",
+          "question": "Posso dividir PDF escaneado página por página?",
+          "answer": "Sim — útil para separar recibos de um único scan longo. Depois rode OCR em cada parte se precisar buscar texto dentro de um lote de comprovantes."
+        },
+        {
+          "id": "split-5",
+          "question": "Split ou merge primeiro em um fluxo de e-mail?",
+          "answer": "Organize a ordem com merge quando o destinatário exige um único arquivo. Use split quando o limite de tamanho é rígido e a qualidade não pode ser sacrificada."
+        }
+      ]
+    },
+    "convert": {
+      "label": "Conversão de PDF",
+      "faqs": [
+        {
+          "id": "convert-1",
+          "question": "PDF para Word mantém tabelas de orçamento editáveis?",
+          "answer": "Em PDFs digitais com tabelas reais, sim na maioria dos casos. Scans viram imagens no Word — rode OCR antes e revise bordas de células e alinhamento de cabeçalhos após baixar o DOCX."
+        },
+        {
+          "id": "convert-2",
+          "question": "Por que meu PDF convertido não tem texto selecionável?",
+          "answer": "O arquivo original provavelmente é imagem pura. Sem camada de texto, qualquer conversão trata páginas como figuras. OCR PDF é o passo obrigatório antes de Word ou extração de texto."
+        },
+        {
+          "id": "convert-3",
+          "question": "Excel para PDF preserva área de impressão?",
+          "answer": "Sim, quando a planilha tem área de impressão definida no Excel. Planilhas muito largas podem encolher fontes — confira zoom de 100% no PDF antes de enviar a banco ou auditor."
+        },
+        {
+          "id": "convert-4",
+          "question": "Word para PDF serve para edital e licitação?",
+          "answer": "Sim para entrega de proposta em PDF bloqueado. Valide margens, fontes embutidas e quebra de página em uma prova antes do upload no portal — layout quebra é a causa nº 1 de desclassificação técnica evitável."
+        },
+        {
+          "id": "convert-5",
+          "question": "Texto puro ou Word: qual escolher após converter?",
+          "answer": "Texto puro para indexação, scripts e bases de conhecimento. Word quando alguém vai reescrever parágrafos longos ou reformular tabelas com formatação."
+        }
+      ]
+    },
+    "sign": {
+      "label": "Assinatura de PDF",
+      "faqs": [
+        {
+          "id": "sign-1",
+          "question": "Assinatura digitada em PDF vale para contrato de freelancer?",
+          "answer": "Na prática B2B brasileira, sim para muitos contratos de prestação de serviço quando combinada com e-mail de aceite. Valores altos ou setores regulados podem exigir assinatura qualificada ou ICP-Brasil."
+        },
+        {
+          "id": "sign-2",
+          "question": "Onde posicionar assinatura em proposta comercial?",
+          "answer": "No rodapé da última página ou bloco dedicado após as condições comerciais. Inclua nome completo, cargo e data — omitir data enfraquece evidência em disputas simples."
+        },
+        {
+          "id": "sign-3",
+          "question": "Posso assinar PDF pelo WhatsApp Web no notebook?",
+          "answer": "Assine no RatPDF, baixe o PDF final e envie o arquivo — não encaminhe captura de tela do leitor. Captura perde qualidade e não é aceita como documento formal pela maioria dos clientes."
+        },
+        {
+          "id": "sign-4",
+          "question": "Assinar antes ou depois de comprimir o PDF?",
+          "answer": "Assine a versão aprovada e comprima depois se precisar reduzir tamanho para envio. Evite assinar rascunho que ainda vai passar por revisão jurídica — gere nova versão numerada após OK final."
+        },
+        {
+          "id": "sign-5",
+          "question": "Assinatura digitada substitui carimbo de empresa?",
+          "answer": "Para muitos fluxos internos, sim. Documentos que exigem carimbo físico de cartório ou reconhecimento de firma ainda precisam do processo presencial — confirme com o departamento jurídico."
+        }
+      ]
+    },
+    "protect": {
+      "label": "Proteção de PDF",
+      "faqs": [
+        {
+          "id": "protect-1",
+          "question": "Senha de usuário e senha de proprietário: qual a diferença?",
+          "answer": "Senha de usuário bloqueia abertura do arquivo. Senha de proprietário restringe impressão, cópia ou edição mesmo quando o PDF abre. Para contratos externos, combine abertura protegida com restrições de cópia quando possível."
+        },
+        {
+          "id": "protect-2",
+          "question": "Marca d'água protege documento confidencial?",
+          "answer": "Marca d'água avisa status (RASCUNHO, CONFIDENCIAL), mas não criptografa. Qualquer pessoa que abrir ainda pode fotografar a tela. Use senha forte quando o conteúdo não pode vazar."
+        },
+        {
+          "id": "protect-3",
+          "question": "Como compartilhar senha do PDF com segurança?",
+          "answer": "Nunca na mesma thread do anexo. Envie PDF por e-mail e senha por SMS ou canal separado. Troque senhas padrão como '1234' — use frase longa que o cliente possa digitar uma vez."
+        },
+        {
+          "id": "protect-4",
+          "question": "Posso remover senha se esqueci?",
+          "answer": "Ferramentas sérias exigem a senha correta — não há 'quebra' legítima. Se você definiu a senha, guarde em cofre de senhas. Se recebeu de terceiros, peça reenvio desbloqueado."
+        },
+        {
+          "id": "protect-5",
+          "question": "Proteger PDF antes ou depois de comprimir?",
+          "answer": "Comprima primeiro se o portal exige tamanho máximo; proteja a versão final que sai da empresa. Rascunhos podem levar só marca d'água até aprovação interna."
+        }
+      ]
+    },
+    "edit": {
+      "label": "Edição de PDF",
+      "faqs": [
+        {
+          "id": "edit-1",
+          "question": "Editar PDF online altera o arquivo original no meu PC?",
+          "answer": "Não — você trabalha em cópia no navegador e baixa nova versão. Mantenha o PDF mestre assinado em pasta separada com sufixo -ORIGINAL no nome."
+        },
+        {
+          "id": "edit-2",
+          "question": "Girar página resolve scan enviado de cabeça para baixo?",
+          "answer": "Sim, sem precisar escanear de novo. Gire 90° ou 180°, confira numeração e só então mescle ao pacote final — página torta no meio do PDF passa impressão de descuido."
+        },
+        {
+          "id": "edit-3",
+          "question": "Achatar formulário PDF: quando é obrigatório?",
+          "answer": "Quando portais governamentais ou ERP rejeitam campos editáveis. Achatar transforma respostas em conteúdo fixo — ideal antes de upload em sistemas legados."
+        },
+        {
+          "id": "edit-4",
+          "question": "Posso adicionar número de página em contrato já assinado?",
+          "answer": "Somente em cópia não finalizada. Alterar PDF após assinatura pode invalidar evidência — gere nova versão numerada antes da coleta de assinaturas quando possível."
+        },
+        {
+          "id": "edit-5",
+          "question": "Edição rápida no PDF ou conversão para Word?",
+          "answer": "PDF para correções pontuais, carimbo e observação. Word quando vai reescrever cláusulas longas ou mover blocos inteiros de texto com formatação complexa."
+        }
+      ]
+    },
+    "ocr": {
+      "label": "OCR e texto em PDF",
+      "faqs": [
+        {
+          "id": "ocr-1",
+          "question": "OCR funciona com foto de documento tirada no celular?",
+          "answer": "Sim, com boa luz e documento plano. Evite sombra nas bordas e reflexo em plastificação — foto torta reduz drasticamente a precisão em CPF, valores e nomes próprios."
+        },
+        {
+          "id": "ocr-2",
+          "question": "Por que busca no PDF não acha palavra que eu vejo na tela?",
+          "answer": "Você está vendo imagem, não texto embutido. Rode OCR para criar camada pesquisável; depois teste buscando um número de protocolo que você sabe que aparece na página."
+        },
+        {
+          "id": "ocr-3",
+          "question": "Qual DPI usar antes de OCR em documento texto?",
+          "answer": "200–300 DPI em escala de cinza costuma ser ideal para A4 texto. Acima disso aumenta tamanho sem ganho proporcional; abaixo disso perde serifa e números pequenos."
+        },
+        {
+          "id": "ocr-4",
+          "question": "OCR corrige automaticamente erros de português?",
+          "answer": "Não. Revise nomes, valores monetários e datas após OCR — especialmente em formulários manuscritos ou carimbos parcialmente legíveis. Um dígito errado em boleto invalida pagamento."
+        },
+        {
+          "id": "ocr-5",
+          "question": "Devo OCR antes ou depois de comprimir scan?",
+          "answer": "OCR primeiro em qualidade legível, comprimir depois para envio. Comprimir agressivamente antes do OCR pode apagar detalhes que o reconhecimento precisa para acertar caracteres."
+        }
+      ]
+    }
+  }
+}

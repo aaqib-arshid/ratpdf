@@ -41,6 +41,9 @@ namespace ratpdf.Controllers
             return View();
         }
 
+        [HttpGet("/about")]
+        public IActionResult AboutCanonical() => View("About");
+
         public IActionResult EditorialPolicy()
         {
             return View();

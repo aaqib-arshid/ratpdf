@@ -1,6 +1,19 @@
 @model ratpdf.Models.ContentEntry
 @using ratpdf.Content
 @using ratpdf.Constants
+@{
+    var guidesHubPath = ViewData["GuidesHubPath"] as string ?? "/guides";
+    var contentLocale = ViewData["ContentLocale"] as string;
+    var faqHeading = contentLocale switch
+    {
+        "pt" => "Perguntas frequentes",
+        "es" => "Preguntas frecuentes",
+        "de" => "Häufig gestellte Fragen",
+        "id" => "Pertanyaan yang sering diajukan",
+        "fr" => "Questions fréquentes",
+        _ => "Frequently asked questions",
+    };
+}
 <article class="rp-article">
     <div class="container py-4 py-lg-5">
         <nav aria-label="breadcrumb" class="mb-3">
@@ -12,7 +25,7 @@
                 }
                 else
                 {
-                    <li class="breadcrumb-item"><a href="/guides">Guides</a></li>
+                    <li class="breadcrumb-item"><a href="@guidesHubPath">Guides</a></li>
                 }
                 <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
             </ol>
@@ -57,7 +70,7 @@
                 @if (Model.FaqQuestions != null && Model.FaqAnswers != null && Model.FaqQuestions.Length > 0)
                 {
                     <section class="mt-5">
-                        <h2 class="h4 fw-bold">Frequently asked questions</h2>
+                        <h2 class="h4 fw-bold">@faqHeading</h2>
                         @for (var i = 0; i < Model.FaqQuestions.Length; i++)
                         {
                             <div class="rp-faq-item">

@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "locale": "es",
+  "templates": [
+    "¿Necesitas {action}? En esta guía te mostramos cómo {keyword} con RatPDF — {benefit}.",
+    "Mucha gente en Latinoamérica busca cómo {keyword} sin instalar programas de pago. Aquí va un flujo directo en el navegador.",
+    "Si estás intentando {keyword} ahora mismo, este tutorial está hecho para resolverlo en minutos, no en horas.",
+    "{Action} puede parecer complicado, pero con la herramienta correcta es sencillo. Mira el paso a paso probado por el equipo RatPDF.",
+    "Antes de pagar una licencia de escritorio, prueba {keyword} online: funciona en Chrome, Edge y Safari sin registro obligatorio.",
+    "Este artículo responde las dudas más comunes sobre {keyword} en la región — límites de correo, portales y celular incluidos.",
+    "Los profesionales de oficina usan {keyword} todos los días. Organizamos el flujo que evita retrabajo y archivos rechazados.",
+    "¿Quieres {benefit}? Empieza por {keyword}: explicamos cuándo usar cada nivel, atajo y error que debes evitar."
+  ],
+  "category_actions": {
+    "compress": ["comprimir un PDF pesado", "reducir el tamaño de un adjunto", "enviar PDF por Gmail sin error"],
+    "merge": ["unir varios PDF en uno solo", "juntar contrato y anexos", "organizar documentos para envío"],
+    "split": ["dividir un PDF grande en partes", "extraer páginas de un contrato", "separar un escaneo largo en archivos"],
+    "convert": ["convertir PDF a Word", "extraer tabla a Excel", "transformar DOCX en PDF"],
+    "sign": ["firmar un contrato en PDF", "aprobar propuesta digitalmente", "poner firma en la cotización"],
+    "protect": ["proteger PDF con contraseña", "bloquear copia del contrato", "enviar documento confidencial"],
+    "edit": ["corregir un PDF rápido", "poner marca de agua en borrador", "rotar páginas de escaneo"],
+    "ocr": ["hacer un escaneo buscable", "extraer texto de documento fotografiado", "preparar PDF para búsqueda"]
+  },
+  "benefits": [
+    "ahorrar tiempo en el día a día",
+    "evitar rechazo en portales y correo",
+    "mantener calidad sin instalar software",
+    "trabajar desde el celular o la laptop",
+    "reducir costo de licencias de escritorio",
+    "entregar archivos listos para el cliente"
+  ],
+  "section_labels": {
+    "steps": "Paso a paso",
+    "faq": "Preguntas frecuentes",
+    "tips": "Consejos profesionales",
+    "related": "Guías relacionadas",
+    "cta": "Pruébalo ahora",
+    "context": "Contexto en Latinoamérica",
+    "detail": "Cuándo usar este flujo",
+    "extra": "Buenas prácticas"
+  },
+  "category_expansions": {
+    "compress": [
+      "En Latinoamérica, portales de empleo, universidades y organismos públicos suelen limitar cargas entre 2 MB y 10 MB. Comprimir antes de subir evita errores genéricos y retrabajo a última hora.",
+      "Los archivos con muchas fotos — informes, catálogos, proyectos — son los que más rompen el límite. Recodificar imágenes suele reducir decenas de megabytes sin borrar texto vectorial.",
+      "Si trabajas con contabilidad o legal, estandariza un nivel de compresión por tipo de documento: Menor para contratos firmados, Recomendado para correo interno."
+    ],
+    "merge": [
+      "Las propuestas comerciales en la región suelen mezclar oferta, anexo técnico y certificados. Unir en el orden correcto evita que el evaluador abra archivos fuera de secuencia.",
+      "Al juntar escaneos de distinta calidad, revisa la orientación de página antes de enviar. Una hoja acostada en medio del paquete da impresión de descuido.",
+      "Para auditoría, guarda los PDF originales en carpeta aparte y genera un paquete unido solo para envío externo."
+    ],
+    "split": [
+      "Cuando comprimir degradaría informes o planos, dividir por intervalo de páginas preserva la calidad y respeta los límites de carga.",
+      "Extrae solo el anexo firmado de un contrato de 80 páginas — el destinatario agradece no descargar todo el documento.",
+      "Después de dividir recibos escaneados en lote, ejecuta OCR en cada parte si necesitas buscar montos por RFC o fecha."
+    ],
+    "convert": [
+      "La conversión no es magia: un PDF digital con tablas reales convierte mejor que una foto de documento. Identifica el tipo de archivo antes de elegir la herramienta.",
+      "Si el objetivo es editar texto largo, Word sigue siendo más productivo que la edición directa en PDF. Convierte, edita y exporta PDF de nuevo para entrega.",
+      "En extractos y hojas de cálculo, valida separadores decimales y fechas locales (DD/MM/AAAA) después de exportar a Excel."
+    ],
+    "sign": [
+      "Para freelancers y pymes, la firma digital en PDF suele cerrar cotizaciones y contratos de servicio sin ir a notaría.",
+      "Siempre diferencia borrador y versión final: marca de agua en revisión, firma y contraseña en la versión que sale de la empresa.",
+      "Guarda el correo de envío y el nombre del archivo con fecha — ayuda en disputas simples sin sistema de firma cualificada."
+    ],
+    "protect": [
+      "Enviar un contrato sin protección por correo compartido es un riesgo innecesario — contraseña fuerte y canal aparte para la clave resuelven la mayoría de los casos.",
+      "La marca de agua BORRADOR avisa el estado interno; el cifrado impide que quien no debe vea el contenido.",
+      "Cambia contraseñas por defecto y documenta quién recibió acceso — TI corporativa suele exigirlo con proveedores."
+    ],
+    "edit": [
+      "La edición ligera en PDF resuelve sello, observación y rotación sin abrir Word. Úsala para correcciones puntuales antes de publicar.",
+      "La marca de agua BORRADOR o REVISIÓN protege visualmente durante aprobación interna, pero no reemplaza el cifrado.",
+      "Al aplanar un formulario, prueba un campo en el lector antes de enviar a un portal que bloquea campos editables."
+    ],
+    "ocr": [
+      "Digitalizar con el celular es práctico, pero sombra y perspectiva perjudican el OCR. Apoya el documento en superficie plana y usa buena iluminación.",
+      "Después del OCR, busca un número de identificación o monto conocido para validar que la capa de texto se creó bien.",
+      "En procesos con plazo, OCR más revisión humana de números es más rápido que reescribir páginas enteras."
+    ]
+  }
+}

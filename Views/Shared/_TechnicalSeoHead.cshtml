@@ -21,8 +21,16 @@
     var ogLocale = ViewData["OgLocale"] as string;
     var geoRegion = ViewData["GeoRegion"] as string;
     var geoCountry = ViewData["GeoCountry"] as string;
+    var hreflangAlternates = ViewData["HreflangAlternates"] as IReadOnlyList<ratpdf.Models.HreflangAlternate>;
 }
 <link rel="canonical" href="@canonical" />
+@if (hreflangAlternates != null && hreflangAlternates.Count > 0)
+{
+    foreach (var alt in hreflangAlternates)
+    {
+<link rel="alternate" hreflang="@alt.Hreflang" href="@PdfToolSeo.Canonical(alt.Path)" />
+    }
+}
 <meta name="robots" content="@robots" />
 @if (!string.IsNullOrEmpty(pageKeywords))
 {

@@ -1,0 +1,96 @@
+{
+  "slug": "extract-single-page-pdf",
+  "sourceSlug": "extract-single-page-pdf",
+  "locale": "es",
+  "urlPrefix": "es",
+  "title": "Herramientas PDF | RatPDF",
+  "description": "Aprende cómo herramientas PDF en 2 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+  "primaryKeyword": "herramientas PDF",
+  "category": "PDF",
+  "contentCategory": "split",
+  "toolUrl": "/pdf/split",
+  "toolCtaLabel": "Usar herramienta gratis →",
+  "bodyHtml": "<h1>Herramientas PDF</h1>\n<p class=\"rp-intro\">¿Quieres reducir costo de licencias de escritorio? Empieza por herramientas PDF: explicamos cuándo usar cada nivel, atajo y error que debes evitar.</p>\n<h2>Cuándo usar este flujo</h2>\n<p>En esta guía (extract single page pdf), el escenario habitual es cuando la fecha de envío está cerca y el archivo debe caber en el límite.</p>\n<p>Para equipos remotos en profesionales y equipos de oficina, estandarice herramientas PDF en una guía interna de una página.</p>\n<p>Evite editar el PDF en Word y reexportar sin necesidad — el archivo crece rápido.</p>\n<h2>Contexto en Latinoamérica</h2>\n<p>Después de dividir recibos escaneados en lote, ejecuta OCR en cada parte si necesitas buscar montos por RFC o fecha.</p>\n<p>Cuando comprimir degradaría informes o planos, dividir por intervalo de páginas preserva la calidad y respeta los límites de carga.</p>\n<p>Extrae solo el anexo firmado de un contrato de 80 páginas — el destinatario agradece no descargar todo el documento.</p>\n<h2>Paso a paso</h2><ol>\n<li>Sube el documento en la herramienta RatPDF para herramientas PDF.</li>\n<li>Descarga el archivo final y verifica tamaño o contenido.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/pdf/split\">Usar herramienta gratis →</a></p>\n<h2>Preguntas frecuentes</h2>\n<h3>¿Primero divido o uno en un flujo de correo?</h3><p>Une con RatPDF cuando el destinatario exige un solo archivo. Divide cuando el límite de tamaño es estricto y la calidad no puede reducirse por compresión.</p>\n<h3>¿Cuándo es mejor dividir que comprimir un PDF?</h3><p>Cuando no puedes sacrificar calidad visual: informes médicos, planos o contratos con sellos oficiales. Divide por capítulo o rango de páginas en RatPDF y envía enlaces separados si el portal permite varios cargas.</p>\n<h3>¿Cómo extraigo solo algunas páginas de un contrato largo?</h3><p>Usa un rango de páginas (por ejemplo, 12–18) para aislar cláusulas o anexos firmados. Nombra el archivo con el rango en el título para que el destinatario ubique el contenido sin abrir todo el paquete.</p>\n<h2>Consejos profesionales</h2><ul>\n<li>Nombra cada parte con el rango de páginas (contrato-p12-18.pdf) para que el cliente encuentre sin abrir todo.</li>\n<li>Divide antes de enviar por WhatsApp si el archivo supera 16 MB — la calidad visual queda mejor que con compresión extrema.</li>\n<li>En lotes de recibos, un PDF por página facilita el registro contable después del OCR.</li>\n</ul>\n<h2>Guías relacionadas</h2><ul>\n<li><a href=\"/es/guides/split-pdf\">Dividir PDF</a></li>\n<li><a href=\"/es/guides/split-pdf-on-android\">Dividir PDF</a></li>\n<li><a href=\"/es/guides/split-pdf-on-chromebook\">Dividir PDF</a></li>\n</ul>\n<p><a href=\"/pdf/split\">Usar herramienta gratis →</a></p>\n<p><a href=\"/es/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Herramientas PDF | RatPDF\",\"description\":\"Aprende cómo herramientas PDF en 2 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.\",\"inLanguage\":\"es\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Paso 1\",\"text\":\"Sube el documento en la herramienta RatPDF para herramientas PDF.\"},{\"@type\":\"HowToStep\",\"position\":2,\"name\":\"Paso 2\",\"text\":\"Descarga el archivo final y verifica tamaño o contenido.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"es\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"¿Primero divido o uno en un flujo de correo?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Une con RatPDF cuando el destinatario exige un solo archivo. Divide cuando el límite de tamaño es estricto y la calidad no puede reducirse por compresión.\"}},{\"@type\":\"Question\",\"name\":\"¿Cuándo es mejor dividir que comprimir un PDF?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Cuando no puedes sacrificar calidad visual: informes médicos, planos o contratos con sellos oficiales. Divide por capítulo o rango de páginas en RatPDF y envía enlaces separados si el portal permite varios cargas.\"}},{\"@type\":\"Question\",\"name\":\"¿Cómo extraigo solo algunas páginas de un contrato largo?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Usa un rango de páginas (por ejemplo, 12–18) para aislar cláusulas o anexos firmados. Nombra el archivo con el rango en el título para que el destinatario ubique el contenido sin abrir todo el paquete.\"}}]}]}</script>\n<h2>Lista antes de enviar</h2><ul><li>Renombré el archivo con fecha y versión en el nombre.</li><li>Verifiqué que tablas, sellos y firmas siguen legibles.</li><li>Guardé el original en carpeta de proyecto separada de la copia enviada.</li><li>Anoté el nivel de compresión o herramienta usada para repetir el próximo mes.</li><li>Confirmé si el portal acepta PDF común o exige PDF/A.</li><li>Envié la contraseña por canal distinto cuando el PDF está protegido.</li></ul>\n<h2>Buenas prácticas</h2>\n<p>En profesionales y equipos de oficina, herramientas PDF va después de la revisión y antes del envío externo.</p>\n<h2>Buenas prácticas (2)</h2>\n<p>Documente el nivel usado por tipo de archivo — acelera auditorías en profesionales y equipos de oficina.</p>\n<h2>Buenas prácticas (3)</h2>\n<p>Pruebe el archivo final en otro dispositivo para confirmar que herramientas PDF no dañó tablas legibles.</p>\n<h2>Buenas prácticas (4)</h2>\n<p>Errores comunes: recomprimir varias veces, unir después de comprimir demasiado, o enviar contraseña en el mismo correo.</p>\n<h2>Buenas prácticas (5)</h2>\n<p>Para profesionales y equipos de oficina, alinee si el destino exige PDF/A, PDF común o imagen — antes de herramientas PDF.</p>\n<h2>Buenas prácticas (6)</h2>\n<p>Antes de herramientas PDF, cierre pestañas pesadas del navegador — los PDF grandes consumen memoria.</p>\n<h2>Buenas prácticas (7)</h2>\n<p>Para profesionales y equipos de oficina, combine herramientas PDF con checklist interno: nombre, fecha, versión y destinatario.</p>\n<h2>Buenas prácticas (8)</h2>\n<p>Los documentos con páginas en blanco pueden limpiarse antes de herramientas PDF para evitar trabajo inútil.</p>\n<h2>Buenas prácticas (9)</h2>\n<p>Tras herramientas PDF, abra el PDF en otro lector (Chrome, Edge, Adobe) para validar compatibilidad.</p>\n<h2>Buenas prácticas (10)</h2>\n<p>Guarde captura del tamaño final aceptado — útil cuando la fecha de envío está cerca y el archivo debe caber en el límite.</p>\n<h2>Buenas prácticas (11)</h2>\n<p>Compare tamaño antes/después en propiedades del archivo — meta clara para auditoría en profesionales y equipos de oficina.</p>\n<h2>Buenas prácticas (12)</h2>\n<p>Quien busca herramientas PDF en este contexto (extract single page pdf) suele haber probado guardar de nuevo sin reducir el tamaño.</p>\n<h2>Buenas prácticas (13)</h2>\n<p>Si herramientas PDF no basta, divida por capítulos y envíe enlaces separados con índice en el correo.</p>\n<h2>Buenas prácticas (14)</h2>\n<p>Profesionales de profesionales y equipos de oficina reportan menos devoluciones tras estandarizar herramientas PDF a fin de mes.</p>\n<h2>Buenas prácticas (15)</h2>\n<p>Al capacitar practicantes en profesionales y equipos de oficina, use este flujo (extract single page pdf) como guión de cinco minutos.</p>",
+  "faqQuestions": [
+    "¿Primero divido o uno en un flujo de correo?",
+    "¿Cuándo es mejor dividir que comprimir un PDF?",
+    "¿Cómo extraigo solo algunas páginas de un contrato largo?"
+  ],
+  "faqAnswers": [
+    "Une con RatPDF cuando el destinatario exige un solo archivo. Divide cuando el límite de tamaño es estricto y la calidad no puede reducirse por compresión.",
+    "Cuando no puedes sacrificar calidad visual: informes médicos, planos o contratos con sellos oficiales. Divide por capítulo o rango de páginas en RatPDF y envía enlaces separados si el portal permite varios cargas.",
+    "Usa un rango de páginas (por ejemplo, 12–18) para aislar cláusulas o anexos firmados. Nombra el archivo con el rango en el título para que el destinatario ubique el contenido sin abrir todo el paquete."
+  ],
+  "howToSteps": [
+    "Sube el documento en la herramienta RatPDF para herramientas PDF.",
+    "Descarga el archivo final y verifica tamaño o contenido."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Herramientas PDF | RatPDF",
+      "description": "Aprende cómo herramientas PDF en 2 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+      "inLanguage": "es",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Paso 1",
+          "text": "Sube el documento en la herramienta RatPDF para herramientas PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Paso 2",
+          "text": "Descarga el archivo final y verifica tamaño o contenido."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Primero divido o uno en un flujo de correo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Une con RatPDF cuando el destinatario exige un solo archivo. Divide cuando el límite de tamaño es estricto y la calidad no puede reducirse por compresión."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo es mejor dividir que comprimir un PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cuando no puedes sacrificar calidad visual: informes médicos, planos o contratos con sellos oficiales. Divide por capítulo o rango de páginas en RatPDF y envía enlaces separados si el portal permite varios cargas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo extraigo solo algunas páginas de un contrato largo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usa un rango de páginas (por ejemplo, 12–18) para aislar cláusulas o anexos firmados. Nombra el archivo con el rango en el título para que el destinatario ubique el contenido sin abrir todo el paquete."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 6,
+  "generatedAt": "2026-06-29T08:17:46.769727+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 750,
+  "uniqueness": {
+    "englishSimilarity": 0.0091,
+    "localeSimilarities": {
+      "pt-BR": 0.1457,
+      "de": 0.0238,
+      "id": 0.0338,
+      "fr": 0.0434
+    },
+    "wordCount": 750,
+    "flags": [],
+    "passed": true
+  }
+}

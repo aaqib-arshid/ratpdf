@@ -1,0 +1,89 @@
+{
+  "slug": "compress-pdf-construction",
+  "sourceSlug": "compress-pdf-construction",
+  "locale": "es",
+  "urlPrefix": "es",
+  "title": "Comprimir PDF - archivos ligeros para correo | RatPDF",
+  "description": "Aprende cómo comprimir PDF en 1 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+  "primaryKeyword": "comprimir PDF",
+  "category": "PDF",
+  "contentCategory": "compress",
+  "toolUrl": "/pdf/compress",
+  "toolCtaLabel": "Usar herramienta gratis →",
+  "bodyHtml": "<h1>Comprimir PDF</h1>\n<p class=\"rp-intro\">Mucha gente en Latinoamérica busca cómo comprimir PDF sin instalar programas de pago. Aquí va un flujo directo en el navegador.</p>\n<h2>Cuándo usar este flujo</h2>\n<p>En esta guía (compress pdf construction), el escenario habitual es cuando la fecha de envío está cerca y el archivo debe caber en el límite.</p>\n<p>Si el portal pide PDF/A, verifique que comprimir PDF mantiene el perfil exigido.</p>\n<p>Guarde captura del tamaño final aceptado — útil cuando la fecha de envío está cerca y el archivo debe caber en el límite.</p>\n<h2>Contexto en Latinoamérica</h2>\n<p>Los archivos con muchas fotos — informes, catálogos, proyectos — son los que más rompen el límite. Recodificar imágenes suele reducir decenas de megabytes sin borrar texto vectorial.</p>\n<p>Si trabajas con contabilidad o legal, estandariza un nivel de compresión por tipo de documento: Menor para contratos firmados, Recomendado para correo interno.</p>\n<p>En Latinoamérica, portales de empleo, universidades y organismos públicos suelen limitar cargas entre 2 MB y 10 MB. Comprimir antes de subir evita errores genéricos y retrabajo a última hora.</p>\n<h2>Paso a paso</h2><ol>\n<li>Sube el documento en la herramienta RatPDF para comprimir PDF.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/pdf/compress\">Usar herramienta gratis →</a></p>\n<h2>Preguntas frecuentes</h2>\n<h3>¿Qué peso debería tener un PDF para adjuntarlo por correo?</h3><p>Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos.</p>\n<h3>¿Cuándo conviene usar compresión Extrema?</h3><p>Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo.</p>\n<h3>¿Un PDF escaneado se comprime menos que uno nativo?</h3><p>En general sí, porque cada página ya es una imagen. Aplicar OCR antes ayuda a buscar texto después, pero la reducción real de tamaño viene de bajar la resolución de esas imágenes internas.</p>\n<h2>Consejos profesionales</h2><ul>\n<li>Prueba el nivel Recomendado antes del Extremo — muchos portales aceptan el archivo tras una sola pasada moderada.</li>\n<li>Renombra el archivo con sufijo -comprimido para no confundirlo con el original firmado.</li>\n<li>Si el PDF tiene muchas páginas vectoriales puras, la reducción será menor; enfócate en escaneos y fotos incrustadas.</li>\n</ul>\n<h2>Guías relacionadas</h2><ul>\n<li><a href=\"/es/guides/compress-pdf-for-printing\">Comprimir PDF</a></li>\n<li><a href=\"/es/guides/compress-pdf-for-protonmail\">Comprimir PDF</a></li>\n<li><a href=\"/es/guides/compress-pdf-for-telegram\">Comprimir PDF</a></li>\n</ul>\n<p><a href=\"/pdf/compress\">Usar herramienta gratis →</a></p>\n<p><a href=\"/es/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Comprimir PDF - archivos ligeros para correo | RatPDF\",\"description\":\"Aprende cómo comprimir PDF en 1 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.\",\"inLanguage\":\"es\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Paso 1\",\"text\":\"Sube el documento en la herramienta RatPDF para comprimir PDF.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"es\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"¿Qué peso debería tener un PDF para adjuntarlo por correo?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos.\"}},{\"@type\":\"Question\",\"name\":\"¿Cuándo conviene usar compresión Extrema?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo.\"}},{\"@type\":\"Question\",\"name\":\"¿Un PDF escaneado se comprime menos que uno nativo?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"En general sí, porque cada página ya es una imagen. Aplicar OCR antes ayuda a buscar texto después, pero la reducción real de tamaño viene de bajar la resolución de esas imágenes internas.\"}}]}]}</script>\n<h2>Lista antes de enviar</h2><ul><li>Guardé el original en carpeta de proyecto separada de la copia enviada.</li><li>Anoté el nivel de compresión o herramienta usada para repetir el próximo mes.</li><li>Confirmé si el portal acepta PDF común o exige PDF/A.</li><li>Envié la contraseña por canal distinto cuando el PDF está protegido.</li><li>Confirmé que comprimir PDF es necesario para este destino (compress pdf construction).</li><li>Probé abrir el PDF en otro dispositivo después del procesamiento.</li></ul>\n<h2>Buenas prácticas</h2>\n<p>Si comprimir PDF no basta, divida por capítulos y envíe enlaces separados con índice en el correo.</p>\n<h2>Buenas prácticas (2)</h2>\n<p>Profesionales de profesionales y equipos de oficina reportan menos devoluciones tras estandarizar comprimir PDF a fin de mes.</p>\n<h2>Buenas prácticas (3)</h2>\n<p>Al capacitar practicantes en profesionales y equipos de oficina, use este flujo (compress pdf construction) como guión de cinco minutos.</p>\n<h2>Buenas prácticas (4)</h2>\n<p>Para profesionales y equipos de oficina, combine comprimir PDF con nombres de archivo con fecha y versión.</p>\n<h2>Buenas prácticas (5)</h2>\n<p>Si el portal rechaza tras comprimir PDF, divida por páginas antes de comprimir otra vez.</p>\n<h2>Buenas prácticas (6)</h2>\n<p>En portátiles con poco espacio, comprimir PDF también libera disco antes de sincronizar con la nube.</p>\n<h2>Buenas prácticas (7)</h2>\n<p>Guarde el PDF original en carpeta de proyecto; use la copia procesada solo para envío — especialmente en profesionales y equipos de oficina.</p>\n<h2>Buenas prácticas (8)</h2>\n<p>Este tema (compress pdf construction) aparece mucho en búsquedas de Latinoamérica cuando se acercan plazos de envío.</p>\n<h2>Buenas prácticas (9)</h2>\n<p>Renombre con sufijo -final o -enviado tras comprimir PDF para no reutilizar archivo viejo en otro portal.</p>\n<h2>Buenas prácticas (10)</h2>\n<p>Si el archivo viene de WhatsApp o correo, descargue el original antes de comprimir PDF.</p>\n<h2>Buenas prácticas (11)</h2>\n<p>Para equipos remotos en profesionales y equipos de oficina, estandarice comprimir PDF en una guía interna de una página.</p>\n<h2>Buenas prácticas (12)</h2>\n<p>En contratos de profesionales y equipos de oficina, envíe primero versión con marca de agua; comprimir PDF en la versión firmada.</p>\n<h2>Buenas prácticas (13)</h2>\n<p>El título (compress pdf construction) refleja búsquedas reales — ajustamos el flujo para ese caso.</p>\n<h2>Buenas prácticas (14)</h2>\n<p>Compare tamaño antes/después en propiedades del archivo — meta clara para auditoría en profesionales y equipos de oficina.</p>\n<h2>Buenas prácticas (15)</h2>\n<p>Quien busca comprimir PDF en este contexto (compress pdf construction) suele haber probado guardar de nuevo sin reducir el tamaño.</p>",
+  "faqQuestions": [
+    "¿Qué peso debería tener un PDF para adjuntarlo por correo?",
+    "¿Cuándo conviene usar compresión Extrema?",
+    "¿Un PDF escaneado se comprime menos que uno nativo?"
+  ],
+  "faqAnswers": [
+    "Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos.",
+    "Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo.",
+    "En general sí, porque cada página ya es una imagen. Aplicar OCR antes ayuda a buscar texto después, pero la reducción real de tamaño viene de bajar la resolución de esas imágenes internas."
+  ],
+  "howToSteps": [
+    "Sube el documento en la herramienta RatPDF para comprimir PDF."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Comprimir PDF - archivos ligeros para correo | RatPDF",
+      "description": "Aprende cómo comprimir PDF en 1 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+      "inLanguage": "es",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Paso 1",
+          "text": "Sube el documento en la herramienta RatPDF para comprimir PDF."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué peso debería tener un PDF para adjuntarlo por correo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo conviene usar compresión Extrema?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Un PDF escaneado se comprime menos que uno nativo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En general sí, porque cada página ya es una imagen. Aplicar OCR antes ayuda a buscar texto después, pero la reducción real de tamaño viene de bajar la resolución de esas imágenes internas."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 3,
+  "generatedAt": "2026-06-29T08:17:53.612269+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 771,
+  "uniqueness": {
+    "englishSimilarity": 0.0048,
+    "localeSimilarities": {
+      "pt-BR": 0.0664,
+      "de": 0.0151,
+      "id": 0.0299,
+      "fr": 0.0365
+    },
+    "wordCount": 771,
+    "flags": [],
+    "passed": true
+  }
+}

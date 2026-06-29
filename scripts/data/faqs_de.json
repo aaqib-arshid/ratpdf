@@ -1,0 +1,246 @@
+{
+  "version": 2,
+  "locale": "de",
+  "categories": {
+    "compress": {
+      "label": "PDF komprimieren",
+      "faqs": [
+        {
+          "id": "compress-1",
+          "question": "Wird Text in einem komprimierten PDF unscharf?",
+          "answer": "Bei digitalen PDFs bleibt Vektortext scharf; nur eingebettete Bilder werden neu codiert. Bei Stempeln oder Kleinschrift wählen Sie in RatPDF die Stufe Gering und prüfen die Ansicht mit 150 % Zoom vor dem Versand."
+        },
+        {
+          "id": "compress-2",
+          "question": "Welche Dateigröße sollte ich für E-Mail-Anhänge anpeilen?",
+          "answer": "Obwohl viele Postfächer bis 25 MB erlauben, vergrößert die Base64-Kodierung den Anhang um rund ein Drittel. Für deutsche Unternehmensgateways empfehlen sich finale PDFs mit höchstens 18 MB."
+        },
+        {
+          "id": "compress-3",
+          "question": "Wann ist die Stufe Extrem sinnvoll?",
+          "answer": "Nur wenn ein Bewerberportal oder Vergabe-System die Datei nach der Stufe Empfohlen weiterhin ablehnt. Bei Finanztabellen oder feinen Linien in Plänen zuerst eine Testseite in RatPDF komprimieren."
+        },
+        {
+          "id": "compress-4",
+          "question": "Lässt sich ein Scan-PDF schlechter komprimieren als ein natives PDF?",
+          "answer": "In der Regel ja, weil jede Seite bereits ein Bild ist. OCR vor der Komprimierung hilft bei der Suche, aber die eigentliche Größenreduktion kommt von der niedrigeren Auflösung der Seitenbilder."
+        },
+        {
+          "id": "compress-5",
+          "question": "Vor oder nach dem Zusammenführen mehrerer Anhänge komprimieren?",
+          "answer": "Zuerst in RatPDF in der endgültigen Reihenfolge zusammenführen und einmal am Ende komprimieren. Mehrfaches Komprimieren desselben Pakets verschlechtert Bilder unnötig und erzeugt sichtbare Artefakte."
+        }
+      ]
+    },
+    "merge": {
+      "label": "PDF zusammenführen",
+      "faqs": [
+        {
+          "id": "merge-1",
+          "question": "Wie stelle ich die richtige Reihenfolge beim Zusammenführen sicher?",
+          "answer": "Benennen Sie Dateien vor dem Upload mit Nummernpräfixen (01-Vertrag, 02-Anlage-A). Bei Ausschreibungen und Vergaben gilt die vorgegebene Anlagenfolge — Prüfer sortieren fehlende Reihenfolge nicht nachträglich."
+        },
+        {
+          "id": "merge-2",
+          "question": "Wird die Datei beim Zusammenführen deutlich größer?",
+          "answer": "Die Gesamtgröße entspricht etwa der Summe der Einzeldateien. Überschreitet das Portal das Limit, zuerst in RatPDF zusammenführen und danach mit Stufe Empfohlen komprimieren — nicht umgekehrt bei großen Paketen."
+        },
+        {
+          "id": "merge-3",
+          "question": "Kann ich passwortgeschützte PDFs zusammenführen?",
+          "answer": "Sie benötigen das richtige Kennwort zum Öffnen jeder Datei vor dem Merge. Gesperrte PDFs schlagen fehl oder erscheinen leer; entsperren Sie sie zuerst mit dem passenden RatPDF-Tool."
+        },
+        {
+          "id": "merge-4",
+          "question": "Reicht Zusammenführen vom Smartphone für den Geschäftsalltag?",
+          "answer": "Ja in Chrome oder Safari, aber ab etwa 15 MB lieber WLAN nutzen. Prüfen Sie die Gesamtseitenzahl danach — eine Leerseite deutet meist auf einen unvollständigen Export hin."
+        },
+        {
+          "id": "merge-5",
+          "question": "Soll ich die Original-PDFs nach dem Zusammenführen behalten?",
+          "answer": "Ja. Bewahren Sie signierte Originale getrennt auf und erstellen Sie ein zusammengeführtes Paket nur für den externen Versand. Das erleichtert die Nachverfolgung, wenn der Kunde später eine einzelne Seite beanstandet."
+        }
+      ]
+    },
+    "split": {
+      "label": "PDF teilen",
+      "faqs": [
+        {
+          "id": "split-1",
+          "question": "Wann ist Teilen besser als Komprimieren?",
+          "answer": "Wenn die Bildqualität nicht leiden darf — etwa bei Befunden, Bauplänen oder Verträgen mit amtlichen Stempeln. Teilen Sie in RatPDF nach Kapitel oder Seitenbereich und laden Sie getrennte Dateien hoch, wenn das Portal mehrere Uploads erlaubt."
+        },
+        {
+          "id": "split-2",
+          "question": "Wie extrahiere ich nur einige Seiten aus einem langen Vertrag?",
+          "answer": "Nutzen Sie einen Seitenbereich (z. B. 12–18), um Klauseln oder signierte Anlagen zu isolieren. Benennen Sie die Datei mit dem Bereich im Titel, damit der Empfänger den Inhalt ohne das Gesamtpaket findet."
+        },
+        {
+          "id": "split-3",
+          "question": "Ändert Teilen die ursprüngliche Seitennummerierung?",
+          "answer": "Jede extrahierte Datei beginnt intern wieder bei Seite 1, der Seiteninhalt bleibt jedoch unverändert. Für durchlaufende Nummerierung fügen Sie nach dem Teilen in RatPDF Seitenzahlen hinzu."
+        },
+        {
+          "id": "split-4",
+          "question": "Kann ich einen gescannten Stapel seitenweise aufteilen?",
+          "answer": "Ja — praktisch, um Belege aus einem langen Scan zu trennen. Führen Sie danach OCR auf jedem Teil aus, wenn Sie Text in einem Stapel von Quittungen durchsuchen müssen."
+        },
+        {
+          "id": "split-5",
+          "question": "Zuerst teilen oder zusammenführen im E-Mail-Workflow?",
+          "answer": "In RatPDF zusammenführen, wenn der Empfänger genau eine Datei verlangt. Teilen, wenn das Größenlimit strikt ist und die Qualität nicht durch Komprimierung geopfert werden darf."
+        }
+      ]
+    },
+    "convert": {
+      "label": "PDF-Konvertierung",
+      "faqs": [
+        {
+          "id": "convert-1",
+          "question": "Bleiben Kalkulationstabellen beim PDF-zu-Word-Export editierbar?",
+          "answer": "Bei digitalen PDFs mit echten Tabellen meist ja. Scans werden im Word-Dokument zu Bildern — zuerst OCR ausführen und Zellränder sowie Kopfzeilen nach dem DOCX-Download aus RatPDF prüfen."
+        },
+        {
+          "id": "convert-2",
+          "question": "Warum lässt sich Text im konvertierten PDF nicht markieren?",
+          "answer": "Die Quelldatei ist vermutlich reine Bilddarstellung. Ohne Textschicht behandelt jede Konvertierung Seiten als Grafiken. OCR PDF ist der notwendige Schritt vor Word oder Textextraktion."
+        },
+        {
+          "id": "convert-3",
+          "question": "Übernimmt Excel-zu-PDF den Druckbereich?",
+          "answer": "Ja, wenn in Excel ein Druckbereich definiert ist. Sehr breite Tabellen können Schrift verkleinern — prüfen Sie den Zoom bei 100 % im PDF, bevor Sie es an Bank oder Prüfer senden."
+        },
+        {
+          "id": "convert-4",
+          "question": "Eignet sich Word-zu-PDF für Ausschreibungen und Vergaben?",
+          "answer": "Ja für die finale Angebotsabgabe als PDF. Testen Sie Ränder, eingebettete Schriften und Seitenumbrüche vor dem Portal-Upload; Layoutfehler sind die häufigste vermeidbare technische Beanstandung."
+        },
+        {
+          "id": "convert-5",
+          "question": "Klartext oder Word nach der Konvertierung?",
+          "answer": "Klartext für Indexierung, Skripte und Wissensdatenbanken. Word, wenn lange Absätze umgeschrieben oder Tabellen mit komplexer Formatierung neu aufgebaut werden."
+        }
+      ]
+    },
+    "sign": {
+      "label": "PDF signieren",
+      "faqs": [
+        {
+          "id": "sign-1",
+          "question": "Gilt eine eingetippte Signatur in PDFs für Freelancer-Verträge?",
+          "answer": "In der deutschen B2B-Praxis oft ja bei Dienstleistungsverträgen, ergänzt durch eine Annahme-E-Mail. Hohe Beträge oder regulierte Branchen können qualifizierte elektronische Signaturen oder notarielle Form verlangen."
+        },
+        {
+          "id": "sign-2",
+          "question": "Wo platziere ich die Signatur in einem Angebot?",
+          "answer": "Im Fuß der letzten Seite oder in einem eigenen Block nach den Konditionen. Vollständiger Name, Funktion und Datum angeben — fehlendes Datum schwächt den Nachweis bei einfachen Streitfällen."
+        },
+        {
+          "id": "sign-3",
+          "question": "Kann ich ein PDF signieren und per WhatsApp Web senden?",
+          "answer": "In RatPDF signieren, die finale PDF-Datei herunterladen und versenden — keinen Screenshot aus dem Viewer. Screenshots verlieren Qualität und gelten bei den meisten Kunden nicht als formales Dokument."
+        },
+        {
+          "id": "sign-4",
+          "question": "Vor oder nach der Komprimierung signieren?",
+          "answer": "Die freigegebene Version signieren und danach komprimieren, falls der Versand kleiner sein muss. Keinen Entwurf signieren, der noch die Rechtsabteilung passiert; nach finalem OK eine neue Versionsnummer erzeugen."
+        },
+        {
+          "id": "sign-5",
+          "question": "Ersetzt die digitale Signatur den Firmenstempel?",
+          "answer": "Für viele interne Abläufe ja. Dokumente mit notariellem Siegel oder beglaubigter Unterschrift brauchen weiterhin den Präsenzprozess — vorab mit der Rechtsabteilung klären."
+        }
+      ]
+    },
+    "protect": {
+      "label": "PDF schützen",
+      "faqs": [
+        {
+          "id": "protect-1",
+          "question": "Was ist der Unterschied zwischen Benutzer- und Besitzerkennwort?",
+          "answer": "Das Benutzerkennwort blockiert das Öffnen der Datei. Das Besitzerkennwort beschränkt Druck, Kopie oder Bearbeitung trotz geöffnetem PDF. Für externe Verträge in RatPDF Öffnungsschutz und Kopiersperre kombinieren, wenn möglich."
+        },
+        {
+          "id": "protect-2",
+          "question": "Schützt ein Wasserzeichen vertrauliche Unterlagen?",
+          "answer": "Ein Wasserzeichen kennzeichnet den Status (ENTWURF, VERTRAULICH), verschlüsselt aber nicht. Wer die Datei öffnet, kann den Bildschirm fotografieren; bei sensiblen Inhalten ein starkes Kennwort setzen."
+        },
+        {
+          "id": "protect-3",
+          "question": "Wie gebe ich das PDF-Kennwort sicher weiter?",
+          "answer": "Niemals im selben Thread wie der Anhang. PDF per E-Mail, Kennwort per SMS oder separatem Kanal. Keine Standardwörter wie 1234 — lieber eine lange Passphrase, die der Empfänger einmal eintippen kann."
+        },
+        {
+          "id": "protect-4",
+          "question": "Kann ich ein vergessenes Kennwort entfernen?",
+          "answer": "Seriöse Tools verlangen das korrekte Kennwort; es gibt keinen legitimen Bruch ohne es. Haben Sie es selbst gesetzt, im Passwort-Manager speichern. Von Dritten erhalten? Unverschlüsselte Neuzustellung anfordern."
+        },
+        {
+          "id": "protect-5",
+          "question": "Vor oder nach der Komprimierung schützen?",
+          "answer": "Zuerst komprimieren, wenn das Portal eine Maximalgröße verlangt; die finale Firmenversion danach schützen. Entwürfe können bis zur internen Freigabe nur ein Wasserzeichen tragen."
+        }
+      ]
+    },
+    "edit": {
+      "label": "PDF bearbeiten",
+      "faqs": [
+        {
+          "id": "edit-1",
+          "question": "Ändert Online-Bearbeitung die Originaldatei auf meinem PC?",
+          "answer": "Nein — Sie arbeiten im Browser an einer Kopie und laden eine neue Version herunter. Das signierte Master-PDF getrennt mit dem Suffix -ORIGINAL im Dateinamen aufbewahren."
+        },
+        {
+          "id": "edit-2",
+          "question": "Korrigiert Drehen eine auf dem Kopf stehende Scan-Seite?",
+          "answer": "Ja, ohne erneutes Scannen. In RatPDF um 90° oder 180° drehen, Seitennummerierung prüfen und erst dann ins Gesamtpaket einfügen — eine schiefe Seite wirkt im Vertrag unprofessionell."
+        },
+        {
+          "id": "edit-3",
+          "question": "Wann muss ein PDF-Formular unbedingt abgeflacht werden?",
+          "answer": "Wenn Behördenportale oder ERP-Systeme bearbeitbare Felder ablehnen. Abflachen macht Eingaben zu festem Inhalt — ideal vor dem Upload in Legacy-Systeme."
+        },
+        {
+          "id": "edit-4",
+          "question": "Kann ich Seitenzahlen in einen bereits signierten Vertrag einfügen?",
+          "answer": "Nur in einer noch nicht finalen Kopie. Änderungen nach der Signatur können den Nachweis schwächen; wenn möglich vor der Unterschriftensammlung eine nummerierte Version erzeugen."
+        },
+        {
+          "id": "edit-5",
+          "question": "Schnelle PDF-Bearbeitung oder Konvertierung nach Word?",
+          "answer": "PDF in RatPDF für punktuelle Korrekturen, Stempel und Anmerkungen. Word, wenn lange Klauseln neu formuliert oder große Textblöcke mit komplexer Formatierung verschoben werden."
+        }
+      ]
+    },
+    "ocr": {
+      "label": "OCR und PDF-Text",
+      "faqs": [
+        {
+          "id": "ocr-1",
+          "question": "Funktioniert OCR mit einem Handyfoto eines Dokuments?",
+          "answer": "Ja, bei gutem Licht und flach liegendem Papier. Schatten an den Rändern und Reflexe auf Laminierung vermeiden — schräge Aufnahmen verschlechtern die Erkennung bei IBAN, Beträgen und Eigennamen stark."
+        },
+        {
+          "id": "ocr-2",
+          "question": "Warum findet die PDF-Suche ein Wort nicht, das ich sehe?",
+          "answer": "Sie sehen ein Bild, keinen eingebetteten Text. OCR in RatPDF ausführen, um eine durchsuchbare Schicht zu erzeugen, und mit einer bekannten Vorgangsnummer auf der Seite testen."
+        },
+        {
+          "id": "ocr-3",
+          "question": "Welche Auflösung vor OCR bei Textdokumenten?",
+          "answer": "200–300 DPI in Graustufen ist für A4-Text meist ideal. Höher vergrößert die Datei ohne proportionalen Gewinn; niedriger gehen Serifen und kleine Ziffern verloren."
+        },
+        {
+          "id": "ocr-4",
+          "question": "Korrigiert OCR Rechtschreibfehler automatisch?",
+          "answer": "Nein. Namen, Geldbeträge und Daten nach OCR prüfen — besonders bei handschriftlichen Formularen oder halblegibaren Stempeln. Eine falsche Ziffer in einer Überweisungsreferenz macht die Zahlung ungültig."
+        },
+        {
+          "id": "ocr-5",
+          "question": "OCR vor oder nach dem Komprimieren eines Scans?",
+          "answer": "Zuerst OCR bei lesbarer Qualität, danach für den Versand komprimieren. Aggressive Komprimierung vor OCR kann Details entfernen, die die Zeichenerkennung für korrekte Treffer braucht."
+        }
+      ]
+    }
+  }
+}

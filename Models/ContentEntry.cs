@@ -21,9 +21,15 @@ namespace ratpdf.Models
         public string[]? FaqAnswers { get; init; }
         public string[]? HowToSteps { get; init; }
 
-        public string Path => Kind == ContentKind.Blog ? $"/blog/{Slug}" : $"/guides/{Slug}";
+        /// <summary>When set (e.g. "pt"), <see cref="Path"/> uses /{prefix}/guides/{slug}.</summary>
+        public string? LocalePrefix { get; init; }
+        public string? ToolCtaLabelOverride { get; init; }
+
+        public string Path => LocalePrefix != null
+            ? $"/{LocalePrefix.Trim('/')}/guides/{Slug}"
+            : Kind == ContentKind.Blog ? $"/blog/{Slug}" : $"/guides/{Slug}";
 
         public string ToolCtaLabel =>
-            ToolUrl == null ? "Browse PDF tools" : "Use free tool →";
+            ToolCtaLabelOverride ?? (ToolUrl == null ? "Browse PDF tools" : "Use free tool →");
     }
 }

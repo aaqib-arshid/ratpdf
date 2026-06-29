@@ -1,0 +1,124 @@
+{
+  "slug": "pdf-email-attachment-checklist",
+  "sourceSlug": "pdf-email-attachment-checklist",
+  "locale": "es",
+  "urlPrefix": "es",
+  "title": "Herramientas PDF - archivos ligeros para correo | RatPDF",
+  "description": "Aprende cómo herramientas PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+  "primaryKeyword": "herramientas PDF",
+  "category": "PDF",
+  "contentCategory": "compress",
+  "toolUrl": "/pdf/compress",
+  "toolCtaLabel": "Usar herramienta gratis →",
+  "bodyHtml": "<h1>Herramientas PDF</h1>\n<p class=\"rp-intro\">Si estás intentando herramientas PDF ahora mismo, este tutorial está hecho para resolverlo en minutos, no en horas.</p>\n<h2>Cuándo usar este flujo</h2>\n<p>En esta guía (pdf email attachment checklist), el escenario habitual es cuando el adjunto supera el límite del correo.</p>\n<p>Tras herramientas PDF, abra el PDF en otro lector (Chrome, Edge, Adobe) para validar compatibilidad.</p>\n<p>Si el portal pide PDF/A, verifique que herramientas PDF mantiene el perfil exigido.</p>\n<h2>Contexto en Latinoamérica</h2>\n<p>Los archivos con muchas fotos — informes, catálogos, proyectos — son los que más rompen el límite. Recodificar imágenes suele reducir decenas de megabytes sin borrar texto vectorial.</p>\n<p>Si trabajas con contabilidad o legal, estandariza un nivel de compresión por tipo de documento: Menor para contratos firmados, Recomendado para correo interno.</p>\n<p>En Latinoamérica, portales de empleo, universidades y organismos públicos suelen limitar cargas entre 2 MB y 10 MB. Comprimir antes de subir evita errores genéricos y retrabajo a última hora.</p>\n<h2>Paso a paso</h2><ol>\n<li>Abre la herramienta RatPDF para herramientas PDF.</li>\n<li>Sube el archivo PDF y espera el procesamiento en el navegador.</li>\n<li>Elige el nivel Recomendado e inicia la compresión o conversión.</li>\n<li>Revisa el resultado en la vista previa antes de descargar.</li>\n<li>Descarga el archivo final y verifica tamaño o contenido.</li>\n<li>Archiva el original y envía la copia procesada al destinatario.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/pdf/compress\">Usar herramienta gratis →</a></p>\n<h2>Preguntas frecuentes</h2>\n<h3>¿Comprimir un PDF afecta la legibilidad del texto?</h3><p>No en documentos digitales: el texto vectorial se mantiene nítido y solo se reoptimizan las imágenes internas. Si tu archivo tiene sellos o letra pequeña, elige el nivel Menor en RatPDF y revisa el zoom al 150% antes de enviarlo al cliente.</p>\n<h3>¿Qué peso debería tener un PDF para adjuntarlo por correo?</h3><p>Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos.</p>\n<h3>¿Cuándo conviene usar compresión Extrema?</h3><p>Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo.</p>\n<h2>Consejos profesionales</h2><ul>\n<li>Prueba el nivel Recomendado antes del Extremo — muchos portales aceptan el archivo tras una sola pasada moderada.</li>\n<li>Renombra el archivo con sufijo -comprimido para no confundirlo con el original firmado.</li>\n<li>Si el PDF tiene muchas páginas vectoriales puras, la reducción será menor; enfócate en escaneos y fotos incrustadas.</li>\n</ul>\n<h2>Guías relacionadas</h2><ul>\n<li><a href=\"/es/guides/pdf-text-not-selectable\">Herramientas PDF</a></li>\n<li><a href=\"/es/guides/pdf-upload-failed-portal\">Herramientas PDF</a></li>\n<li><a href=\"/es/guides/pdf-wont-open-password-unknown\">Proteger PDF con contraseña</a></li>\n</ul>\n<p><a href=\"/pdf/compress\">Usar herramienta gratis →</a></p>\n<p><a href=\"/es/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Herramientas PDF - archivos ligeros para correo | RatPDF\",\"description\":\"Aprende cómo herramientas PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.\",\"inLanguage\":\"es\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Paso 1\",\"text\":\"Abre la herramienta RatPDF para herramientas PDF.\"},{\"@type\":\"HowToStep\",\"position\":2,\"name\":\"Paso 2\",\"text\":\"Sube el archivo PDF y espera el procesamiento en el navegador.\"},{\"@type\":\"HowToStep\",\"position\":3,\"name\":\"Paso 3\",\"text\":\"Elige el nivel Recomendado e inicia la compresión o conversión.\"},{\"@type\":\"HowToStep\",\"position\":4,\"name\":\"Paso 4\",\"text\":\"Revisa el resultado en la vista previa antes de descargar.\"},{\"@type\":\"HowToStep\",\"position\":5,\"name\":\"Paso 5\",\"text\":\"Descarga el archivo final y verifica tamaño o contenido.\"},{\"@type\":\"HowToStep\",\"position\":6,\"name\":\"Paso 6\",\"text\":\"Archiva el original y envía la copia procesada al destinatario.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"es\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"¿Comprimir un PDF afecta la legibilidad del texto?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"No en documentos digitales: el texto vectorial se mantiene nítido y solo se reoptimizan las imágenes internas. Si tu archivo tiene sellos o letra pequeña, elige el nivel Menor en RatPDF y revisa el zoom al 150% antes de enviarlo al cliente.\"}},{\"@type\":\"Question\",\"name\":\"¿Qué peso debería tener un PDF para adjuntarlo por correo?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos.\"}},{\"@type\":\"Question\",\"name\":\"¿Cuándo conviene usar compresión Extrema?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo.\"}}]}]}</script>\n<h2>Lista antes de enviar</h2><ul><li>Verifiqué que tablas, sellos y firmas siguen legibles.</li><li>Guardé el original en carpeta de proyecto separada de la copia enviada.</li><li>Anoté el nivel de compresión o herramienta usada para repetir el próximo mes.</li><li>Confirmé si el portal acepta PDF común o exige PDF/A.</li><li>Envié la contraseña por canal distinto cuando el PDF está protegido.</li><li>Confirmé que herramientas PDF es necesario para este destino (pdf email attachment checklist).</li></ul>\n<h2>Buenas prácticas</h2>\n<p>Antes de herramientas PDF, cierre pestañas pesadas del navegador — los PDF grandes consumen memoria.</p>\n<h2>Buenas prácticas (2)</h2>\n<p>Para profesionales y equipos de oficina, combine herramientas PDF con checklist interno: nombre, fecha, versión y destinatario.</p>\n<h2>Buenas prácticas (3)</h2>\n<p>Los documentos con páginas en blanco pueden limpiarse antes de herramientas PDF para evitar trabajo inútil.</p>\n<h2>Buenas prácticas (4)</h2>\n<p>Guarde captura del tamaño final aceptado — útil cuando el adjunto supera el límite del correo.</p>\n<h2>Buenas prácticas (5)</h2>\n<p>Evite editar el PDF en Word y reexportar sin necesidad — el archivo crece rápido.</p>\n<h2>Buenas prácticas (6)</h2>\n<p>Si herramientas PDF no basta, divida por capítulos y envíe enlaces separados con índice en el correo.</p>\n<h2>Buenas prácticas (7)</h2>\n<p>Profesionales de profesionales y equipos de oficina reportan menos devoluciones tras estandarizar herramientas PDF a fin de mes.</p>\n<h2>Buenas prácticas (8)</h2>\n<p>Al capacitar practicantes en profesionales y equipos de oficina, use este flujo (pdf email attachment checklist) como guión de cinco minutos.</p>\n<h2>Buenas prácticas (9)</h2>\n<p>Para profesionales y equipos de oficina, combine herramientas PDF con nombres de archivo con fecha y versión.</p>\n<h2>Buenas prácticas (10)</h2>\n<p>Este tema (pdf email attachment checklist) aparece mucho en búsquedas de Latinoamérica cuando se acercan plazos de envío.</p>\n<h2>Buenas prácticas (11)</h2>\n<p>Renombre con sufijo -final o -enviado tras herramientas PDF para no reutilizar archivo viejo en otro portal.</p>\n<h2>Buenas prácticas (12)</h2>\n<p>Si el archivo viene de WhatsApp o correo, descargue el original antes de herramientas PDF.</p>\n<h2>Buenas prácticas (13)</h2>\n<p>Cuando el adjunto supera el límite del correo, herramientas PDF suele resolver en un solo intento con nivel Recomendado.</p>",
+  "faqQuestions": [
+    "¿Comprimir un PDF afecta la legibilidad del texto?",
+    "¿Qué peso debería tener un PDF para adjuntarlo por correo?",
+    "¿Cuándo conviene usar compresión Extrema?"
+  ],
+  "faqAnswers": [
+    "No en documentos digitales: el texto vectorial se mantiene nítido y solo se reoptimizan las imágenes internas. Si tu archivo tiene sellos o letra pequeña, elige el nivel Menor en RatPDF y revisa el zoom al 150% antes de enviarlo al cliente.",
+    "Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos.",
+    "Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo."
+  ],
+  "howToSteps": [
+    "Abre la herramienta RatPDF para herramientas PDF.",
+    "Sube el archivo PDF y espera el procesamiento en el navegador.",
+    "Elige el nivel Recomendado e inicia la compresión o conversión.",
+    "Revisa el resultado en la vista previa antes de descargar.",
+    "Descarga el archivo final y verifica tamaño o contenido.",
+    "Archiva el original y envía la copia procesada al destinatario."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Herramientas PDF - archivos ligeros para correo | RatPDF",
+      "description": "Aprende cómo herramientas PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+      "inLanguage": "es",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Paso 1",
+          "text": "Abre la herramienta RatPDF para herramientas PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Paso 2",
+          "text": "Sube el archivo PDF y espera el procesamiento en el navegador."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Paso 3",
+          "text": "Elige el nivel Recomendado e inicia la compresión o conversión."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Paso 4",
+          "text": "Revisa el resultado en la vista previa antes de descargar."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Paso 5",
+          "text": "Descarga el archivo final y verifica tamaño o contenido."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 6,
+          "name": "Paso 6",
+          "text": "Archiva el original y envía la copia procesada al destinatario."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Comprimir un PDF afecta la legibilidad del texto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No en documentos digitales: el texto vectorial se mantiene nítido y solo se reoptimizan las imágenes internas. Si tu archivo tiene sellos o letra pequeña, elige el nivel Menor en RatPDF y revisa el zoom al 150% antes de enviarlo al cliente."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué peso debería tener un PDF para adjuntarlo por correo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo conviene usar compresión Extrema?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 2,
+  "generatedAt": "2026-06-29T08:18:21.951361+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 757,
+  "uniqueness": {
+    "englishSimilarity": 0.0108,
+    "localeSimilarities": {
+      "pt-BR": 0.1287,
+      "de": 0.0247,
+      "id": 0.0323,
+      "fr": 0.0392
+    },
+    "wordCount": 757,
+    "flags": [],
+    "passed": true
+  }
+}

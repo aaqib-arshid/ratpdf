@@ -311,6 +311,9 @@ namespace ratpdf.Services
             return _allSlugs!.Select(s => $"/{s}").ToList();
         }
 
+        public static IReadOnlyList<string> CuratedLandingPaths() =>
+            CuratedPages.Select(p => $"/{p.Slug}").ToList();
+
         /// <summary>All compress SEO URLs for sitemap: hero tool, legacy static pages, curated + keyword landings.</summary>
         public static IReadOnlyList<string> AllSitemapPaths()
         {

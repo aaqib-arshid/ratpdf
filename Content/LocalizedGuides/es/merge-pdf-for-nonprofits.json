@@ -1,0 +1,103 @@
+{
+  "slug": "merge-pdf-for-nonprofits",
+  "sourceSlug": "merge-pdf-for-nonprofits",
+  "locale": "es",
+  "urlPrefix": "es",
+  "title": "Unir PDF - un solo PDF ordenado | RatPDF",
+  "description": "Aprende cómo unir PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+  "primaryKeyword": "unir PDF",
+  "category": "PDF",
+  "contentCategory": "merge",
+  "toolUrl": "/pdf/merge",
+  "toolCtaLabel": "Usar herramienta gratis →",
+  "bodyHtml": "<h1>Unir PDF</h1>\n<p class=\"rp-intro\">¿Necesitas juntar contrato y anexos? En esta guía te mostramos cómo unir PDF con RatPDF — trabajar desde el celular o la laptop.</p>\n<h2>Cuándo usar este flujo</h2>\n<p>En esta guía (merge pdf for nonprofits), el escenario habitual es cuando la fecha de envío está cerca y el archivo debe caber en el límite.</p>\n<p>Si el portal pide PDF/A, verifique que unir PDF mantiene el perfil exigido.</p>\n<p>Guarde captura del tamaño final aceptado — útil cuando la fecha de envío está cerca y el archivo debe caber en el límite.</p>\n<h2>Contexto en Latinoamérica</h2>\n<p>Para auditoría, guarda los PDF originales en carpeta aparte y genera un paquete unido solo para envío externo.</p>\n<p>Las propuestas comerciales en la región suelen mezclar oferta, anexo técnico y certificados. Unir en el orden correcto evita que el evaluador abra archivos fuera de secuencia.</p>\n<p>Al juntar escaneos de distinta calidad, revisa la orientación de página antes de enviar. Una hoja acostada en medio del paquete da impresión de descuido.</p>\n<h2>Paso a paso</h2><ol>\n<li>Abre la herramienta RatPDF para unir PDF.</li>\n<li>Sube el documento en la herramienta RatPDF para unir PDF.</li>\n<li>Descarga el archivo final y verifica tamaño o contenido.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/pdf/merge\">Usar herramienta gratis →</a></p>\n<h2>Preguntas frecuentes</h2>\n<h3>¿Unir PDF desde el celular sirve para trabajo formal?</h3><p>Sí en Chrome o Safari, pero usa Wi-Fi si el paquete supera 15 MB. Revisa el total de páginas al terminar: una hoja en blanco suele indicar una exportación incompleta.</p>\n<h3>¿Debo conservar los PDF originales después de unirlos?</h3><p>Sí. Guarda los archivos firmados por separado y genera un paquete unificado solo para envío externo. Así facilitas la auditoría si el cliente cuestiona una página específica después.</p>\n<h3>¿Cómo aseguro el orden correcto al unir PDFs?</h3><p>Renombra los archivos con prefijos numéricos (01-contrato, 02-anexo) antes de subirlos. En licitaciones y concursos, respeta el orden del pliego: quien evalúa no reorganiza anexos fuera de secuencia.</p>\n<h2>Consejos profesionales</h2><ul>\n<li>Usa prefijos numéricos en los nombres de archivo para garantizar el orden correcto sin arrastrar manualmente.</li>\n<li>Revisa el total de páginas después de unir — un anexo en blanco suele indicar exportación incompleta.</li>\n<li>Une solo lo que se enviará; mantén anexos sensibles en archivos separados cuando el pliego lo exija.</li>\n</ul>\n<h2>Guías relacionadas</h2><ul>\n<li><a href=\"/es/guides/university-application-pdf-workflow-canada\">Herramientas PDF</a></li>\n<li><a href=\"/es/guides/university-application-pdf-workflow-france\">Herramientas PDF</a></li>\n<li><a href=\"/es/guides/university-application-pdf-workflow-germany\">Herramientas PDF</a></li>\n</ul>\n<p><a href=\"/pdf/merge\">Usar herramienta gratis →</a></p>\n<p><a href=\"/es/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Unir PDF - un solo PDF ordenado | RatPDF\",\"description\":\"Aprende cómo unir PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.\",\"inLanguage\":\"es\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Paso 1\",\"text\":\"Abre la herramienta RatPDF para unir PDF.\"},{\"@type\":\"HowToStep\",\"position\":2,\"name\":\"Paso 2\",\"text\":\"Sube el documento en la herramienta RatPDF para unir PDF.\"},{\"@type\":\"HowToStep\",\"position\":3,\"name\":\"Paso 3\",\"text\":\"Descarga el archivo final y verifica tamaño o contenido.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"es\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"¿Unir PDF desde el celular sirve para trabajo formal?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Sí en Chrome o Safari, pero usa Wi-Fi si el paquete supera 15 MB. Revisa el total de páginas al terminar: una hoja en blanco suele indicar una exportación incompleta.\"}},{\"@type\":\"Question\",\"name\":\"¿Debo conservar los PDF originales después de unirlos?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Sí. Guarda los archivos firmados por separado y genera un paquete unificado solo para envío externo. Así facilitas la auditoría si el cliente cuestiona una página específica después.\"}},{\"@type\":\"Question\",\"name\":\"¿Cómo aseguro el orden correcto al unir PDFs?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Renombra los archivos con prefijos numéricos (01-contrato, 02-anexo) antes de subirlos. En licitaciones y concursos, respeta el orden del pliego: quien evalúa no reorganiza anexos fuera de secuencia.\"}}]}]}</script>\n<h2>Lista antes de enviar</h2><ul><li>Probé abrir el PDF en otro dispositivo después del procesamiento.</li><li>Renombré el archivo con fecha y versión en el nombre.</li><li>Verifiqué que tablas, sellos y firmas siguen legibles.</li><li>Guardé el original en carpeta de proyecto separada de la copia enviada.</li><li>Anoté el nivel de compresión o herramienta usada para repetir el próximo mes.</li><li>Confirmé si el portal acepta PDF común o exige PDF/A.</li></ul>\n<h2>Buenas prácticas</h2>\n<p>Si unir PDF no basta, divida por capítulos y envíe enlaces separados con índice en el correo.</p>\n<h2>Buenas prácticas (2)</h2>\n<p>Profesionales de nonprofits reportan menos devoluciones tras estandarizar unir PDF a fin de mes.</p>\n<h2>Buenas prácticas (3)</h2>\n<p>Al capacitar practicantes en nonprofits, use este flujo (merge pdf for nonprofits) como guión de cinco minutos.</p>\n<h2>Buenas prácticas (4)</h2>\n<p>Para nonprofits, combine unir PDF con nombres de archivo con fecha y versión.</p>\n<h2>Buenas prácticas (5)</h2>\n<p>Si el portal rechaza tras unir PDF, divida por páginas antes de comprimir otra vez.</p>\n<h2>Buenas prácticas (6)</h2>\n<p>En portátiles con poco espacio, unir PDF también libera disco antes de sincronizar con la nube.</p>\n<h2>Buenas prácticas (7)</h2>\n<p>Guarde el PDF original en carpeta de proyecto; use la copia procesada solo para envío — especialmente en nonprofits.</p>\n<h2>Buenas prácticas (8)</h2>\n<p>Este tema (merge pdf for nonprofits) aparece mucho en búsquedas de Latinoamérica cuando se acercan plazos de envío.</p>\n<h2>Buenas prácticas (9)</h2>\n<p>Renombre con sufijo -final o -enviado tras unir PDF para no reutilizar archivo viejo en otro portal.</p>\n<h2>Buenas prácticas (10)</h2>\n<p>Si el archivo viene de WhatsApp o correo, descargue el original antes de unir PDF.</p>\n<h2>Buenas prácticas (11)</h2>\n<p>Para equipos remotos en nonprofits, estandarice unir PDF en una guía interna de una página.</p>\n<h2>Buenas prácticas (12)</h2>\n<p>En contratos de nonprofits, envíe primero versión con marca de agua; unir PDF en la versión firmada.</p>\n<h2>Buenas prácticas (13)</h2>\n<p>El título (merge pdf for nonprofits) refleja búsquedas reales — ajustamos el flujo para ese caso.</p>\n<h2>Buenas prácticas (14)</h2>\n<p>Compare tamaño antes/después en propiedades del archivo — meta clara para auditoría en nonprofits.</p>\n<h2>Buenas prácticas (15)</h2>\n<p>Quien busca unir PDF en este contexto (merge pdf for nonprofits) suele haber probado guardar de nuevo sin reducir el tamaño.</p>\n<h2>Buenas prácticas (16)</h2>\n<p>En nonprofits, unir PDF va después de la revisión y antes del envío externo.</p>\n<h2>Buenas prácticas (17)</h2>\n<p>Documente el nivel usado por tipo de archivo — acelera auditorías en nonprofits.</p>",
+  "faqQuestions": [
+    "¿Unir PDF desde el celular sirve para trabajo formal?",
+    "¿Debo conservar los PDF originales después de unirlos?",
+    "¿Cómo aseguro el orden correcto al unir PDFs?"
+  ],
+  "faqAnswers": [
+    "Sí en Chrome o Safari, pero usa Wi-Fi si el paquete supera 15 MB. Revisa el total de páginas al terminar: una hoja en blanco suele indicar una exportación incompleta.",
+    "Sí. Guarda los archivos firmados por separado y genera un paquete unificado solo para envío externo. Así facilitas la auditoría si el cliente cuestiona una página específica después.",
+    "Renombra los archivos con prefijos numéricos (01-contrato, 02-anexo) antes de subirlos. En licitaciones y concursos, respeta el orden del pliego: quien evalúa no reorganiza anexos fuera de secuencia."
+  ],
+  "howToSteps": [
+    "Abre la herramienta RatPDF para unir PDF.",
+    "Sube el documento en la herramienta RatPDF para unir PDF.",
+    "Descarga el archivo final y verifica tamaño o contenido."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Unir PDF - un solo PDF ordenado | RatPDF",
+      "description": "Aprende cómo unir PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+      "inLanguage": "es",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Paso 1",
+          "text": "Abre la herramienta RatPDF para unir PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Paso 2",
+          "text": "Sube el documento en la herramienta RatPDF para unir PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Paso 3",
+          "text": "Descarga el archivo final y verifica tamaño o contenido."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Unir PDF desde el celular sirve para trabajo formal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí en Chrome o Safari, pero usa Wi-Fi si el paquete supera 15 MB. Revisa el total de páginas al terminar: una hoja en blanco suele indicar una exportación incompleta."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Debo conservar los PDF originales después de unirlos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Guarda los archivos firmados por separado y genera un paquete unificado solo para envío externo. Así facilitas la auditoría si el cliente cuestiona una página específica después."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo aseguro el orden correcto al unir PDFs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Renombra los archivos con prefijos numéricos (01-contrato, 02-anexo) antes de subirlos. En licitaciones y concursos, respeta el orden del pliego: quien evalúa no reorganiza anexos fuera de secuencia."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 1,
+  "generatedAt": "2026-06-29T08:20:39.460647+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 763,
+  "uniqueness": {
+    "englishSimilarity": 0.0064,
+    "localeSimilarities": {
+      "pt-BR": 0.1145,
+      "de": 0.0136,
+      "id": 0.0244,
+      "fr": 0.0347
+    },
+    "wordCount": 763,
+    "flags": [],
+    "passed": true
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "version": 2,
+  "locale": "es",
+  "categories": {
+    "compress": {
+      "label": "Compresión de PDF",
+      "faqs": [
+        {
+          "id": "compress-1",
+          "question": "¿Comprimir un PDF afecta la legibilidad del texto?",
+          "answer": "No en documentos digitales: el texto vectorial se mantiene nítido y solo se reoptimizan las imágenes internas. Si tu archivo tiene sellos o letra pequeña, elige el nivel Menor en RatPDF y revisa el zoom al 150% antes de enviarlo al cliente."
+        },
+        {
+          "id": "compress-2",
+          "question": "¿Qué peso debería tener un PDF para adjuntarlo por correo?",
+          "answer": "Aunque Gmail y Outlook permiten unos 25 MB, la codificación del adjunto suma hasta un tercio extra de peso. En Latinoamérica conviene dejar el archivo final en 18 MB o menos para evitar rechazos en servidores corporativos."
+        },
+        {
+          "id": "compress-3",
+          "question": "¿Cuándo conviene usar compresión Extrema?",
+          "answer": "Solo si el portal de empleo o el sistema de licitación sigue rechazando el archivo después del nivel Recomendado. En tablas financieras o planos con líneas finas, prueba una página en RatPDF antes de comprimir el documento completo."
+        },
+        {
+          "id": "compress-4",
+          "question": "¿Un PDF escaneado se comprime menos que uno nativo?",
+          "answer": "En general sí, porque cada página ya es una imagen. Aplicar OCR antes ayuda a buscar texto después, pero la reducción real de tamaño viene de bajar la resolución de esas imágenes internas."
+        },
+        {
+          "id": "compress-5",
+          "question": "¿Comprimo antes o después de unir varios anexos?",
+          "answer": "Une los PDF en el orden final con RatPDF y comprime una sola vez al terminar. Volver a comprimir el mismo paquete varias veces degrada las imágenes sin necesidad y puede generar artefactos visibles."
+        }
+      ]
+    },
+    "merge": {
+      "label": "Unir PDF",
+      "faqs": [
+        {
+          "id": "merge-1",
+          "question": "¿Cómo aseguro el orden correcto al unir PDFs?",
+          "answer": "Renombra los archivos con prefijos numéricos (01-contrato, 02-anexo) antes de subirlos. En licitaciones y concursos, respeta el orden del pliego: quien evalúa no reorganiza anexos fuera de secuencia."
+        },
+        {
+          "id": "merge-2",
+          "question": "¿Unir varios PDF aumenta mucho el tamaño final?",
+          "answer": "El archivo resultante suele ser la suma aproximada de los originales. Si superas el límite del portal, une primero en RatPDF y comprime después con nivel Recomendado, no al revés en lotes grandes."
+        },
+        {
+          "id": "merge-3",
+          "question": "¿Puedo combinar PDFs protegidos con contraseña?",
+          "answer": "Necesitas la contraseña correcta para abrir cada archivo antes de unirlos. Los PDF bloqueados fallan o entran sin contenido visible; desbloquéalos con la herramienta adecuada de RatPDF primero."
+        },
+        {
+          "id": "merge-4",
+          "question": "¿Unir PDF desde el celular sirve para trabajo formal?",
+          "answer": "Sí en Chrome o Safari, pero usa Wi-Fi si el paquete supera 15 MB. Revisa el total de páginas al terminar: una hoja en blanco suele indicar una exportación incompleta."
+        },
+        {
+          "id": "merge-5",
+          "question": "¿Debo conservar los PDF originales después de unirlos?",
+          "answer": "Sí. Guarda los archivos firmados por separado y genera un paquete unificado solo para envío externo. Así facilitas la auditoría si el cliente cuestiona una página específica después."
+        }
+      ]
+    },
+    "split": {
+      "label": "Dividir PDF",
+      "faqs": [
+        {
+          "id": "split-1",
+          "question": "¿Cuándo es mejor dividir que comprimir un PDF?",
+          "answer": "Cuando no puedes sacrificar calidad visual: informes médicos, planos o contratos con sellos oficiales. Divide por capítulo o rango de páginas en RatPDF y envía enlaces separados si el portal permite varios cargas."
+        },
+        {
+          "id": "split-2",
+          "question": "¿Cómo extraigo solo algunas páginas de un contrato largo?",
+          "answer": "Usa un rango de páginas (por ejemplo, 12–18) para aislar cláusulas o anexos firmados. Nombra el archivo con el rango en el título para que el destinatario ubique el contenido sin abrir todo el paquete."
+        },
+        {
+          "id": "split-3",
+          "question": "¿Dividir un PDF cambia la numeración original?",
+          "answer": "Cada archivo extraído reinicia en la página 1 internamente, pero el contenido de las hojas permanece igual. Si necesitas numeración continua, agrega números de página después de dividir en RatPDF."
+        },
+        {
+          "id": "split-4",
+          "question": "¿Puedo separar un escaneo página por página?",
+          "answer": "Sí, es útil para dividir recibos de un solo escaneo largo. Luego aplica OCR a cada parte si necesitas buscar texto dentro de un lote de comprobantes fiscales."
+        },
+        {
+          "id": "split-5",
+          "question": "¿Primero divido o uno en un flujo de correo?",
+          "answer": "Une con RatPDF cuando el destinatario exige un solo archivo. Divide cuando el límite de tamaño es estricto y la calidad no puede reducirse por compresión."
+        }
+      ]
+    },
+    "convert": {
+      "label": "Conversión de PDF",
+      "faqs": [
+        {
+          "id": "convert-1",
+          "question": "¿PDF a Word mantiene tablas de presupuesto editables?",
+          "answer": "En PDFs digitales con tablas reales, sí en la mayoría de los casos. Los escaneos se convierten en imágenes en Word; aplica OCR antes y revisa bordes de celdas y encabezados al descargar el DOCX desde RatPDF."
+        },
+        {
+          "id": "convert-2",
+          "question": "¿Por qué mi PDF convertido no tiene texto seleccionable?",
+          "answer": "El archivo original probablemente es solo imagen. Sin capa de texto, cualquier conversión trata las páginas como figuras. OCR PDF es el paso obligatorio antes de pasar a Word o extraer texto."
+        },
+        {
+          "id": "convert-3",
+          "question": "¿Excel a PDF respeta el área de impresión?",
+          "answer": "Sí, cuando la hoja tiene área de impresión definida en Excel. Planillas muy anchas pueden reducir el tamaño de fuente; verifica el zoom al 100% en el PDF antes de enviarlo a banco o auditoría."
+        },
+        {
+          "id": "convert-4",
+          "question": "¿Word a PDF sirve para licitaciones y concursos?",
+          "answer": "Sí para entregar propuestas en PDF final. Valida márgenes, fuentes incrustadas y saltos de página en una prueba antes del cargue en el portal; el desajuste de maquetación es la causa más común de observaciones técnicas evitables."
+        },
+        {
+          "id": "convert-5",
+          "question": "¿Texto plano o Word después de convertir?",
+          "answer": "Texto plano para indexación, scripts y bases de conocimiento internas. Word cuando alguien va a reescribir párrafos largos o reformular tablas con formato complejo."
+        }
+      ]
+    },
+    "sign": {
+      "label": "Firma de PDF",
+      "faqs": [
+        {
+          "id": "sign-1",
+          "question": "¿Una firma digital en PDF vale para contratos de freelancer?",
+          "answer": "En la práctica B2B latinoamericana, sí para muchos contratos de prestación de servicios cuando se combina con correo de aceptación. Montos altos o sectores regulados pueden exigir firma electrónica avanzada o certificado local."
+        },
+        {
+          "id": "sign-2",
+          "question": "¿Dónde coloco la firma en una propuesta comercial?",
+          "answer": "En el pie de la última página o en un bloque dedicado después de las condiciones comerciales. Incluye nombre completo, cargo y fecha; omitir la fecha debilita la evidencia en disputas sencillas."
+        },
+        {
+          "id": "sign-3",
+          "question": "¿Puedo firmar un PDF y enviarlo por WhatsApp Web?",
+          "answer": "Firma en RatPDF, descarga el PDF final y envía el archivo, no una captura del visor. La captura pierde calidad y la mayoría de clientes no la acepta como documento formal."
+        },
+        {
+          "id": "sign-4",
+          "question": "¿Firmo antes o después de comprimir el PDF?",
+          "answer": "Firma la versión aprobada y comprime después si necesitas reducir peso para el envío. Evita firmar un borrador que aún pasará por revisión legal; genera una nueva versión numerada tras el visto bueno final."
+        },
+        {
+          "id": "sign-5",
+          "question": "¿La firma digital reemplaza el sello de la empresa?",
+          "answer": "Para muchos flujos internos, sí. Documentos que exigen sello notarial o reconocimiento de firma aún requieren el trámite presencial; confirma con el área jurídica antes de cerrar el proceso."
+        }
+      ]
+    },
+    "protect": {
+      "label": "Protección de PDF",
+      "faqs": [
+        {
+          "id": "protect-1",
+          "question": "¿Cuál es la diferencia entre contraseña de usuario y de propietario?",
+          "answer": "La contraseña de usuario bloquea la apertura del archivo. La de propietario restringe impresión, copia o edición aunque el PDF se abra. Para contratos externos, combina apertura protegida con restricciones de copia cuando sea posible en RatPDF."
+        },
+        {
+          "id": "protect-2",
+          "question": "¿Una marca de agua protege un documento confidencial?",
+          "answer": "La marca de agua indica estado (BORRADOR, CONFIDENCIAL), pero no cifra el contenido. Quien abra el archivo aún puede fotografiar la pantalla; usa contraseña fuerte cuando la información no puede filtrarse."
+        },
+        {
+          "id": "protect-3",
+          "question": "¿Cómo comparto la contraseña del PDF con seguridad?",
+          "answer": "Nunca en el mismo hilo del adjunto. Envía el PDF por correo y la contraseña por SMS o canal separado. Evita claves como 1234; usa una frase larga que el cliente pueda escribir una sola vez."
+        },
+        {
+          "id": "protect-4",
+          "question": "¿Puedo quitar la contraseña si la olvidé?",
+          "answer": "Las herramientas serias exigen la contraseña correcta; no hay desbloqueo legítimo sin ella. Si tú la definiste, guárdala en un gestor de contraseñas. Si la recibiste de un tercero, pide reenvío sin bloqueo."
+        },
+        {
+          "id": "protect-5",
+          "question": "¿Protejo el PDF antes o después de comprimirlo?",
+          "answer": "Comprime primero si el portal exige tamaño máximo; protege la versión final que sale de la empresa. Los borradores pueden llevar solo marca de agua hasta la aprobación interna."
+        }
+      ]
+    },
+    "edit": {
+      "label": "Edición de PDF",
+      "faqs": [
+        {
+          "id": "edit-1",
+          "question": "¿Editar PDF en línea modifica el archivo original en mi PC?",
+          "answer": "No: trabajas sobre una copia en el navegador y descargas una versión nueva. Conserva el PDF maestro firmado en carpeta aparte con el sufijo -ORIGINAL en el nombre."
+        },
+        {
+          "id": "edit-2",
+          "question": "¿Girar una página corrige un escaneo al revés?",
+          "answer": "Sí, sin necesidad de volver a escanear. Gira 90° o 180° en RatPDF, verifica la numeración y solo entonces únelo al paquete final; una hoja torcida en medio del PDF transmite descuido."
+        },
+        {
+          "id": "edit-3",
+          "question": "¿Cuándo es obligatorio aplanar un formulario PDF?",
+          "answer": "Cuando portales gubernamentales o ERP rechazan campos editables. Aplanar fija las respuestas como contenido estático, ideal antes de cargar en sistemas heredados."
+        },
+        {
+          "id": "edit-4",
+          "question": "¿Puedo agregar número de página a un contrato ya firmado?",
+          "answer": "Solo en una copia no finalizada. Alterar un PDF después de firmar puede invalidar la evidencia; genera una versión numerada antes de recoger firmas cuando sea posible."
+        },
+        {
+          "id": "edit-5",
+          "question": "¿Edición rápida en PDF o conversión a Word?",
+          "answer": "PDF en RatPDF para correcciones puntuales, sellos y anotaciones. Word cuando vas a reescribir cláusulas largas o mover bloques enteros de texto con formato complejo."
+        }
+      ]
+    },
+    "ocr": {
+      "label": "OCR y texto en PDF",
+      "faqs": [
+        {
+          "id": "ocr-1",
+          "question": "¿El OCR funciona con una foto de documento tomada con el celular?",
+          "answer": "Sí, con buena luz y el documento plano sobre una superficie. Evita sombras en los bordes y reflejos en plastificado; una foto inclinada reduce mucho la precisión en RFC, montos y nombres propios."
+        },
+        {
+          "id": "ocr-2",
+          "question": "¿Por qué la búsqueda en PDF no encuentra una palabra que veo en pantalla?",
+          "answer": "Estás viendo una imagen, no texto incrustado. Ejecuta OCR en RatPDF para crear una capa buscable y prueba buscando un número de folio que sepas que aparece en la página."
+        },
+        {
+          "id": "ocr-3",
+          "question": "¿Qué resolución conviene antes de OCR en documentos de texto?",
+          "answer": "200–300 DPI en escala de grises suele ser ideal para hojas A4 con texto. Por encima aumenta el peso sin ganancia proporcional; por debajo se pierden serifas y cifras pequeñas."
+        },
+        {
+          "id": "ocr-4",
+          "question": "¿El OCR corrige automáticamente errores de ortografía?",
+          "answer": "No. Revisa nombres, montos y fechas después del OCR, sobre todo en formularios manuscritos o sellos parcialmente legibles. Un dígito erróneo en una referencia de pago puede invalidar la transacción."
+        },
+        {
+          "id": "ocr-5",
+          "question": "¿Aplico OCR antes o después de comprimir un escaneo?",
+          "answer": "OCR primero con calidad legible, comprime después para el envío. Comprimir de forma agresiva antes del OCR puede borrar detalles que el reconocimiento necesita para acertar caracteres."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "locale": "fr",
+  "templates": [
+    "Vous devez {action} ? Ce guide montre comment {keyword} avec RatPDF — {benefit}.",
+    "Beaucoup de personnes en France cherchent à {keyword} sans installer de logiciel payant. Voici un flux direct dans le navigateur.",
+    "Si vous essayez de {keyword} maintenant, ce tutoriel est fait pour régler le problème en minutes, pas en heures.",
+    "{Action} peut sembler compliqué, mais avec le bon outil c'est simple. Suivez la procédure testée par l'équipe RatPDF.",
+    "Avant d'acheter une licence desktop, essayez {keyword} en ligne : fonctionne sur Chrome, Edge et Safari sans inscription obligatoire.",
+    "Cet article répond aux questions les plus fréquentes sur {keyword} en France — limites e-mail, portails et mobile inclus.",
+    "Les pros de bureau utilisent {keyword} chaque jour. Nous organisons le workflow qui évite retravail et fichiers refusés.",
+    "Vous voulez {benefit} ? Commencez par {keyword} : quand utiliser chaque niveau, raccourcis et erreurs à éviter."
+  ],
+  "category_actions": {
+    "compress": ["compresser un PDF lourd", "réduire la taille d'une pièce jointe", "envoyer un PDF par Gmail sans erreur"],
+    "merge": ["fusionner plusieurs PDF en un seul", "réunir contrat et annexes", "organiser les documents pour envoi"],
+    "split": ["diviser un gros PDF en parties", "extraire des pages d'un contrat", "séparer un scan long en fichiers"],
+    "convert": ["convertir PDF en Word", "extraire un tableau vers Excel", "transformer un DOCX en PDF"],
+    "sign": ["signer un contrat PDF", "approuver un devis numériquement", "poser une signature sur le bon de commande"],
+    "protect": ["protéger un PDF par mot de passe", "bloquer la copie du contrat", "envoyer un document confidentiel"],
+    "edit": ["corriger un PDF rapidement", "poser un filigrane sur brouillon", "pivoter des pages scannées"],
+    "ocr": ["rendre un scan recherchable", "extraire le texte d'un document photographié", "préparer un PDF pour la recherche"]
+  },
+  "benefits": [
+    "gagner du temps au quotidien",
+    "éviter le rejet sur portails et e-mail",
+    "garder la qualité sans installer de logiciel",
+    "travailler depuis mobile ou portable",
+    "réduire le coût des licences desktop",
+    "livrer des fichiers prêts pour le client"
+  ],
+  "section_labels": {
+    "steps": "Pas à pas",
+    "faq": "Questions fréquentes",
+    "tips": "Conseils pro",
+    "related": "Guides associés",
+    "cta": "Essayer maintenant",
+    "context": "Contexte en France",
+    "detail": "Quand utiliser ce flux",
+    "extra": "Bonnes pratiques"
+  },
+  "category_expansions": {
+    "compress": [
+      "En France, portails emploi, universités et administrations limitent souvent les envois entre 2 Mo et 10 Mo. Compresser avant upload évite erreurs génériques et rush de dernière minute.",
+      "Les fichiers avec beaucoup de photos — rapports, catalogues, projets — dépassent le plus souvent la limite. Réencoder les images réduit souvent des dizaines de mégaoctets sans effacer le texte vectoriel.",
+      "En comptabilité ou juridique, standardisez un niveau de compression par type de document : Faible pour contrats signés, Recommandé pour e-mail interne."
+    ],
+    "merge": [
+      "Les propositions commerciales en France mélangent souvent offre, annexe technique et attestations. Fusionner dans le bon ordre évite que l'évaluateur ouvre les fichiers hors séquence.",
+      "En fusionnant des scans de qualités différentes, vérifiez l'orientation des pages avant envoi. Une page couchée au milieu du dossier fait négligent.",
+      "Pour audit, gardez les PDF originaux à part et générez un paquet fusionné uniquement pour envoi externe."
+    ],
+    "split": [
+      "Quand la compression dégraderait rapports ou plans, diviser par plage de pages préserve la qualité et respecte les limites d'envoi.",
+      "Extrayez seulement l'annexe signée d'un contrat de 80 pages — le destinataire apprécie de ne pas télécharger tout le document.",
+      "Après séparation de reçus scannés en lot, lancez l'OCR sur chaque partie si vous devez chercher par SIRET ou date."
+    ],
+    "convert": [
+      "La conversion n'est pas magique : un PDF numérique avec vrais tableaux convertit mieux qu'une photo de document. Identifiez le type de fichier avant de choisir l'outil.",
+      "Pour éditer un long texte, Word reste plus productif que l'édition directe PDF. Convertissez, modifiez et réexportez en PDF pour livraison.",
+      "Sur relevés et feuilles de calcul, validez séparateurs décimaux et dates françaises (JJ/MM/AAAA) après export Excel."
+    ],
+    "sign": [
+      "Pour freelances et TPE, la signature numérique PDF clôt souvent devis et contrats de prestation sans passage au notaire.",
+      "Distinguez toujours brouillon et version finale : filigrane en révision, signature et mot de passe sur la version qui quitte l'entreprise.",
+      "Conservez l'e-mail d'envoi et le nom de fichier daté — utile en litiges simples sans signature qualifiée."
+    ],
+    "protect": [
+      "Envoyer un contrat sans protection par e-mail partagé est un risque inutile — mot de passe fort et canal séparé pour le code règlent la plupart des cas.",
+      "Le filigrane BROUILLON signale le statut interne ; le chiffrement empêche l'ouverture par qui ne devrait pas voir le contenu.",
+      "Changez les mots de passe par défaut et documentez qui a reçu l'accès — l'IT d'entreprise l'exige souvent pour les fournisseurs."
+    ],
+    "edit": [
+      "L'édition légère PDF règle tampon, note et rotation sans ouvrir Word. Pour corrections ponctuelles avant publication.",
+      "Filigrane BROUILLON ou REVUE protège visuellement pendant validation interne, mais ne remplace pas le chiffrement.",
+      "Après aplatissement, testez un champ dans le lecteur avant envoi vers portails qui bloquent les formulaires modifiables."
+    ],
+    "ocr": [
+      "Numériser au mobile est pratique, mais ombre et perspective nuisent à l'OCR. Posez le document à plat avec bon éclairage.",
+      "Après OCR, recherchez un numéro SIRET ou montant connu pour valider la couche texte.",
+      "Sous délai, OCR plus relecture humaine des chiffres bat la ressaisie de pages entières."
+    ]
+  }
+}

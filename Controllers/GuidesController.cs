@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ratpdf.Content;
 using ratpdf.Constants;
+using ratpdf.Services;
+using ratpdf.Services.Seo;
 
 namespace ratpdf.Controllers
 {
@@ -52,6 +54,7 @@ namespace ratpdf.Controllers
             ViewData["Title"] = entry.Title;
             ViewData["Description"] = entry.Description;
             ViewData["CanonicalUrl"] = PdfToolSeo.Canonical(entry.Path);
+            GuideHreflangHelper.ApplyToViewData(ViewData, entry.Slug);
             return View(entry);
         }
     }

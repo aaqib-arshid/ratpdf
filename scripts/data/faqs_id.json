@@ -1,0 +1,246 @@
+{
+  "version": 2,
+  "locale": "id",
+  "categories": {
+    "compress": {
+      "label": "Kompresi PDF",
+      "faqs": [
+        {
+          "id": "compress-1",
+          "question": "Apakah mengompresi PDF membuat teks sulit dibaca?",
+          "answer": "Tidak untuk PDF digital — teks vektor tetap tajam dan hanya gambar internal yang dioptimalkan ulang. Jika dokumen berisi stempel atau huruf kecil, pilih level Ringan di RatPDF dan periksa tampilan dengan zoom 150% sebelum dikirim ke klien."
+        },
+        {
+          "id": "compress-2",
+          "question": "Berapa ukuran file ideal untuk lampiran email?",
+          "answer": "Meski banyak layanan email membatasi sekitar 25 MB, encoding lampiran menambah bobot hingga sepertiga. Untuk gateway perusahaan di Indonesia, targetkan file akhir 18 MB atau kurang agar tidak ditolak diam-diam."
+        },
+        {
+          "id": "compress-3",
+          "question": "Kapan sebaiknya memakai kompresi Ekstrem?",
+          "answer": "Hanya jika portal lamaran kerja atau sistem tender masih menolak file setelah level Direkomendasikan. Pada tabel keuangan atau gambar dengan garis halus, uji satu halaman di RatPDF dulu sebelum mengompres seluruh dokumen."
+        },
+        {
+          "id": "compress-4",
+          "question": "Apakah PDF hasil scan lebih sulit dikompres daripada PDF asli?",
+          "answer": "Biasanya ya, karena setiap halaman sudah berupa gambar. OCR sebelum kompresi membantu pencarian teks, tetapi pengurangan ukuran utama datang dari penurunan resolusi gambar internal."
+        },
+        {
+          "id": "compress-5",
+          "question": "Kompres dulu atau gabung dulu beberapa lampiran?",
+          "answer": "Gabungkan PDF dalam urutan final lewat RatPDF, lalu kompres sekali di akhir. Mengompres ulang paket yang sama berkali-kali menurunkan kualitas gambar tanpa perlu dan bisa menimbulkan artefak visual."
+        }
+      ]
+    },
+    "merge": {
+      "label": "Gabung PDF",
+      "faqs": [
+        {
+          "id": "merge-1",
+          "question": "Bagaimana memastikan urutan benar saat menggabungkan PDF?",
+          "answer": "Ubah nama file dengan awalan angka (01-kontrak, 02-lampiran-A) sebelum diunggah. Pada tender dan pengadaan, ikuti urutan yang diminta di RFP — penilai tidak menyusun ulang lampiran yang berantakan."
+        },
+        {
+          "id": "merge-2",
+          "question": "Apakah menggabungkan PDF membuat file jauh lebih besar?",
+          "answer": "Ukuran akhir biasanya mendekati jumlah semua file asli. Jika melebihi batas portal, gabungkan dulu di RatPDF lalu kompres dengan level Direkomendasikan — jangan sebaliknya untuk paket besar."
+        },
+        {
+          "id": "merge-3",
+          "question": "Bisakah menggabungkan PDF yang dilindungi kata sandi?",
+          "answer": "Anda perlu kata sandi yang benar untuk membuka setiap file sebelum digabung. PDF terkunci akan gagal atau masuk tanpa konten yang terlihat; buka kuncinya dengan alat RatPDF yang sesuai terlebih dahulu."
+        },
+        {
+          "id": "merge-4",
+          "question": "Apakah menggabung PDF dari HP cukup untuk pekerjaan resmi?",
+          "answer": "Ya di Chrome atau Safari, tetapi gunakan Wi-Fi jika paket di atas 15 MB. Periksa total halaman setelah selesai — satu halaman kosong sering menandakan ekspor yang belum lengkap."
+        },
+        {
+          "id": "merge-5",
+          "question": "Haruskah menyimpan PDF asli setelah digabung?",
+          "answer": "Ya. Simpan file yang sudah ditandatangani secara terpisah dan buat paket gabungan hanya untuk pengiriman eksternal. Ini memudahkan audit jika klien mempertanyakan halaman tertentu nanti."
+        }
+      ]
+    },
+    "split": {
+      "label": "Pisah PDF",
+      "faqs": [
+        {
+          "id": "split-1",
+          "question": "Kapan memisah PDF lebih baik daripada mengompres?",
+          "answer": "Saat kualitas visual tidak boleh turun — misalnya hasil lab, gambar teknik, atau kontrak berstempel resmi. Pisahkan per bab atau rentang halaman di RatPDF dan kirim file terpisah jika portal mengizinkan beberapa unggahan."
+        },
+        {
+          "id": "split-2",
+          "question": "Bagaimana mengekstrak beberapa halaman dari kontrak panjang?",
+          "answer": "Gunakan rentang halaman (misalnya 12–18) untuk mengisolasi klausul atau lampiran yang sudah ditandatangani. Beri nama file dengan rentang di judul agar penerima menemukan isinya tanpa membuka seluruh paket."
+        },
+        {
+          "id": "split-3",
+          "question": "Apakah memisah PDF mengubah nomor halaman asli?",
+          "answer": "Setiap file hasil ekstraksi dimulai dari halaman 1 secara internal, tetapi isi halaman tetap sama. Jika butuh penomoran berkelanjutan, tambahkan nomor halaman setelah proses pisah di RatPDF."
+        },
+        {
+          "id": "split-4",
+          "question": "Bisakah memisah scan panjang per halaman?",
+          "answer": "Bisa — berguna untuk memisahkan kuitansi dari satu scan panjang. Jalankan OCR pada tiap bagian jika Anda perlu mencari teks di dalam tumpukan bukti pembayaran."
+        },
+        {
+          "id": "split-5",
+          "question": "Pisah atau gabung dulu dalam alur email?",
+          "answer": "Gabungkan lewat RatPDF jika penerima mewajibkan satu file. Pisahkan jika batas ukuran ketat dan kualitas tidak boleh dikorbankan lewat kompresi."
+        }
+      ]
+    },
+    "convert": {
+      "label": "Konversi PDF",
+      "faqs": [
+        {
+          "id": "convert-1",
+          "question": "Apakah PDF ke Word menjaga tabel anggaran tetap bisa diedit?",
+          "answer": "Pada PDF digital dengan tabel asli, biasanya ya. Hasil scan menjadi gambar di Word — jalankan OCR dulu dan periksa garis sel serta header setelah mengunduh DOCX dari RatPDF."
+        },
+        {
+          "id": "convert-2",
+          "question": "Mengapa teks di PDF hasil konversi tidak bisa disorot?",
+          "answer": "File sumber kemungkinan murni gambar. Tanpa lapisan teks, setiap konversi memperlakukan halaman sebagai grafis. OCR PDF adalah langkah wajib sebelum ke Word atau ekstraksi teks."
+        },
+        {
+          "id": "convert-3",
+          "question": "Apakah Excel ke PDF mempertahankan area cetak?",
+          "answer": "Ya, jika area cetak sudah ditetapkan di Excel. Spreadsheet yang sangat lebar bisa mengecilkan font — periksa zoom 100% di PDF sebelum dikirim ke bank atau auditor."
+        },
+        {
+          "id": "convert-4",
+          "question": "Apakah Word ke PDF cocok untuk tender dan pengadaan?",
+          "answer": "Ya untuk penyerahan proposal akhir dalam format PDF. Validasi margin, font tertanam, dan pemisah halaman dalam uji coba sebelum unggah ke portal; layout rusak adalah penyebab teknis paling umum yang sebenarnya bisa dihindari."
+        },
+        {
+          "id": "convert-5",
+          "question": "Teks biasa atau Word setelah konversi?",
+          "answer": "Teks biasa untuk pengindeksan, skrip, dan basis pengetahuan internal. Word jika seseorang akan menulis ulang paragraf panjang atau menyusun ulang tabel dengan format kompleks."
+        }
+      ]
+    },
+    "sign": {
+      "label": "Tanda Tangan PDF",
+      "faqs": [
+        {
+          "id": "sign-1",
+          "question": "Apakah tanda tangan digital di PDF sah untuk kontrak freelancer?",
+          "answer": "Dalam praktik B2B Indonesia, sering ya untuk kontrak jasa ketika disertai email persetujuan. Nilai besar atau sektor terregulasi mungkin memerlukan tanda tangan elektronik tersertifikasi sesuai ketentuan setempat."
+        },
+        {
+          "id": "sign-2",
+          "question": "Di mana menempatkan tanda tangan pada proposal komersial?",
+          "answer": "Di footer halaman terakhir atau blok khusus setelah syarat komersial. Cantumkan nama lengkap, jabatan, dan tanggal — tanpa tanggal, bukti lemah saat terjadi sengketa sederhana."
+        },
+        {
+          "id": "sign-3",
+          "question": "Bisakah menandatangani PDF lalu mengirim lewat WhatsApp Web?",
+          "answer": "Tandatangani di RatPDF, unduh file PDF final, lalu kirim filenya — bukan tangkapan layar dari pembaca PDF. Tangkapan layar kehilangan kualitas dan umumnya tidak diterima sebagai dokumen resmi."
+        },
+        {
+          "id": "sign-4",
+          "question": "Tandatangani sebelum atau sesudah mengompres PDF?",
+          "answer": "Tandatangani versi yang sudah disetujui, lalu kompres jika perlu mengecilkan ukuran untuk pengiriman. Hindari menandatangani draf yang masih akan direview legal; buat versi bernomor baru setelah persetujuan akhir."
+        },
+        {
+          "id": "sign-5",
+          "question": "Apakah tanda tangan digital menggantikan stempel perusahaan?",
+          "answer": "Untuk banyak alur internal, ya. Dokumen yang mewajibkan stempel notaris atau pengesahan fisik tetap memerlukan proses tatap muka — konfirmasi dengan tim hukum terlebih dahulu."
+        }
+      ]
+    },
+    "protect": {
+      "label": "Proteksi PDF",
+      "faqs": [
+        {
+          "id": "protect-1",
+          "question": "Apa beda kata sandi pengguna dan kata sandi pemilik?",
+          "answer": "Kata sandi pengguna memblokir pembukaan file. Kata sandi pemilik membatasi cetak, salin, atau edit meski PDF sudah terbuka. Untuk kontrak eksternal, kombinasikan proteksi buka dan batasan salin di RatPDF jika memungkinkan."
+        },
+        {
+          "id": "protect-2",
+          "question": "Apakah watermark melindungi dokumen rahasia?",
+          "answer": "Watermark menandai status (DRAF, RAHASIA) tetapi tidak mengenkripsi isi. Siapa pun yang membuka masih bisa memfoto layar; gunakan kata sandi kuat jika informasi tidak boleh bocor."
+        },
+        {
+          "id": "protect-3",
+          "question": "Bagaimana membagikan kata sandi PDF dengan aman?",
+          "answer": "Jangan dalam thread yang sama dengan lampiran. Kirim PDF lewat email dan kata sandi lewat SMS atau saluran terpisah. Hindari sandi seperti 1234 — pakai frasa panjang yang klien cukup ketik sekali."
+        },
+        {
+          "id": "protect-4",
+          "question": "Bisakah menghapus kata sandi jika lupa?",
+          "answer": "Alat yang proper memerlukan kata sandi yang benar; tidak ada pembukaan sah tanpa itu. Jika Anda yang menetapkannya, simpan di pengelola kata sandi. Jika dari pihak ketiga, minta kiriman ulang tanpa kunci."
+        },
+        {
+          "id": "protect-5",
+          "question": "Proteksi PDF sebelum atau sesudah kompresi?",
+          "answer": "Kompres dulu jika portal menetapkan batas ukuran; proteksi versi final yang keluar dari perusahaan. Draf bisa cukup watermark sampai disetujui internal."
+        }
+      ]
+    },
+    "edit": {
+      "label": "Edit PDF",
+      "faqs": [
+        {
+          "id": "edit-1",
+          "question": "Apakah edit PDF online mengubah file asli di komputer saya?",
+          "answer": "Tidak — Anda bekerja pada salinan di browser dan mengunduh versi baru. Simpan PDF master yang sudah ditandatangani di folder terpisah dengan akhiran -ASLI pada nama file."
+        },
+        {
+          "id": "edit-2",
+          "question": "Apakah memutar halaman memperbaiki scan yang terbalik?",
+          "answer": "Ya, tanpa perlu scan ulang. Putar 90° atau 180° di RatPDF, periksa penomoran, baru gabungkan ke paket final — halaman miring di tengah PDF terlihat tidak profesional."
+        },
+        {
+          "id": "edit-3",
+          "question": "Kapan wajib meratakan formulir PDF?",
+          "answer": "Saat portal pemerintah atau ERP menolak kolom yang masih bisa diedit. Meratakan mengubah isian menjadi konten tetap — ideal sebelum unggah ke sistem lama."
+        },
+        {
+          "id": "edit-4",
+          "question": "Bisakah menambah nomor halaman pada kontrak yang sudah ditandatangani?",
+          "answer": "Hanya pada salinan yang belum final. Mengubah PDF setelah tanda tangan bisa melemahkan bukti — buat versi bernomor sebelum pengumpulan tanda tangan jika memungkinkan."
+        },
+        {
+          "id": "edit-5",
+          "question": "Edit cepat di PDF atau konversi ke Word?",
+          "answer": "PDF di RatPDF untuk koreksi kecil, stempel, dan anotasi. Word jika akan menulis ulang klausul panjang atau memindahkan blok teks besar dengan format rumit."
+        }
+      ]
+    },
+    "ocr": {
+      "label": "OCR dan teks PDF",
+      "faqs": [
+        {
+          "id": "ocr-1",
+          "question": "Apakah OCR bekerja dengan foto dokumen dari HP?",
+          "answer": "Ya, dengan pencahayaan baik dan dokumen rata di permukaan datar. Hindari bayangan di tepi dan silau pada laminasi — foto miring drastis menurunkan akurasi pada NPWP, nominal, dan nama orang."
+        },
+        {
+          "id": "ocr-2",
+          "question": "Mengapa pencarian PDF tidak menemukan kata yang terlihat di layar?",
+          "answer": "Yang Anda lihat adalah gambar, bukan teks tertanam. Jalankan OCR di RatPDF untuk membuat lapisan yang bisa dicari, lalu uji dengan nomor referensi yang Anda tahu ada di halaman tersebut."
+        },
+        {
+          "id": "ocr-3",
+          "question": "Resolusi berapa yang ideal sebelum OCR pada dokumen teks?",
+          "answer": "200–300 DPI dalam skala abu-abu biasanya ideal untuk kertas A4 berisi teks. Lebih tinggi menambah ukuran tanpa keuntungan proporsional; lebih rendah menghilangkan serif dan angka kecil."
+        },
+        {
+          "id": "ocr-4",
+          "question": "Apakah OCR memperbaiki kesalahan ejaan otomatis?",
+          "answer": "Tidak. Periksa nama, nominal uang, dan tanggal setelah OCR — terutama pada formulir tulisan tangan atau stempel yang setengah terbaca. Satu digit salah pada kode pembayaran bisa membatalkan transaksi."
+        },
+        {
+          "id": "ocr-5",
+          "question": "OCR dulu atau kompres dulu hasil scan?",
+          "answer": "OCR dulu dengan kualitas yang masih terbaca, kompres setelahnya untuk pengiriman. Kompresi agresif sebelum OCR bisa menghapus detail yang dibutuhkan pengenalan karakter."
+        }
+      ]
+    }
+  }
+}

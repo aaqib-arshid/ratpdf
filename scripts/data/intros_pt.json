@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "locale": "pt-BR",
+  "templates": [
+    "Você precisa {action}? Neste guia mostramos como {keyword} no RatPDF — {benefit}.",
+    "Muitos brasileiros buscam como {keyword} sem instalar programas pagos. Aqui vai um fluxo direto no navegador.",
+    "Se você está tentando {keyword} agora, este tutorial foi feito para resolver o problema em minutos, não em horas.",
+    "{Action} pode parecer complicado, mas com a ferramenta certa fica simples. Veja o passo a passo testado pela equipe RatPDF.",
+    "Antes de pagar licença de desktop, experimente {keyword} online: funciona no Chrome, Edge e Safari sem cadastro obrigatório.",
+    "Este artigo responde às dúvidas mais comuns sobre {keyword} no Brasil — limites de e-mail, portais e celular incluídos.",
+    "Profissionais de escritório usam {keyword} todos os dias. Organizamos o workflow que evita retrabalho e arquivos rejeitados.",
+    "Quer {benefit}? Comece por {keyword}: explicamos quando usar cada nível, atalho e erro que você deve evitar."
+  ],
+  "category_actions": {
+    "compress": ["comprimir um PDF pesado", "reduzir o tamanho de um anexo", "enviar PDF pelo Gmail sem erro"],
+    "merge": ["juntar vários PDFs em um só", "unir contrato e anexos", "organizar documentos para envio"],
+    "split": ["dividir PDF grande em partes", "extrair páginas de um contrato", "separar scan longo em arquivos"],
+    "convert": ["converter PDF para Word", "extrair tabela para Excel", "transformar DOCX em PDF"],
+    "sign": ["assinar um contrato em PDF", "aprovar proposta digitalmente", "colocar assinatura no orçamento"],
+    "protect": ["proteger PDF com senha", "bloquear cópia do contrato", "enviar documento confidencial"],
+    "edit": ["corrigir um PDF rapidamente", "girar páginas de scan", "achatar formulário preenchido"],
+    "ocr": ["tornar scan pesquisável", "extrair texto de documento fotografado", "preparar PDF para busca"]
+  },
+  "benefits": [
+    "economizar tempo no dia a dia",
+    "evitar rejeição em portais e e-mail",
+    "manter qualidade sem instalar software",
+    "trabalhar do celular ou notebook",
+    "reduzir custo com licenças desktop",
+    "entregar arquivos prontos para o cliente"
+  ],
+  "section_labels": {
+    "steps": "Passo a passo",
+    "faq": "Perguntas frequentes",
+    "tips": "Dicas profissionais",
+    "related": "Guias relacionados",
+    "cta": "Experimente agora",
+    "home": "RatPDF",
+    "context": "Contexto no Brasil",
+    "detail": "Quando usar este fluxo",
+    "extra": "Boas práticas"
+  },
+  "category_expansions": {
+    "compress": [
+      "No Brasil, portais de emprego, universidades e órgãos públicos costumam limitar uploads entre 2 MB e 10 MB. Comprimir antes de enviar evita mensagens de erro genéricas e retrabalho na véspera do prazo.",
+      "Arquivos com muitas fotos — laudos, catálogos, projetos — são os que mais estouram limite. Reencodar imagens costuma reduzir dezenas de megabytes sem apagar texto vetorial.",
+      "Se você trabalha com contabilidade ou jurídico, padronize um nível de compressão por tipo de documento: Menor para contratos assinados, Recomendado para e-mail interno."
+    ],
+    "merge": [
+      "Propostas comerciais no Brasil frequentemente misturam proposta, anexo técnico e certidões. Mesclar na ordem certa evita que o avaliador abra arquivos fora de sequência.",
+      "Ao juntar scans de qualidades diferentes, confira orientação de página antes de enviar. Uma página deitada no meio do pacote passa impressão de descuido.",
+      "Para auditoria, mantenha os PDFs originais em pasta separada e gere um pacote mesclado apenas para envio externo."
+    ],
+    "split": [
+      "Quando a compressão degradaria laudos ou plantas, dividir por intervalo de páginas preserva qualidade e respeita limites de upload.",
+      "Extraia só o anexo assinado de um contrato de 80 páginas — o destinatário agradece não baixar o documento inteiro.",
+      "Após dividir recibos escaneados em lote, rode OCR em cada parte se precisar buscar valores por CNPJ ou data."
+    ],
+    "convert": [
+      "Conversão não é mágica: PDF digital com tabelas reais converte melhor que foto de documento. Identifique o tipo de arquivo antes de escolher a ferramenta.",
+      "Se o objetivo é editar texto longo, Word ainda é mais produtivo que edição direta no PDF. Converta, edite e exporte PDF novamente para entrega.",
+      "Em extratos e planilhas, valide separadores decimais e datas brasileiras (DD/MM/AAAA) após exportar para Excel."
+    ],
+    "sign": [
+      "Para freelancers e MEI, assinatura digitada em PDF costuma fechar orçamentos e contratos de prestação de serviço sem ida ao cartório.",
+      "Sempre diferencie rascunho e versão final: marca d'água durante revisão, assinatura e senha na versão que sai da empresa.",
+      "Guarde e-mail de envio e nome de arquivo com data — isso ajuda em disputas simples sem sistema de assinatura qualificada."
+    ],
+    "protect": [
+      "Enviar contrato sem proteção em e-mail compartilhado é risco desnecessário — senha forte e canal separado para a senha resolvem a maioria dos casos.",
+      "Marca d'água RASCUNHO avisa status interno; criptografia impede abertura por quem não deveria ver o conteúdo.",
+      "Troque senhas padrão e documente quem recebeu acesso — TI corporativa costuma exigir isso em fornecedores."
+    ],
+    "edit": [
+      "Edição leve no PDF resolve carimbo, observação e rotação sem abrir Word. Use para correções pontuais antes de publicar.",
+      "Marca d'água DIAGNÓSTICO ou RASCUNHO protege visualmente durante aprovação interna, mas não substitui criptografia.",
+      "Ao achatar formulário, teste um campo no leitor antes de enviar a portal que bloqueia campos editáveis."
+    ],
+    "ocr": [
+      "Digitalização com celular é prática, mas sombra e perspectiva prejudicam OCR. Apoie o documento em superfície plana e use boa iluminação.",
+      "Depois do OCR, busque por um CPF ou valor conhecido para validar se a camada de texto foi criada corretamente.",
+      "Em processos com prazo, OCR + revisão humana de números é mais rápido que redigitar páginas inteiras."
+    ]
+  }
+}

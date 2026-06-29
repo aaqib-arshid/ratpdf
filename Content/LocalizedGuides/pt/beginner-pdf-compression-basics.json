@@ -1,0 +1,112 @@
+{
+  "slug": "beginner-pdf-compression-basics",
+  "sourceSlug": "beginner-pdf-compression-basics",
+  "locale": "pt-BR",
+  "urlPrefix": "pt",
+  "title": "Comprimir PDF - arquivos leves para e-mail | RatPDF",
+  "description": "Aprenda como comprimir PDF em 3 passos simples. Guia gratuito no navegador com RatPDF — rápido e sem instalar.",
+  "primaryKeyword": "comprimir PDF",
+  "category": "PDF",
+  "contentCategory": "compress",
+  "toolUrl": "/pdf/compress",
+  "toolCtaLabel": "Usar ferramenta grátis →",
+  "bodyHtml": "<h1>Comprimir PDF</h1>\n<p class=\"rp-intro\">Antes de pagar licença de desktop, experimente comprimir PDF online: funciona no Chrome, Edge e Safari sem cadastro obrigatório.</p>\n<h2>Quando usar este fluxo</h2>\n<p>Neste guia (beginner pdf compression basics), o cenário típico é quando o prazo de envio está próximo e o arquivo precisa caber no limite.</p>\n<p>Para equipes remotas em profissionais e equipes de escritório, padronize comprimir PDF em um guia interno de uma página.</p>\n<p>Evite editar o PDF comprimido no Word e reexportar sem necessidade — isso reinfla o arquivo rapidamente.</p>\n<h2>Contexto no Brasil</h2>\n<p>No Brasil, portais de emprego, universidades e órgãos públicos costumam limitar uploads entre 2 MB e 10 MB. Comprimir antes de enviar evita mensagens de erro genéricas e retrabalho na véspera do prazo.</p>\n<p>Arquivos com muitas fotos — laudos, catálogos, projetos — são os que mais estouram limite. Reencodar imagens costuma reduzir dezenas de megabytes sem apagar texto vetorial.</p>\n<p>Se você trabalha com contabilidade ou jurídico, padronize um nível de compressão por tipo de documento: Menor para contratos assinados, Recomendado para e-mail interno.</p>\n<h2>Passo a passo</h2><ol>\n<li>Abra a ferramenta de comprimir PDF no RatPDF.</li>\n<li>Arraste o PDF ou selecione pelo explorador de arquivos.</li>\n<li>Use Recomendado para e-mail; Extremo só se o portal ainda rejeitar.</li>\n<li>Baixe a cópia comprimida com nome que inclua a data.</li>\n<li>Valide se tabelas e carimbos continuam legíveis.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/pdf/compress\">Usar ferramenta grátis →</a></p>\n<h2>Perguntas frequentes</h2>\n<h3>Devo comprimir antes ou depois de mesclar vários anexos?</h3><p>Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais.</p>\n<h3>Comprimir PDF deixa o texto ilegível?</h3><p>Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente.</p>\n<h3>Qual tamanho devo mirar para anexar no Gmail?</h3><p>Apesar do limite de 25 MB, a codificação do anexo adiciona cerca de 33% de peso. No Brasil, mire em 18 MB ou menos no arquivo final para evitar rejeição silenciosa em gateways corporativos.</p>\n<h2>Dicas profissionais</h2><ul>\n<li>Teste o nível Recomendado antes do Extremo — muitos portais aceitam após uma única passagem moderada.</li>\n<li>Renomeie o arquivo com sufixo -comprimido para não confundir com o original assinado.</li>\n<li>Se o PDF tiver muitas páginas vetoriais puras, a redução será menor; foque em scans e fotos embutidas.</li>\n</ul>\n<h2>Guias relacionados</h2><ul>\n<li><a href=\"/pt/guides/bank-statement-pdf-workflow-usa\">Ferramentas PDF</a></li>\n<li><a href=\"/pt/guides/bank-statement-pdf-workflow-vietnam\">Ferramentas PDF</a></li>\n<li><a href=\"/pt/guides/beginner-how-pdf-compression-works\">Comprimir PDF</a></li>\n</ul>\n<p><a href=\"/pdf/compress\">Usar ferramenta grátis →</a></p>\n<p><a href=\"/pt/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Comprimir PDF - arquivos leves para e-mail | RatPDF\",\"description\":\"Aprenda como comprimir PDF em 3 passos simples. Guia gratuito no navegador com RatPDF — rápido e sem instalar.\",\"inLanguage\":\"pt-BR\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Passo 1\",\"text\":\"Abra a ferramenta de comprimir PDF no RatPDF.\"},{\"@type\":\"HowToStep\",\"position\":2,\"name\":\"Passo 2\",\"text\":\"Arraste o PDF ou selecione pelo explorador de arquivos.\"},{\"@type\":\"HowToStep\",\"position\":3,\"name\":\"Passo 3\",\"text\":\"Use Recomendado para e-mail; Extremo só se o portal ainda rejeitar.\"},{\"@type\":\"HowToStep\",\"position\":4,\"name\":\"Passo 4\",\"text\":\"Baixe a cópia comprimida com nome que inclua a data.\"},{\"@type\":\"HowToStep\",\"position\":5,\"name\":\"Passo 5\",\"text\":\"Valide se tabelas e carimbos continuam legíveis.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"pt-BR\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"Devo comprimir antes ou depois de mesclar vários anexos?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais.\"}},{\"@type\":\"Question\",\"name\":\"Comprimir PDF deixa o texto ilegível?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente.\"}},{\"@type\":\"Question\",\"name\":\"Qual tamanho devo mirar para anexar no Gmail?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Apesar do limite de 25 MB, a codificação do anexo adiciona cerca de 33% de peso. No Brasil, mire em 18 MB ou menos no arquivo final para evitar rejeição silenciosa em gateways corporativos.\"}}]}]}</script>\n<h2>Checklist antes de enviar</h2><ul><li>Renomeei o arquivo com data e versão no nome.</li><li>Verifiquei se tabelas, carimbos e assinaturas continuam legíveis.</li><li>Guardei o original em pasta de projeto separada da cópia enviada.</li><li>Anotei o nível de compressão ou ferramenta usada para repetir no próximo mês.</li><li>Conferi se o portal aceita PDF comum ou exige PDF/A.</li><li>Enviei senha em canal diferente quando o PDF está protegido.</li></ul>\n<h2>Boas práticas</h2>\n<p>Atalho útil: renomeie com sufixo -final ou -enviado após comprimir PDF para não reutilizar arquivo antigo em novo portal.</p>\n<h2>Boas práticas (2)</h2>\n<p>Se o arquivo vier de WhatsApp ou e-mail, baixe a versão original antes de comprimir PDF; reencaminhamentos podem corromper anexos.</p>\n<h2>Boas práticas (3)</h2>\n<p>Quando o prazo de envio está próximo e o arquivo precisa caber no limite, comprimir PDF costuma resolver em uma única tentativa com nível Recomendado.</p>\n<h2>Boas práticas (4)</h2>\n<p>Em profissionais e equipes de escritório, alinhe com compliance se o PDF contém dados pessoais — comprimir PDF não substitui anonimização.</p>\n<h2>Boas práticas (5)</h2>\n<p>Se o portal pede PDF/A, verifique se comprimir PDF mantém o perfil exigido antes do envio final.</p>\n<h2>Boas práticas (6)</h2>\n<p>Em contratos de profissionais e equipes de escritório, envie primeiro versão com marca d&#x27;água; comprimir PDF na versão assinada.</p>\n<h2>Boas práticas (7)</h2>\n<p>Se comprimir PDF não bastar, divida por capítulos e envie links separados com índice no e-mail.</p>\n<h2>Boas práticas (8)</h2>\n<p>Profissionais de profissionais e equipes de escritório relatam menos devolução de formulários após padronizar comprimir PDF no fechamento do mês.</p>\n<h2>Boas práticas (9)</h2>\n<p>Ao treinar estagiários em profissionais e equipes de escritório, use este fluxo (beginner pdf compression basics) como roteiro de cinco minutos.</p>\n<h2>Boas práticas (10)</h2>\n<p>Celulares Android aceitam upload via Chrome; em iOS use Arquivos para selecionar o PDF antes de comprimir PDF.</p>\n<h2>Boas práticas (11)</h2>\n<p>O título da página (beginner pdf compression basics) reflete buscas reais no Brasil — ajustamos o fluxo para esse caso de uso.</p>\n<h2>Boas práticas (12)</h2>\n<p>Compare tamanho antes/depois em propriedades do arquivo — meta clara para auditoria em profissionais e equipes de escritório.</p>\n<h2>Boas práticas (13)</h2>\n<p>Quem busca comprimir PDF neste contexto (beginner pdf compression basics) geralmente já tentou salvar de novo ou imprimir em PDF — e o arquivo continuou pesado.</p>",
+  "faqQuestions": [
+    "Devo comprimir antes ou depois de mesclar vários anexos?",
+    "Comprimir PDF deixa o texto ilegível?",
+    "Qual tamanho devo mirar para anexar no Gmail?"
+  ],
+  "faqAnswers": [
+    "Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais.",
+    "Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente.",
+    "Apesar do limite de 25 MB, a codificação do anexo adiciona cerca de 33% de peso. No Brasil, mire em 18 MB ou menos no arquivo final para evitar rejeição silenciosa em gateways corporativos."
+  ],
+  "howToSteps": [
+    "Abra a ferramenta de comprimir PDF no RatPDF.",
+    "Arraste o PDF ou selecione pelo explorador de arquivos.",
+    "Use Recomendado para e-mail; Extremo só se o portal ainda rejeitar.",
+    "Baixe a cópia comprimida com nome que inclua a data.",
+    "Valide se tabelas e carimbos continuam legíveis."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Comprimir PDF - arquivos leves para e-mail | RatPDF",
+      "description": "Aprenda como comprimir PDF em 3 passos simples. Guia gratuito no navegador com RatPDF — rápido e sem instalar.",
+      "inLanguage": "pt-BR",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Passo 1",
+          "text": "Abra a ferramenta de comprimir PDF no RatPDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Passo 2",
+          "text": "Arraste o PDF ou selecione pelo explorador de arquivos."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Passo 3",
+          "text": "Use Recomendado para e-mail; Extremo só se o portal ainda rejeitar."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Passo 4",
+          "text": "Baixe a cópia comprimida com nome que inclua a data."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Passo 5",
+          "text": "Valide se tabelas e carimbos continuam legíveis."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "pt-BR",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Devo comprimir antes ou depois de mesclar vários anexos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comprimir PDF deixa o texto ilegível?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual tamanho devo mirar para anexar no Gmail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Apesar do limite de 25 MB, a codificação do anexo adiciona cerca de 33% de peso. No Brasil, mire em 18 MB ou menos no arquivo final para evitar rejeição silenciosa em gateways corporativos."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 2,
+  "generatedAt": "2026-06-29T07:57:02.710442+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 768,
+  "uniqueness": {
+    "englishSimilarity": 0.0081,
+    "localeSimilarities": {},
+    "wordCount": 768,
+    "flags": [],
+    "passed": true
+  }
+}

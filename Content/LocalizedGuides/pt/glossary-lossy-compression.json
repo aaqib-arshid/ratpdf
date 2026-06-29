@@ -1,0 +1,112 @@
+{
+  "slug": "glossary-lossy-compression",
+  "sourceSlug": "glossary-lossy-compression",
+  "locale": "pt-BR",
+  "urlPrefix": "pt",
+  "title": "Comprimir PDF - arquivos leves para e-mail | RatPDF",
+  "description": "Aprenda como comprimir PDF em 3 passos simples. Guia gratuito no navegador com RatPDF — rápido e sem instalar.",
+  "primaryKeyword": "comprimir PDF",
+  "category": "PDF",
+  "contentCategory": "compress",
+  "toolUrl": "/guides/pdf-tools",
+  "toolCtaLabel": "Usar ferramenta grátis →",
+  "bodyHtml": "<h1>Comprimir PDF</h1>\n<p class=\"rp-intro\">Se você está tentando comprimir PDF agora, este tutorial foi feito para resolver o problema em minutos, não em horas.</p>\n<h2>Quando usar este fluxo</h2>\n<p>Neste guia (glossary lossy compression), o cenário típico é quando o prazo de envio está próximo e o arquivo precisa caber no limite.</p>\n<p>Quando o prazo de envio está próximo e o arquivo precisa caber no limite, comprimir PDF costuma resolver em uma única tentativa com nível Recomendado.</p>\n<p>Documentos com muitas páginas em branco podem ser limpos antes de comprimir PDF para evitar compressão inútil.</p>\n<h2>Contexto no Brasil</h2>\n<p>No Brasil, portais de emprego, universidades e órgãos públicos costumam limitar uploads entre 2 MB e 10 MB. Comprimir antes de enviar evita mensagens de erro genéricas e retrabalho na véspera do prazo.</p>\n<p>Arquivos com muitas fotos — laudos, catálogos, projetos — são os que mais estouram limite. Reencodar imagens costuma reduzir dezenas de megabytes sem apagar texto vetorial.</p>\n<p>Se você trabalha com contabilidade ou jurídico, padronize um nível de compressão por tipo de documento: Menor para contratos assinados, Recomendado para e-mail interno.</p>\n<h2>Passo a passo</h2><ol>\n<li>Abra a ferramenta de comprimir PDF no RatPDF.</li>\n<li>Arraste o PDF ou selecione pelo explorador de arquivos.</li>\n<li>Use Recomendado para e-mail; Extremo só se o portal ainda rejeitar.</li>\n<li>Baixe a cópia comprimida com nome que inclua a data.</li>\n<li>Valide se tabelas e carimbos continuam legíveis.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/guides/pdf-tools\">Usar ferramenta grátis →</a></p>\n<h2>Perguntas frequentes</h2>\n<h3>PDF escaneado comprime menos que PDF digital?</h3><p>Geralmente sim, porque scans já são imagens por página. OCR antes da compressão ajuda em buscas, mas o ganho de tamanho vem sobretudo da redução de resolução das imagens internas.</p>\n<h3>Devo comprimir antes ou depois de mesclar vários anexos?</h3><p>Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais.</p>\n<h3>Comprimir PDF deixa o texto ilegível?</h3><p>Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente.</p>\n<h2>Dicas profissionais</h2><ul>\n<li>Teste o nível Recomendado antes do Extremo — muitos portais aceitam após uma única passagem moderada.</li>\n<li>Renomeie o arquivo com sufixo -comprimido para não confundir com o original assinado.</li>\n<li>Se o PDF tiver muitas páginas vetoriais puras, a redução será menor; foque em scans e fotos embutidas.</li>\n</ul>\n<h2>Guias relacionados</h2><ul>\n<li><a href=\"/pt/guides/bank-statement-pdf-workflow-portugal\">Ferramentas PDF</a></li>\n<li><a href=\"/pt/guides/bank-statement-pdf-workflow-singapore\">Ferramentas PDF</a></li>\n<li><a href=\"/pt/guides/bank-statement-pdf-workflow-south-africa\">Ferramentas PDF</a></li>\n</ul>\n<p><a href=\"/guides/pdf-tools\">Usar ferramenta grátis →</a></p>\n<p><a href=\"/pt/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Comprimir PDF - arquivos leves para e-mail | RatPDF\",\"description\":\"Aprenda como comprimir PDF em 3 passos simples. Guia gratuito no navegador com RatPDF — rápido e sem instalar.\",\"inLanguage\":\"pt-BR\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Passo 1\",\"text\":\"Abra a ferramenta de comprimir PDF no RatPDF.\"},{\"@type\":\"HowToStep\",\"position\":2,\"name\":\"Passo 2\",\"text\":\"Arraste o PDF ou selecione pelo explorador de arquivos.\"},{\"@type\":\"HowToStep\",\"position\":3,\"name\":\"Passo 3\",\"text\":\"Use Recomendado para e-mail; Extremo só se o portal ainda rejeitar.\"},{\"@type\":\"HowToStep\",\"position\":4,\"name\":\"Passo 4\",\"text\":\"Baixe a cópia comprimida com nome que inclua a data.\"},{\"@type\":\"HowToStep\",\"position\":5,\"name\":\"Passo 5\",\"text\":\"Valide se tabelas e carimbos continuam legíveis.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"pt-BR\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"PDF escaneado comprime menos que PDF digital?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Geralmente sim, porque scans já são imagens por página. OCR antes da compressão ajuda em buscas, mas o ganho de tamanho vem sobretudo da redução de resolução das imagens internas.\"}},{\"@type\":\"Question\",\"name\":\"Devo comprimir antes ou depois de mesclar vários anexos?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais.\"}},{\"@type\":\"Question\",\"name\":\"Comprimir PDF deixa o texto ilegível?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente.\"}}]}]}</script>\n<h2>Checklist antes de enviar</h2><ul><li>Testei abrir o PDF em outro dispositivo após o processamento.</li><li>Renomeei o arquivo com data e versão no nome.</li><li>Verifiquei se tabelas, carimbos e assinaturas continuam legíveis.</li><li>Guardei o original em pasta de projeto separada da cópia enviada.</li><li>Anotei o nível de compressão ou ferramenta usada para repetir no próximo mês.</li><li>Conferi se o portal aceita PDF comum ou exige PDF/A.</li></ul>\n<h2>Boas práticas</h2>\n<p>Se o portal pede PDF/A, verifique se comprimir PDF mantém o perfil exigido antes do envio final.</p>\n<h2>Boas práticas (2)</h2>\n<p>Para equipes remotas em profissionais e equipes de escritório, padronize comprimir PDF em um guia interno de uma página.</p>\n<h2>Boas práticas (3)</h2>\n<p>Em contratos de profissionais e equipes de escritório, envie primeiro versão com marca d&#x27;água; comprimir PDF na versão assinada.</p>\n<h2>Boas práticas (4)</h2>\n<p>Se comprimir PDF não bastar, divida por capítulos e envie links separados com índice no e-mail.</p>\n<h2>Boas práticas (5)</h2>\n<p>Profissionais de profissionais e equipes de escritório relatam menos devolução de formulários após padronizar comprimir PDF no fechamento do mês.</p>\n<h2>Boas práticas (6)</h2>\n<p>Ao treinar estagiários em profissionais e equipes de escritório, use este fluxo (glossary lossy compression) como roteiro de cinco minutos.</p>\n<h2>Boas práticas (7)</h2>\n<p>Para profissionais e equipes de escritório, vale combinar comprimir PDF com nomenclatura de arquivo que inclua data e versão, evitando que o destinatário abra a cópia errada.</p>\n<h2>Boas práticas (8)</h2>\n<p>Se o portal ainda rejeitar após comprimir PDF, divida por intervalo de páginas ou reduza imagens embutidas antes de uma segunda passagem agressiva.</p>\n<h2>Boas práticas (9)</h2>\n<p>Em notebooks corporativos com pouco espaço, comprimir PDF também libera disco local antes de sincronizar com nuvem.</p>\n<h2>Boas práticas (10)</h2>\n<p>Guarde o PDF original em pasta de projeto; use a cópia processada apenas para envio — especialmente em profissionais e equipes de escritório.</p>\n<h2>Boas práticas (11)</h2>\n<p>Para profissionais e equipes de escritório, alinhe com o time se o destino exige PDF/A, PDF comum ou imagem — antes de aplicar comprimir PDF.</p>\n<h2>Boas práticas (12)</h2>\n<p>Antes de comprimir PDF, feche outras abas pesadas no navegador — processamento de PDF grande consome memória no laptop.</p>\n<h2>Boas práticas (13)</h2>\n<p>Para profissionais e equipes de escritório, combine comprimir PDF com checklist interno: nome, data, versão e destinatário no corpo do e-mail.</p>",
+  "faqQuestions": [
+    "PDF escaneado comprime menos que PDF digital?",
+    "Devo comprimir antes ou depois de mesclar vários anexos?",
+    "Comprimir PDF deixa o texto ilegível?"
+  ],
+  "faqAnswers": [
+    "Geralmente sim, porque scans já são imagens por página. OCR antes da compressão ajuda em buscas, mas o ganho de tamanho vem sobretudo da redução de resolução das imagens internas.",
+    "Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais.",
+    "Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente."
+  ],
+  "howToSteps": [
+    "Abra a ferramenta de comprimir PDF no RatPDF.",
+    "Arraste o PDF ou selecione pelo explorador de arquivos.",
+    "Use Recomendado para e-mail; Extremo só se o portal ainda rejeitar.",
+    "Baixe a cópia comprimida com nome que inclua a data.",
+    "Valide se tabelas e carimbos continuam legíveis."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Comprimir PDF - arquivos leves para e-mail | RatPDF",
+      "description": "Aprenda como comprimir PDF em 3 passos simples. Guia gratuito no navegador com RatPDF — rápido e sem instalar.",
+      "inLanguage": "pt-BR",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Passo 1",
+          "text": "Abra a ferramenta de comprimir PDF no RatPDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Passo 2",
+          "text": "Arraste o PDF ou selecione pelo explorador de arquivos."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Passo 3",
+          "text": "Use Recomendado para e-mail; Extremo só se o portal ainda rejeitar."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Passo 4",
+          "text": "Baixe a cópia comprimida com nome que inclua a data."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Passo 5",
+          "text": "Valide se tabelas e carimbos continuam legíveis."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "pt-BR",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "PDF escaneado comprime menos que PDF digital?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Geralmente sim, porque scans já são imagens por página. OCR antes da compressão ajuda em buscas, mas o ganho de tamanho vem sobretudo da redução de resolução das imagens internas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Devo comprimir antes ou depois de mesclar vários anexos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mescle na ordem final e comprima uma vez no fim. Recomprimir o mesmo pacote várias vezes degrada imagens sem necessidade e aumenta risco de artefatos visuais."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comprimir PDF deixa o texto ilegível?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não para texto vetorial — apenas imagens embutidas são recompactadas. Se o documento tem carimbos ou letras miúdas, use o nível Menor e amplie a visualização em 150% antes de enviar ao cliente."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 1,
+  "generatedAt": "2026-06-29T07:57:38.576776+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 773,
+  "uniqueness": {
+    "englishSimilarity": 0.0117,
+    "localeSimilarities": {},
+    "wordCount": 773,
+    "flags": [],
+    "passed": true
+  }
+}

@@ -79,6 +79,18 @@ public partial class Program
             return;
         }
 
+        if (args.Contains("--export-guides-manifest", StringComparer.OrdinalIgnoreCase))
+        {
+            var root = Directory.GetCurrentDirectory();
+            var outPath = args.SkipWhile(a => !a.Equals("--export-guides-manifest", StringComparison.OrdinalIgnoreCase))
+                .Skip(1)
+                .FirstOrDefault(a => !a.StartsWith("-", StringComparison.Ordinal))
+                ?? Path.Combine(root, "Data", "guides-manifest.json");
+            var result = GuideManifestExporter.Export(outPath);
+            Console.WriteLine($"Exported {result.Count} guides to {result.OutputPath}");
+            return;
+        }
+
         if (args.Contains("--generate-og-images", StringComparer.OrdinalIgnoreCase))
         {
             var webRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");

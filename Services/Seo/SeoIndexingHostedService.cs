@@ -2,7 +2,7 @@ using ratpdf.Constants;
 
 namespace ratpdf.Services.Seo
 {
-    /// <summary>Warm compress SEO caches and notify search engines on startup.</summary>
+    /// <summary>Warm sitemap caches and notify search engines on startup.</summary>
     public sealed class SeoIndexingHostedService : IHostedService
     {
         private readonly IServiceProvider _services;
@@ -50,22 +50,26 @@ namespace ratpdf.Services.Seo
             using var scope = _services.CreateScope();
             var sitemaps = scope.ServiceProvider.GetRequiredService<SitemapCacheService>();
             var seo = scope.ServiceProvider.GetRequiredService<CachedPdfCompressSeoService>();
+            var ttl = TimeSpan.FromHours(1);
 
             PdfCompressProgrammaticSeoGenerator.Initialize(_env.WebRootPath);
 
-            _ = sitemaps.GetCompressSitemapChunks();
-            _ = sitemaps.GetCompressChunkXml(1);
-            var compressChunks = sitemaps.GetCompressSitemapChunks();
             _ = sitemaps.GetOrBuildSitemapIndex(
-                $"sitemap:main:index:c{compressChunks.Count}",
-                SitemapCatalog.BuildMainIndexChildren(compressChunks),
+                "sitemap:main:index:v2:warm",
+                SitemapCatalog.BuildMainIndexChildren(),
                 TimeSpan.FromHours(6));
+            _ = sitemaps.GetOrBuildCoreSitemap(ttl);
+            _ = sitemaps.GetOrBuildToolsSitemap(ttl);
+            _ = sitemaps.GetOrBuildBlogSitemap(ttl);
+            _ = sitemaps.GetOrBuildProgrammaticSitemap(ttl);
+            foreach (var locale in new[] { (string?)null, "pt", "es", "de", "id", "fr" })
+                _ = sitemaps.GetOrBuildGuideLocaleSitemap(locale, ttl);
 
             seo.WarmCuratedPages(_env.WebRootPath);
 
             _logger.LogInformation(
-                "SEO cache warmed: {Count} compress sitemap URLs ready.",
-                PdfCompressProgrammaticSeoGenerator.AllSitemapPaths().Count);
+                "SEO cache warmed: main sitemap index ({ChildCount} children, ~7,906 URLs).",
+                SitemapCatalog.MainIndexChildren.Length);
             await Task.CompletedTask;
         }
 

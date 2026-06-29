@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "locale": "id",
+  "templates": [
+    "Perlu {action}? Di panduan ini kami tunjukkan cara {keyword} dengan RatPDF — {benefit}.",
+    "Banyak orang di Indonesia mencari cara {keyword} tanpa instal program berbayar. Berikut alur langsung di browser.",
+    "Jika Anda sedang mencoba {keyword} sekarang, tutorial ini dibuat untuk menyelesaikannya dalam menit, bukan jam.",
+    "{Action} mungkin terasa rumit, tapi dengan alat yang tepat jadi mudah. Lihat langkah demi langkah yang sudah diuji tim RatPDF.",
+    "Sebelum beli lisensi desktop, coba {keyword} online: berjalan di Chrome, Edge, dan Safari tanpa wajib daftar.",
+    "Artikel ini menjawab pertanyaan paling umum tentang {keyword} di Indonesia — batas email, portal, dan HP ikut dibahas.",
+    "Profesional kantor memakai {keyword} setiap hari. Kami susun alur kerja yang menghindari kerja ulang dan file ditolak.",
+    "Ingin {benefit}? Mulai dari {keyword}: kami jelaskan kapan pakai tiap level, pintasan, dan kesalahan yang harus dihindari."
+  ],
+  "category_actions": {
+    "compress": ["kompres PDF yang berat", "kecilkan ukuran lampiran", "kirim PDF lewat Gmail tanpa error"],
+    "merge": ["gabung beberapa PDF jadi satu", "satukan kontrak dan lampiran", "atur dokumen untuk dikirim"],
+    "split": ["bagi PDF besar jadi beberapa bagian", "ekstrak halaman dari kontrak", "pisahkan scan panjang jadi file"],
+    "convert": ["konversi PDF ke Word", "ekstrak tabel ke Excel", "ubah DOCX jadi PDF"],
+    "sign": ["tandatangani kontrak PDF", "setujui proposal secara digital", "pasang tanda tangan di penawaran"],
+    "protect": ["lindungi PDF dengan kata sandi", "blokir salinan kontrak", "kirim dokumen rahasia"],
+    "edit": ["perbaiki PDF dengan cepat", "pasang watermark di draf", "putar halaman hasil scan"],
+    "ocr": ["jadikan scan bisa dicari", "ekstrak teks dari dokumen foto", "siapkan PDF untuk pencarian"]
+  },
+  "benefits": [
+    "hemat waktu sehari-hari",
+    "hindari penolakan di portal dan email",
+    "jaga kualitas tanpa instal software",
+    "bekerja dari HP atau laptop",
+    "kurangi biaya lisensi desktop",
+    "serahkan file siap untuk klien"
+  ],
+  "section_labels": {
+    "steps": "Langkah demi langkah",
+    "faq": "Pertanyaan yang sering diajukan",
+    "tips": "Tips profesional",
+    "related": "Panduan terkait",
+    "cta": "Coba sekarang",
+    "context": "Konteks di Indonesia",
+    "detail": "Kapan menggunakan alur ini",
+    "extra": "Praktik terbaik"
+  },
+  "category_expansions": {
+    "compress": [
+      "Di Indonesia, portal lamaran kerja, kampus, dan instansi sering membatasi unggahan antara 2 MB dan 10 MB. Kompres sebelum unggah menghindari error generik dan kerja ulang mendadak.",
+      "File dengan banyak foto — laporan, katalog, proyek — paling sering melewati batas. Mengode ulang gambar biasanya mengecilkan puluhan megabyte tanpa menghapus teks vektor.",
+      "Jika Anda di akuntansi atau legal, standarkan level kompresi per jenis dokumen: Ringan untuk kontrak bertanda tangan, Direkomendasikan untuk email internal."
+    ],
+    "merge": [
+      "Proposal bisnis di Indonesia sering mencampur penawaran, lampiran teknis, dan sertifikat. Gabung dengan urutan benar agar penilai tidak membuka file acak.",
+      "Saat menggabung scan dengan kualitas berbeda, cek orientasi halaman sebelum kirim. Satu halaman miring di tengah paket terlihat ceroboh.",
+      "Untuk audit, simpan PDF asli di folder terpisah dan buat paket gabungan hanya untuk kirim eksternal."
+    ],
+    "split": [
+      "Saat kompresi akan merusak laporan atau gambar teknik, bagi per rentang halaman menjaga kualitas dan tetap mematuhi batas unggahan.",
+      "Ekstrak hanya lampiran bertanda tangan dari kontrak 80 halaman — penerima tidak perlu mengunduh seluruh dokumen.",
+      "Setelah memisahkan kwitansi hasil scan dalam batch, jalankan OCR di tiap bagian jika perlu mencari nominal atau NPWP."
+    ],
+    "convert": [
+      "Konversi bukan sihir: PDF digital dengan tabel asli lebih baik daripada foto dokumen. Kenali jenis file sebelum pilih alat.",
+      "Jika tujuannya edit teks panjang, Word masih lebih produktif daripada edit langsung di PDF. Konversi, edit, lalu ekspor PDF lagi untuk kirim.",
+      "Pada rekening koran dan spreadsheet, validasi pemisah desimal dan format tanggal Indonesia (DD/MM/YYYY) setelah ekspor ke Excel."
+    ],
+    "sign": [
+      "Untuk freelancer dan UMKM, tanda tangan digital di PDF sering menutup penawaran dan kontrak jasa tanpa ke notaris.",
+      "Selalu bedakan draf dan versi final: watermark saat review, tanda tangan dan kata sandi di versi yang keluar dari perusahaan.",
+      "Simpan email pengiriman dan nama file dengan tanggal — membantu sengketa sederhana tanpa sistem tanda tangan tersertifikasi."
+    ],
+    "protect": [
+      "Mengirim kontrak tanpa proteksi lewat email bersama berisiko — kata sandi kuat dan saluran terpisah untuk password menyelesaikan sebagian besar kasus.",
+      "Watermark DRAF memberi tahu status internal; enkripsi mencegah orang yang tidak berhak membuka isi.",
+      "Ganti kata sandi bawaan dan catat siapa yang menerima akses — IT perusahaan sering mensyaratkan ini untuk vendor."
+    ],
+    "edit": [
+      "Edit ringan di PDF menyelesaikan stempel, catatan, dan rotasi tanpa buka Word. Pakai untuk koreksi titik sebelum publikasi.",
+      "Watermark DRAF atau REVIEW melindungi secara visual saat persetujuan internal, tapi tidak menggantikan enkripsi.",
+      "Setelah flatten formulir, uji satu field di pembaca sebelum kirim ke portal yang blokir field yang bisa diedit."
+    ],
+    "ocr": [
+      "Digitalisasi pakai HP praktis, tapi bayangan dan sudut merusak OCR. Letakkan dokumen di permukaan datar dengan pencahayaan baik.",
+      "Setelah OCR, cari NIK atau nominal yang dikenal untuk validasi lapisan teks sudah benar.",
+      "Pada proses berdeadline, OCR plus cek angka manual lebih cepat daripada mengetik ulang seluruh halaman."
+    ]
+  }
+}

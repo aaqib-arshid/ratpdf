@@ -1,0 +1,103 @@
+{
+  "slug": "pdf-handoff-design-to-dev",
+  "sourceSlug": "pdf-handoff-design-to-dev",
+  "locale": "es",
+  "urlPrefix": "es",
+  "title": "Firmar PDF - correcciones en minutos | RatPDF",
+  "description": "Aprende cómo firmar PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+  "primaryKeyword": "firmar PDF",
+  "category": "PDF",
+  "contentCategory": "edit",
+  "toolUrl": "/pdf/flattenpdf",
+  "toolCtaLabel": "Usar herramienta gratis →",
+  "bodyHtml": "<h1>Firmar PDF</h1>\n<p class=\"rp-intro\">Antes de pagar una licencia de escritorio, prueba firmar PDF online: funciona en Chrome, Edge y Safari sin registro obligatorio.</p>\n<h2>Cuándo usar este flujo</h2>\n<p>En esta guía (pdf handoff design to dev), el escenario habitual es cuando la fecha de envío está cerca y el archivo debe caber en el límite.</p>\n<p>Los documentos con páginas en blanco pueden limpiarse antes de firmar PDF para evitar trabajo inútil.</p>\n<p>En profesionales y equipos de oficina, alinee con cumplimiento si el PDF tiene datos personales — firmar PDF no anonimiza.</p>\n<h2>Contexto en Latinoamérica</h2>\n<p>La edición ligera en PDF resuelve sello, observación y rotación sin abrir Word. Úsala para correcciones puntuales antes de publicar.</p>\n<p>La marca de agua BORRADOR o REVISIÓN protege visualmente durante aprobación interna, pero no reemplaza el cifrado.</p>\n<p>Al aplanar un formulario, prueba un campo en el lector antes de enviar a un portal que bloquea campos editables.</p>\n<h2>Paso a paso</h2><ol>\n<li>Abre la herramienta RatPDF para firmar PDF.</li>\n<li>Sube el documento en la herramienta RatPDF para firmar PDF.</li>\n<li>Descarga el archivo final y verifica tamaño o contenido.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/pdf/flattenpdf\">Usar herramienta gratis →</a></p>\n<h2>Preguntas frecuentes</h2>\n<h3>¿Girar una página corrige un escaneo al revés?</h3><p>Sí, sin necesidad de volver a escanear. Gira 90° o 180° en RatPDF, verifica la numeración y solo entonces únelo al paquete final; una hoja torcida en medio del PDF transmite descuido.</p>\n<h3>¿Cuándo es obligatorio aplanar un formulario PDF?</h3><p>Cuando portales gubernamentales o ERP rechazan campos editables. Aplanar fija las respuestas como contenido estático, ideal antes de cargar en sistemas heredados.</p>\n<h3>¿Puedo agregar número de página a un contrato ya firmado?</h3><p>Solo en una copia no finalizada. Alterar un PDF después de firmar puede invalidar la evidencia; genera una versión numerada antes de recoger firmas cuando sea posible.</p>\n<h2>Consejos profesionales</h2><ul>\n<li>Rota páginas antes de agregar numeración — si no, la paginación quedará invertida.</li>\n<li>Usa marca de agua diagonal solo en borrador; en documento final prefiere un sello discreto en el pie.</li>\n<li>Después de aplanar, intenta seleccionar texto del formulario — si no se selecciona, el aplanado funcionó.</li>\n</ul>\n<h2>Guías relacionadas</h2><ul>\n<li><a href=\"/es/guides/pdf-embed-fonts-for-print\">Herramientas PDF</a></li>\n<li><a href=\"/es/guides/pdf-error-font-embedding\">Herramientas PDF</a></li>\n<li><a href=\"/es/guides/pdf-error-print-spooler\">Herramientas PDF</a></li>\n</ul>\n<p><a href=\"/pdf/flattenpdf\">Usar herramienta gratis →</a></p>\n<p><a href=\"/es/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Firmar PDF - correcciones en minutos | RatPDF\",\"description\":\"Aprende cómo firmar PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.\",\"inLanguage\":\"es\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Paso 1\",\"text\":\"Abre la herramienta RatPDF para firmar PDF.\"},{\"@type\":\"HowToStep\",\"position\":2,\"name\":\"Paso 2\",\"text\":\"Sube el documento en la herramienta RatPDF para firmar PDF.\"},{\"@type\":\"HowToStep\",\"position\":3,\"name\":\"Paso 3\",\"text\":\"Descarga el archivo final y verifica tamaño o contenido.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"es\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"¿Girar una página corrige un escaneo al revés?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Sí, sin necesidad de volver a escanear. Gira 90° o 180° en RatPDF, verifica la numeración y solo entonces únelo al paquete final; una hoja torcida en medio del PDF transmite descuido.\"}},{\"@type\":\"Question\",\"name\":\"¿Cuándo es obligatorio aplanar un formulario PDF?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Cuando portales gubernamentales o ERP rechazan campos editables. Aplanar fija las respuestas como contenido estático, ideal antes de cargar en sistemas heredados.\"}},{\"@type\":\"Question\",\"name\":\"¿Puedo agregar número de página a un contrato ya firmado?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Solo en una copia no finalizada. Alterar un PDF después de firmar puede invalidar la evidencia; genera una versión numerada antes de recoger firmas cuando sea posible.\"}}]}]}</script>\n<h2>Lista antes de enviar</h2><ul><li>Guardé el original en carpeta de proyecto separada de la copia enviada.</li><li>Anoté el nivel de compresión o herramienta usada para repetir el próximo mes.</li><li>Confirmé si el portal acepta PDF común o exige PDF/A.</li><li>Envié la contraseña por canal distinto cuando el PDF está protegido.</li><li>Confirmé que firmar PDF es necesario para este destino (pdf handoff design to dev).</li><li>Probé abrir el PDF en otro dispositivo después del procesamiento.</li></ul>\n<h2>Buenas prácticas</h2>\n<p>Profesionales de profesionales y equipos de oficina reportan menos devoluciones tras estandarizar firmar PDF a fin de mes.</p>\n<h2>Buenas prácticas (2)</h2>\n<p>Al capacitar practicantes en profesionales y equipos de oficina, use este flujo (pdf handoff design to dev) como guión de cinco minutos.</p>\n<h2>Buenas prácticas (3)</h2>\n<p>Para profesionales y equipos de oficina, combine firmar PDF con nombres de archivo con fecha y versión.</p>\n<h2>Buenas prácticas (4)</h2>\n<p>Si el portal rechaza tras firmar PDF, divida por páginas antes de comprimir otra vez.</p>\n<h2>Buenas prácticas (5)</h2>\n<p>En portátiles con poco espacio, firmar PDF también libera disco antes de sincronizar con la nube.</p>\n<h2>Buenas prácticas (6)</h2>\n<p>Guarde el PDF original en carpeta de proyecto; use la copia procesada solo para envío — especialmente en profesionales y equipos de oficina.</p>\n<h2>Buenas prácticas (7)</h2>\n<p>Este tema (pdf handoff design to dev) aparece mucho en búsquedas de Latinoamérica cuando se acercan plazos de envío.</p>\n<h2>Buenas prácticas (8)</h2>\n<p>Renombre con sufijo -final o -enviado tras firmar PDF para no reutilizar archivo viejo en otro portal.</p>\n<h2>Buenas prácticas (9)</h2>\n<p>Si el archivo viene de WhatsApp o correo, descargue el original antes de firmar PDF.</p>\n<h2>Buenas prácticas (10)</h2>\n<p>Cuando la fecha de envío está cerca y el archivo debe caber en el límite, firmar PDF suele resolver en un solo intento con nivel Recomendado.</p>\n<h2>Buenas prácticas (11)</h2>\n<p>Si el portal pide PDF/A, verifique que firmar PDF mantiene el perfil exigido.</p>\n<h2>Buenas prácticas (12)</h2>\n<p>Para equipos remotos en profesionales y equipos de oficina, estandarice firmar PDF en una guía interna de una página.</p>\n<h2>Buenas prácticas (13)</h2>\n<p>En contratos de profesionales y equipos de oficina, envíe primero versión con marca de agua; firmar PDF en la versión firmada.</p>\n<h2>Buenas prácticas (14)</h2>\n<p>El título (pdf handoff design to dev) refleja búsquedas reales — ajustamos el flujo para ese caso.</p>\n<h2>Buenas prácticas (15)</h2>\n<p>Compare tamaño antes/después en propiedades del archivo — meta clara para auditoría en profesionales y equipos de oficina.</p>\n<h2>Buenas prácticas (16)</h2>\n<p>Quien busca firmar PDF en este contexto (pdf handoff design to dev) suele haber probado guardar de nuevo sin reducir el tamaño.</p>",
+  "faqQuestions": [
+    "¿Girar una página corrige un escaneo al revés?",
+    "¿Cuándo es obligatorio aplanar un formulario PDF?",
+    "¿Puedo agregar número de página a un contrato ya firmado?"
+  ],
+  "faqAnswers": [
+    "Sí, sin necesidad de volver a escanear. Gira 90° o 180° en RatPDF, verifica la numeración y solo entonces únelo al paquete final; una hoja torcida en medio del PDF transmite descuido.",
+    "Cuando portales gubernamentales o ERP rechazan campos editables. Aplanar fija las respuestas como contenido estático, ideal antes de cargar en sistemas heredados.",
+    "Solo en una copia no finalizada. Alterar un PDF después de firmar puede invalidar la evidencia; genera una versión numerada antes de recoger firmas cuando sea posible."
+  ],
+  "howToSteps": [
+    "Abre la herramienta RatPDF para firmar PDF.",
+    "Sube el documento en la herramienta RatPDF para firmar PDF.",
+    "Descarga el archivo final y verifica tamaño o contenido."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Firmar PDF - correcciones en minutos | RatPDF",
+      "description": "Aprende cómo firmar PDF en 3 pasos simples. Guía gratis en el navegador con RatPDF — rápido y sin instalar.",
+      "inLanguage": "es",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Paso 1",
+          "text": "Abre la herramienta RatPDF para firmar PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Paso 2",
+          "text": "Sube el documento en la herramienta RatPDF para firmar PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Paso 3",
+          "text": "Descarga el archivo final y verifica tamaño o contenido."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Girar una página corrige un escaneo al revés?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, sin necesidad de volver a escanear. Gira 90° o 180° en RatPDF, verifica la numeración y solo entonces únelo al paquete final; una hoja torcida en medio del PDF transmite descuido."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo es obligatorio aplanar un formulario PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cuando portales gubernamentales o ERP rechazan campos editables. Aplanar fija las respuestas como contenido estático, ideal antes de cargar en sistemas heredados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo agregar número de página a un contrato ya firmado?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Solo en una copia no finalizada. Alterar un PDF después de firmar puede invalidar la evidencia; genera una versión numerada antes de recoger firmas cuando sea posible."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 1,
+  "generatedAt": "2026-06-29T08:21:04.085863+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 771,
+  "uniqueness": {
+    "englishSimilarity": 0.0124,
+    "localeSimilarities": {
+      "pt-BR": 0.0986,
+      "de": 0.0289,
+      "id": 0.0235,
+      "fr": 0.024
+    },
+    "wordCount": 771,
+    "flags": [],
+    "passed": true
+  }
+}

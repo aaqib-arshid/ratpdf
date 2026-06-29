@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "locale": "id",
+  "categories": {
+    "compress": {
+      "tips": [
+        "Uji level Direkomendasikan sebelum Ekstrem — banyak portal menerima setelah satu kali kompres moderat.",
+        "Rename file dengan sufiks -terkompres agar tidak tertukar dengan asli yang bertanda tangan.",
+        "Jika PDF punya banyak halaman vektor murni, pengurangannya kecil; fokus pada scan dan foto tertanam."
+      ]
+    },
+    "merge": {
+      "tips": [
+        "Pakai awalan angka pada nama file agar urutan benar tanpa drag manual.",
+        "Cek total halaman setelah gabung — lampiran kosong biasanya tanda ekspor belum lengkap.",
+        "Gabung hanya yang akan dikirim; simpan lampiran sensitif terpisah jika tender mensyaratkan."
+      ]
+    },
+    "split": {
+      "tips": [
+        "Beri nama tiap bagian dengan rentang halaman (kontrak-h12-18.pdf) agar klien menemukan tanpa buka semua.",
+        "Bagi dulu sebelum kirim lewat WhatsApp jika file melebihi 16 MB — kualitas visual lebih baik daripada kompres ekstrem.",
+        "Pada batch kwitansi, satu halaman per PDF memudahkan pencatatan akuntansi setelah OCR."
+      ]
+    },
+    "convert": {
+      "tips": [
+        "Buka DOCX hasil konversi dan periksa header tabel sebelum kirim ulang ke klien.",
+        "Untuk scan, OCR wajib — lewati langkah ini dan Anda buang waktu memformat gambar di Word.",
+        "Konversi sampel 2–3 halaman dulu sebelum migrasi seluruh batch dokumen lama."
+      ]
+    },
+    "sign": {
+      "tips": [
+        "Sertakan tanggal dan jabatan di bawah tanda tangan digital pada kontrak B2B.",
+        "Kirim versi bertanda tangan sebagai PDF, bukan screenshot dari pembaca.",
+        "Untuk adendum, gabungkan dokumen ditandatangani ke kontrak utama dan reindex file di CRM."
+      ]
+    },
+    "protect": {
+      "tips": [
+        "Kirim kata sandi lewat saluran berbeda dari email yang membawa PDF.",
+        "Pakai kalimat panjang, bukan tanggal lahir — lebih mudah diingat dan sulit ditebak.",
+        "Watermark di draf; kata sandi kuat di versi yang dikirim ke klien."
+      ]
+    },
+    "edit": {
+      "tips": [
+        "Putar halaman sebelum tambah nomor halaman — kalau tidak, penomoran jadi terbalik.",
+        "Pakai watermark diagonal hanya di draf; di dokumen final pilih stempel kecil di footer.",
+        "Setelah flatten, coba pilih teks formulir — jika tidak bisa dipilih, flatten berhasil."
+      ]
+    },
+    "ocr": {
+      "tips": [
+        "Lebih baik scan grayscale untuk dokumen teks saja — file lebih kecil dan OCR lebih cepat.",
+        "Perbaiki manual nomor protokol dan nominal uang setelah OCR.",
+        "Simpan versi searchable dan versi terkompres untuk kirim jika portal punya batas ketat."
+      ]
+    }
+  }
+}

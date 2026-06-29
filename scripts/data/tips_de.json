@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "locale": "de",
+  "categories": {
+    "compress": {
+      "tips": [
+        "Testen Sie Stufe Empfohlen vor Extrem — viele Portale akzeptieren nach einer moderaten Durchlauf.",
+        "Datei mit Suffix -komprimiert umbenennen, um Verwechslung mit signiertem Original zu vermeiden.",
+        "Bei rein vektoriellen Seiten ist die Reduktion geringer; Fokus auf Scans und eingebettete Fotos."
+      ]
+    },
+    "merge": {
+      "tips": [
+        "Numerische Präfixe in Dateinamen sichern die Reihenfolge ohne manuelles Ziehen.",
+        "Gesamtseitenzahl nach Zusammenfügen prüfen — leerer Anhang deutet auf unvollständigen Export hin.",
+        "Nur zusammenfügen, was versendet wird; sensible Anhänge getrennt halten, wenn Ausschreibung es verlangt."
+      ]
+    },
+    "split": {
+      "tips": [
+        "Jeden Teil mit Seitenbereich benennen (vertrag-s12-18.pdf), damit Kunden ohne Öffnen alles finden.",
+        "Vor WhatsApp-Versand aufteilen, wenn die Datei 16 MB überschreitet — Bildqualität bleibt besser als extreme Komprimierung.",
+        "Bei Beleg-Stapeln ein PDF pro Seite erleichtert die Buchhaltung nach OCR."
+      ]
+    },
+    "convert": {
+      "tips": [
+        "Konvertiertes DOCX öffnen und Tabellenüberschriften prüfen, bevor Sie an Kunden senden.",
+        "Bei Scans ist OCR Pflicht — ohne diesen Schritt verlieren Sie Stunden mit Bildern in Word.",
+        "Zuerst 2–3 Seiten als Probe konvertieren, bevor ein ganzer Stapel Legacy-Dokumente migriert wird."
+      ]
+    },
+    "sign": {
+      "tips": [
+        "Datum und Position unter digitale Unterschrift in B2B-Verträgen einfügen.",
+        "Signierte Version als PDF senden, keinen Screenshot aus dem Reader.",
+        "Bei Nachträgen signierten Zusatz an Hauptvertrag anfügen und Datei im CRM neu indexieren."
+      ]
+    },
+    "protect": {
+      "tips": [
+        "Passwort über einen anderen Kanal senden als die E-Mail mit dem PDF.",
+        "Lange Sätze statt Geburtsdaten — leichter zu merken und schwerer zu erraten.",
+        "Wasserzeichen auf Entwurf; starkes Passwort auf der Version für den Kunden."
+      ]
+    },
+    "edit": {
+      "tips": [
+        "Seiten drehen vor Seitennummerierung — sonst steht die Paginierung verkehrt.",
+        "Diagonales Wasserzeichen nur auf Entwurf; im Finaldokument dezenten Stempel in der Fußzeile.",
+        "Nach Flatten Formulartext markieren versuchen — wenn nicht markierbar, hat Flatten funktioniert."
+      ]
+    },
+    "ocr": {
+      "tips": [
+        "Graustufen-Scan für reine Textdokumente bevorzugen — kleinere Datei und schnelleres OCR.",
+        "Vorgangsnummern und Geldbeträge nach OCR manuell korrigieren.",
+        "Suchbare Version und komprimierte Versandversion speichern, wenn Portal hartes Limit hat."
+      ]
+    }
+  }
+}

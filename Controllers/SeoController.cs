@@ -2,8 +2,6 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using ratpdf.Constants;
-using ratpdf.Content;
-using ratpdf.Services;
 using ratpdf.Services.Seo;
 
 namespace ratpdf.Controllers
@@ -27,82 +25,102 @@ namespace ratpdf.Controllers
         [OutputCache(PolicyName = "Sitemap")]
         public ContentResult SitemapIndex()
         {
-            var compressChunks = _sitemaps.GetCompressSitemapChunks();
-            var children = SitemapCatalog.BuildMainIndexChildren(compressChunks);
-            var cacheKey = $"sitemap:main:index:c{compressChunks.Count}";
+            var children = SitemapCatalog.BuildMainIndexChildren();
+            var cacheKey = $"sitemap:main:index:v2:{children.Count}";
             var xml = _sitemaps.GetOrBuildSitemapIndex(cacheKey, children, IndexTtl);
             return XmlContent(xml);
         }
-
-        // ── Core segmented sitemaps ──
 
         [HttpGet("/sitemaps/sitemap-core.xml")]
         [HttpGet("/sitemaps/site.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
         public ContentResult SitemapCore() =>
-            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:core", PdfToolSeo.SitemapCorePaths, SitemapTtl));
+            XmlContent(_sitemaps.GetOrBuildCoreSitemap(SitemapTtl));
 
-        [HttpGet("/sitemaps/sitemap-guides.xml")]
-        [HttpGet("/sitemaps/guides.xml")]
+        [HttpGet("/sitemaps/sitemap-tools.xml")]
+        [HttpGet("/sitemaps/sitemaptools.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
-        public ContentResult SitemapGuides() =>
-            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:guides",
-                () => ContentLibrary.Guides.Select(g => g.Path).ToList(), SitemapTtl));
+        public ContentResult SitemapTools() =>
+            XmlContent(_sitemaps.GetOrBuildToolsSitemap(SitemapTtl));
 
         [HttpGet("/sitemaps/sitemap-blog.xml")]
         [HttpGet("/sitemaps/blog.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         [OutputCache(PolicyName = "Sitemap")]
         public ContentResult SitemapBlog() =>
-            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:blog",
-                () => ContentLibrary.Blogs.Select(b => b.Path).ToList(), SitemapTtl));
+            XmlContent(_sitemaps.GetOrBuildBlogSitemap(SitemapTtl));
+
+        [HttpGet("/sitemaps/sitemap-programmatic.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapProgrammatic() =>
+            XmlContent(_sitemaps.GetOrBuildProgrammaticSitemap(SitemapTtl));
+
+        [HttpGet("/sitemaps/sitemap-guides-en.xml")]
+        [HttpGet("/sitemaps/sitemap-guides.xml")]
+        [HttpGet("/sitemaps/guides.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapGuidesEn() =>
+            XmlContent(_sitemaps.GetOrBuildGuideLocaleSitemap(null, SitemapTtl));
+
+        [HttpGet("/sitemaps/sitemap-guides-pt.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapGuidesPt() =>
+            XmlContent(_sitemaps.GetOrBuildGuideLocaleSitemap("pt", SitemapTtl));
+
+        [HttpGet("/sitemaps/sitemap-guides-es.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapGuidesEs() =>
+            XmlContent(_sitemaps.GetOrBuildGuideLocaleSitemap("es", SitemapTtl));
+
+        [HttpGet("/sitemaps/sitemap-guides-de.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapGuidesDe() =>
+            XmlContent(_sitemaps.GetOrBuildGuideLocaleSitemap("de", SitemapTtl));
+
+        [HttpGet("/sitemaps/sitemap-guides-id.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapGuidesId() =>
+            XmlContent(_sitemaps.GetOrBuildGuideLocaleSitemap("id", SitemapTtl));
+
+        [HttpGet("/sitemaps/sitemap-guides-fr.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [OutputCache(PolicyName = "Sitemap")]
+        public ContentResult SitemapGuidesFr() =>
+            XmlContent(_sitemaps.GetOrBuildGuideLocaleSitemap("fr", SitemapTtl));
+
+        [HttpGet("/sitemaps/sitemap-guides-localized.xml")]
+        [HttpGet("/sitemaps/guides-localized.xml")]
+        [HttpGet("/sitemaps/guides-localized-{chunk:int}.xml")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        public ContentResult SitemapGuidesLocalizedRemoved()
+        {
+            Response.StatusCode = StatusCodes.Status410Gone;
+            return Content(string.Empty, "application/xml", Encoding.UTF8);
+        }
 
         [HttpGet("/sitemaps/sitemap-compare.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
-        [OutputCache(PolicyName = "Sitemap")]
-        public ContentResult SitemapCompare() =>
-            XmlContent(_sitemaps.GetOrBuildUrlSet("sitemap:compare",
-                CompetitiveSeoCatalog.AllComparePaths, SitemapTtl));
-
-        // ── Compress programmatic (indexed, curated SEO engine) ──
+        public IActionResult SitemapCompareLegacy() =>
+            RedirectPermanent("/sitemaps/sitemap-core.xml");
 
         [HttpGet("/sitemaps/sitemap-compress-seo.xml")]
-        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
-        [OutputCache(PolicyName = "Sitemap")]
-        public ContentResult SitemapCompressSeo() =>
-            SitemapCompressChunk(1);
-
         [HttpGet("/sitemaps/compress-pdf-programmatic.xml")]
-        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
-        public IActionResult SitemapCompressLegacy() =>
-            RedirectPermanent("/sitemaps/sitemap-compress-seo.xml");
-
         [HttpGet("/sitemaps/compress-pdf-index.xml")]
-        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
-        [OutputCache(PolicyName = "Sitemap")]
-        public ContentResult SitemapCompressIndex()
-        {
-            var chunks = _sitemaps.GetCompressSitemapChunks();
-            var xml = _sitemaps.GetOrBuildSitemapIndex("sitemap:compress:index", chunks, IndexTtl);
-            return XmlContent(xml);
-        }
-
         [HttpGet("/sitemaps/compress-pdf-{chunk:int}.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
-        [OutputCache(PolicyName = "Sitemap")]
-        public ContentResult SitemapCompressChunk(int chunk)
+        public ContentResult SitemapCompressRemoved()
         {
-            var chunks = _sitemaps.GetCompressSitemapChunks();
-            if (chunk < 1 || chunk > chunks.Count)
-                return NotFoundContent();
-
-            var xml = _sitemaps.GetCompressChunkXml(chunk);
-            return string.IsNullOrEmpty(xml) ? NotFoundContent() : XmlContent(xml);
+            Response.StatusCode = StatusCodes.Status410Gone;
+            return Content(string.Empty, "application/xml", Encoding.UTF8);
         }
-
-        // ── Deprecated: noindex thin landings removed from index (410 Gone) ──
 
         [HttpGet("/sitemaps/pdf-tool-landings.xml")]
         [HttpGet("/sitemaps/category-tool-landings.xml")]
@@ -115,16 +133,13 @@ namespace ratpdf.Controllers
 
         [HttpGet("/sitemaps/sitemap_pdf_to_txt.xml")]
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
-        public IActionResult SitemapPdfToTxtLegacy() =>
-            RedirectPermanent("/sitemaps/sitemap-pdftotxt-seo.xml");
+        public ContentResult SitemapPdfToTxtLegacy()
+        {
+            Response.StatusCode = StatusCodes.Status410Gone;
+            return Content(string.Empty, "application/xml", Encoding.UTF8);
+        }
 
         private ContentResult XmlContent(string xml) =>
             Content(xml, "application/xml", Encoding.UTF8);
-
-        private ContentResult NotFoundContent()
-        {
-            Response.StatusCode = StatusCodes.Status404NotFound;
-            return Content(string.Empty, "application/xml", Encoding.UTF8);
-        }
     }
 }

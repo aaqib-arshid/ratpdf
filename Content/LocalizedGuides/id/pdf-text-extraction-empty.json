@@ -1,0 +1,123 @@
+{
+  "slug": "pdf-text-extraction-empty",
+  "sourceSlug": "pdf-text-extraction-empty",
+  "locale": "id",
+  "urlPrefix": "id",
+  "title": "Alat PDF - teks dapat dicari | RatPDF",
+  "description": "Pelajari cara alat PDF dalam 3 langkah mudah. Panduan gratis di browser dengan RatPDF — cepat tanpa instalasi.",
+  "primaryKeyword": "alat PDF",
+  "category": "PDF",
+  "contentCategory": "ocr",
+  "toolUrl": "/pdf/ocrpdf",
+  "toolCtaLabel": "Gunakan alat gratis →",
+  "bodyHtml": "<h1>Alat PDF</h1>\n<p class=\"rp-intro\">Profesional kantor memakai alat PDF setiap hari. Kami susun alur kerja yang menghindari kerja ulang dan file ditolak.</p>\n<h2>Kapan menggunakan alur ini</h2>\n<p>Dalam panduan ini (pdf text extraction empty), skenario umumnya ketika batas waktu pengiriman dekat dan file harus muat di limit.</p>\n<p>Training magang di profesional dan tim kantor: gunakan alur (pdf text extraction empty) lima menit ini.</p>\n<p>Pencarian alat PDF untuk konteks (pdf text extraction empty) sering terjadi setelah file tetap besar meski sudah disimpan ulang.</p>\n<p>Untuk profesional dan tim kantor, gabungkan alat PDF dengan penamaan file berisi tanggal dan versi.</p>\n<p>Dalam alur profesional dan tim kantor, alat PDF dilakukan setelah revisi final dan sebelum kirim eksternal.</p>\n<h2>Konteks di Indonesia</h2>\n<p>Pada proses berdeadline, OCR plus cek angka manual lebih cepat daripada mengetik ulang seluruh halaman.</p>\n<p>Digitalisasi pakai HP praktis, tapi bayangan dan sudut merusak OCR. Letakkan dokumen di permukaan datar dengan pencahayaan baik.</p>\n<p>Setelah OCR, cari NIK atau nominal yang dikenal untuk validasi lapisan teks sudah benar.</p>\n<h2>Langkah demi langkah</h2><ol>\n<li>Buka alat RatPDF untuk alat PDF.</li>\n<li>Unggah dokumen di RatPDF untuk alat PDF.</li>\n<li>Unduh file final dan periksa ukuran atau isi.</li>\n</ol>\n<p class=\"rp-mid-cta\"><a href=\"/pdf/ocrpdf\">Gunakan alat gratis →</a></p>\n<h2>Pertanyaan yang sering diajukan</h2>\n<h3>Apakah OCR bekerja dengan foto dokumen dari HP?</h3><p>Ya, dengan pencahayaan baik dan dokumen rata di permukaan datar. Hindari bayangan di tepi dan silau pada laminasi — foto miring drastis menurunkan akurasi pada NPWP, nominal, dan nama orang.</p>\n<h3>Mengapa pencarian PDF tidak menemukan kata yang terlihat di layar?</h3><p>Yang Anda lihat adalah gambar, bukan teks tertanam. Jalankan OCR di RatPDF untuk membuat lapisan yang bisa dicari, lalu uji dengan nomor referensi yang Anda tahu ada di halaman tersebut.</p>\n<h3>Resolusi berapa yang ideal sebelum OCR pada dokumen teks?</h3><p>200–300 DPI dalam skala abu-abu biasanya ideal untuk kertas A4 berisi teks. Lebih tinggi menambah ukuran tanpa keuntungan proporsional; lebih rendah menghilangkan serif dan angka kecil.</p>\n<h3>Apakah OCR memperbaiki kesalahan ejaan otomatis?</h3><p>Tidak. Periksa nama, nominal uang, dan tanggal setelah OCR — terutama pada formulir tulisan tangan atau stempel yang setengah terbaca. Satu digit salah pada kode pembayaran bisa membatalkan transaksi.</p>\n<h3>OCR dulu atau kompres dulu hasil scan?</h3><p>OCR dulu dengan kualitas yang masih terbaca, kompres setelahnya untuk pengiriman. Kompresi agresif sebelum OCR bisa menghapus detail yang dibutuhkan pengenalan karakter.</p>\n<h2>Tips profesional</h2><ul>\n<li>Lebih baik scan grayscale untuk dokumen teks saja — file lebih kecil dan OCR lebih cepat.</li>\n<li>Perbaiki manual nomor protokol dan nominal uang setelah OCR.</li>\n<li>Simpan versi searchable dan versi terkompres untuk kirim jika portal punya batas ketat.</li>\n</ul>\n<h2>Panduan terkait</h2><ul>\n<li><a href=\"/id/guides/best-pdf-ocr-for-sales-teams\">OCR PDF</a></li>\n<li><a href=\"/id/guides/best-pdf-ocr-for-small-business\">OCR PDF</a></li>\n<li><a href=\"/id/guides/best-pdf-ocr-for-students\">OCR PDF</a></li>\n</ul>\n<p><a href=\"/pdf/ocrpdf\">Gunakan alat gratis →</a></p>\n<p><a href=\"/id/\">RatPDF</a></p>\n\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"HowTo\",\"name\":\"Alat PDF - teks dapat dicari | RatPDF\",\"description\":\"Pelajari cara alat PDF dalam 3 langkah mudah. Panduan gratis di browser dengan RatPDF — cepat tanpa instalasi.\",\"inLanguage\":\"id\",\"step\":[{\"@type\":\"HowToStep\",\"position\":1,\"name\":\"Langkah 1\",\"text\":\"Buka alat RatPDF untuk alat PDF.\"},{\"@type\":\"HowToStep\",\"position\":2,\"name\":\"Langkah 2\",\"text\":\"Unggah dokumen di RatPDF untuk alat PDF.\"},{\"@type\":\"HowToStep\",\"position\":3,\"name\":\"Langkah 3\",\"text\":\"Unduh file final dan periksa ukuran atau isi.\"}]},{\"@type\":\"FAQPage\",\"inLanguage\":\"id\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"Apakah OCR bekerja dengan foto dokumen dari HP?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Ya, dengan pencahayaan baik dan dokumen rata di permukaan datar. Hindari bayangan di tepi dan silau pada laminasi — foto miring drastis menurunkan akurasi pada NPWP, nominal, dan nama orang.\"}},{\"@type\":\"Question\",\"name\":\"Mengapa pencarian PDF tidak menemukan kata yang terlihat di layar?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Yang Anda lihat adalah gambar, bukan teks tertanam. Jalankan OCR di RatPDF untuk membuat lapisan yang bisa dicari, lalu uji dengan nomor referensi yang Anda tahu ada di halaman tersebut.\"}},{\"@type\":\"Question\",\"name\":\"Resolusi berapa yang ideal sebelum OCR pada dokumen teks?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"200–300 DPI dalam skala abu-abu biasanya ideal untuk kertas A4 berisi teks. Lebih tinggi menambah ukuran tanpa keuntungan proporsional; lebih rendah menghilangkan serif dan angka kecil.\"}},{\"@type\":\"Question\",\"name\":\"Apakah OCR memperbaiki kesalahan ejaan otomatis?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Tidak. Periksa nama, nominal uang, dan tanggal setelah OCR — terutama pada formulir tulisan tangan atau stempel yang setengah terbaca. Satu digit salah pada kode pembayaran bisa membatalkan transaksi.\"}},{\"@type\":\"Question\",\"name\":\"OCR dulu atau kompres dulu hasil scan?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"OCR dulu dengan kualitas yang masih terbaca, kompres setelahnya untuk pengiriman. Kompresi agresif sebelum OCR bisa menghapus detail yang dibutuhkan pengenalan karakter.\"}}]}]}</script>\n<h2>Daftar sebelum kirim</h2><ul><li>Saya rename file dengan tanggal dan versi.</li><li>Saya periksa tabel, stempel, dan tanda tangan masih terbaca.</li><li>Saya simpan asli di folder proyek terpisah dari salinan kirim.</li><li>Saya catat level kompresi atau alat untuk bulan depan.</li><li>Saya cek apakah portal butuh PDF/A atau PDF biasa.</li><li>Saya kirim sandi lewat kanal berbeda jika PDF dilindungi.</li></ul>\n<h2>Praktik terbaik</h2>\n<p>Data pribadi di profesional dan tim kantor: alat PDF bukan pengganti anonimisasi.</p>\n<h2>Praktik terbaik (2)</h2>\n<p>Verifikasi PDF/A jika diminta portal setelah alat PDF.</p>\n<h2>Praktik terbaik (3)</h2>\n<p>Tim remote di profesional dan tim kantor: standarkan alat PDF dalam SOP satu halaman.</p>\n<h2>Praktik terbaik (4)</h2>\n<p>Kirim draft watermark dulu; alat PDF pada versi ditandatangani di profesional dan tim kantor.</p>\n<h2>Praktik terbaik (5)</h2>\n<p>Judul (pdf text extraction empty) mencerminkan pencarian nyata — alur disesuaikan.</p>\n<h2>Praktik terbaik (6)</h2>\n<p>Bandingkan ukuran sebelum/sesudah di properti file.</p>\n<h2>Praktik terbaik (7)</h2>\n<p>Catat level per jenis dokumen — mempercepat audit di profesional dan tim kantor.</p>\n<h2>Praktik terbaik (8)</h2>\n<p>Uji file di HP dan desktop agar tabel tetap terbaca setelah alat PDF.</p>\n<h2>Praktik terbaik (9)</h2>\n<p>Topik (pdf text extraction empty) naik di pencarian Indonesia menjelang tenggat.</p>\n<h2>Praktik terbaik (10)</h2>\n<p>Rename dengan akhiran -final setelah alat PDF agar tidak pakai file lama.</p>\n<h2>Praktik terbaik (11)</h2>\n<p>Saat batas waktu pengiriman dekat dan file harus muat di limit, level disarankan sering cukup sekali jalan.</p>\n<h2>Praktik terbaik (12)</h2>\n<p>Kesalahan umum: kompres berulang, gabung setelah kompres berlebihan, kirim sandi di email yang sama.</p>\n<h2>Praktik terbaik (13)</h2>\n<p>Selaraskan di profesional dan tim kantor apakah portal butuh PDF/A atau PDF biasa sebelum alat PDF.</p>\n<h2>Praktik terbaik (14)</h2>\n<p>Unduh asli dari WhatsApp/email sebelum alat PDF, bukan forward.</p>\n<h2>Praktik terbaik (15)</h2>\n<p>Hapus halaman kosong sebelum alat PDF untuk efisiensi.</p>\n<h2>Praktik terbaik (16)</h2>\n<p>Buka di Chrome/Edge/Adobe setelah alat PDF untuk cek kompatibilitas.</p>\n<h2>Praktik terbaik (17)</h2>\n<p>Screenshot ukuran file yang diterima — berguna saat batas waktu pengiriman dekat dan file harus muat di limit.</p>\n<h2>Praktik terbaik (18)</h2>\n<p>Hindari putaran Word yang mengembangkan file lagi.</p>\n<h2>Praktik terbaik (19)</h2>\n<p>Jika masih besar, pecah per bab dan kirim indeks di email.</p>",
+  "faqQuestions": [
+    "Apakah OCR bekerja dengan foto dokumen dari HP?",
+    "Mengapa pencarian PDF tidak menemukan kata yang terlihat di layar?",
+    "Resolusi berapa yang ideal sebelum OCR pada dokumen teks?",
+    "Apakah OCR memperbaiki kesalahan ejaan otomatis?",
+    "OCR dulu atau kompres dulu hasil scan?"
+  ],
+  "faqAnswers": [
+    "Ya, dengan pencahayaan baik dan dokumen rata di permukaan datar. Hindari bayangan di tepi dan silau pada laminasi — foto miring drastis menurunkan akurasi pada NPWP, nominal, dan nama orang.",
+    "Yang Anda lihat adalah gambar, bukan teks tertanam. Jalankan OCR di RatPDF untuk membuat lapisan yang bisa dicari, lalu uji dengan nomor referensi yang Anda tahu ada di halaman tersebut.",
+    "200–300 DPI dalam skala abu-abu biasanya ideal untuk kertas A4 berisi teks. Lebih tinggi menambah ukuran tanpa keuntungan proporsional; lebih rendah menghilangkan serif dan angka kecil.",
+    "Tidak. Periksa nama, nominal uang, dan tanggal setelah OCR — terutama pada formulir tulisan tangan atau stempel yang setengah terbaca. Satu digit salah pada kode pembayaran bisa membatalkan transaksi.",
+    "OCR dulu dengan kualitas yang masih terbaca, kompres setelahnya untuk pengiriman. Kompresi agresif sebelum OCR bisa menghapus detail yang dibutuhkan pengenalan karakter."
+  ],
+  "howToSteps": [
+    "Buka alat RatPDF untuk alat PDF.",
+    "Unggah dokumen di RatPDF untuk alat PDF.",
+    "Unduh file final dan periksa ukuran atau isi."
+  ],
+  "schemaGraph": [
+    {
+      "@type": "HowTo",
+      "name": "Alat PDF - teks dapat dicari | RatPDF",
+      "description": "Pelajari cara alat PDF dalam 3 langkah mudah. Panduan gratis di browser dengan RatPDF — cepat tanpa instalasi.",
+      "inLanguage": "id",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Langkah 1",
+          "text": "Buka alat RatPDF untuk alat PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Langkah 2",
+          "text": "Unggah dokumen di RatPDF untuk alat PDF."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Langkah 3",
+          "text": "Unduh file final dan periksa ukuran atau isi."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "id",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Apakah OCR bekerja dengan foto dokumen dari HP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ya, dengan pencahayaan baik dan dokumen rata di permukaan datar. Hindari bayangan di tepi dan silau pada laminasi — foto miring drastis menurunkan akurasi pada NPWP, nominal, dan nama orang."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Mengapa pencarian PDF tidak menemukan kata yang terlihat di layar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yang Anda lihat adalah gambar, bukan teks tertanam. Jalankan OCR di RatPDF untuk membuat lapisan yang bisa dicari, lalu uji dengan nomor referensi yang Anda tahu ada di halaman tersebut."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Resolusi berapa yang ideal sebelum OCR pada dokumen teks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "200–300 DPI dalam skala abu-abu biasanya ideal untuk kertas A4 berisi teks. Lebih tinggi menambah ukuran tanpa keuntungan proporsional; lebih rendah menghilangkan serif dan angka kecil."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Apakah OCR memperbaiki kesalahan ejaan otomatis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tidak. Periksa nama, nominal uang, dan tanggal setelah OCR — terutama pada formulir tulisan tangan atau stempel yang setengah terbaca. Satu digit salah pada kode pembayaran bisa membatalkan transaksi."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OCR dulu atau kompres dulu hasil scan?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OCR dulu dengan kualitas yang masih terbaca, kompres setelahnya untuk pengiriman. Kompresi agresif sebelum OCR bisa menghapus detail yang dibutuhkan pengenalan karakter."
+          }
+        }
+      ]
+    }
+  ],
+  "searchScore": 3,
+  "generatedAt": "2026-06-29T09:00:23.619254+00:00",
+  "generator": "dictionary-v2",
+  "wordCount": 757,
+  "uniqueness": {
+    "englishSimilarity": 0.0117,
+    "localeSimilarities": {
+      "pt-BR": 0.0382,
+      "es": 0.0392,
+      "de": 0.074,
+      "fr": 0.066
+    },
+    "wordCount": 757,
+    "flags": [],
+    "passed": true
+  }
+}
